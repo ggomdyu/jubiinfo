@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>SwiftSoup-iOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>8CE418151DAA54A900240B42</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8CE4181E1DAA54A900240B42</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BD3B5B681FBED933001FDB3B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BD3B5BAB1FC063BD001FDB3B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BD3B5BEE1FC06423001FDB3B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
