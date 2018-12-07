@@ -40,9 +40,22 @@ extension ProfileViewController {
         let viewController = storyboard?.instantiateViewController(withIdentifier: "PlayDataACellController") as! PlayDataACellController
         
         let newView: UIView = viewController.view
-        view.layout(newView).top(0).left(15).right(15)
         
-        uiViewStack.append(newView)
+        self.view.addConstraint(
+            NSLayoutConstraint(
+                item: secondView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: firstView,
+                attribute: .Top,
+                multiplier: 1.0,
+                constant: 0
+        ))
+        
+        
+//        view.layout(newView).top(0).left(15).right(15)
+        
+//        uiViewStack.append(newView)
     }
     
     private func prepareCircularGraph() {

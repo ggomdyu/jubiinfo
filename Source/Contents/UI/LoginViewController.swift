@@ -107,6 +107,8 @@ extension LoginViewController {
             return
         }
 #else
+        userEmailTextField.text = 
+        userPasswordTextField.text =
 #endif
         
         removeCookies(url: URL(string:"https://p.eagate.573.jp/")!)
