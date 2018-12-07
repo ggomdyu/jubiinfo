@@ -41,13 +41,11 @@ private class ImageMatchProblemSolver {
 /**@section Method */
     public func SolveProblem() -> [Int] {
         
-        print("[DEBUG]: ImageMatchProblemSolver begun to solve image match problem.")
-        
         // 1. Download main character image and identify the type of character.
         var mainCharacterType = CharacterType.Unknown
         var mainCharacterTypeQueryComplete = false
         
-        downloadImageAsync(imageUrl: self.mainCharacterImageUrl, onDownloadComplete: { (succeed: Bool, image: UIImage?) in
+        downloadImageAsync(imageUrl: self.mainCharacterImageUrl, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
             mainCharacterType = self.getMainCharacterType(optImage: image)
             mainCharacterTypeQueryComplete = true
         })
@@ -74,8 +72,6 @@ private class ImageMatchProblemSolver {
             return mainCharacterTypeQueryComplete &&
                 downloadedSubCharacterImageCount == subCharacterImageCount
         }
-        
-        print("[DEBUG]: ImageMatchProblemSolver finished to solve image match problem.")
         
         // 4. Finally, Find all the matched character with main character.
         return self.getMatchedSubCharacterIndices(mainCharacterType: mainCharacterType, subCharacterImages: subCharacterImages);
@@ -109,6 +105,8 @@ private class ImageMatchProblemSolver {
     
     private func getMatchedSubCharacterIndices(mainCharacterType: CharacterType, subCharacterImages: [UIImage?]) -> [Int] {
         
+        print("[DEBUG]: ImageMatchProblemSolver begun to solve image match problem.")
+        
         var characterTypeMatchConditionTable = [
             CharacterType.Bomberman: ([Point<Int>(49, 9), Point<Int>(48, 34), Point<Int>(57, 32), Point<Int>(51, 20), Point<Int>(31, 29)], bombermanIdentifierColor),
             CharacterType.Girl: ([Point<Int>(41, 15), Point<Int>(39, 10), Point<Int>(45, 13), Point<Int>(50, 14), Point<Int>(42, 11)], girlIdentifierColor),
@@ -117,7 +115,7 @@ private class ImageMatchProblemSolver {
             CharacterType.Robot: ([Point<Int>(37, 54), Point<Int>(68, 32), Point<Int>(27, 45), Point<Int>(27, 49), Point<Int>(48, 45)], robotIdentifierColor)
         ];
         
-        var matchedSubCharacterIncides = [Int] ()
+        var matchedSubCharacterIncides = [Int]()
         
         // Get the condition datas to check character type of UIImage
         var characterTypeMatchCondition = characterTypeMatchConditionTable[mainCharacterType]!;
@@ -131,6 +129,8 @@ private class ImageMatchProblemSolver {
                 }
             }
         }
+        
+        print("[DEBUG]: ImageMatchProblemSolver finished to solve image match problem.")
         
         return matchedSubCharacterIncides
     }
@@ -147,29 +147,44 @@ public class JubeatFestoWebSite : WebSite {
         
         self.requestLoginPage { (statusCode: Int, html: String) in
             
-            let optParsedData = self.parseLoginPageHtml(html)
-            guard let parsedData = optParsedData else {
-                return
+            repeat {
+                let optParsedData = self.parseLoginPageHtml(html)
+                guard let parsedData = optParsedData else {
+                    print("[ERROR]: Login page data is nil.")
+                    break
+                }
+                
+                let mainCharacterImageURL = parsedData.mainCharacterImageURL;
+                let subCharacterImageUrls = parsedData.subCharacterImageURLs;
+                let imageMatchProblemSolver = ImageMatchProblemSolver(mainCharacterImageURL, subCharacterImageUrls)
+                
+                let matchedSubCharacterIndices = imageMatchProblemSolver.SolveProblem();
+                let optChkKeyValues = self.parseChkValue(parsedData.document, matchedSubCharacterIndices)
+                guard let chkKeyValues = optChkKeyValues else {
+                    break;
+                }
+                
+                self.requestLogin(userId, userPassword, chkKeyValues.chk1Key, chkKeyValues.chk1Value, chkKeyValues.chk2Key, chkKeyValues.chk2Value, parsedData.kcsess, { (statusCode: Int, html: String) in
+                    onLoginComplete(true)
+                })
+                return;
             }
+            while (false)
             
-            let mainCharacterImageURL = parsedData.mainCharacterImageURL;
-            let subCharacterImageUrls = parsedData.subCharacterImageURLs;
-            let imageMatchProblemSolver = ImageMatchProblemSolver(mainCharacterImageURL, subCharacterImageUrls)
-            
-            let matchedSubCharacterIndices = imageMatchProblemSolver.SolveProblem();
-            let optChkKeyValues = self.parseChkValue(parsedData.document, matchedSubCharacterIndices)
-            guard let chkKeyValues = optChkKeyValues else {
-                return
-            }
-            
-            self.requestLogin(userId, userPassword, chkKeyValues.chk1Key, chkKeyValues.chk1Value, chkKeyValues.chk2Key, chkKeyValues.chk2Value, parsedData.kcsess, { (statusCode: Int, html: String) in
-                onLoginComplete(true)
-            })
+            onLoginComplete(false)
         }
     }
     
-    public func requestMyPlayData(onRequestComplete: @escaping (UserData.PlayDataPageCache?) -> ()) {
-        self.requestPlayData(rivalId: "", onRequestComplete: onRequestComplete)
+    public func requestMyPlayData(onRequestComplete: @escaping (UserData.MyPlayDataPageCache?) -> ()) {
+        self.requestMyPlayDataPage(onRequestComplete: { (statusCode: Int, html: String) in
+            
+            let optMyPlayDataPageCache = self.parseMyPlayDataPageHtml(html: html)
+            guard let myPlayDataPageCache = optMyPlayDataPageCache else {
+                return;
+            }
+            
+            onRequestComplete(myPlayDataPageCache)
+        })
     }
     
     public func requestPlayData(rivalId: String, onRequestComplete: @escaping (UserData.PlayDataPageCache?) -> ()) {
@@ -185,27 +200,33 @@ public class JubeatFestoWebSite : WebSite {
     }
     
     private func parseChkValue(_ document: Document, _ matchedSubCharacterIndices: [Int]) -> (chk1Key: String, chk1Value: String, chk2Key: String, chk2Value: String)? {
-        if (matchedSubCharacterIndices.count != 2) {
-            return nil
-        }
         
-        do {
-            let chk1Key = "chk_c\(matchedSubCharacterIndices[0])"
-            let chk1Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[0])").val()
+        repeat {
+            if (matchedSubCharacterIndices.count != 2) {
+                break
+            }
             
-            let chk2Key = "chk_c\(matchedSubCharacterIndices[1])"
-            let chk2Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[1])").val()
-            
-            return (chk1Key, chk1Value, chk2Key, chk2Value)
+            do {
+                let chk1Key = "chk_c\(matchedSubCharacterIndices[0])"
+                let chk1Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[0])").val()
+                
+                let chk2Key = "chk_c\(matchedSubCharacterIndices[1])"
+                let chk2Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[1])").val()
+                
+                return (chk1Key, chk1Value, chk2Key, chk2Value)
+            }
+            catch {
+                break
+            }
         }
-        catch {
-            print("[ERROR]: Failed to parse chk value.")
-        }
+        while (false)
         
+        print("[ERROR]: Failed to parse chk value.")
         return nil;
     }
     
     private func requestLogin(_ userEmail: String, _ userPassword: String, _ chk1Key: String, _ chk1Value: String, _ chk2Key: String, _ chk2Value: String, _ kcsess: String, _ onRequestComplete: @escaping (Int, String) -> ()) {
+        print("[DEBUG]: Start to request login.")
     
         Alamofire.request(
             "https://p.eagate.573.jp/gate/p/login.html",
@@ -231,14 +252,14 @@ public class JubeatFestoWebSite : WebSite {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Origin": "https://p.eagate.573.jp",
                 "Cache-Control": "max-age=0"
-            ]
-        ).responseString { (response: DataResponse<String>) in
-            if response.error != nil {
-                print("[ERROR]: \(response.error.debugDescription)")
-                return;
-            }
+            ]).responseString { (response: DataResponse<String>) in
+                if response.error != nil {
+                    print("[ERROR]: \(response.error.debugDescription)")
+                }
             
             saveCookies(response: response)
+                
+                print("[DEBUG]: Complete to request login. (Note: It does not mean login successful.)")
             
             onRequestComplete(response.response!.statusCode, response.description)
         }
@@ -258,8 +279,7 @@ public class JubeatFestoWebSite : WebSite {
                 "Accept-Encoding": "sdch",
                 "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Host": "p.eagate.573.jp"
-            ]
-            ).responseString { (response: DataResponse<String>) in
+            ]).responseString { (response: DataResponse<String>) in
                 onRequestComplete(response.response!.statusCode, response.description);
         }
     }
@@ -296,6 +316,25 @@ public class JubeatFestoWebSite : WebSite {
         return nil;
     }
     
+    private func requestMyPlayDataPage(onRequestComplete: @escaping (Int, String) -> ()) {
+        Alamofire.request(
+            "https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id=",
+            method: HTTPMethod.get,
+            parameters: [:],
+            encoding: URLEncoding.default,
+            headers: [
+                "Keep-Alive": "true",
+                "Upgrade-Insecure-Requests": "1",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                "Accept-Encoding": "sdch",
+                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Host": "p.eagate.573.jp"
+            ]).responseString { (response: DataResponse<String>) in
+                onRequestComplete(response.response!.statusCode, response.description);
+        }
+    }
+    
     private func requestPlayDataPage(rivalId: String, onRequestComplete: @escaping (Int, String) -> ()) {
         Alamofire.request(
             "https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id=\(rivalId)",
@@ -316,6 +355,63 @@ public class JubeatFestoWebSite : WebSite {
         }
     }
     
+    private func parseMyPlayDataPageHtml(html: String) -> UserData.MyPlayDataPageCache? {
+        
+        print("[DEBUG]: Completed to request jubeat play data.")
+        
+        do {
+            let document = try SwiftSoup.parse(html)
+            
+            // 라이벌 아이디 파싱
+            let rivalIdElem = try document.select("#profile > div.number > div.sub").first()!
+            let rivalIdStr = try rivalIdElem.text()
+            
+            // 닉네임 파싱
+            let nicknameElem = try document.select("#main_name").first()!
+            let nicknameStr = try nicknameElem.text()
+            
+            // 칭호 파싱
+            let designationElem = try document.select("#sub_name").first()!
+            let designationStr = try designationElem.text()
+            
+            // 엠블럼 이미지 URL 파싱
+            let emblemImageUrlElem = try document.select("#emblem > img").first()!
+            let emblemImageUrlStr = "https://p.eagate.573.jp\(try emblemImageUrlElem.attr("src"))"
+            
+            // 유빌리티 파싱
+            let jubilityElem = try document.select("#profile > div:nth-child(2) > div.sub > span").first()!
+            let jubility = Float(try jubilityElem.text())!
+            
+            // 마지막 플레이 시간 파싱
+            let lastPlayedTimeElem = try document.select("#history > div.time").first()!
+            let lastPlayedTimeSubStrs = try lastPlayedTimeElem.text().split(whereSeparator: { $0 == ":" || $0 == " " })
+            let lastPlayedTimeStr = "\(lastPlayedTimeSubStrs[1]) \(lastPlayedTimeSubStrs[2]):\(lastPlayedTimeSubStrs[3])"
+            
+            // 마지막 플레이 장소 파싱
+            let lastPlayedLocationElem = try document.select("#history > div.store").first()!
+            let lastPlayedLocationStr = String(try lastPlayedLocationElem.text().split(separator: " ", maxSplits: 1, omittingEmptySubsequences: false)[1])
+            
+            // 누적 스코어 파싱
+            let totalBestScoreElem = try document.select("#score > div.best").first()!
+            let totalBestScoreSubStrs = try totalBestScoreElem.text().split(whereSeparator: { $0 == " " || $0 == "(" || $0 == ")" })
+            let totalScore = Int64("\(totalBestScoreSubStrs[4])")!
+            
+            // 랭킹 파싱
+            var rankStr: String.SubSequence = totalBestScoreSubStrs[5]
+            rankStr.removeLast()
+            let ranking = Int("\(rankStr)")!
+            
+            print("[DEBUG]: Succeed to parse jubeat play data.")
+            
+            return UserData.MyPlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, jubility, lastPlayedTimeStr, lastPlayedLocationStr, ranking, Int64(totalScore), 0, 0, 0)
+        }
+        catch {
+            print("[DEBUG]: Failed to parse jubeat play data page.")
+        }
+        
+        return nil;
+    }
+    
     private func parsePlayDataPageHtml(html: String) -> UserData.PlayDataPageCache? {
         
         print("[DEBUG]: Completed to request jubeat play data.")
@@ -330,6 +426,10 @@ public class JubeatFestoWebSite : WebSite {
             // 닉네임 파싱
             let nicknameElem = try document.select("#main_name").first()!
             let nicknameStr = try nicknameElem.text()
+            
+            // 엠블럼 이미지 URL 파싱
+            let emblemImageUrlElem = try document.select("#emblem > img").first()!
+            let emblemImageUrlStr = "https://p.eagate.573.jp\(try emblemImageUrlElem.attr("src"))"
             
             // 칭호 파싱
             let designationElem = try document.select("#sub_name").first()!
@@ -349,11 +449,11 @@ public class JubeatFestoWebSite : WebSite {
             let ranking = Int(try rankingElem.text().split(separator: " ")[0])!
             
             let totalBestScoreElem = try document.select("#score > div:nth-child(2)").first()!
-            let totalBestScore = Int64(try totalBestScoreElem.text().split(separator: " ", omittingEmptySubsequences: false)[4])!
+            let totalScore = Int64(try totalBestScoreElem.text().split(separator: " ", omittingEmptySubsequences: false)[4])!
             
             print("[DEBUG]: Succeed to parse jubeat play data.")
             
-            return UserData.PlayDataPageCache(nickname: nicknameStr, designation: designationStr, rivalId: rivalIdStr, lastPlayedTime: lastPlayedTimeStr, lastPlayedLocation: lastPlayedLocationStr, ranking: ranking, totalScore: totalBestScore, playTuneCount: 0, fullComboCount: 0, excellentCount: 0)
+            return UserData.PlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, lastPlayedTimeStr, lastPlayedLocationStr, ranking, totalScore, 0, 0, 0)
         }
         catch {
             print("[DEBUG]: Failed to parse jubeat play data page.")

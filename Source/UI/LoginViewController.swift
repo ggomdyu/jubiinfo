@@ -9,14 +9,14 @@
 import UIKit
 import Material
 
-class LoginViewController: UIViewController {
+class LoginViewController: ViewController {
     
     private var userEmailTextField = ErrorTextField()
     private var userPasswordTextField = ErrorTextField()
     private var jubeatWebSite = JubeatFestoWebSite()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func prepare() {
+        super.prepare()
         
         // Do any additional setup after loading the view, typically from a nib.
         self.prepareUserEmailTextField()
@@ -35,10 +35,6 @@ extension LoginViewController: TextFieldDelegate {
         userEmailTextField.placeholderAnimation = .hidden
         userEmailTextField.addTarget(self, action: #selector(onTextFieldPressEnter), for: UIControl.Event.editingDidEndOnExit)
         
-        let iconView = UIImageView()
-        iconView.image = Icon.email
-        userEmailTextField.leftView = iconView
-        
         view.layout(userEmailTextField).center(offsetY: -35).left(50).right(50)
     }
     
@@ -50,10 +46,6 @@ extension LoginViewController: TextFieldDelegate {
         userPasswordTextField.placeholderAnimation = .hidden
         userPasswordTextField.isVisibilityIconButtonEnabled = true
         userPasswordTextField.addTarget(self, action: #selector(onTextFieldPressEnter), for: UIControl.Event.editingDidEndOnExit)
-        
-        let iconView = UIImageView()
-        iconView.image = Icon.edit
-        userPasswordTextField.leftView = iconView
         
         view.layout(userPasswordTextField).center(offsetY: 45).left(50).right(50)
     }
@@ -87,13 +79,17 @@ extension LoginViewController {
         userEmailTextField.resignFirstResponder()
         userPasswordTextField.resignFirstResponder()
         
-        self.processLogin(onLoginSucceed: {(isLoginSucceed: Bool) -> () in
-            if isLoginSucceed {
-                self.processTransitionToProfileView();
-            }
-            else {
-                assert(false)
-            }
+        showLoadingIndicatorUI(self, "로그인 중...", {
+            self.processLogin(onLoginSucceed: {(isLoginSucceed: Bool) -> () in
+                
+                if isLoginSucceed {
+                    hideLoadingIndicatorUI(self, { self.processTransitionToProfileView() })
+                }
+                else {
+                    hideLoadingIndicatorUI(self)
+                    showOkPopup(self, "에러", "예기치 않은 오류로 로그인에 실패했습니다.")
+                }
+            })
         })
     }
 }
@@ -111,17 +107,11 @@ extension LoginViewController {
             return
         }
 #else
-        userEmailTextField.text =
-        userPasswordTextField.text = 
 #endif
         
         removeCookies(url: URL(string:"https://p.eagate.573.jp/")!)
         
-        self.showLoadingIndicatorUI(message: "로그인 중...")
-        
         jubeatWebSite.login(userId: userEmailTextField.text!, userPassword: userPasswordTextField.text!, onLoginComplete: { (isLoginSucceed: Bool) in
-            
-            self.hideLoadingIndicatorUI()
             
             onLoginSucceed(isLoginSucceed)
         })
@@ -129,24 +119,19 @@ extension LoginViewController {
     
     private func processTransitionToProfileView() {
         
-        self.showLoadingIndicatorUI(message: "플레이 데이터 로딩 중...")
-        
-        self.jubeatWebSite.requestMyPlayData(onRequestComplete: {(optPlayDataPageCache: UserData.PlayDataPageCache?) in
-            
-            self.hideLoadingIndicatorUI()
-            
-            guard let playDataPageCache = optPlayDataPageCache else {
-                assert(false)
-            }
-            
-            // Insert my user info cache into the global storage
-            let userDataStorage = GlobalUserDataStorage.instance
-            userDataStorage.initialize(myRivalId: playDataPageCache.rivalId, myUserData: UserData(rivalId: playDataPageCache.rivalId, playDataPageCache: playDataPageCache))
-
-            // The view transition must be processed in the UI Thread!!
-            DispatchQueue.global().async {
-                self.transitionToProfileView()
-            }
+        showLoadingIndicatorUI(self, "플레이 데이터 로딩 중...", {
+            self.jubeatWebSite.requestMyPlayData(onRequestComplete: {(optMyPlayDataPageCache: UserData.MyPlayDataPageCache?) in
+                
+                guard let myPlayDataPageCache = optMyPlayDataPageCache else {
+                    assert(false)
+                }
+                
+                // Insert my user info cache into the global storage
+                let userDataStorage = GlobalUserDataStorage.instance
+                userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache))
+                
+                hideLoadingIndicatorUI(self, { self.transitionToProfileView() })
+            })
         })
     }
     
@@ -159,26 +144,9 @@ extension LoginViewController {
         return !isTextFieldEmpty;
     }
     
-    private func showLoadingIndicatorUI(message: String) {
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        
-        let loadingIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
-        loadingIndicatorView.hidesWhenStopped = true
-        loadingIndicatorView.style = UIActivityIndicatorView.Style.gray
-        loadingIndicatorView.startAnimating();
-        
-        alertController.view.addSubview(loadingIndicatorView)
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-
     private func transitionToProfileView() {
         let viewController = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-        
+
         self.present(ProfileViewToolBarController(rootViewController: viewController), animated: true)
-    }
-    
-    private func hideLoadingIndicatorUI() {
-        self.dismiss(animated: false, completion: nil)
     }
 }

@@ -42,6 +42,26 @@ public func downloadImageAsync(imageUrl: String, onDownloadComplete: @escaping (
         print("[DEBUG]: Image download has been completed.")
         
         onDownloadComplete(true, UIImage(data: data!))
-        }.resume();
+    }.resume();
 }
 
+public func downloadImageSync(imageUrl: String, onDownloadComplete: @escaping (Bool, UIImage?) -> ()) {
+    
+    var isDownloadSucceed: Bool = false
+    var downloadedImage: UIImage? = nil
+    
+    var isImageDownloadPending: Bool = true
+    downloadImageAsync(imageUrl: imageUrl, onDownloadComplete: {(isDownloadSucceed2: Bool, downloadedImage2: UIImage?) -> () in
+        
+        downloadedImage = downloadedImage2
+        isDownloadSucceed = isDownloadSucceed2
+        
+        isImageDownloadPending = false
+    })
+    
+    SpinLock { () -> (Bool) in
+        return isImageDownloadPending == false
+    }
+    
+    onDownloadComplete(isDownloadSucceed, downloadedImage)
+}

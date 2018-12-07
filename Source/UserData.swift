@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public class GlobalUserDataStorage {
 /**@section Property */
@@ -30,7 +31,7 @@ public class GlobalUserDataStorage {
     public func queryUserData(rivalId: String) -> UserData {
         let optIter = userDataTable.index(forKey: rivalId)
         guard let iter = optIter else {
-            return userDataTable.updateValue(UserData(rivalId: rivalId), forKey: rivalId)!
+            return userDataTable.updateValue(UserData(rivalId), forKey: rivalId)!
         }
         
         return userDataTable[iter].value
@@ -47,13 +48,14 @@ public class GlobalUserDataStorage {
 
 public class UserData {
 /**@section Struct */
-    public struct PlayDataPageCache {
-        public init(
-            nickname: String, designation: String, rivalId: String, lastPlayedTime: String, lastPlayedLocation: String, ranking: Int, totalScore: Int64, playTuneCount: Int, fullComboCount: Int, excellentCount: Int)
+    public class PlayDataPageCache {
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageURL: String, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
         {
+            self.emblemImage = nil
             self.nickname = nickname
             self.designation = designation
             self.rivalId = rivalId
+            self.emblemImageURL = emblemImageURL
             self.lastPlayedTime = lastPlayedTime
             self.lastPlayedLocation = lastPlayedLocation
             self.ranking = ranking
@@ -61,11 +63,19 @@ public class UserData {
             self.playTuneCount = playTuneCount
             self.fullComboCount = fullComboCount
             self.excellentCount = excellentCount
+            
+            downloadImageSync(imageUrl: emblemImageURL, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+                if (isDownloadSucceed) {
+                    self.emblemImage = image
+                }
+            })
         }
         
         public private(set) var nickname: String
         public private(set) var designation: String
         public private(set) var rivalId: String
+        public private(set) var emblemImageURL: String
+        public private(set) var emblemImage: UIImage?
         public private(set) var lastPlayedTime: String
         public private(set) var lastPlayedLocation: String
         public private(set) var ranking: Int
@@ -74,13 +84,24 @@ public class UserData {
         public private(set) var fullComboCount: Int
         public private(set) var excellentCount: Int
     }
+    
+    public class MyPlayDataPageCache : PlayDataPageCache {
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageURL: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        {
+            self.jubility = jubility
+            
+            super.init(nickname, designation, rivalId, emblemImageURL, lastPlayedTime, lastPlayedLocation, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
+        }
+        
+        public private(set) var jubility: Float
+    }
 
 /**@section Constructor */
-    public init(rivalId: String) {
+    public init(_ rivalId: String) {
         self.rivalId = rivalId
     }
     
-    public init(rivalId: String, playDataPageCache: PlayDataPageCache) {
+    public init(_ rivalId: String, _ playDataPageCache: PlayDataPageCache) {
         self.rivalId = rivalId
         self.playDataPageCache = playDataPageCache
     }

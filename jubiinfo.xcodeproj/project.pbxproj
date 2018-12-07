@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
 		FD11B8DE21B3AF88003E3403 /* ProfileViewToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */; };
-		FD11B8E021B3C21D003E3403 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* PostsViewController.swift */; };
+		FD11B8E021B3C21D003E3403 /* ProfileViewCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */; };
 		FD11B8F821B43446003E3403 /* thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = FD11B8F721B43446003E3403 /* thumbnail.png */; };
 		FD4C4C6F21AEC44F00ABCE53 /* jubiinfoText.png in Resources */ = {isa = PBXBuildFile; fileRef = FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */; };
 		FD4C4C7021AEC44F00ABCE53 /* jubiinfoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FD4C4C6E21AEC44F00ABCE53 /* jubiinfoIcon.png */; };
@@ -26,6 +26,8 @@
 		FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250821AC50FE008C7DB1 /* Point.swift */; };
 		FDD2250C21AC516E008C7DB1 /* WebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250B21AC516E008C7DB1 /* WebSite.swift */; };
 		FDD2251021AC51D3008C7DB1 /* JubeatFestoWebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250F21AC51D3008C7DB1 /* JubeatFestoWebSite.swift */; };
+		FDDAFEEE21B846580044F5C0 /* PlayDataACellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDAFEED21B846580044F5C0 /* PlayDataACellController.swift */; };
+		FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDAFEEF21B997150044F5C0 /* UIUtility.swift */; };
 		FDF1347621B39C3A00D0F2FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FDF1347521B39C3A00D0F2FD /* LaunchScreen.storyboard */; };
 		FDF53D1E21B56C580031AF38 /* Motion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD11B8FE21B563AD003E3403 /* Motion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FDF53D2221B56C580031AF38 /* Material.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FDA70F3121B327A100B551F8 /* Material.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -188,13 +190,6 @@
 			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
 			remoteInfo = "Alamofire iOS";
 		};
-		FDF53D2E21B57BAF0031AF38 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FDA70F3421B3281100B551F8 /* Charts.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A58A4ED274A941CA248EA921;
-			remoteInfo = Charts;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -217,7 +212,7 @@
 /* Begin PBXFileReference section */
 		FD0EA840219B14660084A837 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewToolBarController.swift; sourceTree = "<group>"; };
-		FD11B8DF21B3C21D003E3403 /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewCellController.swift; sourceTree = "<group>"; };
 		FD11B8F721B43446003E3403 /* thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail.png; sourceTree = "<group>"; };
 		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-1.4.3/Motion.xcodeproj"; sourceTree = "<group>"; };
 		FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.7.3/Alamofire.xcodeproj"; sourceTree = "<group>"; };
@@ -243,6 +238,8 @@
 		FDD2250821AC50FE008C7DB1 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		FDD2250B21AC516E008C7DB1 /* WebSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSite.swift; sourceTree = "<group>"; };
 		FDD2250F21AC51D3008C7DB1 /* JubeatFestoWebSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JubeatFestoWebSite.swift; sourceTree = "<group>"; };
+		FDDAFEED21B846580044F5C0 /* PlayDataACellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayDataACellController.swift; sourceTree = "<group>"; };
+		FDDAFEEF21B997150044F5C0 /* UIUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtility.swift; sourceTree = "<group>"; };
 		FDF1347521B39C3A00D0F2FD /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -437,10 +434,12 @@
 			isa = PBXGroup;
 			children = (
 				FDA70D3521B2572500B551F8 /* LoginViewToolBarController.swift */,
+				FDDAFEED21B846580044F5C0 /* PlayDataACellController.swift */,
 				FD7F64CF2199D62100E534E7 /* LoginViewController.swift */,
 				FD0EA840219B14660084A837 /* ProfileViewController.swift */,
 				FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */,
-				FD11B8DF21B3C21D003E3403 /* PostsViewController.swift */,
+				FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */,
+				FDDAFEEF21B997150044F5C0 /* UIUtility.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -460,7 +459,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FDF53D2F21B57BAF0031AF38 /* PBXTargetDependency */,
 				FDF53D2021B56C580031AF38 /* PBXTargetDependency */,
 				FDF53D2421B56C580031AF38 /* PBXTargetDependency */,
 				FDF53D2821B56C580031AF38 /* PBXTargetDependency */,
@@ -722,7 +720,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD11B8E021B3C21D003E3403 /* PostsViewController.swift in Sources */,
+				FD11B8E021B3C21D003E3403 /* ProfileViewCellController.swift in Sources */,
 				FDD2250621AC50F0008C7DB1 /* Color.swift in Sources */,
 				FDA70D3621B2572500B551F8 /* LoginViewToolBarController.swift in Sources */,
 				FDD2250C21AC516E008C7DB1 /* WebSite.swift in Sources */,
@@ -730,9 +728,11 @@
 				FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */,
 				FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */,
 				FDD2251021AC51D3008C7DB1 /* JubeatFestoWebSite.swift in Sources */,
+				FDDAFEEE21B846580044F5C0 /* PlayDataACellController.swift in Sources */,
 				FD7F64CE2199D62100E534E7 /* AppDelegate.swift in Sources */,
 				FDB5F4FB21B6D0DC00CC1F1C /* UserData.swift in Sources */,
 				FD4C4C7421AECA4000ABCE53 /* ImageUtility.swift in Sources */,
+				FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */,
 				FD7F64D02199D62100E534E7 /* LoginViewController.swift in Sources */,
 				FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */,
 				FD11B8DE21B3AF88003E3403 /* ProfileViewToolBarController.swift in Sources */,
@@ -785,11 +785,6 @@
 			isa = PBXTargetDependency;
 			name = "Alamofire iOS";
 			targetProxy = FDF53D2B21B56C580031AF38 /* PBXContainerItemProxy */;
-		};
-		FDF53D2F21B57BAF0031AF38 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Charts;
-			targetProxy = FDF53D2E21B57BAF0031AF38 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

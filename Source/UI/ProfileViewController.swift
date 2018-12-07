@@ -12,43 +12,38 @@ import Material
 import Motion
 import Charts
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: ViewController {
 
-    @IBOutlet weak var rivalIdLabel: UILabel!
-    @IBOutlet weak var emblemImageView: UIImageView!
-    @IBOutlet weak var nicknameLabel: UILabel!
-    @IBOutlet weak var designationLabel: UILabel!
-    
-    @IBOutlet weak var jubilityLabel: UILabel!
-    @IBOutlet weak var rankingLabel: UILabel!
-    @IBOutlet weak var totalScoreLabel: UILabel!
-    @IBOutlet weak var lastPlayedTimeLabel: UILabel!
-    @IBOutlet weak var lastPlayedLocationLabel: UILabel!
-    
+    private var uiViewStack = [UIView]()
     @IBOutlet weak var scrollView: UIScrollView!
     
-    open override func viewDidLoad() {
-        super.viewDidLoad()
+    open override func prepare() {
+        super.prepare()
         
-        let myUserData = GlobalUserDataStorage.instance.queryMyUserData()
-        guard let myPlayDataPageCache = myUserData.playDataPageCache else {
-            return
-        }
-        
-        rivalIdLabel.text = "RIVAL ID: \(myPlayDataPageCache.rivalId)"
-        nicknameLabel.text = myPlayDataPageCache.nickname
-        designationLabel.text = myPlayDataPageCache.designation
-        
-//        jubilityLabel.text = myPlayDataPageCache.
-//        score.text =
-        totalScoreLabel.text = "\(myPlayDataPageCache.totalScore)"
-        lastPlayedTimeLabel.text = myPlayDataPageCache.lastPlayedTime
-        lastPlayedLocationLabel.text = myPlayDataPageCache.lastPlayedLocation
-        rankingLabel.text = "#\(myPlayDataPageCache.ranking)"
+        self.prepareProfileViewCell()
+        self.preparePlayDataACell()
     }
 }
 
 extension ProfileViewController {
+    
+    private func prepareProfileViewCell() {
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "ProfileViewCellController") as! ProfileViewCellController
+
+        let newView: UIView = viewController.view
+        self.view.layout(newView).top(15).left(15).right(15)
+        
+        uiViewStack.append(newView)
+    }
+    
+    private func preparePlayDataACell() {
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "PlayDataACellController") as! PlayDataACellController
+        
+        let newView: UIView = viewController.view
+        view.layout(newView).top(0).left(15).right(15)
+        
+        uiViewStack.append(newView)
+    }
     
     private func prepareCircularGraph() {
         let chartItems = [
