@@ -11,7 +11,8 @@ import UIKit
 import CoreGraphics
 
 public func getImagePixel(image: UIImage, point: Point<Int>) -> Color3b {
-    let imageData: UnsafePointer<UInt8> = CFDataGetBytePtr(image.cgImage!.dataProvider!.data)
+    let data = image.cgImage!.dataProvider!.data
+    let imageData: UnsafePointer<UInt8> = CFDataGetBytePtr(data)
     
     let pixelPos = (point.y * Int(image.size.width) + point.x) * 4;
     
