@@ -176,14 +176,14 @@ public class JubeatFestoWebSite : WebSite {
     
     /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
     public func requestMyPlayData(onRequestComplete: @escaping (UserData.MyPlayDataPageCache?) -> Void) {
-        self.requestMyPlayDataPage { (statusCode: Int, html: String) in
+        self.requestMyPlayDataPageHtml { (statusCode: Int, html: String) in
             onRequestComplete(self.parseMyPlayDataPageHtml(html: html))
         }
     }
     
     /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
     public func requestPlayData(rivalId: String, onRequestComplete: @escaping (UserData.PlayDataPageCache?) -> Void) {
-        self.requestPlayDataPage(rivalId: rivalId) { (statusCode: Int, html: String) in
+        self.requestPlayDataPageHtml(rivalId: rivalId) { (statusCode: Int, html: String) in
             onRequestComplete(self.parsePlayDataPageHtml(html: html))
         }
     }
@@ -196,7 +196,7 @@ public class JubeatFestoWebSite : WebSite {
     /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
     public func requestMusicData(rivalId: String, pageIndex: Int, onRequestComplete: @escaping (UserData.MusicDataPageCache?) -> Void) {
         
-        self.requestMusicDataPage(rivalId: rivalId, pageIndex: pageIndex) { (statusCode: Int, html: String) in
+        self.requestMusicDataPageHtml(rivalId: rivalId, pageIndex: pageIndex) { (statusCode: Int, html: String) in
             onRequestComplete(self.parseMusicDataPageHtml(html: html))
         }
     }
@@ -209,7 +209,7 @@ public class JubeatFestoWebSite : WebSite {
     
     /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
     public func requestRankData(rivalId: String, onRequestComplete: @escaping (UserData.RankDataPageCache?) -> Void) {
-        self.requestRankDataPage(rivalId: rivalId) { (statusCode: Int, html: String) in
+        self.requestRankDataPageHtml(rivalId: rivalId) { (statusCode: Int, html: String) in
             onRequestComplete(self.parseRankDataPageHtml(html: html))
         }
     }
@@ -315,7 +315,7 @@ public class JubeatFestoWebSite : WebSite {
     
     
     
-    private func requestMyPlayDataPage(onRequestComplete: @escaping (Int, String) -> Void) {
+    private func requestMyPlayDataPageHtml(onRequestComplete: @escaping (Int, String) -> Void) {
         print("[DEBUG]: Start to request my play data page.")
         
         httpRequestAsync(
@@ -330,7 +330,7 @@ public class JubeatFestoWebSite : WebSite {
         )
     }
     
-    private func requestPlayDataPage(rivalId: String, onRequestComplete: @escaping (Int, String) -> Void) {
+    private func requestPlayDataPageHtml(rivalId: String, onRequestComplete: @escaping (Int, String) -> Void) {
         
         print("[DEBUG]: Start to request play data page.")
         
@@ -453,11 +453,11 @@ public class JubeatFestoWebSite : WebSite {
     
     
     
-    private func requestMyMusicDataPage(pageIndex: Int, onRequestComplete: @escaping (Int, String) -> Void) {
-        self.requestMusicDataPage(rivalId: "", pageIndex: pageIndex, onRequestComplete: onRequestComplete)
+    private func requestMyMusicDataPageHtml(pageIndex: Int, onRequestComplete: @escaping (Int, String) -> Void) {
+        self.requestMusicDataPageHtml(rivalId: "", pageIndex: pageIndex, onRequestComplete: onRequestComplete)
     }
     
-    private func requestMusicDataPage(rivalId: String, pageIndex: Int, onRequestComplete: @escaping (Int, String) -> Void) {
+    private func requestMusicDataPageHtml(rivalId: String, pageIndex: Int, onRequestComplete: @escaping (Int, String) -> Void) {
         
         print("[DEBUG]: Start to request music data page.")
         
@@ -492,11 +492,11 @@ public class JubeatFestoWebSite : WebSite {
     
     
     
-    private func requestMyRankDataPage(onRequestComplete: @escaping (Int, String) -> Void) {
-        self.requestRankDataPage(rivalId: "", onRequestComplete: onRequestComplete)
+    private func requestMyRankDataPageHtml(onRequestComplete: @escaping (Int, String) -> Void) {
+        self.requestRankDataPageHtml(rivalId: "", onRequestComplete: onRequestComplete)
     }
     
-    private func requestRankDataPage(rivalId: String, onRequestComplete: @escaping (Int, String) -> Void) {
+    private func requestRankDataPageHtml(rivalId: String, onRequestComplete: @escaping (Int, String) -> Void) {
         
         print("[DEBUG]: Start to request rank data page.")
         
