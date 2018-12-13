@@ -97,6 +97,7 @@ extension LoginViewController {
                 }
                 else {
                     hideLoadingIndicatorUI(self)
+                    
                     showOkPopup(self, "에러", "예기치 않은 오류로 로그인에 실패했습니다.")
                 }
             })
@@ -134,13 +135,11 @@ extension LoginViewController {
             let userDataStorage = GlobalUserDataStorage.instance
             
             // Load play data page
+            var optMyPlayDataPageCache: UserData.MyPlayDataPageCache? = nil
             var isCompleteToRequestMyPlayDataPage = false
             self.jubeatWebSite.requestMyPlayData { (optMyPlayDataPageCache2: UserData.MyPlayDataPageCache?) in
-                if let myPlayDataPageCache = optMyPlayDataPageCache2 {
-                    // Insert my user data cache into the global storage
-                    userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache))
-                }
                 
+                optMyPlayDataPageCache = optMyPlayDataPageCache2
                 isCompleteToRequestMyPlayDataPage = true
             }
             
@@ -158,10 +157,15 @@ extension LoginViewController {
                 return isCompleteToRequestMyPlayDataPage && isCompleteToRequestMyRankDataPage
             })
             
-            if let myRankDataPageCache = optMyRankDataPageCache {
-                // Insert my rank data cache into the global storage
-                userDataStorage.queryMyUserData().rankDataPageCache = myRankDataPageCache
+            guard let myPlayDataPageCache = optMyPlayDataPageCache,
+                  let myRankDataPageCache = optMyRankDataPageCache else {
+                hideLoadingIndicatorUI(self, { showOkPopup(self, "에러", "") })
+                return
             }
+            
+            // Insert my user data cache into the global storage
+            var myUserData = UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache, nil, myRankDataPageCache)
+            userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: myUserData)
             
             hideLoadingIndicatorUI(self, { self.transitionToProfileView() })
         })

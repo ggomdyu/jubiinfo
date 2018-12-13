@@ -150,7 +150,6 @@ public class JubeatFestoWebSite : WebSite {
             repeat {
                 let optParsedData = self.parseLoginPageHtml(html)
                 guard let parsedData = optParsedData else {
-                    print("[ERROR]: Login page data is nil.")
                     break
                 }
                 
@@ -218,28 +217,24 @@ public class JubeatFestoWebSite : WebSite {
     
     private func parseChkValue(_ document: Document, _ matchedSubCharacterIndices: [Int]) -> (chk1Key: String, chk1Value: String, chk2Key: String, chk2Value: String)? {
         
-        repeat {
-            if (matchedSubCharacterIndices.count != 2) {
-                break
-            }
-            
-            do {
-                let chk1Key = "chk_c\(matchedSubCharacterIndices[0])"
-                let chk1Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[0])").val()
-                
-                let chk2Key = "chk_c\(matchedSubCharacterIndices[1])"
-                let chk2Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[1])").val()
-                
-                return (chk1Key, chk1Value, chk2Key, chk2Value)
-            }
-            catch {
-                break
-            }
+        if (matchedSubCharacterIndices.count != 2) {
+            recordLastError(ErrorCode.NotSupposedParameter, "Selected sub character count is not 2. (Currently \(matchedSubCharacterIndices.count)")
+            return nil
         }
-        while (false)
         
-        print("[ERROR]: Failed to parse chk value.")
-        return nil;
+        do {
+            let chk1Key = "chk_c\(matchedSubCharacterIndices[0])"
+            let chk1Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[0])").val()
+            
+            let chk2Key = "chk_c\(matchedSubCharacterIndices[1])"
+            let chk2Value = try document.select("#id_kcaptcha_c\(matchedSubCharacterIndices[1])").val()
+            
+            return (chk1Key, chk1Value, chk2Key, chk2Value)
+        }
+        catch {
+            recordLastError(ErrorCode.ParseError, "Failed to parse chk value.")
+            return nil
+        }
     }
     
     
@@ -310,7 +305,7 @@ public class JubeatFestoWebSite : WebSite {
     
     private func parseLoginPageHtml(_ loginPageHtml: String) -> (document: Document, mainCharacterImageURL: String, subCharacterImageURLs: [String], kcsess: String)? {
         
-        print("[DEBUG]: Start to parse login page.")
+        print("[DEBUG]: Start to parse login page html.")
         
         do {
             let document = try SwiftSoup.parse(loginPageHtml)
@@ -334,14 +329,13 @@ public class JubeatFestoWebSite : WebSite {
             let kcsessElem = try formElem.select("input[type=\"hidden\"]")
             let kcsessValue = try kcsessElem.val()
             
-            print("[DEBUG]: Succeed to parse login page.")
+            print("[DEBUG]: Succeed to parse login page html.")
             
             return (document, mainCharacterImageUrl, subCharacterImageUrls, kcsessValue)
         }
         catch {}
         
-        print("[DEBUG]: Failed to parse login page.")
-        
+        recordLastError(ErrorCode.ParseError, "Failed to parse login page html.")
         return nil;
     }
     
@@ -428,8 +422,7 @@ public class JubeatFestoWebSite : WebSite {
         }
         catch {}
         
-        print("[DEBUG]: Failed to parse my play data page html.")
-        
+        recordLastError(ErrorCode.ParseError, "Failed to parse my play data page html.")
         return nil;
     }
     
@@ -478,8 +471,7 @@ public class JubeatFestoWebSite : WebSite {
         }
         catch {}
         
-        print("[DEBUG]: Failed to parse play data page html.")
-        
+        recordLastError(ErrorCode.ParseError, "Failed to parse play data page html.")
         return nil;
     }
     
@@ -518,8 +510,7 @@ public class JubeatFestoWebSite : WebSite {
         
         print("[DEBUG]: Start to parse music data page html.")
         
-        print("[DEBUG]: Failed to parse music data page html.")
-        
+        recordLastError(ErrorCode.ParseError, "Failed to parse music data page html.")
         return nil;
     }
     
@@ -571,8 +562,7 @@ public class JubeatFestoWebSite : WebSite {
         }
         catch {}
         
-        print("[DEBUG]: Failed to parse rank data page html.")
-        
+        recordLastError(ErrorCode.ParseError, "Failed to parse rank data page html.")
         return nil;
     }
 }

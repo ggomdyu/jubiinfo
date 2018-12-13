@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62ED01B421C2185900056141 /* SettingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62ED01B321C2185900056141 /* SettingData.swift */; };
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
 		FD11B8DE21B3AF88003E3403 /* ProfileViewToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */; };
 		FD11B8E021B3C21D003E3403 /* ProfileViewCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */; };
@@ -264,6 +265,7 @@
 
 /* Begin PBXFileReference section */
 		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-2.16.4/Material.xcodeproj"; sourceTree = "<group>"; };
+		62ED01B321C2185900056141 /* SettingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingData.swift; sourceTree = "<group>"; };
 		FD0EA840219B14660084A837 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewToolBarController.swift; sourceTree = "<group>"; };
 		FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewCellController.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				6293174F21BA25330038E016 /* Network */,
 				FDF1347721B39E6700D0F2FD /* UI */,
 				FDB5F4FA21B6D0DC00CC1F1C /* UserData.swift */,
+				62ED01B321C2185900056141 /* SettingData.swift */,
 			);
 			path = Contents;
 			sourceTree = "<group>";
@@ -837,6 +840,7 @@
 				FDDAFEEE21B846580044F5C0 /* PlayDataACellController.swift in Sources */,
 				FD7F64CE2199D62100E534E7 /* AppDelegate.swift in Sources */,
 				FDB5F4FB21B6D0DC00CC1F1C /* UserData.swift in Sources */,
+				62ED01B421C2185900056141 /* SettingData.swift in Sources */,
 				FD4C4C7421AECA4000ABCE53 /* ImageUtility.swift in Sources */,
 				FD32E50D21C1942B001DF4CB /* ProfileViewMenuController.swift in Sources */,
 				FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */,

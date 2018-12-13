@@ -43,9 +43,8 @@ public struct DetailMusicData {
 }
 
 public class GlobalUserDataStorage {
-/**@section Property */
+/**@section Variable */
     public static let instance = GlobalUserDataStorage()
-//    public private(set) var instance = GlobalUserDataStorage()
     
 /**@section Constructor */
     private init() {
