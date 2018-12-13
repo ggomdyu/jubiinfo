@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 import Material
 
 class LoginViewController: ViewController {
@@ -14,6 +15,10 @@ class LoginViewController: ViewController {
     private var userEmailTextField = ErrorTextField()
     private var userPasswordTextField = ErrorTextField()
     private var jubeatWebSite = JubeatFestoWebSite()
+    private var errorTextFieldDividerActiveColor = UIColor(red: 234 / 255, green: 139 / 255, blue: 61 / 255, alpha: 1.0)
+    private var errorTextFieldTintColor = UIColor(red: 234 / 255, green: 139 / 255, blue: 61 / 255, alpha: 1.0)
+    private var loginButtonColor = UIColor(red: 47 / 255, green: 100 / 255, blue: 90 / 255, alpha: 1)
+    private var loginButtonLabelColor = UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1)
     
     override func prepare() {
         super.prepare()
@@ -31,32 +36,37 @@ extension LoginViewController: TextFieldDelegate {
         userEmailTextField.detail = "e-AMUSEMENT 계정의 이메일 주소를 입력해주세요."
         userEmailTextField.error = "이메일 주소가 입력되지 않았습니다."
         userEmailTextField.delegate = self
+        userEmailTextField.tintColor = self.errorTextFieldTintColor
+        userEmailTextField.dividerActiveColor = self.errorTextFieldDividerActiveColor
         userEmailTextField.isPlaceholderUppercasedWhenEditing = false
         userEmailTextField.placeholderAnimation = .hidden
         userEmailTextField.addTarget(self, action: #selector(onTextFieldPressEnter), for: UIControl.Event.editingDidEndOnExit)
         
-        view.layout(userEmailTextField).center(offsetY: -35).left(50).right(50)
+        view.layout(userEmailTextField).top(200).left(50).right(50)
     }
     
     private func prepareUserPasswordTextField() {
         userPasswordTextField.placeholder = "Password"
         userPasswordTextField.detail = "비밀번호를 입력해주세요."
         userPasswordTextField.error = "비밀번호가 입력되지 않았습니다."
+        userPasswordTextField.tintColor = self.errorTextFieldTintColor
+        userPasswordTextField.dividerActiveColor = self.errorTextFieldDividerActiveColor
         userPasswordTextField.isPlaceholderUppercasedWhenEditing = false
         userPasswordTextField.placeholderAnimation = .hidden
         userPasswordTextField.isVisibilityIconButtonEnabled = true
         userPasswordTextField.addTarget(self, action: #selector(onTextFieldPressEnter), for: UIControl.Event.editingDidEndOnExit)
         
-        view.layout(userPasswordTextField).center(offsetY: 45).left(50).right(50)
+        view.layout(userPasswordTextField).top(280).left(50).right(50)
     }
     
     private func prepareLoginButton() {
         let button = RaisedButton(title: "로그인", titleColor: .white)
         button.pulseColor = .white
-        button.backgroundColor = Color.blue.base
+        button.backgroundColor = loginButtonColor
+        button.titleLabel?.textColor = loginButtonLabelColor
         button.addTarget(self, action: #selector(onTouchLoginButton), for: UIControl.Event.touchUpInside)
         
-        view.layout(button).center(offsetY: 170).width(150).height(44)
+        view.layout(button).center().top(395).width(150).height(44)
     }
 }
 
@@ -107,8 +117,6 @@ extension LoginViewController {
             return
         }
 #else
-        userEmailTextField.text = 
-        userPasswordTextField.text =
 #endif
         
         removeCookies(url: URL(string:"https://p.eagate.573.jp/")!)
@@ -122,18 +130,40 @@ extension LoginViewController {
     private func processTransitionToProfileView() {
         
         showLoadingIndicatorUI(self, "플레이 데이터 로딩 중...", {
-            self.jubeatWebSite.requestMyPlayData(onRequestComplete: {(optMyPlayDataPageCache: UserData.MyPlayDataPageCache?) in
-                
-                guard let myPlayDataPageCache = optMyPlayDataPageCache else {
-                    assert(false)
+
+            let userDataStorage = GlobalUserDataStorage.instance
+            
+            // Load play data page
+            var isCompleteToRequestMyPlayDataPage = false
+            self.jubeatWebSite.requestMyPlayData { (optMyPlayDataPageCache2: UserData.MyPlayDataPageCache?) in
+                if let myPlayDataPageCache = optMyPlayDataPageCache2 {
+                    // Insert my user data cache into the global storage
+                    userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache))
                 }
                 
-                // Insert my user info cache into the global storage
-                let userDataStorage = GlobalUserDataStorage.instance
-                userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache))
+                isCompleteToRequestMyPlayDataPage = true
+            }
+            
+            // Load rank data page
+            var optMyRankDataPageCache: UserData.RankDataPageCache? = nil
+            var isCompleteToRequestMyRankDataPage = false
+            self.jubeatWebSite.requestMyRankData { (optMyRankDataPageCache2: UserData.RankDataPageCache?) in
                 
-                hideLoadingIndicatorUI(self, { self.transitionToProfileView() })
+                optMyRankDataPageCache = optMyRankDataPageCache2
+                isCompleteToRequestMyRankDataPage = true
+            }
+
+            // Wait until both loadings finished.
+            SpinLock(isLockFinish: { () -> (Bool) in
+                return isCompleteToRequestMyPlayDataPage && isCompleteToRequestMyRankDataPage
             })
+            
+            if let myRankDataPageCache = optMyRankDataPageCache {
+                // Insert my rank data cache into the global storage
+                userDataStorage.queryMyUserData().rankDataPageCache = myRankDataPageCache
+            }
+            
+            hideLoadingIndicatorUI(self, { self.transitionToProfileView() })
         })
     }
     
@@ -147,8 +177,13 @@ extension LoginViewController {
     }
     
     private func transitionToProfileView() {
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        let profileViewController = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController)
 
-        self.present(ProfileViewToolBarController(rootViewController: viewController), animated: true)
+        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
+        navigationDrawerController.isMotionEnabled = true
+        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        
+        self.present(navigationDrawerController, animated: true)
     }
 }

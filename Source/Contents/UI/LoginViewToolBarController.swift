@@ -11,6 +11,9 @@ import Material
 
 class LoginViewToolBarController: ToolbarController {
     
+    private var toolBarColor = UIColor(red: 36 / 255, green: 75 / 255, blue: 67 / 255, alpha: 1)
+    private var toolBarLabelColor = UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1)
+    
     open override func prepare() {
         super.prepare()
         
@@ -22,12 +25,12 @@ class LoginViewToolBarController: ToolbarController {
 fileprivate extension LoginViewToolBarController {
     private func prepareStatusBar() {
         statusBarStyle = .lightContent
-        statusBar.backgroundColor = Color.blue.darken3
+        statusBar.backgroundColor = toolBarColor
     }
     
     private func prepareToolbar() {
-        toolbar.backgroundColor = Color.blue.darken2
         toolbar.title = "로그인"
-        toolbar.titleLabel.textColor = Color.white
+        toolbar.titleLabel.textColor = self.toolBarLabelColor
+        toolbar.backgroundColor = self.toolBarColor
     }
 }

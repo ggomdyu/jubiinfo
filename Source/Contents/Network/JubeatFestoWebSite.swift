@@ -143,7 +143,7 @@ public class JubeatFestoWebSite : WebSite {
      * @brief   Log into the e-Amusement site.
      * @warn    Note that the onLoginComplete closure called by main thread.
      */
-    public func login(userId: String, userPassword: String, onLoginComplete: @escaping (Bool) -> ()) {
+    public func login(userId: String, userPassword: String, onLoginComplete: @escaping (Bool) -> Void) {
         
         self.requestLoginPage { (statusCode: Int, html: String) in
             
@@ -164,9 +164,9 @@ public class JubeatFestoWebSite : WebSite {
                     break;
                 }
                 
-                self.requestLogin(userId, userPassword, chkKeyValues.chk1Key, chkKeyValues.chk1Value, chkKeyValues.chk2Key, chkKeyValues.chk2Value, parsedData.kcsess, { (statusCode: Int, html: String) in
+                self.requestLogin(userId, userPassword, chkKeyValues.chk1Key, chkKeyValues.chk1Value, chkKeyValues.chk2Key, chkKeyValues.chk2Value, parsedData.kcsess) { (statusCode: Int, html: String) in
                     onLoginComplete(true)
-                })
+                }
                 return;
             }
             while (false)
@@ -175,29 +175,46 @@ public class JubeatFestoWebSite : WebSite {
         }
     }
     
-    public func requestMyPlayData(onRequestComplete: @escaping (UserData.MyPlayDataPageCache?) -> ()) {
-        self.requestMyPlayDataPage(onRequestComplete: { (statusCode: Int, html: String) in
-            
-            let optMyPlayDataPageCache = self.parseMyPlayDataPageHtml(html: html)
-            guard let myPlayDataPageCache = optMyPlayDataPageCache else {
-                return;
-            }
-            
-            onRequestComplete(myPlayDataPageCache)
-        })
+    /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
+    public func requestMyPlayData(onRequestComplete: @escaping (UserData.MyPlayDataPageCache?) -> Void) {
+        self.requestMyPlayDataPage { (statusCode: Int, html: String) in
+            onRequestComplete(self.parseMyPlayDataPageHtml(html: html))
+        }
     }
     
-    public func requestPlayData(rivalId: String, onRequestComplete: @escaping (UserData.PlayDataPageCache?) -> ()) {
-        self.requestPlayDataPage(rivalId: rivalId, onRequestComplete: { (statusCode: Int, html: String) in
-            
-            let optPlayDataPageCache = self.parsePlayDataPageHtml(html: html)
-            guard let playDataPageCache = optPlayDataPageCache else {
-                return;
-            }
-
-            onRequestComplete(playDataPageCache)
-        })
+    /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
+    public func requestPlayData(rivalId: String, onRequestComplete: @escaping (UserData.PlayDataPageCache?) -> Void) {
+        self.requestPlayDataPage(rivalId: rivalId) { (statusCode: Int, html: String) in
+            onRequestComplete(self.parsePlayDataPageHtml(html: html))
+        }
     }
+    
+    /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
+    public func requestMyMusicData(pageIndex: Int, onRequestComplete: @escaping (UserData.MusicDataPageCache?) -> Void) {
+        self.requestMusicData(rivalId: "", pageIndex: 1, onRequestComplete: onRequestComplete)
+    }
+    
+    /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
+    public func requestMusicData(rivalId: String, pageIndex: Int, onRequestComplete: @escaping (UserData.MusicDataPageCache?) -> Void) {
+        
+        self.requestMusicDataPage(rivalId: rivalId, pageIndex: pageIndex) { (statusCode: Int, html: String) in
+            onRequestComplete(self.parseMusicDataPageHtml(html: html))
+        }
+    }
+    
+    
+    /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
+    public func requestMyRankData(onRequestComplete: @escaping (UserData.RankDataPageCache?) -> Void) {
+        self.requestRankData(rivalId: "", onRequestComplete: onRequestComplete)
+    }
+    
+    /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
+    public func requestRankData(rivalId: String, onRequestComplete: @escaping (UserData.RankDataPageCache?) -> Void) {
+        self.requestRankDataPage(rivalId: rivalId) { (statusCode: Int, html: String) in
+            onRequestComplete(self.parseRankDataPageHtml(html: html))
+        }
+    }
+    
     
     private func parseChkValue(_ document: Document, _ matchedSubCharacterIndices: [Int]) -> (chk1Key: String, chk1Value: String, chk2Key: String, chk2Value: String)? {
         
@@ -225,7 +242,9 @@ public class JubeatFestoWebSite : WebSite {
         return nil;
     }
     
-    private func requestLogin(_ userEmail: String, _ userPassword: String, _ chk1Key: String, _ chk1Value: String, _ chk2Key: String, _ chk2Value: String, _ kcsess: String, _ onRequestComplete: @escaping (Int, String) -> ()) {
+    
+    
+    private func requestLogin(_ userEmail: String, _ userPassword: String, _ chk1Key: String, _ chk1Value: String, _ chk2Key: String, _ chk2Value: String, _ kcsess: String, _ onRequestComplete: @escaping (Int, String) -> Void) {
         print("[DEBUG]: Start to request login.")
     
         Alamofire.request(
@@ -253,19 +272,22 @@ public class JubeatFestoWebSite : WebSite {
                 "Origin": "https://p.eagate.573.jp",
                 "Cache-Control": "max-age=0"
             ]).responseString { (response: DataResponse<String>) in
+                
                 if response.error != nil {
                     print("[ERROR]: \(response.error.debugDescription)")
                 }
-            
-            saveCookies(response: response)
                 
-                print("[DEBUG]: Complete to request login. (Note: It does not mean login successful.)")
-            
-            onRequestComplete(response.response!.statusCode, response.description)
+                saveCookies(response: response)
+                
+                print("[DEBUG]: Succeed to request login.")
+                
+                onRequestComplete(response.response!.statusCode, response.description)
         }
     }
     
-    private func requestLoginPage(onRequestComplete: @escaping (Int, String) -> ()) {
+    private func requestLoginPage(onRequestComplete: @escaping (Int, String) -> Void) {
+        print("[DEBUG]: Start to request login page.")
+        
         Alamofire.request(
             "https://p.eagate.573.jp/gate/p/login.html",
             method: HTTPMethod.get,
@@ -280,11 +302,16 @@ public class JubeatFestoWebSite : WebSite {
                 "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Host": "p.eagate.573.jp"
             ]).responseString { (response: DataResponse<String>) in
+                print("[DEBUG]: Succeed to request login page.")
+                
                 onRequestComplete(response.response!.statusCode, response.description);
         }
     }
     
     private func parseLoginPageHtml(_ loginPageHtml: String) -> (document: Document, mainCharacterImageURL: String, subCharacterImageURLs: [String], kcsess: String)? {
+        
+        print("[DEBUG]: Start to parse login page.")
+        
         do {
             let document = try SwiftSoup.parse(loginPageHtml)
             let formElem = try document.select("#login_info > form > div.login_cont_LRbox > div.login_cont_Lbox > table > tbody > tr:nth-child(3) > td:nth-child(3) > div");
@@ -307,57 +334,51 @@ public class JubeatFestoWebSite : WebSite {
             let kcsessElem = try formElem.select("input[type=\"hidden\"]")
             let kcsessValue = try kcsessElem.val()
             
+            print("[DEBUG]: Succeed to parse login page.")
+            
             return (document, mainCharacterImageUrl, subCharacterImageUrls, kcsessValue)
         }
-        catch {
-            print("[ERROR]: Failed to parse e-Amusement login page.")
-        }
+        catch {}
+        
+        print("[DEBUG]: Failed to parse login page.")
         
         return nil;
     }
     
-    private func requestMyPlayDataPage(onRequestComplete: @escaping (Int, String) -> ()) {
-        Alamofire.request(
-            "https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id=",
+    
+    
+    private func requestMyPlayDataPage(onRequestComplete: @escaping (Int, String) -> Void) {
+        print("[DEBUG]: Start to request my play data page.")
+        
+        httpRequestAsync(
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id=",
             method: HTTPMethod.get,
-            parameters: [:],
-            encoding: URLEncoding.default,
-            headers: [
-                "Keep-Alive": "true",
-                "Upgrade-Insecure-Requests": "1",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-                "Accept-Encoding": "sdch",
-                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Host": "p.eagate.573.jp"
-            ]).responseString { (response: DataResponse<String>) in
-                onRequestComplete(response.response!.statusCode, response.description);
-        }
+            host: "p.eagate.573.jp",
+            onRequestComplete: {(statusCode: Int, html: String) in
+                print("[DEBUG]: Succeed to request my play data page.")
+                onRequestComplete(statusCode, html)
+            }
+        )
     }
     
-    private func requestPlayDataPage(rivalId: String, onRequestComplete: @escaping (Int, String) -> ()) {
-        Alamofire.request(
-            "https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id=\(rivalId)",
+    private func requestPlayDataPage(rivalId: String, onRequestComplete: @escaping (Int, String) -> Void) {
+        
+        print("[DEBUG]: Start to request play data page.")
+        
+        httpRequestAsync(
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id=\(rivalId)",
             method: HTTPMethod.get,
-            parameters: [:],
-            encoding: URLEncoding.default,
-            headers: [
-                "Keep-Alive": "true",
-                "Upgrade-Insecure-Requests": "1",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-                "Accept-Encoding": "sdch",
-                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Host": "p.eagate.573.jp"
-            ]
-            ).responseString { (response: DataResponse<String>) in
-                onRequestComplete(response.response!.statusCode, response.description);
-        }
+            host: "p.eagate.573.jp",
+            onRequestComplete: {(statusCode: Int, html: String) in
+                print("[DEBUG]: Succeed to request play data page.")
+                onRequestComplete(statusCode, html)
+            }
+        )
     }
     
     private func parseMyPlayDataPageHtml(html: String) -> UserData.MyPlayDataPageCache? {
         
-        print("[DEBUG]: Completed to request jubeat play data.")
+        print("[DEBUG]: Start to parse my play data page html.")
         
         do {
             let document = try SwiftSoup.parse(html)
@@ -401,20 +422,20 @@ public class JubeatFestoWebSite : WebSite {
             rankStr.removeLast()
             let ranking = Int("\(rankStr)")!
             
-            print("[DEBUG]: Succeed to parse jubeat play data.")
+            print("[DEBUG]: Succeed to parse my play data page html.")
             
             return UserData.MyPlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, jubility, lastPlayedTimeStr, lastPlayedLocationStr, ranking, Int64(totalScore), 0, 0, 0)
         }
-        catch {
-            print("[DEBUG]: Failed to parse jubeat play data page.")
-        }
+        catch {}
+        
+        print("[DEBUG]: Failed to parse my play data page html.")
         
         return nil;
     }
     
     private func parsePlayDataPageHtml(html: String) -> UserData.PlayDataPageCache? {
         
-        print("[DEBUG]: Completed to request jubeat play data.")
+        print("[DEBUG]: Start to parse play data page html.")
         
         do {
             let document = try SwiftSoup.parse(html)
@@ -451,13 +472,106 @@ public class JubeatFestoWebSite : WebSite {
             let totalBestScoreElem = try document.select("#score > div:nth-child(2)").first()!
             let totalScore = Int64(try totalBestScoreElem.text().split(separator: " ", omittingEmptySubsequences: false)[4])!
             
-            print("[DEBUG]: Succeed to parse jubeat play data.")
+            print("[DEBUG]: Succeed to parse play data page html.")
             
             return UserData.PlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, lastPlayedTimeStr, lastPlayedLocationStr, ranking, totalScore, 0, 0, 0)
         }
-        catch {
-            print("[DEBUG]: Failed to parse jubeat play data page.")
+        catch {}
+        
+        print("[DEBUG]: Failed to parse play data page html.")
+        
+        return nil;
+    }
+    
+    
+    
+    private func requestMyMusicDataPage(pageIndex: Int, onRequestComplete: @escaping (Int, String) -> Void) {
+        self.requestMusicDataPage(rivalId: "", pageIndex: pageIndex, onRequestComplete: onRequestComplete)
+    }
+    
+    private func requestMusicDataPage(rivalId: String, pageIndex: Int, onRequestComplete: @escaping (Int, String) -> Void) {
+        
+        print("[DEBUG]: Start to request music data page.")
+        
+        Alamofire.request(
+            "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=\(rivalId)&sort=7&page=\(pageIndex)",
+            method: HTTPMethod.get,
+            parameters: [:],
+            encoding: URLEncoding.default,
+            headers: [
+                "Keep-Alive": "true",
+                "Upgrade-Insecure-Requests": "1",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                "Accept-Encoding": "sdch",
+                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Host": "p.eagate.573.jp"
+            ]).responseString { (response: DataResponse<String>) in
+                
+                print("[DEBUG]: Succeed to request music data page.")
+                
+                onRequestComplete(response.response!.statusCode, response.description);
         }
+    }
+    
+    private func parseMusicDataPageHtml(html: String) -> UserData.MusicDataPageCache? {
+        
+        print("[DEBUG]: Start to parse music data page html.")
+        
+        print("[DEBUG]: Failed to parse music data page html.")
+        
+        return nil;
+    }
+    
+    
+    
+    private func requestMyRankDataPage(onRequestComplete: @escaping (Int, String) -> Void) {
+        self.requestRankDataPage(rivalId: "", onRequestComplete: onRequestComplete)
+    }
+    
+    private func requestRankDataPage(rivalId: String, onRequestComplete: @escaping (Int, String) -> Void) {
+        
+        print("[DEBUG]: Start to request rank data page.")
+        
+        httpRequestAsync(
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=\(rivalId)&sort=7&page=1",
+            method: HTTPMethod.get,
+            host: "p.eagate.573.jp",
+            onRequestComplete: {(statusCode: Int, html: String) in
+                print("[DEBUG]: Succeed to request rank data page.")
+                onRequestComplete(statusCode, html)
+            }
+        )
+    }
+    
+    private func parseRankDataPageHtml(html: String) -> UserData.RankDataPageCache? {
+        
+        print("[DEBUG]: Start to parse rank data page html.")
+        
+        do {
+            let document = try SwiftSoup.parse(html)
+            
+            // 랭크 데이터 파싱
+            let rankListElem = try document.select("#contents > table.music_rating > tbody > tr:nth-child(1)").first()!
+            
+            let notPlayedCount = Int(try rankListElem.child(1).text())!
+            let eRankCount = Int(try rankListElem.child(2).text())!
+            let dRankCount = Int(try rankListElem.child(3).text())!
+            let cRankCount = Int(try rankListElem.child(4).text())!
+            let bRankCount = Int(try rankListElem.child(5).text())!
+            let aRankCount = Int(try rankListElem.child(6).text())!
+            let sRankCount = Int(try rankListElem.child(7).text())!
+            let ssRankCount = Int(try rankListElem.child(8).text())!
+            let sssRankCount = Int(try rankListElem.child(9).text())!
+            let excRankCount = Int(try rankListElem.child(10).text())!
+            
+            print("[DEBUG]: Succeed to parse rank data page html.")
+            
+            return UserData.RankDataPageCache(notPlayedCount, eRankCount, dRankCount, cRankCount, bRankCount, aRankCount, sRankCount, ssRankCount, sssRankCount, excRankCount)
+        }
+        catch {}
+        
+        print("[DEBUG]: Failed to parse rank data page html.")
         
         return nil;
     }

@@ -47,7 +47,6 @@ class PieChartViewController: DemoBaseViewController {
         l.xEntrySpace = 7
         l.yEntrySpace = 0
         l.yOffset = 0
-//        chartView.legend = l
 
         // entry label styling
         chartView.entryLabelColor = .white

@@ -4,45 +4,38 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SwiftSoup-Package.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
-		</dict>
 		<key>SwiftSoup-iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>3</integer>
 		</dict>
-		<key>SwiftSoup-macOS.xcscheme_^#shared#^_</key>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>8CE418151DAA54A900240B42</key>
 		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
+			<key>primary</key>
+			<true/>
 		</dict>
-		<key>SwiftSoup-tvOS.xcscheme_^#shared#^_</key>
+		<key>8CE4181E1DAA54A900240B42</key>
 		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
+			<key>primary</key>
+			<true/>
 		</dict>
-		<key>SwiftSoup-watchOS.xcscheme_^#shared#^_</key>
+		<key>BD3B5B681FBED933001FDB3B</key>
 		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>14</integer>
+			<key>primary</key>
+			<true/>
 		</dict>
-		<key>SwiftSoup.xcscheme_^#shared#^_</key>
+		<key>BD3B5BAB1FC063BD001FDB3B</key>
 		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BD3B5BEE1FC06423001FDB3B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

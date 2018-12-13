@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6293174821BA1EBB0038E016 /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; };
-		6293174921BA1EBB0038E016 /* Material.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
 		FD11B8DE21B3AF88003E3403 /* ProfileViewToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */; };
 		FD11B8E021B3C21D003E3403 /* ProfileViewCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */; };
 		FD11B8F821B43446003E3403 /* thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = FD11B8F721B43446003E3403 /* thumbnail.png */; };
+		FD32E4FD21BEC4F5001DF4CB /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD32E4FC21BEC4F5001DF4CB /* Task.swift */; };
+		FD32E50B21C1873E001DF4CB /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD32E50A21C1873E001DF4CB /* background.jpg */; };
+		FD32E50D21C1942B001DF4CB /* ProfileViewMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */; };
 		FD4C4C6F21AEC44F00ABCE53 /* jubiinfoText.png in Resources */ = {isa = PBXBuildFile; fileRef = FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */; };
 		FD4C4C7021AEC44F00ABCE53 /* jubiinfoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FD4C4C6E21AEC44F00ABCE53 /* jubiinfoIcon.png */; };
 		FD4C4C7421AECA4000ABCE53 /* ImageUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4C4C7321AECA4000ABCE53 /* ImageUtility.swift */; };
@@ -22,6 +23,17 @@
 		FD7F64D72199D62200E534E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD7F64D62199D62200E534E7 /* Assets.xcassets */; };
 		FDA70D3621B2572500B551F8 /* LoginViewToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA70D3521B2572500B551F8 /* LoginViewToolBarController.swift */; };
 		FDB5F4FB21B6D0DC00CC1F1C /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB5F4FA21B6D0DC00CC1F1C /* UserData.swift */; };
+		FDC0140821BD7E160070EC37 /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; };
+		FDC0140921BD7E160070EC37 /* Material.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FDC0140C21BD7E160070EC37 /* Motion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD11B8FE21B563AD003E3403 /* Motion.framework */; };
+		FDC0140D21BD7E160070EC37 /* Motion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD11B8FE21B563AD003E3403 /* Motion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FDC0141021BD7E160070EC37 /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD6AD4A421A7282A0038D130 /* SwiftSoup.framework */; };
+		FDC0141121BD7E160070EC37 /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD6AD4A421A7282A0038D130 /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FDC0141421BD7E160070EC37 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD15B4CC21A720450013BB97 /* Alamofire.framework */; };
+		FDC0141521BD7E160070EC37 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD15B4CC21A720450013BB97 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FDC0141A21BE0BBB0070EC37 /* ScoreDataGraphCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC0141921BE0BBB0070EC37 /* ScoreDataGraphCellController.swift */; };
+		FDC0142621BE49630070EC37 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC0142121BE49540070EC37 /* Charts.framework */; };
+		FDC0142721BE49630070EC37 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FDC0142121BE49540070EC37 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCECA0521B03C6000F253B2 /* HttpUtility.swift */; };
 		FDD2250121AC50BC008C7DB1 /* SpinLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250021AC50BC008C7DB1 /* SpinLock.swift */; };
 		FDD2250621AC50F0008C7DB1 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250521AC50F0008C7DB1 /* Color.swift */; };
@@ -31,9 +43,6 @@
 		FDDAFEEE21B846580044F5C0 /* PlayDataACellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDAFEED21B846580044F5C0 /* PlayDataACellController.swift */; };
 		FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDAFEEF21B997150044F5C0 /* UIUtility.swift */; };
 		FDF1347621B39C3A00D0F2FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FDF1347521B39C3A00D0F2FD /* LaunchScreen.storyboard */; };
-		FDF53D1E21B56C580031AF38 /* Motion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD11B8FE21B563AD003E3403 /* Motion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FDF53D2621B56C580031AF38 /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD6AD4A421A7282A0038D130 /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FDF53D2A21B56C580031AF38 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD15B4CC21A720450013BB97 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,27 +51,6 @@
 			containerPortal = 6293173D21BA1E9F0038E016 /* Material.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 963832361B88DFD80015F710;
-			remoteInfo = Material;
-		};
-		6293174421BA1EAA0038E016 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6293173D21BA1E9F0038E016 /* Material.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 963832351B88DFD80015F710;
-			remoteInfo = Material;
-		};
-		6293174621BA1EAD0038E016 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FDA70F3421B3281100B551F8 /* Charts.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A58A4ED274A941CA248EA921;
-			remoteInfo = Charts;
-		};
-		6293174A21BA1EBB0038E016 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6293173D21BA1E9F0038E016 /* Material.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 963832351B88DFD80015F710;
 			remoteInfo = Material;
 		};
 		FD11B8FD21B563AD003E3403 /* PBXContainerItemProxy */ = {
@@ -170,54 +158,104 @@
 			remoteGlobalIDString = FD7F64C92199D62100E534E7;
 			remoteInfo = jubiinfo;
 		};
-		FDA70F3921B3281200B551F8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FDA70F3421B3281100B551F8 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
-			remoteInfo = Charts;
-		};
-		FDA70F3B21B3281200B551F8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FDA70F3421B3281100B551F8 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
-			remoteInfo = ChartsTests;
-		};
-		FDF53D1F21B56C580031AF38 /* PBXContainerItemProxy */ = {
+		FDC0140021BD7DD40070EC37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FD11B8F921B563AD003E3403 /* Motion.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 96C98DD01E424AB000B22906;
 			remoteInfo = "Motion iOS";
 		};
-		FDF53D2721B56C580031AF38 /* PBXContainerItemProxy */ = {
+		FDC0140221BD7DEA0070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6293173D21BA1E9F0038E016 /* Material.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 963832351B88DFD80015F710;
+			remoteInfo = Material;
+		};
+		FDC0140421BD7DF30070EC37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FD6AD49421A7282A0038D130 /* SwiftSoup.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 8CE418151DAA54A900240B42;
 			remoteInfo = "SwiftSoup-iOS";
 		};
-		FDF53D2B21B56C580031AF38 /* PBXContainerItemProxy */ = {
+		FDC0140621BD7DF50070EC37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
 			remoteInfo = "Alamofire iOS";
 		};
+		FDC0140A21BD7E160070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6293173D21BA1E9F0038E016 /* Material.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 963832351B88DFD80015F710;
+			remoteInfo = Material;
+		};
+		FDC0140E21BD7E160070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD11B8F921B563AD003E3403 /* Motion.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 96C98DD01E424AB000B22906;
+			remoteInfo = "Motion iOS";
+		};
+		FDC0141221BD7E160070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD6AD49421A7282A0038D130 /* SwiftSoup.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8CE418151DAA54A900240B42;
+			remoteInfo = "SwiftSoup-iOS";
+		};
+		FDC0141621BD7E160070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
+			remoteInfo = "Alamofire iOS";
+		};
+		FDC0142021BE49540070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FDC0141B21BE49540070EC37 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		FDC0142221BE49540070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FDC0141B21BE49540070EC37 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
+		FDC0142421BE495C0070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FDC0141B21BE49540070EC37 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
+		};
+		FDC0142821BE49630070EC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FDC0141B21BE49540070EC37 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FDF53D2D21B56C580031AF38 /* Embed Frameworks */ = {
+		FDC0141821BD7E160070EC37 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FDF53D1E21B56C580031AF38 /* Motion.framework in Embed Frameworks */,
-				6293174921BA1EBB0038E016 /* Material.framework in Embed Frameworks */,
-				FDF53D2621B56C580031AF38 /* SwiftSoup.framework in Embed Frameworks */,
-				FDF53D2A21B56C580031AF38 /* Alamofire.framework in Embed Frameworks */,
+				FDC0140D21BD7E160070EC37 /* Motion.framework in Embed Frameworks */,
+				FDC0140921BD7E160070EC37 /* Material.framework in Embed Frameworks */,
+				FDC0142721BE49630070EC37 /* Charts.framework in Embed Frameworks */,
+				FDC0141121BD7E160070EC37 /* SwiftSoup.framework in Embed Frameworks */,
+				FDC0141521BD7E160070EC37 /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,6 +270,9 @@
 		FD11B8F721B43446003E3403 /* thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail.png; sourceTree = "<group>"; };
 		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-1.4.3/Motion.xcodeproj"; sourceTree = "<group>"; };
 		FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.7.3/Alamofire.xcodeproj"; sourceTree = "<group>"; };
+		FD32E4FC21BEC4F5001DF4CB /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		FD32E50A21C1873E001DF4CB /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewMenuController.swift; sourceTree = "<group>"; };
 		FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jubiinfoText.png; sourceTree = "<group>"; };
 		FD4C4C6E21AEC44F00ABCE53 /* jubiinfoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jubiinfoIcon.png; sourceTree = "<group>"; };
 		FD4C4C7321AECA4000ABCE53 /* ImageUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtility.swift; sourceTree = "<group>"; };
@@ -245,8 +286,9 @@
 		FD7F64E02199D62300E534E7 /* jubiinfoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jubiinfoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD7F64EB2199D62300E534E7 /* jubiinfoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jubiinfoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDA70D3521B2572500B551F8 /* LoginViewToolBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewToolBarController.swift; sourceTree = "<group>"; };
-		FDA70F3421B3281100B551F8 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Charts-3.2.1/Charts.xcodeproj"; sourceTree = "<group>"; };
 		FDB5F4FA21B6D0DC00CC1F1C /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		FDC0141921BE0BBB0070EC37 /* ScoreDataGraphCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreDataGraphCellController.swift; sourceTree = "<group>"; };
+		FDC0141B21BE49540070EC37 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Charts-3.2.1/Charts.xcodeproj"; sourceTree = "<group>"; };
 		FDCECA0521B03C6000F253B2 /* HttpUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpUtility.swift; sourceTree = "<group>"; };
 		FDD2250021AC50BC008C7DB1 /* SpinLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinLock.swift; sourceTree = "<group>"; };
 		FDD2250521AC50F0008C7DB1 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -263,7 +305,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6293174821BA1EBB0038E016 /* Material.framework in Frameworks */,
+				FDC0140C21BD7E160070EC37 /* Motion.framework in Frameworks */,
+				FDC0140821BD7E160070EC37 /* Material.framework in Frameworks */,
+				FDC0142621BE49630070EC37 /* Charts.framework in Frameworks */,
+				FDC0141021BD7E160070EC37 /* SwiftSoup.framework in Frameworks */,
+				FDC0141421BD7E160070EC37 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,9 +394,9 @@
 		FD15B4BF21A720320013BB97 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				FDC0141B21BE49540070EC37 /* Charts.xcodeproj */,
 				6293173D21BA1E9F0038E016 /* Material.xcodeproj */,
 				FD11B8F921B563AD003E3403 /* Motion.xcodeproj */,
-				FDA70F3421B3281100B551F8 /* Charts.xcodeproj */,
 				FD6AD49421A7282A0038D130 /* SwiftSoup.xcodeproj */,
 				FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */,
 			);
@@ -377,6 +423,7 @@
 				FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */,
 				FD4C4C6E21AEC44F00ABCE53 /* jubiinfoIcon.png */,
 				FD11B8F721B43446003E3403 /* thumbnail.png */,
+				FD32E50A21C1873E001DF4CB /* background.jpg */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -444,11 +491,11 @@
 			path = jubiinfo;
 			sourceTree = "<group>";
 		};
-		FDA70F3521B3281100B551F8 /* Products */ = {
+		FDC0141C21BE49540070EC37 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FDA70F3A21B3281200B551F8 /* Charts.framework */,
-				FDA70F3C21B3281200B551F8 /* ChartsTests.xctest */,
+				FDC0142121BE49540070EC37 /* Charts.framework */,
+				FDC0142321BE49540070EC37 /* ChartsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -457,6 +504,7 @@
 			isa = PBXGroup;
 			children = (
 				FDD2250021AC50BC008C7DB1 /* SpinLock.swift */,
+				FD32E4FC21BEC4F5001DF4CB /* Task.swift */,
 			);
 			path = Thread;
 			sourceTree = "<group>";
@@ -487,6 +535,8 @@
 				FD7F64CF2199D62100E534E7 /* LoginViewController.swift */,
 				FD0EA840219B14660084A837 /* ProfileViewController.swift */,
 				FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */,
+				FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */,
+				FDC0141921BE0BBB0070EC37 /* ScoreDataGraphCellController.swift */,
 				FD11B8DF21B3C21D003E3403 /* ProfileViewCellController.swift */,
 			);
 			path = UI;
@@ -502,17 +552,21 @@
 				FD7F64C62199D62100E534E7 /* Sources */,
 				FD7F64C72199D62100E534E7 /* Frameworks */,
 				FD7F64C82199D62100E534E7 /* Resources */,
-				FDF53D2D21B56C580031AF38 /* Embed Frameworks */,
+				FDC0141821BD7E160070EC37 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6293174721BA1EAD0038E016 /* PBXTargetDependency */,
-				6293174521BA1EAA0038E016 /* PBXTargetDependency */,
-				FDF53D2021B56C580031AF38 /* PBXTargetDependency */,
-				FDF53D2821B56C580031AF38 /* PBXTargetDependency */,
-				FDF53D2C21B56C580031AF38 /* PBXTargetDependency */,
-				6293174B21BA1EBB0038E016 /* PBXTargetDependency */,
+				FDC0142521BE495C0070EC37 /* PBXTargetDependency */,
+				FDC0140121BD7DD40070EC37 /* PBXTargetDependency */,
+				FDC0140321BD7DEA0070EC37 /* PBXTargetDependency */,
+				FDC0140721BD7DF50070EC37 /* PBXTargetDependency */,
+				FDC0140521BD7DF30070EC37 /* PBXTargetDependency */,
+				FDC0140B21BD7E160070EC37 /* PBXTargetDependency */,
+				FDC0140F21BD7E160070EC37 /* PBXTargetDependency */,
+				FDC0141321BD7E160070EC37 /* PBXTargetDependency */,
+				FDC0141721BD7E160070EC37 /* PBXTargetDependency */,
+				FDC0142921BE49630070EC37 /* PBXTargetDependency */,
 			);
 			name = jubiinfo;
 			productName = jubiinfo;
@@ -595,8 +649,8 @@
 					ProjectRef = FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */;
 				},
 				{
-					ProductGroup = FDA70F3521B3281100B551F8 /* Products */;
-					ProjectRef = FDA70F3421B3281100B551F8 /* Charts.xcodeproj */;
+					ProductGroup = FDC0141C21BE49540070EC37 /* Products */;
+					ProjectRef = FDC0141B21BE49540070EC37 /* Charts.xcodeproj */;
 				},
 				{
 					ProductGroup = 6293173E21BA1E9F0038E016 /* Products */;
@@ -719,18 +773,18 @@
 			remoteRef = FD6AD4AB21A7282A0038D130 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FDA70F3A21B3281200B551F8 /* Charts.framework */ = {
+		FDC0142121BE49540070EC37 /* Charts.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Charts.framework;
-			remoteRef = FDA70F3921B3281200B551F8 /* PBXContainerItemProxy */;
+			remoteRef = FDC0142021BE49540070EC37 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FDA70F3C21B3281200B551F8 /* ChartsTests.xctest */ = {
+		FDC0142321BE49540070EC37 /* ChartsTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ChartsTests.xctest;
-			remoteRef = FDA70F3B21B3281200B551F8 /* PBXContainerItemProxy */;
+			remoteRef = FDC0142221BE49540070EC37 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -745,6 +799,7 @@
 				FD11B8F821B43446003E3403 /* thumbnail.png in Resources */,
 				FD7F64D72199D62200E534E7 /* Assets.xcassets in Resources */,
 				FDF1347621B39C3A00D0F2FD /* LaunchScreen.storyboard in Resources */,
+				FD32E50B21C1873E001DF4CB /* background.jpg in Resources */,
 				FD4C4C7021AEC44F00ABCE53 /* jubiinfoIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -777,14 +832,17 @@
 				FDD2250121AC50BC008C7DB1 /* SpinLock.swift in Sources */,
 				FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */,
 				FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */,
+				FDC0141A21BE0BBB0070EC37 /* ScoreDataGraphCellController.swift in Sources */,
 				FDD2251021AC51D3008C7DB1 /* JubeatFestoWebSite.swift in Sources */,
 				FDDAFEEE21B846580044F5C0 /* PlayDataACellController.swift in Sources */,
 				FD7F64CE2199D62100E534E7 /* AppDelegate.swift in Sources */,
 				FDB5F4FB21B6D0DC00CC1F1C /* UserData.swift in Sources */,
 				FD4C4C7421AECA4000ABCE53 /* ImageUtility.swift in Sources */,
+				FD32E50D21C1942B001DF4CB /* ProfileViewMenuController.swift in Sources */,
 				FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */,
 				FD7F64D02199D62100E534E7 /* LoginViewController.swift in Sources */,
 				FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */,
+				FD32E4FD21BEC4F5001DF4CB /* Task.swift in Sources */,
 				FD11B8DE21B3AF88003E3403 /* ProfileViewToolBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -806,21 +864,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6293174521BA1EAA0038E016 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Material;
-			targetProxy = 6293174421BA1EAA0038E016 /* PBXContainerItemProxy */;
-		};
-		6293174721BA1EAD0038E016 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Charts;
-			targetProxy = 6293174621BA1EAD0038E016 /* PBXContainerItemProxy */;
-		};
-		6293174B21BA1EBB0038E016 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Material;
-			targetProxy = 6293174A21BA1EBB0038E016 /* PBXContainerItemProxy */;
-		};
 		FD7F64E22199D62300E534E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FD7F64C92199D62100E534E7 /* jubiinfo */;
@@ -831,20 +874,55 @@
 			target = FD7F64C92199D62100E534E7 /* jubiinfo */;
 			targetProxy = FD7F64EC2199D62300E534E7 /* PBXContainerItemProxy */;
 		};
-		FDF53D2021B56C580031AF38 /* PBXTargetDependency */ = {
+		FDC0140121BD7DD40070EC37 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Motion iOS";
-			targetProxy = FDF53D1F21B56C580031AF38 /* PBXContainerItemProxy */;
+			targetProxy = FDC0140021BD7DD40070EC37 /* PBXContainerItemProxy */;
 		};
-		FDF53D2821B56C580031AF38 /* PBXTargetDependency */ = {
+		FDC0140321BD7DEA0070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Material;
+			targetProxy = FDC0140221BD7DEA0070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0140521BD7DF30070EC37 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "SwiftSoup-iOS";
-			targetProxy = FDF53D2721B56C580031AF38 /* PBXContainerItemProxy */;
+			targetProxy = FDC0140421BD7DF30070EC37 /* PBXContainerItemProxy */;
 		};
-		FDF53D2C21B56C580031AF38 /* PBXTargetDependency */ = {
+		FDC0140721BD7DF50070EC37 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Alamofire iOS";
-			targetProxy = FDF53D2B21B56C580031AF38 /* PBXContainerItemProxy */;
+			targetProxy = FDC0140621BD7DF50070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0140B21BD7E160070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Material;
+			targetProxy = FDC0140A21BD7E160070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0140F21BD7E160070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Motion iOS";
+			targetProxy = FDC0140E21BD7E160070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0141321BD7E160070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwiftSoup-iOS";
+			targetProxy = FDC0141221BD7E160070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0141721BD7E160070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Alamofire iOS";
+			targetProxy = FDC0141621BD7E160070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0142521BE495C0070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = FDC0142421BE495C0070EC37 /* PBXContainerItemProxy */;
+		};
+		FDC0142921BE49630070EC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = FDC0142821BE49630070EC37 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
