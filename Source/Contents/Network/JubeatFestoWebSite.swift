@@ -12,7 +12,7 @@ import Alamofire
 import SwiftSoup
 import CoreGraphics
 
-private class ImageMatchProblemSolver {
+private class CaptchaProblemSolver {
 /**@section Enum */
     private enum CharacterType {
         case Unknown
@@ -145,7 +145,7 @@ public class JubeatFestoWebSite : WebSite {
      */
     public func login(userId: String, userPassword: String, onLoginComplete: @escaping (Bool) -> Void) {
         
-        self.requestLoginPage { (statusCode: Int, html: String) in
+        self.requestLoginPageHtml { (statusCode: Int, html: String) in
             
             repeat {
                 let optParsedData = self.parseLoginPageHtml(html)
@@ -155,7 +155,7 @@ public class JubeatFestoWebSite : WebSite {
                 
                 let mainCharacterImageURL = parsedData.mainCharacterImageURL;
                 let subCharacterImageUrls = parsedData.subCharacterImageURLs;
-                let imageMatchProblemSolver = ImageMatchProblemSolver(mainCharacterImageURL, subCharacterImageUrls)
+                let imageMatchProblemSolver = CaptchaProblemSolver(mainCharacterImageURL, subCharacterImageUrls)
                 
                 let matchedSubCharacterIndices = imageMatchProblemSolver.SolveProblem();
                 let optChkKeyValues = self.parseChkValue(parsedData.document, matchedSubCharacterIndices)
@@ -242,9 +242,16 @@ public class JubeatFestoWebSite : WebSite {
     private func requestLogin(_ userEmail: String, _ userPassword: String, _ chk1Key: String, _ chk1Value: String, _ chk2Key: String, _ chk2Value: String, _ kcsess: String, _ onRequestComplete: @escaping (Int, String) -> Void) {
         print("[DEBUG]: Start to request login.")
     
-        Alamofire.request(
-            "https://p.eagate.573.jp/gate/p/login.html",
+        httpRequestAsync(
+            url: "https://p.eagate.573.jp/gate/p/login.html",
             method: HTTPMethod.post,
+            host: "p.eagate.573.jp",
+            referer: "",
+            onRequestComplete: {(statusCode: Int, html: String) in
+                print("[DEBUG]: Succeed to request login.")
+
+                onRequestComplete(statusCode, html)
+            },
             parameters: [
                 "KID": "\(userEmail)",
                 "pass": "\(userPassword)",
@@ -252,55 +259,22 @@ public class JubeatFestoWebSite : WebSite {
                 chk2Key: chk2Value,
                 "kcsess": kcsess,
                 "OTP": ""
-            ],
-            encoding: URLEncoding.default,
-            headers: [
-                "Keep-Alive": "true",
-                "Upgrade-Insecure-Requests": "1",
-                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0",
-                "Accept": "*/*",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Accept-Language": "ko,en;q=0.9",
-                "Host": "p.eagate.573.jp",
-                "Referer": "https://p.eagate.573.jp/gate/p/login.html",
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Origin": "https://p.eagate.573.jp",
-                "Cache-Control": "max-age=0"
-            ]).responseString { (response: DataResponse<String>) in
-                
-                if response.error != nil {
-                    print("[ERROR]: \(response.error.debugDescription)")
-                }
-                
-                saveCookies(response: response)
-                
-                print("[DEBUG]: Succeed to request login.")
-                
-                onRequestComplete(response.response!.statusCode, response.description)
-        }
+            ]
+        )
     }
     
-    private func requestLoginPage(onRequestComplete: @escaping (Int, String) -> Void) {
-        print("[DEBUG]: Start to request login page.")
+    private func requestLoginPageHtml(onRequestComplete: @escaping (Int, String) -> Void) {
+        print("[DEBUG]: Start to request login page html.")
         
-        Alamofire.request(
-            "https://p.eagate.573.jp/gate/p/login.html",
+        httpRequestAsync(
+            url: "https://p.eagate.573.jp/gate/p/login.html",
             method: HTTPMethod.get,
-            parameters: [:],
-            encoding: URLEncoding.default,
-            headers: [
-                "Keep-Alive": "true",
-                "Upgrade-Insecure-Requests": "1",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-                "Accept-Encoding": "sdch",
-                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Host": "p.eagate.573.jp"
-            ]).responseString { (response: DataResponse<String>) in
-                print("[DEBUG]: Succeed to request login page.")
-                
-                onRequestComplete(response.response!.statusCode, response.description);
-        }
+            host: "p.eagate.573.jp",
+            referer: "",
+            onRequestComplete: {(statusCode: Int, html: String) in
+                print("[DEBUG]: Succeed to request login page html.")
+                onRequestComplete(statusCode, html)
+        })
     }
     
     private func parseLoginPageHtml(_ loginPageHtml: String) -> (document: Document, mainCharacterImageURL: String, subCharacterImageURLs: [String], kcsess: String)? {
@@ -348,6 +322,7 @@ public class JubeatFestoWebSite : WebSite {
             url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id=",
             method: HTTPMethod.get,
             host: "p.eagate.573.jp",
+            referer: "",
             onRequestComplete: {(statusCode: Int, html: String) in
                 print("[DEBUG]: Succeed to request my play data page.")
                 onRequestComplete(statusCode, html)
@@ -363,6 +338,7 @@ public class JubeatFestoWebSite : WebSite {
             url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id=\(rivalId)",
             method: HTTPMethod.get,
             host: "p.eagate.573.jp",
+            referer: "",
             onRequestComplete: {(statusCode: Int, html: String) in
                 print("[DEBUG]: Succeed to request play data page.")
                 onRequestComplete(statusCode, html)
@@ -528,6 +504,7 @@ public class JubeatFestoWebSite : WebSite {
             url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=\(rivalId)&sort=7&page=1",
             method: HTTPMethod.get,
             host: "p.eagate.573.jp",
+            referer: "",
             onRequestComplete: {(statusCode: Int, html: String) in
                 print("[DEBUG]: Succeed to request rank data page.")
                 onRequestComplete(statusCode, html)

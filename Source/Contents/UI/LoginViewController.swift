@@ -131,7 +131,30 @@ extension LoginViewController {
     private func processTransitionToProfileView() {
         
         showLoadingIndicatorUI(self, "플레이 데이터 로딩 중...", {
-
+            
+            DispatchQueue.global().async {
+                var count: Int32 = 0;
+                let start = Date()
+                for i in 1 ... 20 {
+//                    httpRequestAsync(url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?sort=&page=\(i)", method: HTTPMethod.get, host: "p.eagate.573.jp") { (statusCode: Int, html: String) -> (Void) in
+//                        
+//                        html.range(of: "<span> <a class=\"popup-link\" href=", )
+//                        
+//                        
+//                        OSAtomicIncrement32(&count)
+//                    }
+                    Thread.sleep(forTimeInterval: 0.01)
+                    
+                    
+                }
+                
+                SpinLock {
+                    return count >= 19
+                }
+                
+                print("Elapsed time: \(start.timeIntervalSinceNow) seconds")
+            }
+            
             let userDataStorage = GlobalUserDataStorage.instance
             
             // Load play data page
@@ -153,9 +176,9 @@ extension LoginViewController {
             }
 
             // Wait until both loadings finished.
-            SpinLock(isLockFinish: { () -> (Bool) in
+            SpinLock { () -> (Bool) in
                 return isCompleteToRequestMyPlayDataPage && isCompleteToRequestMyRankDataPage
-            })
+            }
             
             guard let myPlayDataPageCache = optMyPlayDataPageCache,
                   let myRankDataPageCache = optMyRankDataPageCache else {
@@ -164,7 +187,7 @@ extension LoginViewController {
             }
             
             // Insert my user data cache into the global storage
-            var myUserData = UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache, nil, myRankDataPageCache)
+            let myUserData = UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache, nil, myRankDataPageCache)
             userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: myUserData)
             
             hideLoadingIndicatorUI(self, { self.transitionToProfileView() })

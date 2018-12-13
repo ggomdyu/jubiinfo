@@ -22,7 +22,7 @@ public func saveCookies<T>(response: DataResponse<T>) {
 }
 
 public func removeCookies(url: URL) {
-    var sharedCookieStorage = HTTPCookieStorage.shared;
+    let sharedCookieStorage = HTTPCookieStorage.shared;
     
     if let cookies = sharedCookieStorage.cookies(for: url) {
         for cookie in cookies {
@@ -66,30 +66,14 @@ public func downloadImageSync(imageUrl: String, onDownloadComplete: @escaping (B
     onDownloadComplete(isDownloadSucceed, downloadedImage)
 }
 
-public func httpRequestAsync(url: String, method: HTTPMethod, host: String, onRequestComplete: @escaping (Int, String) -> Void, parameters: [String: String] = [String: String]()) {
+public func httpRequestAsync(url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Int, String) -> Void) {
+    httpRequestAsync(url: url, method: method, host: host, referer: referer, onRequestComplete: onRequestComplete, parameters: [String: String]())
+}
+
+public func httpRequestAsync(url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Int, String) -> Void, parameters: [String: String]) {
     
     let queue = DispatchQueue(label: "com.cnoon.response-queue", qos: .utility, attributes: [.concurrent])
-//
-//    Alamofire.request(
-//        url,
-//        method: method,
-//        parameters: parameters,
-//        encoding: URLEncoding.default,
-//        headers: [
-//            "Keep-Alive": "true",
-//            "Upgrade-Insecure-Requests": "1",
-//            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
-//            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-//            "Accept-Encoding": "sdch",
-//            "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-//            "Host": host
-//        ]).responseData { (response: DataResponse<Data>) in
-//
-//            let html = String(data: response.data!, encoding: .utf8)
-////            let html2 = String(decoding: response.data!, as: UTF16.self)
-//            onRequestComplete(response.response!.statusCode, html!);
-//    }
-//    return
+
     Alamofire.request(
         url,
         method: method,
@@ -102,10 +86,13 @@ public func httpRequestAsync(url: String, method: HTTPMethod, host: String, onRe
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
             "Accept-Encoding": "sdch",
             "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Referer": referer,
             "Host": host
         ]).responseString(queue: queue, encoding: nil) { (response: DataResponse<String>) in
             
-            var html = response.description
+            saveCookies(response: response)
+            
+            let html = response.description
             onRequestComplete(response.response!.statusCode, html);
     }
 }

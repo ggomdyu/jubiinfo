@@ -9,25 +9,30 @@
 import Foundation
 import UIKit
 
-public func showOkPopup(_ viewControllerToPresent: UIViewController, _ title: String, _ message: String, _ optOnTouchOkButton: (() -> ())? = nil, _ onShowComplete: (() -> ())? = nil) {
+public func showOkPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnTouchOkButton: (() -> ())? = nil, _ optOnShowComplete: (() -> ())? = nil) {
     
+    showAlertPopup(viewControllerToPresent, title, message, [("OK", UIAlertAction.Style.default,  {() -> Void in
+        if let onTouchOkButton = optOnTouchOkButton {
+            onTouchOkButton()
+        }
+    })], optOnShowComplete)
+}
+
+public func showAlertPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ actionDescs: [(String, UIAlertAction.Style, (() -> Void)?)], _ optOnShowComplete: (() -> ())? = nil) {
     // Create a UIAlertController
     let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
     
     // Add actions to controller
-    if let onTouchOkButton = optOnTouchOkButton {
-        let okButtonAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {(result: UIAlertAction) -> Void in
-            onTouchOkButton()
+    for actionDesc in actionDescs {
+        let buttonAction = UIAlertAction(title: actionDesc.0, style: actionDesc.1) {(result: UIAlertAction) -> Void in
+            if let onTouchOkButton = actionDesc.2 {
+                onTouchOkButton()
+            }
         }
-        
-        alertController.addAction(okButtonAction)
+        alertController.addAction(buttonAction)
     }
     
-    viewControllerToPresent.present(alertController, animated: true, completion: onShowComplete)
-}
-
-public func showYesNoPopup(_ viewControllerToPresent: UIViewController) {
-    
+    viewControllerToPresent.present(alertController, animated: true, completion: optOnShowComplete)
 }
 
 public func showLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, _ message: String, _ onShowComplete: (() -> Void)? = nil) {
