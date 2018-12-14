@@ -51,7 +51,6 @@ private class CaptchaProblemSolver {
         })
         
         // 2. Download sub character images together while requesting.
-        //    The sub character images also has a type and we need to select an image that matched with the main character type.
         let subCharacterImageCount = 5;
         var downloadedSubCharacterImageCount: Int32 = 0;
         var subCharacterImages = [UIImage?](repeating: nil, count: subCharacterImageCount)
@@ -73,7 +72,7 @@ private class CaptchaProblemSolver {
                 downloadedSubCharacterImageCount == subCharacterImageCount
         }
         
-        // 4. Finally, Find all the matched character with main character.
+        // 4. Finally, we have to select two sub character images that matched with the main character type.
         return self.getMatchedSubCharacterIndices(mainCharacterType: mainCharacterType, subCharacterImages: subCharacterImages);
     }
     

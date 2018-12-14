@@ -10,6 +10,27 @@ import UIKit
 import Alamofire
 import Material
 
+class MusicDataPageParser {
+    
+    private var html: String
+    private var parsePos: Int
+    
+    public init(html: String) {
+        self.html = html
+        self.parsePos = 0
+    }
+    
+    public func parseNext() -> SimpleMusicData? {
+        var musicFinder = html.range(of: "<td><span>")
+        
+        var musicIdFinder = html.range(of: "mid=", options: String.CompareOptions.caseInsensitive, range: musicFinder)
+
+//        print(i)
+        
+        return nil
+    }
+}
+
 class LoginViewController: ViewController {
     
     private var userEmailTextField = ErrorTextField()
@@ -132,29 +153,33 @@ extension LoginViewController {
         
         showLoadingIndicatorUI(self, "플레이 데이터 로딩 중...", {
             
-            DispatchQueue.global().async {
+//            DispatchQueue.global().async {
                 var count: Int32 = 0;
                 let start = Date()
-                for i in 1 ... 20 {
-//                    httpRequestAsync(url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?sort=&page=\(i)", method: HTTPMethod.get, host: "p.eagate.573.jp") { (statusCode: Int, html: String) -> (Void) in
-//                        
-//                        html.range(of: "<span> <a class=\"popup-link\" href=", )
-//                        
-//                        
-//                        OSAtomicIncrement32(&count)
-//                    }
+                for i in 1 ... 2 {
+                    httpRequestAsync(
+                        url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?sort=&page=\(i)",
+                        method: HTTPMethod.get,
+                        host: "p.eagate.573.jp",
+                        referer: "",
+                        onRequestComplete: { (statusCode: Int, html: String) -> (Void) in
+                            var mp = MusicDataPageParser(html: html)
+                            mp.parseNext()
+                            OSAtomicIncrement32(&count)
+                        }
+                    )
                     Thread.sleep(forTimeInterval: 0.01)
                     
                     
                 }
-                
-                SpinLock {
-                    return count >= 19
-                }
-                
-                print("Elapsed time: \(start.timeIntervalSinceNow) seconds")
-            }
-            
+//
+//                SpinLock {
+//                    return count >= 1
+//                }
+//
+//                print("Elapsed time: \(start.timeIntervalSinceNow) seconds")
+//            }
+//
             let userDataStorage = GlobalUserDataStorage.instance
             
             // Load play data page
