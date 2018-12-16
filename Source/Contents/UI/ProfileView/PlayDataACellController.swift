@@ -9,30 +9,52 @@
 import Foundation
 import UIKit
 import Material
+import Motion
 
-class PlayDataACellController : ViewController {
+class PlayDataACellController : LazyPreparedViewController {
     
     @IBOutlet weak var jubilityLabel: UILabel!
     @IBOutlet weak var rankingLabel: UILabel!
     @IBOutlet weak var totalScoreLabel: UILabel!
     @IBOutlet weak var lastPlayedTimeLabel: UILabel!
     @IBOutlet weak var lastPlayedLocationLabel: UILabel!
+    @IBOutlet weak var contentsView: UIView!
     
     override func prepare() {
         super.prepare()
+        
+        self.contentsView.alpha = 0.0
+    }
+    
+    override func lazyPrepare(_ param: Any?) {
+        super.lazyPrepare(param)
         
         let myUserData = GlobalUserDataStorage.instance.queryMyUserData()
         guard let myPlayDataPageCache = myUserData.playDataPageCache as? UserData.MyPlayDataPageCache else {
             return
         }
         
-        jubilityLabel.text = "\(myPlayDataPageCache.jubility)"
-        jubilityLabel.textColor = self.getJubilityColor(jubility: myPlayDataPageCache.jubility)
+        // Jubility
+        self.jubilityLabel.text = "\(myPlayDataPageCache.jubility)"
+        self.jubilityLabel.textColor = self.getJubilityColor(jubility: myPlayDataPageCache.jubility)
         
-        totalScoreLabel.text = self.createNumberWithComma(number: myPlayDataPageCache.totalScore)
-        lastPlayedTimeLabel.text = myPlayDataPageCache.lastPlayedTime
-        lastPlayedLocationLabel.text = myPlayDataPageCache.lastPlayedLocation
-        rankingLabel.text = "#\(myPlayDataPageCache.ranking)"
+        // Total score
+        self.totalScoreLabel.text = createNumberWithComma(number: myPlayDataPageCache.totalScore)
+        
+        // Last played time
+        self.lastPlayedTimeLabel.text = myPlayDataPageCache.lastPlayedTime
+        
+        // Last played location
+        self.lastPlayedLocationLabel.text = myPlayDataPageCache.lastPlayedLocation
+        
+        // Ranking
+        self.rankingLabel.text = "#\(myPlayDataPageCache.ranking)"
+        
+        self.contentsView.animate(.fadeIn)
+    }
+    
+    open override func getEventNameRequiredToLazyPrepare() -> String {
+        return "requestMyPlayDataComplete"
     }
 }
 
@@ -78,40 +100,5 @@ extension PlayDataACellController {
         }
         
         return UIColor(red: 153 / 255, green: 153 / 255, blue: 153 / 255, alpha: 1)
-    }
-    
-    private func createNumberWithComma(number: Int64) -> String {
-        var needCommaCount: Int = 0;
-        
-        // Get the comma count
-        var tempNumber = number;
-        while tempNumber > 10000 {
-            needCommaCount += 1
-            tempNumber /= 10000
-        }
-        
-        // Create number string that contains comma
-        var ret: String = "";
-        var charConcatCount = 0;
-        let zeroUnicode = Int(("0" as UnicodeScalar).value)
-        tempNumber = number
-        
-        while tempNumber > 0 {
-            if (charConcatCount >= 4) {
-                ret.insert(Character(","), at: String.Index(encodedOffset: 0))
-                charConcatCount = 0
-            }
-            
-            guard let unicodeScalar = UnicodeScalar(zeroUnicode + (Int(tempNumber % 10))) else {
-                return ""
-            }
-            
-            ret.insert(Character(unicodeScalar), at: String.Index(encodedOffset: 0))
-            
-            tempNumber /= 10
-            charConcatCount += 1
-        }
-        
-        return ret
     }
 }

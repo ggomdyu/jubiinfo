@@ -10,24 +10,79 @@ import UIKit
 import Alamofire
 import Material
 
+/**@brief   This parser does not execute DOM parsing for performance. */
 class MusicDataPageParser {
     
     private var html: String
-    private var parsePos: Int
+    private var lastParsedPos: String.Index
     
     public init(html: String) {
         self.html = html
-        self.parsePos = 0
+        self.lastParsedPos = html.startIndex
     }
     
     public func parseNext() -> SimpleMusicData? {
-        var musicFinder = html.range(of: "<td><span>")
+        let optMusicFinder = html.range(of: "<td><span>", options: String.CompareOptions.caseInsensitive, range: self.lastParsedPos..<html.endIndex)
+        guard let musicFinder = optMusicFinder else {
+            return nil
+        }
         
-        var musicIdFinder = html.range(of: "mid=", options: String.CompareOptions.caseInsensitive, range: musicFinder)
+        // Parse the music ID
+        let optMusicIdStartPosFinder = html.range(of: "mid=", options: String.CompareOptions.caseInsensitive, range: musicFinder.upperBound..<html.endIndex)
+        guard let musicIdStartPosFinder = optMusicIdStartPosFinder else {
+            return nil
+        }
+        
+        let optMusicIdEndPosFinder = html.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicIdStartPosFinder.upperBound..<html.endIndex)
+        guard let musicIdEndPosFinder = optMusicIdEndPosFinder else {
+            return nil
+        }
+        
+        let musicId = Int(html[musicIdStartPosFinder.upperBound..<musicIdEndPosFinder.lowerBound]) ?? -1
 
-//        print(i)
+        // Parse the music name
+        let optMusicNameStartPosFinder = html.range(of: ">", options: String.CompareOptions.caseInsensitive, range: musicIdEndPosFinder.upperBound..<html.endIndex)
+        guard let musicNameStartPosFinder = optMusicNameStartPosFinder else {
+            return nil
+        }
         
-        return nil
+        let optMusicNameEndPosFinder = html.range(of: "<", options: String.CompareOptions.caseInsensitive, range: musicNameStartPosFinder.upperBound..<html.endIndex)
+        guard let musicNameEndPosFinder = optMusicNameEndPosFinder else {
+            return nil
+        }
+        
+        let musicName = String(html[musicNameStartPosFinder.upperBound..<musicNameEndPosFinder.lowerBound])
+        
+        // Parse the music scores
+        var musicScoreFinder: String.Index = musicNameEndPosFinder.upperBound
+        var scores = [Int] ()
+        for _ in 0...2 {
+            let optMusicScoreStartPosFinder = html.range(of: "<td>", options: String.CompareOptions.caseInsensitive, range: musicScoreFinder..<html.endIndex)
+            guard let musicScoreStartPosFinder = optMusicScoreStartPosFinder else {
+                scores.append(-1)
+                continue
+            }
+            
+            let optMusicScoreEndPosFinder = html.range(of: "<", options: String.CompareOptions.caseInsensitive, range: musicScoreStartPosFinder.upperBound..<html.endIndex)
+            guard let musicScoreEndPosFinder = optMusicScoreEndPosFinder else {
+                scores.append(-1)
+                continue
+            }
+            
+            let scoreStr = String(html[musicScoreStartPosFinder.upperBound..<musicScoreEndPosFinder.lowerBound]).trimmingCharacters(in: .whitespaces)
+            if (scoreStr != "-") {
+                scores.append(Int(scoreStr) ?? -1)
+            }
+            else {
+                scores.append(0)
+            }
+            
+            musicScoreFinder = musicScoreStartPosFinder.upperBound
+        }
+        
+        self.lastParsedPos = musicScoreFinder
+        
+        return SimpleMusicData(musicName: musicName, musicId: musicId, basicScore: scores[0], advancedScore: scores[1], extremeScore: scores[2])
     }
 }
 
@@ -35,7 +90,6 @@ class LoginViewController: ViewController {
     
     private var userEmailTextField = ErrorTextField()
     private var userPasswordTextField = ErrorTextField()
-    private var jubeatWebSite = JubeatFestoWebSite()
     private var errorTextFieldDividerActiveColor = UIColor(red: 234 / 255, green: 139 / 255, blue: 61 / 255, alpha: 1.0)
     private var errorTextFieldTintColor = UIColor(red: 234 / 255, green: 139 / 255, blue: 61 / 255, alpha: 1.0)
     private var loginButtonColor = UIColor(red: 47 / 255, green: 100 / 255, blue: 90 / 255, alpha: 1)
@@ -52,6 +106,7 @@ class LoginViewController: ViewController {
 }
 
 extension LoginViewController: TextFieldDelegate {
+    
     private func prepareUserEmailTextField() {
         userEmailTextField.placeholder = "Email"
         userEmailTextField.detail = "e-AMUSEMENT 계정의 이메일 주소를 입력해주세요."
@@ -143,7 +198,7 @@ extension LoginViewController {
         
         removeCookies(url: URL(string:"https://p.eagate.573.jp/")!)
         
-        jubeatWebSite.login(userId: userEmailTextField.text!, userPassword: userPasswordTextField.text!, onLoginComplete: { (isLoginSucceed: Bool) in
+        JubeatFestoWebSite.instance.login(userId: userEmailTextField.text!, userPassword: userPasswordTextField.text!, onLoginComplete: { (isLoginSucceed: Bool) in
             
             onLoginSucceed(isLoginSucceed)
         })
@@ -151,72 +206,47 @@ extension LoginViewController {
     
     private func processTransitionToProfileView() {
         
-        showLoadingIndicatorUI(self, "플레이 데이터 로딩 중...", {
-            
-//            DispatchQueue.global().async {
-                var count: Int32 = 0;
-                let start = Date()
-                for i in 1 ... 2 {
-                    httpRequestAsync(
-                        url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?sort=&page=\(i)",
-                        method: HTTPMethod.get,
-                        host: "p.eagate.573.jp",
-                        referer: "",
-                        onRequestComplete: { (statusCode: Int, html: String) -> (Void) in
-                            var mp = MusicDataPageParser(html: html)
-                            mp.parseNext()
-                            OSAtomicIncrement32(&count)
-                        }
-                    )
-                    Thread.sleep(forTimeInterval: 0.01)
-                    
-                    
-                }
-//
-//                SpinLock {
-//                    return count >= 1
-//                }
-//
-//                print("Elapsed time: \(start.timeIntervalSinceNow) seconds")
-//            }
-//
+//        showLoadingIndicatorUI(self, "플레이 데이터 로딩 중...", {
+        
             let userDataStorage = GlobalUserDataStorage.instance
             
-            // Load play data page
-            var optMyPlayDataPageCache: UserData.MyPlayDataPageCache? = nil
-            var isCompleteToRequestMyPlayDataPage = false
-            self.jubeatWebSite.requestMyPlayData { (optMyPlayDataPageCache2: UserData.MyPlayDataPageCache?) in
-                
-                optMyPlayDataPageCache = optMyPlayDataPageCache2
-                isCompleteToRequestMyPlayDataPage = true
-            }
-            
-            // Load rank data page
-            var optMyRankDataPageCache: UserData.RankDataPageCache? = nil
-            var isCompleteToRequestMyRankDataPage = false
-            self.jubeatWebSite.requestMyRankData { (optMyRankDataPageCache2: UserData.RankDataPageCache?) in
-                
-                optMyRankDataPageCache = optMyRankDataPageCache2
-                isCompleteToRequestMyRankDataPage = true
-            }
-
+            // Load MY MUSIC DATAS....
+//            var musicDatas = [SimpleMusicData] ()
+//            var downloadedMusicPageCount: Int32 = 0
+//            for i in 1...3 {
+//                self.jubeatWebSite.requestMyMusicData(pageIndex: i, onRequestComplete: { (musicDatas2: [SimpleMusicData]) in
+//                    OSAtomicIncrement32(&downloadedMusicPageCount)
+//
+//                    musicDatas.append(contentsOf: musicDatas2)
+//                })
+//            }
+//
+//            let defaults = UserDefaults.standard
+//            defaults.set(25, forKey: "Age")
+//            defaults.set(true, forKey: "UseTouchID")
+//            defaults.set(CGFloat.pi, forKey: "Pi")
+        
             // Wait until both loadings finished.
-            SpinLock { () -> (Bool) in
-                return isCompleteToRequestMyPlayDataPage && isCompleteToRequestMyRankDataPage
-            }
-            
-            guard let myPlayDataPageCache = optMyPlayDataPageCache,
-                  let myRankDataPageCache = optMyRankDataPageCache else {
-                hideLoadingIndicatorUI(self, { showOkPopup(self, "에러", "") })
-                return
-            }
+//            SpinLock { () -> (Bool) in
+//                return isCompleteToRequestMyPlayDataPage && isCompleteToRequestMyRankDataPage && downloadedMusicPageCount >= 3
+//            }
+//
+//            guard let myPlayDataPageCache = optMyPlayDataPageCache,
+//                  let myRankDataPageCache = optMyRankDataPageCache else {
+//                hideLoadingIndicatorUI(self, { showOkPopup(self, "에러", "") })
+//                return
+//            }
             
             // Insert my user data cache into the global storage
-            let myUserData = UserData(myPlayDataPageCache.rivalId, myPlayDataPageCache, nil, myRankDataPageCache)
-            userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: myUserData)
-            
-            hideLoadingIndicatorUI(self, { self.transitionToProfileView() })
-        })
+//            let myUserData = UserData(myPlayDataPageCache.rivalId, false, myPlayDataPageCache, myRankDataPageCache)
+//            userDataStorage.initialize(myRivalId: myPlayDataPageCache.rivalId, myUserData: myUserData)
+//            
+//            myUserData.musicDataCaches = musicDatas
+//
+//            hideLoadingIndicatorUI(self, {
+                ProfileViewController.show(currentView: self)
+//            })
+//        })
     }
     
     private func checkTextFieldInputComplete(textField: ErrorTextField) -> Bool {
@@ -226,16 +256,5 @@ extension LoginViewController {
         
         let isTextFieldEmpty: Bool = textFieldStr.count <= 0
         return !isTextFieldEmpty;
-    }
-    
-    private func transitionToProfileView() {
-        let profileViewController = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-        let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController)
-
-        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
-        navigationDrawerController.isMotionEnabled = true
-        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
-        
-        self.present(navigationDrawerController, animated: true)
     }
 }

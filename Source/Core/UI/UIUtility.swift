@@ -9,13 +9,21 @@
 import Foundation
 import UIKit
 
-public func showOkPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnTouchOkButton: (() -> ())? = nil, _ optOnShowComplete: (() -> ())? = nil) {
+public func showOkPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnTouchCloseButton: (() -> ())? = nil, _ optOnShowComplete: (() -> ())? = nil) {
     
-    showAlertPopup(viewControllerToPresent, title, message, [("OK", UIAlertAction.Style.default,  {() -> Void in
-        if let onTouchOkButton = optOnTouchOkButton {
-            onTouchOkButton()
+    showAlertPopup(viewControllerToPresent, title, message, [("닫기", UIAlertAction.Style.default,  {() -> Void in
+        if let onTouchCloseButton = optOnTouchCloseButton {
+            onTouchCloseButton()
         }
     })], optOnShowComplete)
+}
+
+public func showYesNoPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnTouchYesButton: (() -> ())? = nil, _ optOnTouchNoButton: (() -> ())? = nil, _ optOnShowComplete: (() -> ())? = nil) {
+    
+    showAlertPopup(viewControllerToPresent, title, message, [
+        ("예", UIAlertAction.Style.default,  {() -> Void in optOnTouchYesButton?()}),
+        ("아니오", UIAlertAction.Style.cancel,  {() -> Void in optOnTouchNoButton?()}
+    )], optOnShowComplete)
 }
 
 public func showAlertPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ actionDescs: [(String, UIAlertAction.Style, (() -> Void)?)], _ optOnShowComplete: (() -> ())? = nil) {

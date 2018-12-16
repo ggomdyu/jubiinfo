@@ -9,11 +9,25 @@
 import Foundation
 import UIKit
 
+public enum MusicDifficulty {
+    case Extreme
+    case Advanced
+    case Basic
+}
+
+public struct MusicData {
+    var musicName: String
+    var musicId: Int
+    var musicScore: Int
+    var musicDifficulty: MusicDifficulty
+}
+
 public struct SimpleMusicData {
     var musicName: String
-    var basicBestScore: Int
-    var advancedBestScore: Int
-    var extremeBestScore: Int
+    var musicId: Int
+    var basicScore: Int
+    var advancedScore: Int
+    var extremeScore: Int
 }
 
 public struct DetailMusicData {
@@ -51,11 +65,6 @@ public class GlobalUserDataStorage {
     }
     
 /**@section Method */
-    public func initialize(myRivalId: String, myUserData: UserData) {
-        self.myRivalId = myRivalId
-        self.addUserData(rivalId: myRivalId, userData: myUserData)
-    }
-    
     public func addUserData(rivalId: String, userData: UserData) {
         userDataTable.updateValue(userData, forKey: rivalId)
     }
@@ -70,11 +79,11 @@ public class GlobalUserDataStorage {
     }
     
     public func queryMyUserData() -> UserData {
-        return self.queryUserData(rivalId: myRivalId)
+        return myUserData
     }
     
 /**@section Variable */
-    private var myRivalId = String()
+    private var myUserData = UserData()
     private var userDataTable = [String: UserData]()
 }
 
@@ -82,13 +91,13 @@ public class UserData {
 /**@section Struct */
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
     public class PlayDataPageCache {
-        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageURL: String, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
         {
-            self.emblemImage = nil
             self.nickname = nickname
             self.designation = designation
             self.rivalId = rivalId
-            self.emblemImageURL = emblemImageURL
+            self.emblemImageUrl = emblemImageUrl
+            self.emblemImage = nil
             self.lastPlayedTime = lastPlayedTime
             self.lastPlayedLocation = lastPlayedLocation
             self.ranking = ranking
@@ -96,26 +105,20 @@ public class UserData {
             self.playTuneCount = playTuneCount
             self.fullComboCount = fullComboCount
             self.excellentCount = excellentCount
-            
-            downloadImageSync(imageUrl: emblemImageURL, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
-                if (isDownloadSucceed) {
-                    self.emblemImage = image
-                }
-            })
         }
         
-        public private(set) var nickname: String
-        public private(set) var designation: String
-        public private(set) var rivalId: String
-        public private(set) var emblemImageURL: String
-        public private(set) var emblemImage: UIImage?
-        public private(set) var lastPlayedTime: String
-        public private(set) var lastPlayedLocation: String
-        public private(set) var ranking: Int
-        public private(set) var totalScore: Int64
-        public private(set) var playTuneCount: Int
-        public private(set) var fullComboCount: Int
-        public private(set) var excellentCount: Int
+        public let nickname: String
+        public let designation: String
+        public let rivalId: String
+        public let emblemImageUrl: String
+        public var emblemImage: UIImage?
+        public let lastPlayedTime: String
+        public let lastPlayedLocation: String
+        public let ranking: Int
+        public let totalScore: Int64
+        public let playTuneCount: Int
+        public let fullComboCount: Int
+        public let excellentCount: Int
     }
     
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html */
@@ -135,30 +138,30 @@ public class UserData {
             self.excRankCount = excRankCount
         }
         
-        public private(set) var notPlayedMusicCount: Int
-        public private(set) var totalPlayCount: Int
-        public private(set) var eRankCount: Int
-        public private(set) var dRankCount: Int
-        public private(set) var cRankCount: Int
-        public private(set) var bRankCount: Int
-        public private(set) var aRankCount: Int
-        public private(set) var sRankCount: Int
-        public private(set) var ssRankCount: Int
-        public private(set) var sssRankCount: Int
-        public private(set) var excRankCount: Int
+        public let notPlayedMusicCount: Int
+        public let totalPlayCount: Int
+        public let eRankCount: Int
+        public let dRankCount: Int
+        public let cRankCount: Int
+        public let bRankCount: Int
+        public let aRankCount: Int
+        public let sRankCount: Int
+        public let ssRankCount: Int
+        public let sssRankCount: Int
+        public let excRankCount: Int
     }
     
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html */
-    public class MusicDataPageCache {
-        public init(_ pageIndex: Int, _ simpleMusicDatas: [SimpleMusicData])
-        {
-            self.pageIndex = pageIndex
-            self.simpleMusicDatas = simpleMusicDatas
-        }
-        
-        public private(set) var pageIndex: Int
-        public private(set) var simpleMusicDatas: [SimpleMusicData]
-    }
+//    public class MusicDataPageCache {
+//        public init(_ pageIndex: Int, _ simpleMusicDatas: [SimpleMusicData])
+//        {
+//            self.pageIndex = pageIndex
+//            self.simpleMusicDatas = simpleMusicDatas
+//        }
+//
+//        public private(set) var pageIndex: Int
+//        public private(set) var simpleMusicDatas: [SimpleMusicData]
+//    }
     
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
     public class MyPlayDataPageCache : PlayDataPageCache {
@@ -173,18 +176,19 @@ public class UserData {
     }
 
 /**@section Constructor */
-    public init(_ rivalId: String, _ playDataPageCache: PlayDataPageCache? = nil, _ musicDataPageCache: MusicDataPageCache? = nil, _ rankDataPageCache: RankDataPageCache? = nil) {
+    public init(_ rivalId: String = "", _ isProfilePrivated: Bool = false, _ playDataPageCache: PlayDataPageCache? = nil, _ rankDataPageCache: RankDataPageCache? = nil) {
         self.rivalId = rivalId
+        self.isProfilePrivated = isProfilePrivated
         self.playDataPageCache = playDataPageCache
-        self.musicDataPageCache = musicDataPageCache
         self.rankDataPageCache = rankDataPageCache
     }
     
 /**@section Method */
-
+    
 /**@section Variable */
-    public let rivalId: String
+    public var rivalId: String
+    public var isProfilePrivated: Bool
     public var playDataPageCache: PlayDataPageCache?
-    public var musicDataPageCache: MusicDataPageCache?
     public var rankDataPageCache: RankDataPageCache?
+    public var musicDataCaches = [SimpleMusicData] ()
 }

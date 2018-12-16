@@ -136,6 +136,12 @@ private class CaptchaProblemSolver {
 }
 
 public class JubeatFestoWebSite : WebSite {
+/**@section Variable */
+    public static let instance = JubeatFestoWebSite()
+    
+/**@section Constructor */
+    private init() {
+    }
 
 /**@section Method */
     /**
@@ -188,12 +194,12 @@ public class JubeatFestoWebSite : WebSite {
     }
     
     /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
-    public func requestMyMusicData(pageIndex: Int, onRequestComplete: @escaping (UserData.MusicDataPageCache?) -> Void) {
+    public func requestMyMusicData(pageIndex: Int, onRequestComplete: @escaping ([SimpleMusicData]) -> Void) {
         self.requestMusicData(rivalId: "", pageIndex: 1, onRequestComplete: onRequestComplete)
     }
     
     /**@brief Do GET Request for https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
-    public func requestMusicData(rivalId: String, pageIndex: Int, onRequestComplete: @escaping (UserData.MusicDataPageCache?) -> Void) {
+    public func requestMusicData(rivalId: String, pageIndex: Int, onRequestComplete: @escaping ([SimpleMusicData]) -> Void) {
         
         self.requestMusicDataPageHtml(rivalId: rivalId, pageIndex: pageIndex) { (statusCode: Int, html: String) in
             onRequestComplete(self.parseMusicDataPageHtml(html: html))
@@ -460,33 +466,39 @@ public class JubeatFestoWebSite : WebSite {
         
         print("[DEBUG]: Start to request music data page.")
         
-        Alamofire.request(
-            "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=\(rivalId)&sort=7&page=\(pageIndex)",
+        httpRequestAsync(
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=\(rivalId)&sort=&page=\(pageIndex)",
             method: HTTPMethod.get,
-            parameters: [:],
-            encoding: URLEncoding.default,
-            headers: [
-                "Keep-Alive": "true",
-                "Upgrade-Insecure-Requests": "1",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-                "Accept-Encoding": "sdch",
-                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Host": "p.eagate.573.jp"
-            ]).responseString { (response: DataResponse<String>) in
-                
+            host: "p.eagate.573.jp",
+            referer: "",
+            onRequestComplete: {(statusCode: Int, html: String) in
                 print("[DEBUG]: Succeed to request music data page.")
-                
-                onRequestComplete(response.response!.statusCode, response.description);
-        }
+                onRequestComplete(statusCode, html)
+            }
+        )
     }
     
-    private func parseMusicDataPageHtml(html: String) -> UserData.MusicDataPageCache? {
+    private func parseMusicDataPageHtml(html: String) -> [SimpleMusicData] {
         
         print("[DEBUG]: Start to parse music data page html.")
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse music data page html.")
-        return nil;
+        var musicDatas = [SimpleMusicData] ()
+        
+        let musicDataPageParser = MusicDataPageParser(html: html)
+        repeat
+        {
+            let optMusicData = musicDataPageParser.parseNext()
+            guard let musicData = optMusicData else {
+                break
+            }
+            
+            musicDatas.append(musicData)
+        }
+        while (true)
+        
+        print("[DEBUG]: Succeed to parse music data page html.")
+        
+        return musicDatas
     }
     
     

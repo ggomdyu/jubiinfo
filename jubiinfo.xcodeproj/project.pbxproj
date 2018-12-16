@@ -29,6 +29,9 @@
 		FDA98C7721C4FC5F0060CBED /* MusicCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7621C4FC5F0060CBED /* MusicCellController.swift */; };
 		FDA98C7C21C4FD7A0060CBED /* MusicDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7B21C4FD7A0060CBED /* MusicDataViewController.swift */; };
 		FDA98C7E21C4FD9F0060CBED /* MusicLevelDivisionLineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7D21C4FD9F0060CBED /* MusicLevelDivisionLineController.swift */; };
+		FDA98C8021C510E80060CBED /* MusicDataViewToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7F21C510E80060CBED /* MusicDataViewToolBarController.swift */; };
+		FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C9F21C6A93C0060CBED /* Algorithm.swift */; };
+		FDA98CA321C6CB8F0060CBED /* LazyPreparedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98CA221C6CB8F0060CBED /* LazyPreparedViewController.swift */; };
 		FDB5F4FB21B6D0DC00CC1F1C /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB5F4FA21B6D0DC00CC1F1C /* UserData.swift */; };
 		FDC0140821BD7E160070EC37 /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; };
 		FDC0140921BD7E160070EC37 /* Material.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -38,7 +41,7 @@
 		FDC0141121BD7E160070EC37 /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD6AD4A421A7282A0038D130 /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FDC0141421BD7E160070EC37 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD15B4CC21A720450013BB97 /* Alamofire.framework */; };
 		FDC0141521BD7E160070EC37 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD15B4CC21A720450013BB97 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FDC0141A21BE0BBB0070EC37 /* ScoreDataGraphCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC0141921BE0BBB0070EC37 /* ScoreDataGraphCellController.swift */; };
+		FDC0141A21BE0BBB0070EC37 /* RankDataGraphCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC0141921BE0BBB0070EC37 /* RankDataGraphCellController.swift */; };
 		FDC0142621BE49630070EC37 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC0142121BE49540070EC37 /* Charts.framework */; };
 		FDC0142721BE49630070EC37 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FDC0142121BE49540070EC37 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCECA0521B03C6000F253B2 /* HttpUtility.swift */; };
@@ -300,8 +303,11 @@
 		FDA98C7621C4FC5F0060CBED /* MusicCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCellController.swift; sourceTree = "<group>"; };
 		FDA98C7B21C4FD7A0060CBED /* MusicDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataViewController.swift; sourceTree = "<group>"; };
 		FDA98C7D21C4FD9F0060CBED /* MusicLevelDivisionLineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLevelDivisionLineController.swift; sourceTree = "<group>"; };
+		FDA98C7F21C510E80060CBED /* MusicDataViewToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataViewToolBarController.swift; sourceTree = "<group>"; };
+		FDA98C9F21C6A93C0060CBED /* Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
+		FDA98CA221C6CB8F0060CBED /* LazyPreparedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyPreparedViewController.swift; sourceTree = "<group>"; };
 		FDB5F4FA21B6D0DC00CC1F1C /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
-		FDC0141921BE0BBB0070EC37 /* ScoreDataGraphCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreDataGraphCellController.swift; sourceTree = "<group>"; };
+		FDC0141921BE0BBB0070EC37 /* RankDataGraphCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankDataGraphCellController.swift; sourceTree = "<group>"; };
 		FDC0141B21BE49540070EC37 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Charts-3.2.1/Charts.xcodeproj"; sourceTree = "<group>"; };
 		FDCECA0521B03C6000F253B2 /* HttpUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpUtility.swift; sourceTree = "<group>"; };
 		FDD2250021AC50BC008C7DB1 /* SpinLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinLock.swift; sourceTree = "<group>"; };
@@ -513,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				FDA98C7021C4A7CC0060CBED /* EventDispatcher.swift */,
+				FDA98C9F21C6A93C0060CBED /* Algorithm.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -524,7 +531,7 @@
 				FD11B8DD21B3AF88003E3403 /* ProfileViewToolBarController.swift */,
 				FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */,
 				FD11B8DF21B3C21D003E3403 /* ProfileCellController.swift */,
-				FDC0141921BE0BBB0070EC37 /* ScoreDataGraphCellController.swift */,
+				FDC0141921BE0BBB0070EC37 /* RankDataGraphCellController.swift */,
 				FDDAFEED21B846580044F5C0 /* PlayDataACellController.swift */,
 			);
 			path = ProfileView;
@@ -543,10 +550,19 @@
 			isa = PBXGroup;
 			children = (
 				FDA98C7B21C4FD7A0060CBED /* MusicDataViewController.swift */,
+				FDA98C7F21C510E80060CBED /* MusicDataViewToolBarController.swift */,
 				FDA98C7621C4FC5F0060CBED /* MusicCellController.swift */,
 				FDA98C7D21C4FD9F0060CBED /* MusicLevelDivisionLineController.swift */,
 			);
 			path = MusicDataView;
+			sourceTree = "<group>";
+		};
+		FDA98CA121C6CB7C0060CBED /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				FDA98CA221C6CB8F0060CBED /* LazyPreparedViewController.swift */,
+			);
+			path = Generic;
 			sourceTree = "<group>";
 		};
 		FDC0141C21BE49540070EC37 /* Products */ = {
@@ -588,6 +604,7 @@
 		FDF1347721B39E6700D0F2FD /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FDA98CA121C6CB7C0060CBED /* Generic */,
 				FDA98C7921C4FC9C0060CBED /* LoginView */,
 				FDA98C7821C4FC8F0060CBED /* ProfileView */,
 				FDA98C7A21C4FD0B0060CBED /* MusicDataView */,
@@ -884,17 +901,19 @@
 				FDD2250621AC50F0008C7DB1 /* Color.swift in Sources */,
 				FDA70D3621B2572500B551F8 /* LoginViewToolBarController.swift in Sources */,
 				FDD2250C21AC516E008C7DB1 /* WebSite.swift in Sources */,
+				FDA98C8021C510E80060CBED /* MusicDataViewToolBarController.swift in Sources */,
 				FDA98C7121C4A7CC0060CBED /* EventDispatcher.swift in Sources */,
 				FDD2250121AC50BC008C7DB1 /* SpinLock.swift in Sources */,
 				FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */,
 				FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */,
-				FDC0141A21BE0BBB0070EC37 /* ScoreDataGraphCellController.swift in Sources */,
+				FDC0141A21BE0BBB0070EC37 /* RankDataGraphCellController.swift in Sources */,
 				FDA98C7721C4FC5F0060CBED /* MusicCellController.swift in Sources */,
 				FDD2251021AC51D3008C7DB1 /* JubeatFestoWebSite.swift in Sources */,
 				FDDAFEEE21B846580044F5C0 /* PlayDataACellController.swift in Sources */,
 				FD7F64CE2199D62100E534E7 /* AppDelegate.swift in Sources */,
 				FDA98C7C21C4FD7A0060CBED /* MusicDataViewController.swift in Sources */,
 				FDB5F4FB21B6D0DC00CC1F1C /* UserData.swift in Sources */,
+				FDA98CA321C6CB8F0060CBED /* LazyPreparedViewController.swift in Sources */,
 				62ED01B421C2185900056141 /* SettingData.swift in Sources */,
 				FD4C4C7421AECA4000ABCE53 /* ImageUtility.swift in Sources */,
 				FD32E50D21C1942B001DF4CB /* ProfileViewMenuController.swift in Sources */,
@@ -902,6 +921,7 @@
 				FDA98C7E21C4FD9F0060CBED /* MusicLevelDivisionLineController.swift in Sources */,
 				FD7F64D02199D62100E534E7 /* LoginViewController.swift in Sources */,
 				FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */,
+				FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */,
 				FD32E4FD21BEC4F5001DF4CB /* Task.swift in Sources */,
 				FD11B8DE21B3AF88003E3403 /* ProfileViewToolBarController.swift in Sources */,
 			);

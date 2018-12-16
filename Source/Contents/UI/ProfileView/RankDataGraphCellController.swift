@@ -1,5 +1,5 @@
 //
-//  ScoreGraphCellController.swift
+//  RankDataGraphCellController.swift
 //  jubiinfo
 //
 //  Created by ggomdyu on 10/12/2018.
@@ -10,40 +10,26 @@ import Foundation
 import UIKit
 import Charts
 
-public class ScoreDataGraphView : UIView {
-    
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.prepareCircularGraph()
-    }
-}
+public class RankDataGraphView : UIView {
 
-extension ScoreDataGraphView {
+    public func lazyPrepare() {
+        self.prepareRankDataGraph()
+    }
     
-    private func prepareCircularGraph() {
-        
+    private func prepareRankDataGraph() {
         let myUserData = GlobalUserDataStorage.instance.queryMyUserData()
         guard let myRankDataPageCache = myUserData.rankDataPageCache else {
             return
         }
         
-        let excRankCount = myRankDataPageCache.excRankCount
-        let sssRankCount = myRankDataPageCache.sssRankCount
-        let ssRankCount = myRankDataPageCache.ssRankCount
-        let sRankCount = myRankDataPageCache.sRankCount
-        let aRankCount = myRankDataPageCache.aRankCount
-        let bRankCount = myRankDataPageCache.bRankCount
-        let cRankCount = myRankDataPageCache.cRankCount
-        
         let chartItems = [
-            PieChartDataEntry(value: Double(excRankCount), label: (excRankCount > 0) ? "EXC" : nil),
-            PieChartDataEntry(value: Double(sssRankCount), label: (sssRankCount > 0) ? "SSS" : nil),
-            PieChartDataEntry(value: Double(ssRankCount), label: (ssRankCount > 0) ? "SS" : nil),
-            PieChartDataEntry(value: Double(sRankCount), label: (sRankCount > 0) ? "S" : nil),
-            PieChartDataEntry(value: Double(aRankCount), label: (aRankCount > 0) ? "A" : nil),
-            PieChartDataEntry(value: Double(bRankCount), label: (bRankCount > 0) ? "B" : nil),
-            PieChartDataEntry(value: Double(cRankCount), label: (cRankCount > 0) ? "C" : nil)
+            PieChartDataEntry(value: Double(myRankDataPageCache.excRankCount), label: (myRankDataPageCache.excRankCount > 0) ? "EXC" : nil),
+            PieChartDataEntry(value: Double(myRankDataPageCache.sssRankCount), label: (myRankDataPageCache.sssRankCount > 0) ? "SSS" : nil),
+            PieChartDataEntry(value: Double(myRankDataPageCache.ssRankCount), label: (myRankDataPageCache.ssRankCount > 0) ? "SS" : nil),
+            PieChartDataEntry(value: Double(myRankDataPageCache.sRankCount), label: (myRankDataPageCache.sRankCount > 0) ? "S" : nil),
+            PieChartDataEntry(value: Double(myRankDataPageCache.aRankCount), label: (myRankDataPageCache.aRankCount > 0) ? "A" : nil),
+            PieChartDataEntry(value: Double(myRankDataPageCache.bRankCount), label: (myRankDataPageCache.bRankCount > 0) ? "B" : nil),
+            PieChartDataEntry(value: Double(myRankDataPageCache.cRankCount), label: (myRankDataPageCache.cRankCount > 0) ? "C" : nil)
         ]
         
         let chartItemColors: [UIColor] = [
@@ -71,14 +57,13 @@ extension ScoreDataGraphView {
         chartView.entryLabelColor = .white
         chartView.entryLabelFont = .systemFont(ofSize: 12, weight: .regular)
         chartView.legend.enabled = false
-//        chartView.backgroundColor = UIColor.black
         chartView.animate(xAxisDuration: 1.4, easingOption: .easeOutBack)
         
         self.addSubview(chartView)
     }
 }
 
-public class ScoreDataGraphCellController : UIViewController {
+public class RankDataGraphCellController : LazyPreparedViewController {
     
     @IBOutlet weak var excRankCountLabel: UILabel!
     @IBOutlet weak var sssRankCountLabel: UILabel!
@@ -88,63 +73,86 @@ public class ScoreDataGraphCellController : UIViewController {
     @IBOutlet weak var bRankCountLabel: UILabel!
     @IBOutlet weak var cRankCountLabel: UILabel!
     @IBOutlet weak var notPlayedCountLabel: UILabel!
+    @IBOutlet weak var rankDataGraphView: RankDataGraphView!
+    @IBOutlet weak var contentsView: UIView!
     
-    override public func viewDidLoad() {
-        super.viewDidLoad()
+    override public func prepare() {
+        super.prepare()
         
+        self.contentsView.alpha = 0.0
+    }
+    
+    override public func lazyPrepare(_ param: Any?) {
+        super.lazyPrepare(param)
+        
+        self.prepareRankCountLabels()
+        self.prepareRankDataGraphView()
+        
+        self.contentsView.animate(.fadeIn)
+    }
+    
+    open override func getEventNameRequiredToLazyPrepare() -> String {
+        return "requestMyRankDataComplete"
+    }
+}
+
+extension RankDataGraphCellController {
+    private func prepareRankCountLabels() {
         let myUserData = GlobalUserDataStorage.instance.queryMyUserData()
         guard let myRankDataPageCache = myUserData.rankDataPageCache else {
             return
         }
         
-        let excRankCount = myRankDataPageCache.excRankCount
-        let sssRankCount = myRankDataPageCache.sssRankCount
-        let ssRankCount = myRankDataPageCache.ssRankCount
-        let sRankCount = myRankDataPageCache.sRankCount
-        let aRankCount = myRankDataPageCache.aRankCount
-        let bRankCount = myRankDataPageCache.bRankCount
-        let cRankCount = myRankDataPageCache.cRankCount
-        let dRankCount = myRankDataPageCache.dRankCount
-        let eRankCount = myRankDataPageCache.eRankCount
-        let notPlayedMusicCount = myRankDataPageCache.notPlayedMusicCount
         let totalPlayCount = myRankDataPageCache.totalPlayCount
-        let zeroCountRankTextColor = UIColor(red: 155 / 255, green: 155 / 255, blue: 155 / 255, alpha: 1.0)
+        let zeroRankCountTextColor = UIColor(red: 155 / 255, green: 155 / 255, blue: 155 / 255, alpha: 1.0)
         
+        let excRankCount = myRankDataPageCache.excRankCount
         excRankCountLabel.text = "\(excRankCount)(\(String(format: "%.2f", (Float(excRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if excRankCount <= 0 {
-            excRankCountLabel.textColor = zeroCountRankTextColor
+            excRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let sssRankCount = myRankDataPageCache.sssRankCount
         sssRankCountLabel.text = "\(sssRankCount)(\(String(format: "%.2f", (Float(sssRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if sssRankCount <= 0 {
-            sssRankCountLabel.textColor = zeroCountRankTextColor
+            sssRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let ssRankCount = myRankDataPageCache.ssRankCount
         ssRankCountLabel.text = "\(ssRankCount)(\(String(format: "%.2f", (Float(ssRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if ssRankCount <= 0 {
-            ssRankCountLabel.textColor = zeroCountRankTextColor
+            ssRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let sRankCount = myRankDataPageCache.sRankCount
         sRankCountLabel.text = "\(sRankCount)(\(String(format: "%.2f", (Float(sRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if sRankCount <= 0 {
-            sRankCountLabel.textColor = zeroCountRankTextColor
+            sRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let aRankCount = myRankDataPageCache.aRankCount
         aRankCountLabel.text = "\(aRankCount)(\(String(format: "%.2f", (Float(aRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if aRankCount <= 0 {
-            aRankCountLabel.textColor = zeroCountRankTextColor
+            aRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let bRankCount = myRankDataPageCache.bRankCount
         bRankCountLabel.text = "\(bRankCount)(\(String(format: "%.2f", (Float(bRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if bRankCount <= 0 {
-            bRankCountLabel.textColor = zeroCountRankTextColor
+            bRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let cRankCount = myRankDataPageCache.cRankCount
         cRankCountLabel.text = "\(cRankCount)(\(String(format: "%.2f", (Float(cRankCount) / Float(totalPlayCount)) * 100.0))%)"
         if cRankCount <= 0 {
-            cRankCountLabel.textColor = zeroCountRankTextColor
+            cRankCountLabel.textColor = zeroRankCountTextColor
         }
         
+        let notPlayedMusicCount = myRankDataPageCache.notPlayedMusicCount
         notPlayedCountLabel.text = "\(notPlayedMusicCount)(\(String(format: "%.2f", (Float(notPlayedMusicCount) / Float(totalPlayCount)) * 100.0))%)"
+    }
+    
+    private func prepareRankDataGraphView() {
+        rankDataGraphView.lazyPrepare()
     }
 }

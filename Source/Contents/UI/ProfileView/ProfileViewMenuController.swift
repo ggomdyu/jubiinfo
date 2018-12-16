@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 import Material
 
-class ProfileViewMenuController: UIViewController {
+class ProfileViewMenuController: ViewController {
 
     private var menuBackgroundColor = Color.init(red: 0.141176, green: 0.294117, blue: 0.262745, alpha: 1.0)
     private var nextButtonAddYPos: CGFloat = 60.0
     
-    open override func viewDidLoad() {
-        super.viewDidLoad()
+    open override func prepare() {
+        super.prepare()
         
         view.backgroundColor = menuBackgroundColor
         
@@ -45,11 +45,12 @@ extension ProfileViewMenuController {
 
 extension ProfileViewMenuController {
     @objc private func onTouchProfileViewButton() {
-        showOkPopup(self, nil, "구현 예정")
+        navigationDrawerController?.closeLeftView()
     }
     
     @objc private func onTouchMusicDataButton() {
-        showOkPopup(self, "에러", nil)
+//        navigationDrawerController?.closeLeftView()
+        MusicDataViewController.show(currentView: self.navigationDrawerController!)
     }
     
     @objc private func onTouchRivalButton() {
@@ -65,6 +66,8 @@ extension ProfileViewMenuController {
     }
     
     @objc private func onTouchLogOutButton() {
-        showOkPopup(self, "에러", "구현 예정")
+        showYesNoPopup(self, nil, "로그아웃 하시겠습니까?", {
+            self.dismiss(animated: true)
+        })
     }
 }
