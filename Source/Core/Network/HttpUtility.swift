@@ -12,7 +12,9 @@ import CoreGraphics
 import Alamofire
 
 public func saveCookies<T>(response: DataResponse<T>) {
-    guard let urlResponse = response.response else { return }
+    guard let urlResponse = response.response else {
+        return
+    }
     
     let headerFields = urlResponse.allHeaderFields as! [String: String]
     let url = response.response?.url
