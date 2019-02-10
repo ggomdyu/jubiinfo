@@ -1,0 +1,196 @@
+//
+//  DataStorage.swift
+//  jubiinfo
+//
+//  Created by ggomdyu on 05/12/2018.
+//  Copyright © 2018 ggomdyu. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+public class GlobalDataStorage {
+/**@section Variable */
+    public static let instance = GlobalDataStorage()
+    
+/**@section Constructor */
+    private init() {
+    }
+    
+/**@section Method */
+    public func initCustomMusicDatas(musicCustomDatas: [MusicId: MusicScoreData.CustomData]) {
+        m_customMusicDatas = musicCustomDatas
+    }
+    
+    public func isCustomMusicDatasInitialized() -> Bool {
+        return m_customMusicDatas.count > 0
+    }
+    
+    public func queryCustomMusicData(musicId: MusicId) -> MusicScoreData.CustomData {
+        let optMusicCustomData = m_customMusicDatas[musicId]
+        guard let musicCustomData = optMusicCustomData else {
+            let ret = MusicScoreData.CustomData()
+            m_customMusicDatas[musicId] = ret
+            return ret
+        }
+        
+        return musicCustomData
+    }
+    
+    public func queryCustomMusicDatas() -> [MusicId: MusicScoreData.CustomData] {
+        return m_customMusicDatas
+    }
+    
+    public func queryMusicLevel(musicScoreData: MusicScoreData) -> Int {
+        let musicCustomData = self.queryCustomMusicData(musicId: musicScoreData.id)
+        
+        return musicCustomData.levels[musicScoreData.difficulty.rawValue]
+    }
+    
+    public func queryMyUserData() -> MyUserData {
+        return m_myUserData
+    }
+    
+    public func queryOtherUserData(rivalId: String) -> UserData {
+        let optIter = m_otherUserDatas.index(forKey: rivalId)
+        guard let iter = optIter else {
+            let ret = UserData(rivalId: rivalId)
+            m_otherUserDatas[rivalId] = ret
+            return ret
+        }
+        
+        return m_otherUserDatas[iter].value
+    }
+    
+/**@section Variable */
+    private var m_myUserData = MyUserData()
+    private var m_otherUserDatas = [String: UserData] ()
+    private var m_customMusicDatas = [MusicId: MusicScoreData.CustomData] ()
+}
+
+public class UserData {
+/**@section Class */
+    /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
+    public class PlayDataPageCache {
+    /**@section Variable */
+        public let nickname: String
+        public let designation: String
+        public let rivalId: String
+        public let emblemImageUrl: String
+        public var emblemImage: UIImage?
+        public let lastPlayedTime: String
+        public let lastPlayedLocation: String
+        public let ranking: Int
+        public let totalScore: Int64
+        public let playTuneCount: Int
+        public let fullComboCount: Int
+        public let excellentCount: Int
+        
+    /**@section Constructor */
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        {
+            self.nickname = nickname
+            self.designation = designation
+            self.rivalId = rivalId
+            self.emblemImageUrl = emblemImageUrl
+            self.emblemImage = nil
+            self.lastPlayedTime = lastPlayedTime
+            self.lastPlayedLocation = lastPlayedLocation
+            self.ranking = ranking
+            self.totalScore = totalScore
+            self.playTuneCount = playTuneCount
+            self.fullComboCount = fullComboCount
+            self.excellentCount = excellentCount
+        }
+    }
+    
+    /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html */
+    public struct RankDataPageCache {
+    /**@section Variable */
+        public let notPlayedMusicCount: Int
+        public let totalPlayCount: Int
+        public let eRankCount: Int
+        public let dRankCount: Int
+        public let cRankCount: Int
+        public let bRankCount: Int
+        public let aRankCount: Int
+        public let sRankCount: Int
+        public let ssRankCount: Int
+        public let sssRankCount: Int
+        public let excRankCount: Int
+        
+    /**@section Constructor */
+        public init(_ notPlayedMusicCount: Int, _ eRankCount: Int, _ dRankCount: Int, _ cRankCount: Int, _ bRankCount: Int, _ aRankCount: Int, _ sRankCount: Int, _ ssRankCount: Int, _ sssRankCount: Int, _ excRankCount: Int)
+        {
+            self.notPlayedMusicCount = notPlayedMusicCount
+            self.totalPlayCount = excRankCount + sssRankCount + ssRankCount + sRankCount + aRankCount + bRankCount + cRankCount + dRankCount + eRankCount + notPlayedMusicCount
+            self.eRankCount = eRankCount
+            self.dRankCount = dRankCount
+            self.cRankCount = cRankCount
+            self.bRankCount = bRankCount
+            self.aRankCount = aRankCount
+            self.sRankCount = sRankCount
+            self.ssRankCount = ssRankCount
+            self.sssRankCount = sssRankCount
+            self.excRankCount = excRankCount
+        }
+    }
+    
+    public class RivalListPageCache {
+    /**@section Class */
+        public struct SimpleRivalData {
+            public let rivalId: String
+            public let nickname: String
+            public let designation: String
+        }
+    
+    /**@section Constructor */
+        public init(simpleRivalDataList: [SimpleRivalData] = [SimpleRivalData] ()) {
+            self.simpleRivalDataList = simpleRivalDataList
+        }
+        
+    /**@section Variable */
+        public let simpleRivalDataList: [SimpleRivalData]
+    }
+    
+    /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
+    public class MyPlayDataPageCache : PlayDataPageCache {
+    /**@section Variable */
+        public private(set) var jubility: Float
+        
+    /**@section Constructor */
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageURL: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        {
+            self.jubility = jubility
+            
+            super.init(nickname, designation, rivalId, emblemImageURL, lastPlayedTime, lastPlayedLocation, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
+        }
+    }
+
+/**@section Constructor */
+    public init(rivalId: String = "", isProfilePrivated: Bool = false, playDataPageCache: PlayDataPageCache? = nil, rankDataPageCache: RankDataPageCache? = nil, rivalListPageCache: RivalListPageCache? = nil) {
+        self.rivalId = rivalId
+        self.isProfilePrivated = isProfilePrivated
+        self.playDataPageCache = playDataPageCache
+        self.rankDataPageCache = rankDataPageCache
+        self.rivalListPageCache = rivalListPageCache
+    }
+    
+/**@section Variable */
+    public var rivalId: String
+    public var isProfilePrivated: Bool
+    public var musicScoreDataCaches = [MusicScoreData] ()
+    public var playDataPageCache: PlayDataPageCache?
+    public var rankDataPageCache: RankDataPageCache?
+    public var rivalListPageCache: RivalListPageCache?
+}
+
+public class MyUserData : UserData {
+/**@section Constructor */
+    public init(rivalId: String = "", playDataPageCache: PlayDataPageCache? = nil, rankDataPageCache: RankDataPageCache? = nil) {
+        super.init(rivalId: rivalId, playDataPageCache: playDataPageCache, rankDataPageCache: rankDataPageCache)
+        
+        self.musicScoreDataCaches.reserveCapacity(2714)
+    }
+}
+

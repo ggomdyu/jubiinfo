@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         
         window = UIWindow(frame: Screen.bounds)
-        window!.rootViewController = LoginViewToolBarController(rootViewController: viewController)
+        window!.rootViewController = viewController//LoginViewToolBarController(rootViewController: viewController)
         window!.makeKeyAndVisible()
     }
 

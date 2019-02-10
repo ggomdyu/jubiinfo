@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Fkd-wm-N9V" customClass="ProfileCellView" customModule="jubiinfo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="336" height="331"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lcu-Do-Hi4" userLabel="Background View">
+                    <rect key="frame" x="0.0" y="0.0" width="336" height="331"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1We-JB-r8q" userLabel="Contents View">
+                    <rect key="frame" x="0.0" y="0.0" width="336" height="331"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMX-Iv-IBF">
+                            <rect key="frame" x="50" y="27" width="236" height="256"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RIVAL ID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="33Z-pd-36S">
+                            <rect key="frame" x="11" y="15" width="300" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="300" id="AMz-5v-hdB"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                            <color key="textColor" red="0.56470030550000005" green="0.56470209360000001" blue="0.56470608710000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="칭호" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mei-CW-MhT">
+                            <rect key="frame" x="30" y="300" width="276" height="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <color key="textColor" red="0.63920944930000001" green="0.63921147580000004" blue="0.6392159462" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="닉네임" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U59-FP-QJk">
+                            <rect key="frame" x="30" y="274" width="276" height="24"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <color key="textColor" red="0.40391749139999999" green="0.40391880270000002" blue="0.4039216638" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="Mei-CW-MhT" firstAttribute="top" secondItem="U59-FP-QJk" secondAttribute="bottom" constant="2" id="8lD-vG-w6h"/>
+                        <constraint firstAttribute="height" constant="336" id="Cmh-tl-d3d"/>
+                        <constraint firstAttribute="bottom" secondItem="Mei-CW-MhT" secondAttribute="bottom" constant="10" id="FnL-lC-YAm"/>
+                        <constraint firstItem="Mei-CW-MhT" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="30" id="JM0-A2-boP"/>
+                        <constraint firstAttribute="bottom" secondItem="FMX-Iv-IBF" secondAttribute="bottom" constant="48" id="JcE-Hp-SDk"/>
+                        <constraint firstItem="U59-FP-QJk" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="30" id="KKY-tD-lfJ"/>
+                        <constraint firstAttribute="trailing" secondItem="Mei-CW-MhT" secondAttribute="trailing" constant="30" id="NrY-hk-DB1"/>
+                        <constraint firstAttribute="trailing" secondItem="U59-FP-QJk" secondAttribute="trailing" constant="30" id="OV3-Is-zb3"/>
+                        <constraint firstItem="33Z-pd-36S" firstAttribute="top" secondItem="1We-JB-r8q" secondAttribute="top" constant="15" id="XNh-yo-mFA"/>
+                        <constraint firstItem="FMX-Iv-IBF" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="50" id="dCM-sL-0aq"/>
+                        <constraint firstAttribute="trailing" secondItem="FMX-Iv-IBF" secondAttribute="trailing" constant="50" id="rQa-bU-6NE"/>
+                        <constraint firstItem="FMX-Iv-IBF" firstAttribute="top" secondItem="1We-JB-r8q" secondAttribute="top" constant="27" id="wGE-7q-Ueh"/>
+                        <constraint firstItem="33Z-pd-36S" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="11" id="ybj-nq-MZn"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="lcu-Do-Hi4" firstAttribute="height" secondItem="Fkd-wm-N9V" secondAttribute="height" id="4aY-fb-LrC"/>
+                <constraint firstAttribute="trailing" secondItem="1We-JB-r8q" secondAttribute="trailing" id="8O7-md-Q2I"/>
+                <constraint firstItem="1We-JB-r8q" firstAttribute="height" secondItem="Fkd-wm-N9V" secondAttribute="height" id="IkD-se-MUF"/>
+                <constraint firstItem="1We-JB-r8q" firstAttribute="width" secondItem="Fkd-wm-N9V" secondAttribute="width" id="MfV-4T-hnx"/>
+                <constraint firstItem="1We-JB-r8q" firstAttribute="leading" secondItem="Fkd-wm-N9V" secondAttribute="leading" id="MrZ-TR-fbj"/>
+                <constraint firstItem="lcu-Do-Hi4" firstAttribute="width" secondItem="Fkd-wm-N9V" secondAttribute="width" id="VKb-mp-ln2"/>
+                <constraint firstItem="1We-JB-r8q" firstAttribute="top" secondItem="rDd-97-GFd" secondAttribute="top" id="bWv-jz-YkZ"/>
+                <constraint firstAttribute="bottom" secondItem="1We-JB-r8q" secondAttribute="bottom" id="gGt-Hw-9To"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="rDd-97-GFd"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                    <real key="value" value="0.10000000000000001"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowUIColor">
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                    <size key="value" width="0.0" height="1.5"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                    <integer key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="m_contentsView" destination="1We-JB-r8q" id="sqw-Ez-QfU"/>
+                <outlet property="m_designationLabel" destination="Mei-CW-MhT" id="sb0-Oq-c5u"/>
+                <outlet property="m_emblemImageView" destination="FMX-Iv-IBF" id="aXC-pc-4Cl"/>
+                <outlet property="m_nicknameLabel" destination="U59-FP-QJk" id="38l-4s-aCp"/>
+                <outlet property="m_rivalIdLabel" destination="33Z-pd-36S" id="NvQ-eo-Q9L"/>
+            </connections>
+        </view>
+    </objects>
+</document>

@@ -2,99 +2,181 @@
 //  MusicDataViewController.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 15/12/2018.
-//  Copyright © 2018 차준호. All rights reserved.
+//  Created by 차준호 on 12/01/2019.
+//  Copyright © 2019 차준호. All rights reserved.
 //
 
 import Foundation
 import UIKit
 import Material
 
-public class MusicDataViewController : ViewController, UIScrollViewDelegate {
+public class MusicDataViewController : ViewController, UIScrollViewDelegate, UISearchBarDelegate {
+/**@section Variable */
+    @IBOutlet weak var m_scrollView: UIScrollView!
+    @IBOutlet weak var m_musicDataView: MusicDataView!
+    @IBOutlet var m_musicDataViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var m_musicDataSearchResultView: MusicDataView!
+    @IBOutlet var m_musicDataSearchResultViewBottomConstraint: NSLayoutConstraint!
+    private var m_optCurrActiveMusicDataView: MusicDataView?
+    private var m_optCurrActiveMusicDataViewBottomConstraint: NSLayoutConstraint?
+    @IBOutlet weak var m_bottomBackgroundHiderView: UIView!
+    @IBOutlet weak var m_searchBar: UISearchBar!
+    private var m_searchBarXButton: UIButton!
+    private var m_lastSearchedMusicName: String?
+    private var m_isDeleteKeyEntered = false
+    private var m_optScrollDetectTimer: Timer?
     
-    @IBOutlet weak var contentsView: UIScrollView!
-    @IBOutlet weak var contentsViewHeightConstraint: NSLayoutConstraint!
-    private var nextAddedCellYPos: CGFloat = 15.0
-    private var loadedPageIndex = 0
-    
+/**@section Overrided method */
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        contentsView.delegate = self
+        self.prepareScrollView()
+        self.prepareSearchBar()
         
-        self.loadMorePageCell()
+        m_musicDataSearchResultViewBottomConstraint.isActive = false
+        
+        m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: .Level, musicSortOrder: .Descending)
+        m_musicDataView.loadMoreMusicDataCell()
+        
+        self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
     }
-}
-
-extension MusicDataViewController {
     
-    public static func show(currentView: UIViewController) {
+/**@section Method */
+    public static func show(currentViewController: UIViewController) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+        
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
-        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController)
-
-        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController) // , leftViewController: MusicDataViewMenuController()
+        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
+        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
+        
         navigationDrawerController.isMotionEnabled = true
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         
-        currentView.present(navigationDrawerController, animated: true)
+        currentViewController.present(navigationDrawerController, animated: true)
     }
     
-    private func loadMorePageCell() {
+    private func prepareScrollView() {
+        m_scrollView.backgroundColor = UIColor(patternImage: UIImage(named:"background.jpg")!)
+        m_scrollView.delegate = self
+    }
+    
+    private func prepareSearchBar() {
+        m_searchBar.delegate = self
+    }
+    
+    private func switchActiveMusicDataView(viewToActivate: MusicDataView, viewBottomConstraint: NSLayoutConstraint?) {
+        m_optCurrActiveMusicDataView?.isHidden = true
+        m_optCurrActiveMusicDataViewBottomConstraint?.isActive = false
         
-        self.addMusicLevelDivisionLine(level: 10.8)
+        viewToActivate.isHidden = false
+        viewBottomConstraint?.isActive = true
         
-        for i in ((loadedPageIndex * 50) ... (loadedPageIndex + 1) * 50) {
-            let musicDataCache = GlobalUserDataStorage.instance.queryMyUserData().musicDataCaches[i]
-            
-            self.addMusicCell(musicDataCache: musicDataCache)
+        m_optCurrActiveMusicDataView = viewToActivate
+        m_optCurrActiveMusicDataViewBottomConstraint = viewBottomConstraint
+    }
+    
+    private func loadMoreMusicDataCell() {
+        let isAllPageLoaded = !(m_optCurrActiveMusicDataView?.loadMoreMusicDataCell() ?? true)
+        if isAllPageLoaded {
+            m_bottomBackgroundHiderView.isHidden = true
+        }
+        else {
+            m_bottomBackgroundHiderView.isHidden = false
+        }
+    }
+    
+    public func getCurrActiveMusicDataView() -> MusicDataView? {
+        return m_optCurrActiveMusicDataView
+    }
+    
+/**@section Event handler */
+    public func onChangeMusicSortMode(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Void {
+        m_scrollView.setContentOffset(CGPoint.zero, animated: false)
+        
+        m_optCurrActiveMusicDataView?.onChangeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+    }
+    
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+        
+        if m_lastSearchedMusicName == searchBar.text {
+            return
         }
         
-        loadedPageIndex += 1
+        m_lastSearchedMusicName = searchBar.text
+        
+        // If text field is empty, then return to initial view.
+        if searchBar.text!.isEmpty {
+            self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
+            return
+        }
+        
+        let currActiveMusicDataView = m_musicDataSearchResultView!
+        self.switchActiveMusicDataView(viewToActivate: currActiveMusicDataView, viewBottomConstraint: m_musicDataSearchResultViewBottomConstraint)
+        
+        let searchBarText = transformJapaneseToLatin(sourceStr: searchBar.text!).uppercased()
+        currActiveMusicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.filter({ (item: MusicScoreData) -> Bool in
+            return item.uppercasedRomajiName.contains(searchBarText)
+        }), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder())
+        
+        self.loadMoreMusicDataCell()
     }
     
-    private func addMusicCell(musicDataCache: SimpleMusicData) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let viewController = storyboard.instantiateViewController(withIdentifier: "MusicCellController") as! MusicCellController
-        viewController.lazyInit(musicDataCache: musicDataCache)
-        
-        self.addCellToStackView(view: viewController.view)
-        self.addMarginToStackView(margin: 1.5)
+    public func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        m_isDeleteKeyEntered = text.isEmpty
+        return true
     }
     
-    private func addMusicLevelDivisionLine(level: Float) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    private func onClearTextInSearchBar() {
+        m_lastSearchedMusicName?.removeAll()
         
-        let viewController = storyboard.instantiateViewController(withIdentifier: "MusicLevelDivisionLineController") as! MusicLevelDivisionLineController
-        viewController.lazyInit(level: level)
+        let currActiveMusicDataView = m_optCurrActiveMusicDataView!
+        let prevActiveMusicDataViewSortMode = currActiveMusicDataView.getCurrentMusicSortMode()
+        let prevActiveMusicDataViewSortOrder = currActiveMusicDataView.getCurrentMusicSortOrder()
         
-        self.addCellToStackView(view: viewController.view)
-    }
-
-    private func addMarginToStackView(margin: CGFloat) {
-        self.nextAddedCellYPos += margin
-    }
-    
-    private func addCellToStackView(view: UIView) {
+        self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
         
-        self.contentsView.layout(view).top(nextAddedCellYPos).left(15).right(15)
+        if (prevActiveMusicDataViewSortMode != m_musicDataView.getCurrentMusicSortMode()) ||
+           (prevActiveMusicDataViewSortOrder != m_musicDataView.getCurrentMusicSortOrder()) {
+            m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: prevActiveMusicDataViewSortMode, musicSortOrder: prevActiveMusicDataViewSortOrder)
+            
+            m_musicDataView.loadMoreMusicDataCell()
+        }
         
-        nextAddedCellYPos += view.frame.height
-        
-        contentsViewHeightConstraint.constant = nextAddedCellYPos
+        m_searchBar.perform(#selector(self.resignFirstResponder), with: nil, afterDelay: 0.0)
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let isXButtonClicked = searchText.isEmpty && !m_isDeleteKeyEntered
+        if isXButtonClicked {
+            self.onClearTextInSearchBar()
+        }
         
-        // UITableView only moves in one direction, y axis
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        m_isDeleteKeyEntered = false
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if m_optScrollDetectTimer != nil || m_optCurrActiveMusicDataView?.isAllPageLoaded() ?? true {
+            return
+        }
         
-        // Change 10.0 to adjust the distance from bottom
-        if maximumOffset - currentOffset <= 10.0 {
-//            self.loadMore()
+        let scrollDetectTimer = Timer(timeInterval: 0.05, target: self, selector: #selector(self.onDraggingScrollView), userInfo: nil, repeats: true)
+        m_optScrollDetectTimer = scrollDetectTimer
+        
+        RunLoop.main.add(scrollDetectTimer, forMode: RunLoop.Mode.common)
+    }
+    
+    @objc private func onDraggingScrollView() {
+        let currentOffset = m_scrollView.contentOffset.y
+        let maximumOffset = m_scrollView.contentSize.height - m_scrollView.frame.size.height
+        
+        if maximumOffset - currentOffset <= 1000.0 {
+            self.loadMoreMusicDataCell()
+        }
+        
+        if m_scrollView.isDragging == false {
+            m_optScrollDetectTimer?.invalidate()
+            m_optScrollDetectTimer = nil
         }
     }
 }

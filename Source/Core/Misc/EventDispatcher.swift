@@ -25,7 +25,7 @@ public class EventObserver {
 public class EventDispatcher {
 /**@section Variable */
     public static let instance = EventDispatcher()
-    private var eventSubscriberTable = [EventType: [EventObserver]] ()
+    private var m_eventSubscriberTable = [EventType: Box<[EventObserver]>] ()
 
 /**@section Constructor */
     private init() {
@@ -33,40 +33,40 @@ public class EventDispatcher {
     
 /**@section Method */
     public func subscribeEvent(eventType: EventType, eventObserver: EventObserver) {
-        var eventObservers = eventSubscriberTable[eventType] ?? [EventObserver] ()
-        eventObservers.append(eventObserver)
+        let eventObservers = m_eventSubscriberTable[eventType] ?? Box<[EventObserver]> (value: [EventObserver] ())
+        eventObservers.value.append(eventObserver)
         
-        eventSubscriberTable.updateValue(eventObservers, forKey: eventType)
+        m_eventSubscriberTable.updateValue(eventObservers, forKey: eventType)
     }
     
     public func unsubscribeEvent(eventType: EventType, eventObserver: EventObserver) -> Bool {
-        let optEventObservers = eventSubscriberTable[eventType]
-        guard var eventObservers = optEventObservers else {
+        let optEventObservers = m_eventSubscriberTable[eventType]
+        guard let eventObservers = optEventObservers else {
             return false
         }
         
-        let optUnsubscribeTargetEventObserverIndex: Int? = eventObservers.firstIndex(where: { (eventObserver2: EventObserver) -> Bool in
+        let optUnsubscribeTargetEventObserverIndex: Int? = eventObservers.value.firstIndex(where: { (eventObserver2: EventObserver) -> Bool in
             return eventObserver === eventObserver2
         })
         guard let unsubscribeTargetEventObserverIndex: Int = optUnsubscribeTargetEventObserverIndex else {
             return false
         }
-        eventObservers.remove(at: unsubscribeTargetEventObserverIndex)
+        eventObservers.value.remove(at: unsubscribeTargetEventObserverIndex)
         
         return true
     }
     
     public func dispatchEvent(eventType: EventType, eventParam: Any? = nil) {
-        let optEventObservers = eventSubscriberTable[eventType]
-        guard var eventObservers = optEventObservers else {
+        let optEventObservers = m_eventSubscriberTable[eventType]
+        guard let eventObservers = optEventObservers else {
             return
         }
         
-        for eventObserver in eventObservers {
+        for eventObserver in eventObservers.value {
             eventObserver.eventHandler(eventParam)
         }
         
-        eventObservers.removeAll { (eventObserver: EventObserver) -> Bool in
+        eventObservers.value.removeAll { (eventObserver: EventObserver) -> Bool in
             return eventObserver.releaseAfterDispatch
         }
     }

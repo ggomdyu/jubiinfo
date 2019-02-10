@@ -10,7 +10,7 @@ import Foundation
 
 public func SpinLock(isLockFinish: @escaping () -> (Bool)) {
     while true {
-        if ( isLockFinish() ) {
+        if isLockFinish() {
             break;
         }
     }

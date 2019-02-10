@@ -2,55 +2,51 @@
 //  ProfileViewMenuController.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 13/12/2018.
-//  Copyright © 2018 차준호. All rights reserved.
+//  Created by ggomdyu on 13/12/2018.
+//  Copyright © 2018 ggomdyu. All rights reserved.
 //
 
 import Foundation
 import UIKit
 import Material
 
-class ProfileViewMenuController: ViewController {
-
-    private var menuBackgroundColor = Color.init(red: 0.141176, green: 0.294117, blue: 0.262745, alpha: 1.0)
-    private var nextButtonAddYPos: CGFloat = 60.0
+class ProfileViewMenuController : ViewController {
+/**@section Variable */
+    private var m_menuBackgroundColor = Color.init(red: 0.141176, green: 0.294117, blue: 0.262745, alpha: 1.0)
+    private var m_nextButtonAddYPos: CGFloat = 60.0
     
+/**@section Overrided method */
     open override func prepare() {
         super.prepare()
         
-        view.backgroundColor = menuBackgroundColor
+        view.backgroundColor = m_menuBackgroundColor
         
         self.addButtonToStackView(title: "프로필", action: #selector(self.onTouchProfileViewButton))
         self.addButtonToStackView(title: "음악 데이터", action: #selector(self.onTouchMusicDataButton))
         self.addButtonToStackView(title: "라이벌", action: #selector(self.onTouchRivalButton))
         self.addButtonToStackView(title: "엠블럼", action: #selector(self.onTouchEmblemButton))
-//        self.addButtonToStackView(title: "칭호", action: #selector(onTouchProfileView))
         self.addButtonToStackView(title: "랭킹", action: #selector(onTouchRankingButton))
         self.addButtonToStackView(title: "로그아웃", action: #selector(self.onTouchLogOutButton))
     }
-}
 
-extension ProfileViewMenuController {
-    
+/**@section Method */
     private func addButtonToStackView(title: String, action: Selector) {
         let button = FlatButton(title: title, titleColor: .white)
         button.pulseColor = .white
         button.addTarget(self, action: action, for: .touchUpInside)
         
-        view.layout(button).horizontally().top(nextButtonAddYPos)
+        view.layout(button).horizontally().top(m_nextButtonAddYPos)
         
-        nextButtonAddYPos += button.frame.height + 3.0
+        m_nextButtonAddYPos += button.frame.height + 3.0
     }
-}
 
-extension ProfileViewMenuController {
+/**@section Event handler */
     @objc private func onTouchProfileViewButton() {
         navigationDrawerController?.closeLeftView()
     }
     
     @objc private func onTouchMusicDataButton() {
-//        navigationDrawerController?.closeLeftView()
-        MusicDataViewController.show(currentView: self.navigationDrawerController!)
+        MusicDataViewController.show(currentViewController: self)
     }
     
     @objc private func onTouchRivalButton() {

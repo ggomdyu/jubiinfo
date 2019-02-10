@@ -2,8 +2,8 @@
 //  Algorithm.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 17/12/2018.
-//  Copyright © 2018 차준호. All rights reserved.
+//  Created by ggomdyu on 17/12/2018.
+//  Copyright © 2018 ggomdyu. All rights reserved.
 //
 
 import Foundation
@@ -41,4 +41,48 @@ public func createNumberWithComma(number: Int64) -> String {
     }
     
     return ret
+}
+
+public func bubbleSort<T : Comparable>(range: Range<Int>, dataSrc: inout [T]) {
+    bubbleSort(range: range, dataSrc: &dataSrc, predicate: { (lhs: T, rhs: T) -> Bool in
+        return lhs > rhs
+    })
+}
+
+public func bubbleSort<T : Comparable>(range: Range<Int>, dataSrc: inout [T], predicate: (T, T) -> Bool) {
+    if dataSrc.count <= 1 {
+        return
+    }
+    
+    for i in range {
+        for j in (i + 1)..<range.endIndex {
+            if predicate(dataSrc[i], dataSrc[j]) {
+                dataSrc.swapAt(i, j)
+            }
+        }
+    }
+}
+
+public func quickSortPartition<T : Comparable>(range: Range<Int>, dataSrc: inout [T], predicate: @escaping (T, T) -> Bool) -> Int {
+    var i = range.startIndex
+    for j in (range.startIndex + 1)..<range.endIndex {
+        if !predicate(dataSrc[j], dataSrc[range.startIndex]) {
+            i += 1
+            dataSrc.swapAt(i, j)
+        }
+    }
+    dataSrc.swapAt(i, range.startIndex)
+    
+    return i
+}
+
+public func quickSort<T : Comparable>(range: Range<Int>, dataSrc: inout [T], predicate: @escaping (T, T) -> Bool) {    
+    if range.count <= 0 {
+        return
+    }
+    
+    let pivotIndex = quickSortPartition(range: range, dataSrc: &dataSrc, predicate: predicate)
+    
+    quickSort(range: range.startIndex..<pivotIndex, dataSrc: &dataSrc, predicate: predicate)
+    quickSort(range: (pivotIndex + 1)..<range.endIndex, dataSrc: &dataSrc, predicate: predicate)
 }

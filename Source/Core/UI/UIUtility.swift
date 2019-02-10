@@ -9,9 +9,27 @@
 import Foundation
 import UIKit
 
+public func showActionSheet(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ actionDescs: [(String, UIAlertAction.Style, (() -> Void)?)], _ optOnShowComplete: (() -> ())? = nil) {
+    // Create a UIAlertController
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+    
+    // Add actions to controller
+    for actionDesc in actionDescs {
+        let buttonAction = UIAlertAction(title: actionDesc.0, style: actionDesc.1) {(result: UIAlertAction) -> Void in
+            if let onTouchOkButton = actionDesc.2 {
+                onTouchOkButton()
+            }
+        }
+        alertController.addAction(buttonAction)
+    }
+    
+    viewControllerToPresent.present(alertController, animated: true, completion: optOnShowComplete)
+}
+
+
 public func showOkPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnTouchCloseButton: (() -> ())? = nil, _ optOnShowComplete: (() -> ())? = nil) {
     
-    showAlertPopup(viewControllerToPresent, title, message, [("닫기", UIAlertAction.Style.default,  {() -> Void in
+    showAlertPopup(viewControllerToPresent, title, message, [("닫기", .default,  {() -> Void in
         if let onTouchCloseButton = optOnTouchCloseButton {
             onTouchCloseButton()
         }
@@ -21,14 +39,19 @@ public func showOkPopup(_ viewControllerToPresent: UIViewController, _ title: St
 public func showYesNoPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnTouchYesButton: (() -> ())? = nil, _ optOnTouchNoButton: (() -> ())? = nil, _ optOnShowComplete: (() -> ())? = nil) {
     
     showAlertPopup(viewControllerToPresent, title, message, [
-        ("예", UIAlertAction.Style.default,  {() -> Void in optOnTouchYesButton?()}),
-        ("아니오", UIAlertAction.Style.cancel,  {() -> Void in optOnTouchNoButton?()}
+        ("예", .default,  {() -> Void in optOnTouchYesButton?()}),
+        ("아니오", .cancel,  {() -> Void in optOnTouchNoButton?()}
     )], optOnShowComplete)
+}
+
+public func showPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ optOnShowComplete: (() -> ())? = nil) {
+    
+    showAlertPopup(viewControllerToPresent, title, message, [(String, UIAlertAction.Style, (() -> Void)?)] (), optOnShowComplete)
 }
 
 public func showAlertPopup(_ viewControllerToPresent: UIViewController, _ title: String?, _ message: String?, _ actionDescs: [(String, UIAlertAction.Style, (() -> Void)?)], _ optOnShowComplete: (() -> ())? = nil) {
     // Create a UIAlertController
-    let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     
     // Add actions to controller
     for actionDesc in actionDescs {
@@ -48,7 +71,7 @@ public func showLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, 
     
     let loadingIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
     loadingIndicatorView.hidesWhenStopped = true
-    loadingIndicatorView.style = UIActivityIndicatorView.Style.gray
+    loadingIndicatorView.style = .gray
     loadingIndicatorView.startAnimating();
     
     alertController.view.addSubview(loadingIndicatorView)

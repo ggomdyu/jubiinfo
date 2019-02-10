@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="RivalRankCellView" id="Fkd-wm-N9V" customClass="RivalRankCellView" customModule="jubiinfo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="256" height="33"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qTW-Nf-wfU">
+                    <rect key="frame" x="15" y="17" width="226" height="14"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qR-K4-Gy2">
+                            <rect key="frame" x="5" y="0.0" width="216" height="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock.png" translatesAutoresizingMaskIntoConstraints="NO" id="M1M-D9-HLL">
+                            <rect key="frame" x="4" y="1.5" width="14" height="11"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="14" id="gNz-gi-lSU"/>
+                                <constraint firstAttribute="height" constant="11" id="oCi-GL-cq7"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.83137254901960778" green="0.93333333333333335" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="9Pc-ht-uLF"/>
+                        <constraint firstItem="M1M-D9-HLL" firstAttribute="leading" secondItem="qTW-Nf-wfU" secondAttribute="leading" constant="4" id="CnH-No-CxA"/>
+                        <constraint firstItem="6qR-K4-Gy2" firstAttribute="top" secondItem="qTW-Nf-wfU" secondAttribute="top" id="LRZ-lB-RBa"/>
+                        <constraint firstItem="M1M-D9-HLL" firstAttribute="centerY" secondItem="qTW-Nf-wfU" secondAttribute="centerY" id="OZC-d9-uVk"/>
+                        <constraint firstItem="6qR-K4-Gy2" firstAttribute="leading" secondItem="qTW-Nf-wfU" secondAttribute="leading" constant="5" id="QaG-OI-0DE"/>
+                        <constraint firstAttribute="bottom" secondItem="6qR-K4-Gy2" secondAttribute="bottom" id="WnQ-rM-G8R"/>
+                        <constraint firstAttribute="trailing" secondItem="6qR-K4-Gy2" secondAttribute="trailing" constant="5" id="qRw-Ka-XR1"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bBD-eo-cZ4">
+                    <rect key="frame" x="20" y="0.5" width="15" height="13"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="13" id="2kM-Wb-rnX"/>
+                        <constraint firstAttribute="width" constant="15" id="Ndm-rh-r4a"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GGOMDYU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MaB-eJ-jha">
+                    <rect key="frame" x="38" y="1" width="150" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="eXj-45-46p"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="MaB-eJ-jha" firstAttribute="top" secondItem="rDd-97-GFd" secondAttribute="top" constant="1" id="0LH-67-vgV"/>
+                <constraint firstItem="MaB-eJ-jha" firstAttribute="leading" secondItem="bBD-eo-cZ4" secondAttribute="trailing" constant="3" id="CSt-XI-ikx"/>
+                <constraint firstItem="qTW-Nf-wfU" firstAttribute="leading" secondItem="rDd-97-GFd" secondAttribute="leading" constant="15" id="H9r-KV-XcL"/>
+                <constraint firstItem="bBD-eo-cZ4" firstAttribute="top" secondItem="rDd-97-GFd" secondAttribute="top" constant="0.5" id="Y1G-vN-gvm"/>
+                <constraint firstItem="bBD-eo-cZ4" firstAttribute="leading" secondItem="rDd-97-GFd" secondAttribute="leading" constant="20" id="bDh-tH-eOf"/>
+                <constraint firstItem="rDd-97-GFd" firstAttribute="trailing" secondItem="qTW-Nf-wfU" secondAttribute="trailing" constant="15" id="hZR-mH-sd9"/>
+                <constraint firstItem="qTW-Nf-wfU" firstAttribute="top" secondItem="rDd-97-GFd" secondAttribute="top" constant="17" id="lT4-O7-g7X"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="rDd-97-GFd"/>
+            <connections>
+                <outlet property="m_colorBoxView" destination="qTW-Nf-wfU" id="qBj-V7-l4E"/>
+                <outlet property="m_crownImageLeadingConstraint" destination="bDh-tH-eOf" id="uK2-zh-K5i"/>
+                <outlet property="m_crownImageView" destination="bBD-eo-cZ4" id="qEU-yi-wme"/>
+                <outlet property="m_lockImageView" destination="M1M-D9-HLL" id="rCc-66-VgN"/>
+                <outlet property="m_nicknameLabel" destination="MaB-eJ-jha" id="6pW-5l-ROS"/>
+                <outlet property="m_scoreLabel" destination="6qR-K4-Gy2" id="Wqb-lN-WiW"/>
+            </connections>
+            <point key="canvasLocation" x="156.80000000000001" y="47.676161919040482"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="lock.png" width="100" height="123"/>
+    </resources>
+</document>

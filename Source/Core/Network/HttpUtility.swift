@@ -33,18 +33,14 @@ public func removeCookies(url: URL) {
     }
 }
 
-public func downloadImageAsync(imageUrl: String, onDownloadComplete: @escaping (Bool, UIImage?) -> ()) {
+public func downloadImageAsync(imageUrl: String, onDownloadComplete: @escaping (Bool, UIImage?) -> Void) {
+    let queue = DispatchQueue.init(label: "com.imageDownload.queue")
     
-    URLSession.shared.dataTask(with: URL(string: imageUrl)!) { (data: Data?, response: URLResponse?, error: Error?) in
-        if error != nil {
-            onDownloadComplete(false, nil)
-            return
-        }
+    Alamofire.request(imageUrl).responseData(queue: queue) { (data: DataResponse<Data>) in
+        print("[DEBUG]: Image download has been completed. (\(imageUrl))")
         
-        print("[DEBUG]: Image download has been completed.")
-        
-        onDownloadComplete(true, UIImage(data: data!))
-    }.resume();
+        onDownloadComplete(true, UIImage(data: data.data!))
+    }
 }
 
 public func downloadImageSync(imageUrl: String, onDownloadComplete: @escaping (Bool, UIImage?) -> ()) {
@@ -68,14 +64,38 @@ public func downloadImageSync(imageUrl: String, onDownloadComplete: @escaping (B
     onDownloadComplete(isDownloadSucceed, downloadedImage)
 }
 
-public func httpRequestAsync(url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Int, String) -> Void) {
-    httpRequestAsync(url: url, method: method, host: host, referer: referer, onRequestComplete: onRequestComplete, parameters: [String: String]())
+public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Bool, Data?) -> Void) {
+    httpRequestAsync(queue: queue, url: url, method: method, host: host, referer: referer, onRequestComplete: onRequestComplete, parameters: [String: String]())
 }
 
-public func httpRequestAsync(url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Int, String) -> Void, parameters: [String: String]) {
+public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Bool, Data?) -> Void, parameters: [String: String]) {
     
-    let queue = DispatchQueue(label: "com.cnoon.response-queue", qos: .utility, attributes: [.concurrent])
+    Alamofire.request(
+        url,
+        method: method,
+        parameters: parameters,
+        encoding: URLEncoding.default,
+        headers: [
+            "Keep-Alive": "true",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            "Accept-Encoding": "sdch",
+            "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Referer": referer,
+            "Host": host
+        ]).responseData(queue: queue) { (response: DataResponse<Data>) in
+            httpRequestHandler(url: url, onRequestComplete: onRequestComplete, response: response)
+        }
+}
 
+
+public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Bool, String?) -> Void) {
+    httpRequestAsync(queue: queue, url: url, method: method, host: host, referer: referer, onRequestComplete: onRequestComplete, parameters: [String: String]())
+}
+
+public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMethod, host: String, referer: String, onRequestComplete: @escaping (Bool, String?) -> Void, parameters: [String: String]) {
+    
     Alamofire.request(
         url,
         method: method,
@@ -91,10 +111,26 @@ public func httpRequestAsync(url: String, method: HTTPMethod, host: String, refe
             "Referer": referer,
             "Host": host
         ]).responseString(queue: queue, encoding: nil) { (response: DataResponse<String>) in
-            
-            saveCookies(response: response)
-            
-            let html = response.description
-            onRequestComplete(response.response!.statusCode, html);
+            httpRequestHandler(url: url, onRequestComplete: onRequestComplete, response: response)
+        }
+}
+
+private func httpRequestHandler<T>(url: String, onRequestComplete: @escaping (Bool, T?) -> Void, response: DataResponse<T>) {
+    saveCookies(response: response)
+    
+    let statusCode = response.response?.statusCode ?? 0
+    
+    let requestSucceed = statusCode == 200
+    if requestSucceed {
+        onRequestComplete(true, response.value!)
+        return
     }
+    else if statusCode == 0 {
+        recordLastError(ErrorCode.ServerNotConnected, "Server not connected. (\(url))")
+    }
+    else if statusCode == 404 {
+        recordLastError(ErrorCode.PageNotFound, "Page not found. (\(url))")
+    }
+    
+    onRequestComplete(false, nil)
 }
