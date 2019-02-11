@@ -8,17 +8,18 @@
 
 import UIKit
 import SBCardPopup
+import Material
 
 class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPickerViewDelegate, UIPickerViewDataSource {
-    
 /**@section Variable */
     var popupViewController: SBCardPopupViewController?
     var allowsTapToDismissPopupCard = true
     var allowsSwipeToDismissPopupCard = true
     
     @IBOutlet weak var m_sortModePickerView: UIPickerView!
-    @IBOutlet weak var m_ascendingSortSwitch: UISwitch!
     @IBOutlet weak var m_okButton: UIButton!
+    @IBOutlet weak var m_sortOrderView: UIView!
+    private var m_sortOrderSwitch: Switch!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
     private var m_sortModeTable = [
         ("레벨", MusicSortMode.Level),
@@ -46,6 +47,17 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         viewController.initialize(currMusicSortMode: currMusicSortMode, currMusicSortOrder: currMusicSortOrder, onChangeMusicSortMode: onChangeMusicSortMode)
     }
     
+    private func prepareSwitch(currMusicSortOrder: MusicSortOrder) {
+        let sortOrderSwitch = Switch(state: .off, style: .light, size: .small)
+        sortOrderSwitch.isOn = (currMusicSortOrder == .Ascending)
+        sortOrderSwitch.buttonOnColor = UIColor(red: 89.0 / 255.0, green: 158.0 / 255.0, blue: 80.0 / 255.0, alpha: 1.0)
+        sortOrderSwitch.trackOnColor = UIColor(red: 162.0 / 255.0, green: 216.0 / 255.0, blue: 150.0 / 255.0, alpha: 1.0)
+        
+        m_sortOrderSwitch = sortOrderSwitch
+        
+        m_sortOrderView.layout(sortOrderSwitch).centerVertically().right(5.0)
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -67,14 +79,13 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         } ?? 0
         m_sortModePickerView.selectRow(pickerRowToSelect, inComponent: 0, animated: false)
         
-        // Change the toggle state of switch
-        m_ascendingSortSwitch.isOn = (currMusicSortOrder == .Ascending)
+        self.prepareSwitch(currMusicSortOrder: currMusicSortOrder)
     }
     
 /**@section Event handler */
     @IBAction func onClickOkButton(_ sender: UIButton, forEvent event: UIEvent) {
         let selectedSortModeStr = m_sortModeTable[m_sortModePickerView.selectedRow(inComponent: 0)].1
-        let selectedSortOrder = m_ascendingSortSwitch.isOn ? MusicSortOrder.Ascending : MusicSortOrder.Descending
+        let selectedSortOrder = m_sortOrderSwitch.isOn ? MusicSortOrder.Ascending : MusicSortOrder.Descending
         m_onChangeMusicSortMode?(selectedSortModeStr, selectedSortOrder)
         
         popupViewController?.close()

@@ -289,6 +289,7 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="정렬" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLe-vP-PAt">
                                         <rect key="frame" x="0.0" y="0.0" width="210" height="30"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="xDD-R7-6uk"/>
                                         </constraints>
@@ -305,16 +306,11 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IoX-ps-xrB">
-                                                <rect key="frame" x="155" y="10" width="49" height="31"/>
-                                            </switch>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="IoX-ps-xrB" firstAttribute="centerY" secondItem="VTS-5y-MYG" secondAttribute="centerY" id="Btt-yU-bfc"/>
                                             <constraint firstAttribute="height" constant="50" id="Cs2-Tr-MWv"/>
                                             <constraint firstItem="hdE-Yi-ALo" firstAttribute="leading" secondItem="VTS-5y-MYG" secondAttribute="leading" constant="8" id="JKp-to-gjg"/>
-                                            <constraint firstAttribute="trailing" secondItem="IoX-ps-xrB" secondAttribute="trailing" constant="8" id="WJq-5d-CWt"/>
                                             <constraint firstItem="hdE-Yi-ALo" firstAttribute="centerY" secondItem="VTS-5y-MYG" secondAttribute="centerY" id="dkg-4S-a0I"/>
                                         </constraints>
                                     </view>
@@ -336,7 +332,10 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="IC7-ru-dBh"/>
                                         </constraints>
-                                        <state key="normal" title="확인"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                        <state key="normal" title="확인">
+                                            <color key="titleColor" red="0.34901960780000002" green="0.61765919810000003" blue="0.31433540230000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
                                         <connections>
                                             <action selector="onClickOkButton:forEvent:" destination="MYl-3q-Pj2" eventType="touchUpInside" id="hCi-O6-YGD"/>
                                         </connections>
@@ -369,9 +368,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="250" height="320"/>
                     <connections>
-                        <outlet property="m_ascendingSortSwitch" destination="IoX-ps-xrB" id="hvQ-VD-b6s"/>
                         <outlet property="m_okButton" destination="sod-gk-RUo" id="4c7-Yv-lvs"/>
                         <outlet property="m_sortModePickerView" destination="S8E-hl-Rzy" id="Djy-kl-NPO"/>
+                        <outlet property="m_sortOrderView" destination="VTS-5y-MYG" id="5Rl-Ay-brO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U3T-Yz-rm0" userLabel="First Responder" sceneMemberID="firstResponder"/>

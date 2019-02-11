@@ -70,6 +70,18 @@ public class GlobalDataStorage {
 
 public class UserData {
 /**@section Class */
+    public class TopPageCache {
+    /**@section Variable */
+        public let dailyRecommendedMusicId: MusicId
+        public let dailyFullComboChallengeMusicId: MusicId
+        
+    /**@section Constructor */
+        public init(_ dailyRecommendedMusicId: MusicId, _ dailyFullComboChallengeMusicId: MusicId) {
+            self.dailyRecommendedMusicId = dailyRecommendedMusicId
+            self.dailyFullComboChallengeMusicId = dailyFullComboChallengeMusicId
+        }
+    }
+    
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
     public class PlayDataPageCache {
     /**@section Variable */
@@ -183,6 +195,7 @@ public class UserData {
     public var playDataPageCache: PlayDataPageCache?
     public var rankDataPageCache: RankDataPageCache?
     public var rivalListPageCache: RivalListPageCache?
+    public var topPageCache: TopPageCache?
 }
 
 public class MyUserData : UserData {

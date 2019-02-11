@@ -45,7 +45,7 @@ class ProfileCellView : LazyInitializedView {
     }
     
     open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyPlayDataComplete"
+        return "requestMyPlayDataPageCacheComplete"
     }
     
     override var canBecomeFirstResponder: Bool { return true }

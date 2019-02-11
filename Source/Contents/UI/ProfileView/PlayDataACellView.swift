@@ -54,7 +54,7 @@ class PlayDataACellView : LazyInitializedView {
     }
     
     open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyPlayDataComplete"
+        return "requestMyPlayDataPageCacheComplete"
     }
 
 /**@section Method */

@@ -88,8 +88,8 @@ public class OmikujiCellView : LazyInitializedView {
             }
         })
         
-        self.m_randomPickedMusicNameLabel.text = randomPickedMusicData.name
-        self.m_randomPickedMusicArtistLabel.text = randomPickedMusicData.artistName
+        m_randomPickedMusicNameLabel.text = randomPickedMusicData.name
+        m_randomPickedMusicArtistLabel.text = randomPickedMusicData.artistName
     }
     
     private func saveOmikujiDataToJson(randomPickedMusicData: MusicScoreData) {

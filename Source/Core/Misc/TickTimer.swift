@@ -33,7 +33,7 @@ public class TickTimer {
         m_oldTime = Date().timeIntervalSince1970
         m_totalElapsedTime = 0.0
         
-        let timer = Timer(timeInterval: 0.00000001, target: self, selector: #selector(self.onTimeElapsed), userInfo: nil, repeats: true)
+        let timer = Timer(timeInterval: 0.0, target: self, selector: #selector(self.onTimeElapsed), userInfo: nil, repeats: true)
         m_optTimer = timer
         
         RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
@@ -44,7 +44,7 @@ public class TickTimer {
         let currTime = Date().timeIntervalSince1970
         let tickTime = currTime - m_oldTime
         m_oldTime = currTime
-        
+
         m_totalElapsedTime += tickTime
         if m_totalElapsedTime < m_duration {
             m_optOnElapseTime?(tickTime)
@@ -53,7 +53,7 @@ public class TickTimer {
             m_optOnElapseTime?(m_totalElapsedTime - m_duration)
             m_optTimer!.invalidate()
             m_optTimer = nil
-            
+
             m_optOnFinishTimer?()
         }
     }

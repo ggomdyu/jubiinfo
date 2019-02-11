@@ -29,30 +29,32 @@ class ProfileView : CustomStackView {
         self.prepareOmikujiCell()
         self.addMargin(margin: 10.0)
         self.prepareRankDataGraphCell()
+        self.addMargin(margin: 10.0)
+        self.prepareDailyCallengeCell()
         self.addMargin(margin: 15.0)
     }
     
     private func prepareRequestDataPacket() {
-        self.requestMyPlayData()
-        self.requestMyRankData()
+        self.requestMyPlayDataPageCache()
+        self.requestMyRankDataPageCache()
     }
     
-    private func requestMyPlayData() { 
-        JubeatWebServer.requestMyPlayData { (isRequestSucceed: Bool, optMyPlayDataPageCache: UserData.MyPlayDataPageCache?) in
+    private func requestMyPlayDataPageCache() {
+        JubeatWebServer.requestMyPlayDataPageCache { (isRequestSucceed: Bool, optMyPlayDataPageCache: UserData.MyPlayDataPageCache?) in
             let myUserData = GlobalDataStorage.instance.queryMyUserData()
             myUserData.rivalId = (optMyPlayDataPageCache != nil) ? optMyPlayDataPageCache!.rivalId : ""
             myUserData.playDataPageCache = optMyPlayDataPageCache
             
             runTaskInMainThread {
-                EventDispatcher.instance.dispatchEvent(eventType: "requestMyPlayDataComplete", eventParam: optMyPlayDataPageCache)
+                EventDispatcher.instance.dispatchEvent(eventType: "requestMyPlayDataPageCacheComplete", eventParam: optMyPlayDataPageCache)
             }
             
             self.requestMyMusicScoreData(serverMMSDChecksum: optMyPlayDataPageCache?.playTuneCount ?? 0)
         }
     }
 
-    private func requestMyRankData() {
-        JubeatWebServer.requestMyRankData { (isRequestSucceed: Bool, optMyRankDataPageCache: UserData.RankDataPageCache?) in
+    private func requestMyRankDataPageCache() {
+        JubeatWebServer.requestMyRankDataPageCache { (isRequestSucceed: Bool, optMyRankDataPageCache: UserData.RankDataPageCache?) in
             guard let myRankDataPageCache = optMyRankDataPageCache else {
                 return
             }
@@ -60,7 +62,7 @@ class ProfileView : CustomStackView {
             GlobalDataStorage.instance.queryMyUserData().rankDataPageCache = myRankDataPageCache
                 
             runTaskInMainThread {
-                EventDispatcher.instance.dispatchEvent(eventType: "requestMyRankDataComplete", eventParam: optMyRankDataPageCache)
+                EventDispatcher.instance.dispatchEvent(eventType: "requestMyRankDataPageCacheComplete", eventParam: optMyRankDataPageCache)
             }
         }
     }
@@ -100,6 +102,13 @@ class ProfileView : CustomStackView {
     
     private func prepareOmikujiCell() {
         let view = UINib(nibName: "OmikujiCellView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! OmikujiCellView
+        view.initialize()
+        
+        self.addView(view: view)
+    }
+    
+    private func prepareDailyCallengeCell() {
+        let view = UINib(nibName: "DailyChallengeCellView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! DailyChallengeCellView
         view.initialize()
         
         self.addView(view: view)

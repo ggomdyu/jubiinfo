@@ -40,7 +40,7 @@ public class RankDataGraphCellView : LazyInitializedView {
     }
     
     open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyRankDataComplete"
+        return "requestMyRankDataPageCacheComplete"
     }
 
 /**@section Method */

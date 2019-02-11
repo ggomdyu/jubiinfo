@@ -17,7 +17,7 @@ public typealias MusicId = Int
 public typealias MusicScore = Int
 
 public class MusicScoreData : Comparable {
-/**@section Enum */
+    /**@section Enum */
     public enum Difficulty : Int {
         case Basic
         case Advanced
@@ -62,7 +62,7 @@ public class MusicScoreData : Comparable {
         }
     }
     
-/**@section Class */
+    /**@section Class */
     /**@brief   The below datas are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=(RIVAL_ID) */
     public struct SimpleData {
         public init(name: String, uppercasedRomajiName: String, id: Int, score: Int, difficulty: Difficulty, isFullCombo: Bool, scoreHistory: [(Timestamp, MusicScore)]? = nil) {
@@ -128,7 +128,7 @@ public class MusicScoreData : Comparable {
         }
     }
     
-/**@section Constructor */
+    /**@section Constructor */
     public init(simpleData: SimpleData, customData: CustomData) {
         self.simpleData = simpleData
         self.customData = customData
@@ -136,8 +136,8 @@ public class MusicScoreData : Comparable {
     
     public init() {
     }
-
-/**@section Property */
+    
+    /**@section Property */
     /**brief The below properties are usable after initialize SimpleData. */
     public var name: String { return simpleData?.name ?? "" }
     public var uppercasedRomajiName: String { return simpleData?.uppercasedRomajiName ?? "" }
@@ -194,7 +194,7 @@ public class MusicScoreData : Comparable {
     public var level: Int { return customData?.levels[simpleData?.difficulty.rawValue ?? 0] ?? 0 }
     public var isNewMusic: Bool { return customData?.isNewMusic ?? false }
     
-/**@section Method */
+    /**@section Method */
     public func isDetailDataInitialized() -> Bool {
         return detailData != nil
     }
@@ -206,8 +206,8 @@ public class MusicScoreData : Comparable {
     public static func == (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool {
         return lhs.name == rhs.name
     }
-
-/**@section Variable */
+    
+    /**@section Variable */
     public var simpleData: SimpleData?
     public var detailData: DetailData?
     public var customData: CustomData?
@@ -330,14 +330,14 @@ class MusicScoreDataPageParser {
 }
 
 public class JubeatWebServer {
-/**@section Enum */
+    /**@section Enum */
     public enum LoginStatus {
         case Succees
         case Failure
         case InvalidEmailOrPassword
     }
     
-/**@section Method */
+    /**@section Method */
     public static func login(userId: String, userPassword: String, onLoginComplete: @escaping (LoginStatus) -> Void) {
         self.requestGenerateKcaptcha { (isRequestSucceed: Bool, response: Data?) in
             guard isRequestSucceed == true, let parsedData = self.parseKcaptchaJson(kcaptchaJson: response!) else {
@@ -368,21 +368,28 @@ public class JubeatWebServer {
                 let loginFailureCode = (response != nil) ? self.parseLoginAuthResponse(response: response!) : -1
                 onLoginComplete(
                     loginFailureCode == 0 ? .Succees :
-                    loginFailureCode == 200 ? .InvalidEmailOrPassword : .Failure
+                        loginFailureCode == 200 ? .InvalidEmailOrPassword : .Failure
                 )
             }
         }
     }
     
+    /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/top/index.html */
+    public static func requestTopPageCache(onRequestComplete: @escaping (Bool, UserData.TopPageCache?) -> Void) {
+        self.requestTopPageHtml { (isRequestSucceed: Bool, response: String?) in
+            onRequestComplete(isRequestSucceed, response != nil ? self.parseTopPageHtml(response: response!) : nil)
+        }
+    }
+    
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
-    public static func requestMyPlayData(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
+    public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
         self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, response: String?) in
             onRequestComplete(isRequestSucceed, response != nil ? self.parseMyPlayDataPageHtml(response: response!) : nil)
         }
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
-    public static func requestPlayData(rivalId: String, onRequestComplete: @escaping (Bool, UserData.PlayDataPageCache?) -> Void) {
+    public static func requestPlayDataPageCache(rivalId: String, onRequestComplete: @escaping (Bool, UserData.PlayDataPageCache?) -> Void) {
         self.requestPlayDataPageHtml(rivalId: rivalId) { (isRequestSucceed: Bool, response: String?) in
             onRequestComplete(isRequestSucceed, response != nil ? self.parsePlayDataPageHtml(response: response!) : nil)
         }
@@ -507,11 +514,11 @@ public class JubeatWebServer {
                 let musicScoreDataIndex = i * 3
                 if let oldMusicScoreDatas = oldMusicScoreDatas[newMusicScoreDatas[musicScoreDataIndex].id] {
                     mmsdJson += "\"\(oldMusicScoreDatas[0].id)\":[\"\(oldMusicScoreDatas[0].name)\","
-
+                    
                     for j in 0...2 {
                         let oldMusicScoreData = oldMusicScoreDatas[j]
                         let newMusicScoreData = newMusicScoreDatas[musicScoreDataIndex + j]
-
+                        
                         mmsdJson += "[\(newMusicScoreData.score),\(newMusicScoreData.isFullCombo)"
                         
                         if newMusicScoreData.score != -1 {
@@ -534,7 +541,7 @@ public class JubeatWebServer {
                             }
                             newMusicScoreData.scoreHistories = scoreHistories
                         }
-                       
+                        
                         mmsdJson += "],"
                     }
                 }
@@ -561,7 +568,7 @@ public class JubeatWebServer {
             }
             mmsdJson.removeLast()
             mmsdJson += "}"
-
+            
             do {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf16)
                 GlobalSettingDataStorage.instance.setConfig(key: "mmsdChecksum", value: serverMMSDChecksum)
@@ -601,12 +608,12 @@ public class JubeatWebServer {
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
-    public static func requestMyRankData(onRequestComplete: @escaping (Bool, UserData.RankDataPageCache?) -> Void) {
-        self.requestRankData(rivalId: "", onRequestComplete: onRequestComplete)
+    public static func requestMyRankDataPageCache(onRequestComplete: @escaping (Bool, UserData.RankDataPageCache?) -> Void) {
+        self.requestRankDataPageCache(rivalId: "", onRequestComplete: onRequestComplete)
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
-    public static func requestRankData(rivalId: String, onRequestComplete: @escaping (Bool, UserData.RankDataPageCache?) -> Void) {
+    public static func requestRankDataPageCache(rivalId: String, onRequestComplete: @escaping (Bool, UserData.RankDataPageCache?) -> Void) {
         self.requestRankDataPageHtml(rivalId: rivalId) { (isRequestSucceed: Bool, response: String?) in
             onRequestComplete(isRequestSucceed, response != nil ? self.parseRankDataPageHtml(response: response!) : nil)
         }
@@ -666,6 +673,18 @@ extension JubeatWebServer {
         httpRequestAsync(
             queue: DispatchQueue.global(),
             url: "https://p.eagate.573.jp/gate/p/login.html",
+            method: HTTPMethod.get,
+            host: "p.eagate.573.jp",
+            referer: "",
+            onRequestComplete: { (isRequestSucceed: Bool, response: String?) in
+                onRequestComplete(isRequestSucceed, response)
+        })
+    }
+    
+    private static func requestTopPageHtml(onRequestComplete: @escaping (Bool, String?) -> Void) {
+        httpRequestAsync(
+            queue: DispatchQueue.global(),
+            url: "https://p.eagate.573.jp/game/jubeat/festo/top/index.html",
             method: HTTPMethod.get,
             host: "p.eagate.573.jp",
             referer: "",
@@ -818,7 +837,7 @@ extension JubeatWebServer {
                 
                 return (kcsess, correctPickCharacterImageUrl, choiceCharacterImageUrlKeys)
             }
-            while (false)
+                while (false)
             
         }
         catch {}
@@ -878,6 +897,37 @@ extension JubeatWebServer {
         
         recordLastError(ErrorCode.ParseError, "Failed to parse login page html.")
         return nil;
+    }
+    
+    private static func parseTopPageHtml(response: String) -> UserData.TopPageCache? {
+        var iterIndex: String.Index = response.startIndex
+        
+        let divIdArray = ["today_osusume", "fullcon"]
+        var parsedMusicIdArray = [-1, -1]
+        for i in 0..<2 {
+            let divId = divIdArray[i]
+            guard let musicElemFinder = response.range(of: divId, options: String.CompareOptions.caseInsensitive, range: iterIndex..<response.endIndex) else {
+                break
+            }
+            
+            guard let musicIdStartIndexFinder = response.range(of: "/id", options: String.CompareOptions.caseInsensitive, range: musicElemFinder.upperBound..<response.endIndex) else {
+                break
+            }
+            
+            guard let musicIdEndIndexFinder = response.range(of: ".gif", options: String.CompareOptions.caseInsensitive, range: musicIdStartIndexFinder.upperBound..<response.endIndex) else {
+                break
+            }
+           
+            guard let musicId = MusicId(response[musicIdStartIndexFinder.upperBound..<musicIdEndIndexFinder.lowerBound]) else {
+                break
+            }
+            
+            parsedMusicIdArray[i] = musicId
+            
+            iterIndex = musicIdEndIndexFinder.upperBound
+        }
+        
+        return UserData.TopPageCache(parsedMusicIdArray[0], parsedMusicIdArray[1])
     }
     
     private static func parseMyPlayDataPageHtml(response: String) -> UserData.MyPlayDataPageCache? {
@@ -1074,7 +1124,7 @@ extension JubeatWebServer {
             
             musicScoreDatas.append(contentsOf: parsedMusicScoreDatas)
         }
-        while (true)
+            while (true)
         
         return musicScoreDatas
     }
@@ -1154,7 +1204,7 @@ extension JubeatWebServer {
             }
         }
     }
-
+    
     private static func parseRankDataPageHtml(response: String) -> UserData.RankDataPageCache? {
         do {
             let document = try SwiftSoup.parse(response)
@@ -1184,7 +1234,7 @@ extension JubeatWebServer {
     }
     
     private static func parseDetailMusicScorePageHtml(response: String, musicId: Int, destBasicMusicScoreData: MusicScoreData, destAdvancedMusicScoreData: MusicScoreData, extremeAdvancedMusicScoreData: MusicScoreData) -> Bool {
-
+        
         var musicScoreDatas = [destBasicMusicScoreData, destAdvancedMusicScoreData, extremeAdvancedMusicScoreData];
         
         var levelItemPosFinder = response.startIndex
@@ -1198,7 +1248,7 @@ extension JubeatWebServer {
                 return false
             }
             
-//            let musicLevel = Float(response[levelStartPosFinder.upperBound..<levelEndPosFinder.lowerBound]) ?? -1
+            //            let musicLevel = Float(response[levelStartPosFinder.upperBound..<levelEndPosFinder.lowerBound]) ?? -1
             
             var scoreItemDatas = [Any] ()
             var scoreItemPosFinder = levelEndPosFinder.upperBound
