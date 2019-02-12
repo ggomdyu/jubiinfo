@@ -17,7 +17,7 @@ public typealias MusicId = Int
 public typealias MusicScore = Int
 
 public class MusicScoreData : Comparable {
-    /**@section Enum */
+/**@section Enum */
     public enum Difficulty : Int {
         case Basic
         case Advanced
@@ -62,7 +62,7 @@ public class MusicScoreData : Comparable {
         }
     }
     
-    /**@section Class */
+/**@section Class */
     /**@brief   The below datas are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=(RIVAL_ID) */
     public struct SimpleData {
         public init(name: String, uppercasedRomajiName: String, id: Int, score: Int, difficulty: Difficulty, isFullCombo: Bool, scoreHistory: [(Timestamp, MusicScore)]? = nil) {
@@ -128,7 +128,7 @@ public class MusicScoreData : Comparable {
         }
     }
     
-    /**@section Constructor */
+/**@section Constructor */
     public init(simpleData: SimpleData, customData: CustomData) {
         self.simpleData = simpleData
         self.customData = customData
@@ -137,7 +137,7 @@ public class MusicScoreData : Comparable {
     public init() {
     }
     
-    /**@section Property */
+/**@section Property */
     /**brief The below properties are usable after initialize SimpleData. */
     public var name: String { return simpleData?.name ?? "" }
     public var uppercasedRomajiName: String { return simpleData?.uppercasedRomajiName ?? "" }
@@ -194,7 +194,7 @@ public class MusicScoreData : Comparable {
     public var level: Int { return customData?.levels[simpleData?.difficulty.rawValue ?? 0] ?? 0 }
     public var isNewMusic: Bool { return customData?.isNewMusic ?? false }
     
-    /**@section Method */
+/**@section Method */
     public func isDetailDataInitialized() -> Bool {
         return detailData != nil
     }
@@ -207,7 +207,7 @@ public class MusicScoreData : Comparable {
         return lhs.name == rhs.name
     }
     
-    /**@section Variable */
+/**@section Variable */
     public var simpleData: SimpleData?
     public var detailData: DetailData?
     public var customData: CustomData?
@@ -215,15 +215,17 @@ public class MusicScoreData : Comparable {
 
 /**@brief   This parser does not execute DOM parsing for performance. */
 class MusicScoreDataPageParser {
-    
+/**@section Variable */
     private var html: String
     private var lastParsedPos: String.Index
     
+/**@section Constructor */
     public init(html: String) {
         self.html = html
         self.lastParsedPos = html.startIndex
     }
-    
+   
+/**@section Method */
     public func parseNext() -> [MusicScoreData]? {
         let optMusicFinder = html.range(of: "<td><span>", options: String.CompareOptions.caseInsensitive, range: self.lastParsedPos..<html.endIndex)
         guard let musicFinder = optMusicFinder else {
@@ -330,14 +332,14 @@ class MusicScoreDataPageParser {
 }
 
 public class JubeatWebServer {
-    /**@section Enum */
+/**@section Enum */
     public enum LoginStatus {
         case Succees
         case Failure
         case InvalidEmailOrPassword
     }
     
-    /**@section Method */
+/**@section Method */
     public static func login(userId: String, userPassword: String, onLoginComplete: @escaping (LoginStatus) -> Void) {
         self.requestGenerateKcaptcha { (isRequestSucceed: Bool, response: Data?) in
             guard isRequestSucceed == true, let parsedData = self.parseKcaptchaJson(kcaptchaJson: response!) else {
