@@ -22,8 +22,8 @@
 		FD2D860F21EB6B7C00FAE9E2 /* NanumSquareRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD2D860D21EB6A6A00FAE9E2 /* NanumSquareRegular.ttf */; };
 		FD32E4FD21BEC4F5001DF4CB /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD32E4FC21BEC4F5001DF4CB /* Task.swift */; };
 		FD32E50D21C1942B001DF4CB /* ProfileViewMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */; };
-		FD46C0BB2211A44000632493 /* DailyChallengeCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD46C0AE2211A44000632493 /* DailyChallengeCellView.xib */; };
-		FD46C0BD2211C3BF00632493 /* DailyChallengeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD46C0BC2211C3BF00632493 /* DailyChallengeCellView.swift */; };
+		FD46C0BB2211A44000632493 /* DailyChallengeMusicCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD46C0AE2211A44000632493 /* DailyChallengeMusicCellView.xib */; };
+		FD46C0BD2211C3BF00632493 /* DailyChallengeMusicCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD46C0BC2211C3BF00632493 /* DailyChallengeMusicCellView.swift */; };
 		FD4C4C6F21AEC44F00ABCE53 /* jubiinfoText.png in Resources */ = {isa = PBXBuildFile; fileRef = FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */; };
 		FD4C4C7021AEC44F00ABCE53 /* jubiinfoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FD4C4C6E21AEC44F00ABCE53 /* jubiinfoIcon.png */; };
 		FD4C4C7421AECA4000ABCE53 /* ImageUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4C4C7321AECA4000ABCE53 /* ImageUtility.swift */; };
@@ -344,8 +344,8 @@
 		FD2D861121EB6EDB00FAE9E2 /* NanumGothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumGothic.ttf; sourceTree = "<group>"; };
 		FD32E4FC21BEC4F5001DF4CB /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewMenuController.swift; sourceTree = "<group>"; };
-		FD46C0AE2211A44000632493 /* DailyChallengeCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DailyChallengeCellView.xib; sourceTree = "<group>"; };
-		FD46C0BC2211C3BF00632493 /* DailyChallengeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeCellView.swift; sourceTree = "<group>"; };
+		FD46C0AE2211A44000632493 /* DailyChallengeMusicCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DailyChallengeMusicCellView.xib; sourceTree = "<group>"; };
+		FD46C0BC2211C3BF00632493 /* DailyChallengeMusicCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeMusicCellView.swift; sourceTree = "<group>"; };
 		FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jubiinfoText.png; sourceTree = "<group>"; };
 		FD4C4C6E21AEC44F00ABCE53 /* jubiinfoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jubiinfoIcon.png; sourceTree = "<group>"; };
 		FD4C4C7321AECA4000ABCE53 /* ImageUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtility.swift; sourceTree = "<group>"; };
@@ -698,7 +698,7 @@
 				FDC0141921BE0BBB0070EC37 /* RankDataGraphCellView.swift */,
 				FDDAFEED21B846580044F5C0 /* PlayDataACellView.swift */,
 				FD262FF2220D629400C58BA7 /* OmikujiCellView.swift */,
-				FD46C0BC2211C3BF00632493 /* DailyChallengeCellView.swift */,
+				FD46C0BC2211C3BF00632493 /* DailyChallengeMusicCellView.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -764,7 +764,7 @@
 		FDC66FAA21D175340094F322 /* ProfileView */ = {
 			isa = PBXGroup;
 			children = (
-				FD46C0AE2211A44000632493 /* DailyChallengeCellView.xib */,
+				FD46C0AE2211A44000632493 /* DailyChallengeMusicCellView.xib */,
 				FDC66FA621D170AC0094F322 /* PlayDataACellView.xib */,
 				FDC66FA221D14E290094F322 /* ProfileCellView.xib */,
 				FD262FDE220D5E1200C58BA7 /* OmikujiCellView.xib */,
@@ -1130,7 +1130,7 @@
 				FD4C4C6F21AEC44F00ABCE53 /* jubiinfoText.png in Resources */,
 				FDC48F5E220B4D6F0032602B /* bronzeCrown.png in Resources */,
 				FDC66FA321D14E290094F322 /* ProfileCellView.xib in Resources */,
-				FD46C0BB2211A44000632493 /* DailyChallengeCellView.xib in Resources */,
+				FD46C0BB2211A44000632493 /* DailyChallengeMusicCellView.xib in Resources */,
 				FDC66FA521D152DF0094F322 /* MusicCellSectionLineView.xib in Resources */,
 				FD262FF0220D60D800C58BA7 /* omikuji01.png in Resources */,
 				FDC66FA921D175270094F322 /* RankDataGraphCellView.xib in Resources */,
@@ -1184,7 +1184,7 @@
 				FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */,
 				FDE87D0721F3354B00E74CDF /* MusicSortModeViewController.swift in Sources */,
 				FDA5EB2821CAA4DE00D41143 /* ErrorRecord.swift in Sources */,
-				FD46C0BD2211C3BF00632493 /* DailyChallengeCellView.swift in Sources */,
+				FD46C0BD2211C3BF00632493 /* DailyChallengeMusicCellView.swift in Sources */,
 				FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */,
 				FD262FF3220D629400C58BA7 /* OmikujiCellView.swift in Sources */,
 				FDC0141A21BE0BBB0070EC37 /* RankDataGraphCellView.swift in Sources */,

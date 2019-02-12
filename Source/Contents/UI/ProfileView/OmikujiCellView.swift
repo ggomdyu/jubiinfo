@@ -20,7 +20,7 @@ public class OmikujiCellView : LazyInitializedView {
     @IBOutlet weak var m_randomPickedMusicNameLabel: UILabel!
     @IBOutlet weak var m_randomPickedMusicArtistLabel: UILabel!
 
-/**@section Overrided method */
+    /**@section Overrided method */
     override public func initialize() {
         super.initialize()
         
@@ -30,28 +30,10 @@ public class OmikujiCellView : LazyInitializedView {
     override public func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
-        var omikujiDataJsonPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        omikujiDataJsonPath.appendPathComponent("omikujiData.json")
+        let tabGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTouchView))
+        self.addGestureRecognizer(tabGestureRecognizer)
         
-        let optOmikujiData = self.parseOmikujiData(omikujiDataJsonPath: omikujiDataJsonPath)
-        if let omikujiData = optOmikujiData, omikujiData.omikujiResetTime > Timestamp(Date().timeIntervalSince1970) {
-            m_contentsView.alpha = 1.0
-            m_omikujiImageView1.isHidden = true
-            m_omikujiImageView2.isHidden = true
-            
-            let optRandomPickedMusicData = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.first { (item: MusicScoreData) -> Bool in
-                return item.id == omikujiData.randomPickedMusicId
-            }
-            if let randomPickedMusicData = optRandomPickedMusicData {
-                self.prepareRandomMusicPickResultView(randomPickedMusicData: randomPickedMusicData)
-            }
-        }
-        else {
-            let tabGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTouchView))
-            self.addGestureRecognizer(tabGestureRecognizer)
-            
-            m_contentsView.animate(.fadeIn)
-        }
+        m_contentsView.animate(.fadeIn)
     }
     
     open override func getEventNameRequiredToLazyPrepare() -> String {
@@ -59,24 +41,6 @@ public class OmikujiCellView : LazyInitializedView {
     }
     
 /**@section Method */
-    private func parseOmikujiData(omikujiDataJsonPath: URL) -> (omikujiResetTime: Timestamp, randomPickedMusicId: MusicId)? {
-        var optJsonDict: [String: Any]?
-        do {
-            let jsonData = try Data(contentsOf: omikujiDataJsonPath)
-            optJsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any]
-        }
-        catch {}
-        
-        guard let jsonDict = optJsonDict else {
-            return nil
-        }
-        
-        let omikujiResetTime = jsonDict["resetTime"] as? Timestamp ?? 0
-        let randomPickedMusicId = jsonDict["musicId"] as? MusicId ?? 0
-        
-        return (omikujiResetTime, randomPickedMusicId)
-    }
-    
     private func prepareRandomMusicPickResultView(randomPickedMusicData: MusicScoreData) {
         let musicCoverImageUrl = "https://p.eagate.573.jp/game/jubeat/festo/images/top/jacket/\(randomPickedMusicData.id / 10000000)/id\(randomPickedMusicData.id).gif"
         downloadImageAsync(imageUrl: musicCoverImageUrl, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
@@ -92,17 +56,6 @@ public class OmikujiCellView : LazyInitializedView {
         m_randomPickedMusicArtistLabel.text = randomPickedMusicData.artistName
     }
     
-    private func saveOmikujiDataToJson(randomPickedMusicData: MusicScoreData) {
-        var omikujiDataJsonPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        omikujiDataJsonPath.appendPathComponent("omikujiData.json")
-        
-        let omikujiDataJson = "{\"resetTime\":\(Timestamp(Date.tomorrow.timeIntervalSince1970)),\"musicId\":\(randomPickedMusicData.id)}"
-        do {
-            try omikujiDataJson.write(to: omikujiDataJsonPath, atomically: false, encoding: .utf8)
-        }
-        catch {}
-    }
-
 /**@section Event handler */
     @objc private func onTouchView(_ sender: Any) {
         if m_isOmikujiShaking {
@@ -144,7 +97,19 @@ public class OmikujiCellView : LazyInitializedView {
     private func onFinishOmikujiShakeAnim() {
         let randomPickedMusicData = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.randomElement()!
         self.prepareRandomMusicPickResultView(randomPickedMusicData: randomPickedMusicData)
+    }
+    
+    @IBAction func onRetryOmikuji(_ sender: Any) {
+        m_omikujiImageView1.isHidden = false
+        m_omikujiImageView1.alpha = 0.0
+        m_omikujiImageView2.isHidden = true
+        m_omikujiImageView2.alpha = 1.0
+        m_randomMusicPickResultView.animate(.fadeOut)
         
-        self.saveOmikujiDataToJson(randomPickedMusicData: randomPickedMusicData)
+        m_tickTimer.initialize(1.0, nil) { [weak self] in
+            self?.m_omikujiImageView1.animate(.fadeIn)
+            
+            self?.m_isOmikujiShaking = false
+        }
     }
 }

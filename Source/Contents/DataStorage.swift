@@ -71,14 +71,29 @@ public class GlobalDataStorage {
 public class UserData {
 /**@section Class */
     public class TopPageCache {
+        public struct DailyChallengeMusicData {
+        /**@section Variable */
+            public var coverImageUrl: String { return "https://p.eagate.573.jp/game/jubeat/festo/images/top/jacket/\(id / 10000000)/id\(id).gif" }
+            public let id: MusicId
+            public let name: String
+            public let artistName: String
+            
+        /**@section Constructor */
+//            public init() {
+//                self.id = 0
+//                self.name = ""
+//                self.artistName = ""
+//            }
+        }
+        
     /**@section Variable */
-        public let dailyRecommendedMusicId: MusicId
-        public let dailyFullComboChallengeMusicId: MusicId
+        public let dailyRecommendedChallengeMusicData: DailyChallengeMusicData?
+        public let dailyFullComboChallengeMusicData: DailyChallengeMusicData?
         
     /**@section Constructor */
-        public init(_ dailyRecommendedMusicId: MusicId, _ dailyFullComboChallengeMusicId: MusicId) {
-            self.dailyRecommendedMusicId = dailyRecommendedMusicId
-            self.dailyFullComboChallengeMusicId = dailyFullComboChallengeMusicId
+        public init(dailyRecommendedChallengeMusicData: DailyChallengeMusicData?, dailyFullComboChallengeMusicData: DailyChallengeMusicData?) {
+            self.dailyRecommendedChallengeMusicData = dailyRecommendedChallengeMusicData
+            self.dailyFullComboChallengeMusicData = dailyFullComboChallengeMusicData
         }
     }
     

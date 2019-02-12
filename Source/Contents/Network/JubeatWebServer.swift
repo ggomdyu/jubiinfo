@@ -383,6 +383,18 @@ public class JubeatWebServer {
         }
     }
     
+    public static func requestStartFullComboChallenge(onRequestComplete: @escaping (Bool) -> Void) {
+        httpRequestAsync(
+            queue: DispatchQueue.global(),
+            url: "https://p.eagate.573.jp/game/jubeat/festo/top/index.html?wfc=1",
+            method: HTTPMethod.get,
+            host: "p.eagate.573.jp",
+            referer: "",
+            onRequestComplete: { (isRequestSucceed: Bool, response: String?) in
+                onRequestComplete(isRequestSucceed)
+        })
+    }
+    
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
     public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
         self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, response: String?) in
@@ -905,13 +917,14 @@ extension JubeatWebServer {
         var iterIndex: String.Index = response.startIndex
         
         let divIdArray = ["today_osusume", "fullcon"]
-        var parsedMusicIdArray = [-1, -1]
+        var dailyChallengeMusicDataArray: [UserData.TopPageCache.DailyChallengeMusicData?] = [nil, nil]
         for i in 0..<2 {
             let divId = divIdArray[i]
             guard let musicElemFinder = response.range(of: divId, options: String.CompareOptions.caseInsensitive, range: iterIndex..<response.endIndex) else {
                 break
             }
             
+            // Parse music id
             guard let musicIdStartIndexFinder = response.range(of: "/id", options: String.CompareOptions.caseInsensitive, range: musicElemFinder.upperBound..<response.endIndex) else {
                 break
             }
@@ -923,13 +936,31 @@ extension JubeatWebServer {
             guard let musicId = MusicId(response[musicIdStartIndexFinder.upperBound..<musicIdEndIndexFinder.lowerBound]) else {
                 break
             }
+
+            // Parse music name
+            guard let musicNameStartIndexFinder = response.range(of: "music_info\">", options: String.CompareOptions.caseInsensitive, range: musicIdEndIndexFinder.upperBound..<response.endIndex) else {
+                break
+            }
             
-            parsedMusicIdArray[i] = musicId
+            guard let musicNameEndIndexFinder = response.range(of: "<br>", options: String.CompareOptions.caseInsensitive, range: musicIdStartIndexFinder.upperBound..<response.endIndex) else {
+                break
+            }
+            
+            let musicName = String(response[musicNameStartIndexFinder.upperBound..<musicNameEndIndexFinder.lowerBound])
+            
+            // Parse music artist name
+            guard let musicArtistNameEndIndexFinder = response.range(of: "</div>", options: String.CompareOptions.caseInsensitive, range: musicNameEndIndexFinder.upperBound..<response.endIndex) else {
+                break
+            }
+            
+            let musicArtistName = String(response[musicNameEndIndexFinder.upperBound..<musicArtistNameEndIndexFinder.lowerBound])
+            
+            dailyChallengeMusicDataArray[i] = UserData.TopPageCache.DailyChallengeMusicData(id: musicId, name: musicName, artistName: musicArtistName)
             
             iterIndex = musicIdEndIndexFinder.upperBound
         }
         
-        return UserData.TopPageCache(parsedMusicIdArray[0], parsedMusicIdArray[1])
+        return UserData.TopPageCache(dailyRecommendedChallengeMusicData: dailyChallengeMusicDataArray[0], dailyFullComboChallengeMusicData: dailyChallengeMusicDataArray[1])
     }
     
     private static func parseMyPlayDataPageHtml(response: String) -> UserData.MyPlayDataPageCache? {

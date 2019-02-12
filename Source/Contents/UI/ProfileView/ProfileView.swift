@@ -24,13 +24,13 @@ class ProfileView : CustomStackView {
         self.addMargin(margin: 15.0)
         self.prepareProfileCell()
         self.addMargin(margin: 10.0)
-        self.preparePlayDataACell()
+        self.prepareDailyCallengeCell()
         self.addMargin(margin: 10.0)
-        self.prepareOmikujiCell()
+        self.preparePlayDataACell()
         self.addMargin(margin: 10.0)
         self.prepareRankDataGraphCell()
         self.addMargin(margin: 10.0)
-        self.prepareDailyCallengeCell()
+        self.prepareOmikujiCell()
         self.addMargin(margin: 15.0)
     }
     
@@ -108,7 +108,7 @@ class ProfileView : CustomStackView {
     }
     
     private func prepareDailyCallengeCell() {
-        let view = UINib(nibName: "DailyChallengeCellView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! DailyChallengeCellView
+        let view = UINib(nibName: "DailyChallengeMusicCellView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! DailyChallengeMusicCellView
         view.initialize()
         
         self.addView(view: view)
