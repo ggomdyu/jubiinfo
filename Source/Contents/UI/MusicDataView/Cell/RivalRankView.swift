@@ -21,7 +21,7 @@ public class RivalRankView : LazyInitializedView {
     }
     
     private func getRivalMusicScoreDataCache(musicScoreData: MusicScoreData, rivalUserData: UserData) -> MusicScoreData? {
-        return rivalUserData.musicScoreDataCaches.first(where: { (item: MusicScoreData) -> Bool in
+        return rivalUserData.musicScoreDataCaches.value.first(where: { (item: MusicScoreData) -> Bool in
             return musicScoreData.id == item.id && musicScoreData.difficulty == item.difficulty
         })
     }
@@ -63,7 +63,7 @@ public class RivalRankView : LazyInitializedView {
                             }
                             else {
                                 rivalRankCellDatas.append((musicScoreDatas[musicScoreData.difficulty.rawValue].score, isProfilePrivated, simpleRivalData.nickname))
-                                rivalUserData.musicScoreDataCaches.append(contentsOf: musicScoreDatas)
+                                rivalUserData.musicScoreDataCaches.value.append(contentsOf: musicScoreDatas)
                             }
                             
                             requestCompleteCount += 1

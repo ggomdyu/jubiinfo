@@ -20,10 +20,10 @@ public class MusicDataView : CustomStackView {
     private var m_minStackViewHeight: CGFloat = 0.0
     
 /**@section Method */
-    public func initialize(musicScoreDatas: [MusicScoreData], musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
+    public func initialize(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
         let searchBarView = self.superview!.viewWithTag(1914)
         let searchBarViewHeight = (searchBarView != nil ? searchBarView!.frame.height : 69)
-        m_minStackViewHeight = (self.superview!.frame.bounds.height - searchBarViewHeight) + 30
+//        m_minStackViewHeight = (self.superview!.frame.bounds.height - searchBarViewHeight) + 30
         
         m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
         
@@ -154,12 +154,16 @@ public class MusicDataView : CustomStackView {
         return m_optMusicDataPageLoader?.isAllPageLoaded() ?? false
     }
     
+    public func getLoadedPageIndex() -> Int {
+        return m_optMusicDataPageLoader!.getLoadedPageIndex()
+    }
+    
     public func getCurrentMusicSortMode() -> MusicSortMode {
-        return m_optMusicDataPageLoader?.getCurrentMusicSortMode() ?? MusicSortMode.Level
+        return m_optMusicDataPageLoader!.getCurrentMusicSortMode()
     }
     
     public func getCurrentMusicSortOrder() -> MusicSortOrder {
-        return m_optMusicDataPageLoader?.getCurrentMusicSortOrder() ?? MusicSortOrder.Descending
+        return m_optMusicDataPageLoader!.getCurrentMusicSortOrder()
     }
     
 /**@section Event handler */

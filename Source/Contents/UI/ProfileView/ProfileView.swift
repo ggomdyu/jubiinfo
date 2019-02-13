@@ -24,13 +24,13 @@ class ProfileView : CustomStackView {
         self.addMargin(margin: 15.0)
         self.prepareProfileCell()
         self.addMargin(margin: 10.0)
+        self.prepareOmikujiCell()
+        self.addMargin(margin: 10.0)
         self.prepareDailyCallengeCell()
         self.addMargin(margin: 10.0)
         self.preparePlayDataACell()
         self.addMargin(margin: 10.0)
         self.prepareRankDataGraphCell()
-        self.addMargin(margin: 10.0)
-        self.prepareOmikujiCell()
         self.addMargin(margin: 15.0)
     }
     
@@ -68,9 +68,9 @@ class ProfileView : CustomStackView {
     }
     
     private func requestMyMusicScoreData(serverMMSDChecksum: Int) {
-        JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: [MusicScoreData]?) in
+        JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
             if isRequestSucceed {
-                GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas!
+                GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
                 
                 runTaskInMainThread {
                     EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)

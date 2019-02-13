@@ -27,3 +27,11 @@ public func easeInOutBack(t: Double) -> Double {
         return 1 + t2 * t2 * 2 * (7 * t2 + 2.5);
     }
 }
+
+public func easeOutBounce(t: Double) -> Double {
+    return 1 - pow( 2, -6 * t ) * abs( cos( t * PI * 3.5 ) );
+}
+
+public func easeOutLowBounce(t: Double) -> Double {
+    return 1 - pow( 2, -12 * t ) * abs( cos( t * PI * 3.5 ) );
+}

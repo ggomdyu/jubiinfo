@@ -482,7 +482,7 @@ public class JubeatWebServer {
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
-    public static func requestMyMusicScoreData(serverMMSDChecksum: Int, onRequestComplete: @escaping (Bool, [MusicScoreData]?) -> Void) {
+    public static func requestMyMusicScoreData(serverMMSDChecksum: Int, onRequestComplete: @escaping (Bool, Box<[MusicScoreData]>) -> Void) {
         let isOldChecksum = isMMSDChecksumOld(serverMMSDChecksum: serverMMSDChecksum)
         
         // mmsd is abbreviation of 'My music score data'!!
@@ -492,7 +492,7 @@ public class JubeatWebServer {
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
         if isOldChecksum {
-            var newMusicScoreDatas = [MusicScoreData] ()
+            let newMusicScoreDatas = Box<[MusicScoreData]> ([])
             
             // Start to request music score datas.
             var musicScoreDataRequestCompleteCount = 0;
@@ -502,7 +502,7 @@ public class JubeatWebServer {
                     self.requestMusicScoreData(rivalId: "", pageIndex: i) { (isRequestSucceed: Bool, musicScoreDatas2: [MusicScoreData]?) in
                         if isRequestSucceed {
                             runTaskInMainThread {
-                                newMusicScoreDatas.append(contentsOf: musicScoreDatas2!)
+                                newMusicScoreDatas.value.append(contentsOf: musicScoreDatas2!)
                                 musicScoreDataRequestCompleteCount += 1
                             }
                         }
@@ -512,9 +512,9 @@ public class JubeatWebServer {
                 }
             }
             
-            var oldMusicScoreDatas: [MusicId: [MusicScoreData]]! = nil
+            var oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]>! = nil
             DispatchQueue.global().async {
-                oldMusicScoreDatas = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath) ?? [MusicId: [MusicScoreData]] ()
+                oldMusicScoreDatas = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
             }
             
             // Wait until all music data request have completed.
@@ -524,14 +524,14 @@ public class JubeatWebServer {
             var mmsdJson = "{"
             mmsdJson.reserveCapacity(65536)
             
-            for i in 0..<(newMusicScoreDatas.count / 3) {
+            for i in 0..<(newMusicScoreDatas.value.count / 3) {
                 let musicScoreDataIndex = i * 3
-                if let oldMusicScoreDatas = oldMusicScoreDatas[newMusicScoreDatas[musicScoreDataIndex].id] {
+                if let oldMusicScoreDatas = oldMusicScoreDatas.value[newMusicScoreDatas.value[musicScoreDataIndex].id] {
                     mmsdJson += "\"\(oldMusicScoreDatas[0].id)\":[\"\(oldMusicScoreDatas[0].name)\","
                     
                     for j in 0...2 {
                         let oldMusicScoreData = oldMusicScoreDatas[j]
-                        let newMusicScoreData = newMusicScoreDatas[musicScoreDataIndex + j]
+                        let newMusicScoreData = newMusicScoreDatas.value[musicScoreDataIndex + j]
                         
                         mmsdJson += "[\(newMusicScoreData.score),\(newMusicScoreData.isFullCombo)"
                         
@@ -562,10 +562,10 @@ public class JubeatWebServer {
                 else {
                     let currUnixTime = Timestamp(Date().timeIntervalSince1970)
                     
-                    mmsdJson += "\"\(newMusicScoreDatas[musicScoreDataIndex].id)\":[\"\(newMusicScoreDatas[musicScoreDataIndex].name)\","
+                    mmsdJson += "\"\(newMusicScoreDatas.value[musicScoreDataIndex].id)\":[\"\(newMusicScoreDatas.value[musicScoreDataIndex].name)\","
                     
                     for j in 0...2 {
-                        let newMusicScoreData = newMusicScoreDatas[musicScoreDataIndex + j]
+                        let newMusicScoreData = newMusicScoreDatas.value[musicScoreDataIndex + j]
                         
                         mmsdJson += "[\(newMusicScoreData.score),\(newMusicScoreData.isFullCombo)"
                         if newMusicScoreData.score != -1 {
@@ -594,7 +594,7 @@ public class JubeatWebServer {
         else {
             let musicScoreDatas = self.parseMMSDCacheArray(mmsdCachePath: mmsdCachePath)
             
-            onRequestComplete(musicScoreDatas.count > 0, musicScoreDatas)
+            onRequestComplete(musicScoreDatas.value.count > 0, musicScoreDatas)
         }
     }
     
@@ -1162,16 +1162,16 @@ extension JubeatWebServer {
         return musicScoreDatas
     }
     
-    private static func parseMMSDCacheArray(mmsdCachePath: URL) -> [MusicScoreData] {
-        var ret = [MusicScoreData] ()
+    private static func parseMMSDCacheArray(mmsdCachePath: URL) -> Box<[MusicScoreData]> {
+        let ret = Box<[MusicScoreData]> ([])
         self.parseMMSDCache(mmsdCachePath: mmsdCachePath) { (parseResult: MusicScoreData) in
-            ret.append(parseResult)
+            ret.value.append(parseResult)
         }
         return ret
     }
     
-    private static func parseMMSDCacheDictionary(mmsdCachePath: URL) -> [MusicId: [MusicScoreData]] {
-        var ret = [MusicId: [MusicScoreData]] ()
+    private static func parseMMSDCacheDictionary(mmsdCachePath: URL) -> Box<[MusicId: [MusicScoreData]]> {
+        let ret = Box<[MusicId: [MusicScoreData]]> ([MusicId: [MusicScoreData]] ())
         
         var musicScoreDatas = [MusicScoreData] ()
         musicScoreDatas.reserveCapacity(3)
@@ -1180,7 +1180,7 @@ extension JubeatWebServer {
             musicScoreDatas.append(parseResult)
             
             if musicScoreDatas.count >= 3 {
-                ret.updateValue(musicScoreDatas, forKey: musicScoreDatas[0].id)
+                ret.value.updateValue(musicScoreDatas, forKey: musicScoreDatas[0].id)
                 musicScoreDatas.removeAll()
             }
         }

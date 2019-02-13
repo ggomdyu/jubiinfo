@@ -206,7 +206,7 @@ public class UserData {
 /**@section Variable */
     public var rivalId: String
     public var isProfilePrivated: Bool
-    public var musicScoreDataCaches = [MusicScoreData] ()
+    public var musicScoreDataCaches = Box<[MusicScoreData]> ([])
     public var playDataPageCache: PlayDataPageCache?
     public var rankDataPageCache: RankDataPageCache?
     public var rivalListPageCache: RivalListPageCache?
@@ -218,7 +218,7 @@ public class MyUserData : UserData {
     public init(rivalId: String = "", playDataPageCache: PlayDataPageCache? = nil, rankDataPageCache: RankDataPageCache? = nil) {
         super.init(rivalId: rivalId, playDataPageCache: playDataPageCache, rankDataPageCache: rankDataPageCache)
         
-        self.musicScoreDataCaches.reserveCapacity(2714)
+        self.musicScoreDataCaches.value.reserveCapacity(2714)
     }
 }
 

@@ -30,7 +30,7 @@ public enum MusicDataVisibleOptionFlag: Int {
 
 public class MusicScoreDataPageLoader {
 /**@section Variable */
-    private var m_musicScoreDatas: [MusicScoreData]
+    private var m_musicScoreDatas: Box<[MusicScoreData]>
     private var m_currMusicSortMode = MusicSortMode.None
     private var m_currMusicSortOrder = MusicSortOrder.None
     private let m_musicDataCountPerPage = 25
@@ -39,7 +39,7 @@ public class MusicScoreDataPageLoader {
     private var m_isAllPageLoaded = false
     
 /**@section Constructor */
-    public init(musicScoreDatas: [MusicScoreData], musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
+    public init(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
         m_musicScoreDatas = musicScoreDatas
         
         self.sort(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
@@ -56,23 +56,23 @@ public class MusicScoreDataPageLoader {
         m_currMusicSortMode = musicSortMode
         m_currMusicSortOrder = musicSortOrder
         
-        if m_musicScoreDatas.count <= 0 {
+        if m_musicScoreDatas.value.count <= 0 {
             return
         }
         
         let isAscendingSort = (musicSortOrder == .Ascending)
         switch musicSortMode {
         case .Level:
-            sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: &m_musicScoreDatas)
+            sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break
         case .Name:
-            sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: &m_musicScoreDatas)
+            sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break
         case .Score:
-            sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: &m_musicScoreDatas)
+            sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break;
         case .Artist:
-            sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: &m_musicScoreDatas)
+            sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break
         default:
             break
@@ -81,24 +81,28 @@ public class MusicScoreDataPageLoader {
     
     public func loadNextPageCells() -> ArraySlice<MusicScoreData>? {
         let musicScoreDataStartIndex = m_musicDataCountPerPage * m_loadedPageIndex
-        if musicScoreDataStartIndex >= m_musicScoreDatas.count {
+        if musicScoreDataStartIndex >= m_musicScoreDatas.value.count {
             return nil
         }
         
         var musicScoreDataEndIndex = m_musicDataCountPerPage * (m_loadedPageIndex + 1)
-        if musicScoreDataEndIndex >= m_musicScoreDatas.count {
-            musicScoreDataEndIndex = m_musicScoreDatas.count
+        if musicScoreDataEndIndex >= m_musicScoreDatas.value.count {
+            musicScoreDataEndIndex = m_musicScoreDatas.value.count
             m_isAllPageLoaded = true
         }
         
         m_loadedPageIndex += 1
         
-        return m_musicScoreDatas[musicScoreDataStartIndex..<musicScoreDataEndIndex]
+        return m_musicScoreDatas.value[musicScoreDataStartIndex..<musicScoreDataEndIndex]
     }
     
     public func resetLoadedPage() {
         m_loadedPageIndex = MusicScoreDataPageLoader.m_loadStartPageIndex
         m_isAllPageLoaded = false
+    }
+    
+    public func getLoadedPageIndex() -> Int {
+        return m_loadedPageIndex
     }
     
     public func isAllPageLoaded() -> Bool {
@@ -113,9 +117,9 @@ public class MusicScoreDataPageLoader {
         return m_currMusicSortOrder
     }
     
-    private func sortByLevel(isAscendingSort: Bool, musicScoreDatas: inout [MusicScoreData]) {
+    private func sortByLevel(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
         // Sort music datas by level.
-        musicScoreDatas.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.level == rhs.level {
                 if lhs.id == rhs.id {
                     return (lhs.difficulty.rawValue < rhs.difficulty.rawValue) == isAscendingSort
@@ -124,11 +128,11 @@ public class MusicScoreDataPageLoader {
             }
             
             return (lhs.level < rhs.level) == isAscendingSort
-        }
+        })
     }
     
-    private func sortByScore(isAscendingSort: Bool, musicScoreDatas: inout [MusicScoreData]) {
-        musicScoreDatas.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+    private func sortByScore(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
+        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.score == rhs.score {
                 if lhs.id == rhs.id {
                     return lhs.difficulty.rawValue > rhs.difficulty.rawValue
@@ -138,28 +142,28 @@ public class MusicScoreDataPageLoader {
             }
             
             return (lhs.score < rhs.score) == isAscendingSort
-        }
+        })
     }
     
     /**@brief   Sorts music data by music name that transformed to romaji. */
-    private func sortByName(isAscendingSort: Bool, musicScoreDatas: inout [MusicScoreData]) {
-        musicScoreDatas.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+    private func sortByName(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
+        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
             
             return (lhs.uppercasedRomajiName < rhs.uppercasedRomajiName) == isAscendingSort
-        }
+        })
     }
     
     /**@brief   Sorts music data by artist name that transformed to romaji. */
-    private func sortByArtistName(isAscendingSort: Bool, musicScoreDatas: inout [MusicScoreData]) {
-        musicScoreDatas.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+    private func sortByArtistName(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
+        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
             
             return (lhs.uppercasedRomajiArtistName < rhs.uppercasedRomajiArtistName) == isAscendingSort
-        }
+        })
     }
 }

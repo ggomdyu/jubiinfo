@@ -250,14 +250,14 @@ public class MusicCellView : UIView {
             let myUserData = GlobalDataStorage.instance.queryMyUserData()
             let myRivalId = myUserData.rivalId
             
-            let optDetailDataInitTargetIndex = myUserData.musicScoreDataCaches.firstIndex { (item: MusicScoreData) -> Bool in return m_musicScoreData.id == item.id }
+            let optDetailDataInitTargetIndex = myUserData.musicScoreDataCaches.value.firstIndex { (item: MusicScoreData) -> Bool in return m_musicScoreData.id == item.id }
             guard let detailDataInitTargetIndex = optDetailDataInitTargetIndex else {
                 return
             }
             
-            let basicMusicScoreData = myUserData.musicScoreDataCaches[detailDataInitTargetIndex]
-            let advancedMusicScoreData = myUserData.musicScoreDataCaches[detailDataInitTargetIndex + 1]
-            let extremeMusicScoreData = myUserData.musicScoreDataCaches[detailDataInitTargetIndex + 2]
+            let basicMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex]
+            let advancedMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 1]
+            let extremeMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 2]
             JubeatWebServer.requestDetailMusicScoreData(rivalId: myRivalId, musicId: m_musicScoreData.id, destBasicMusicScoreData: basicMusicScoreData, destAdvancedMusicScoreData: advancedMusicScoreData, extremeAdvancedMusicScoreData: extremeMusicScoreData) { [weak self] (isRequestSucceed: Bool, isParseSucceed: Bool) in
                 runTaskInMainThread {
                     EventDispatcher.instance.dispatchEvent(eventType: "requestDetailMusicScoreDataComplete", eventParam: self?.m_musicScoreData)

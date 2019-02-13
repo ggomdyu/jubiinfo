@@ -26,10 +26,38 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     private var m_isDeleteKeyEntered = false
     private var m_optScrollDetectTimer: Timer?
     
-/**@section Overrided method */
-    public override func viewDidLoad() {
-        super.viewDidLoad()
+/**@section Method */
+    public static func show(currentViewController: UIViewController, musicId: MusicId) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
+        let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
+        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
+        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
+        
+        navigationDrawerController.isMotionEnabled = true
+        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        
+        musicDataViewController.initialize(musicId: musicId)
+        
+        currentViewController.present(navigationDrawerController, animated: true)
+    }
+    
+    public static func show(currentViewController: UIViewController) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
+        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
+        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
+        
+        navigationDrawerController.isMotionEnabled = true
+        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        
+        musicDataViewController.initialize()
+        
+        currentViewController.present(navigationDrawerController, animated: true)
+    }
+    
+    public func initialize() {
         self.prepareScrollView()
         self.prepareSearchBar()
         
@@ -41,18 +69,26 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
     }
     
-/**@section Method */
-    public static func show(currentViewController: UIViewController) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    public func initialize(musicId: MusicId) {
+        self.prepareScrollView()
+        self.prepareSearchBar()
         
-        let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
-        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
-        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
+        // Initialize MusicDataView
+        m_musicDataSearchResultViewBottomConstraint.isActive = false
         
-        navigationDrawerController.isMotionEnabled = true
-        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: .Level, musicSortOrder: .Descending)
         
-        currentViewController.present(navigationDrawerController, animated: true)
+        self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
+        
+        // Initialize MusicDataSearchResultView
+        let musicScoreDatas = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
+        if let musicScoreData = musicScoreDatas.value.first(where: { (item: MusicScoreData) -> Bool in
+            return item.id == musicId
+        }) {
+            m_searchBar.text = musicScoreData.name
+        }
+        
+        self.searchMusicById(musicId: musicId)
     }
     
     private func prepareScrollView() {
@@ -89,6 +125,35 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         return m_optCurrActiveMusicDataView
     }
     
+    private func searchMusicByName(musicName: String) {
+        // If text field is empty, then return to initial view.
+        if musicName.isEmpty {
+            self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
+            return
+        }
+        
+        let currActiveMusicDataView = m_musicDataSearchResultView!
+        self.switchActiveMusicDataView(viewToActivate: currActiveMusicDataView, viewBottomConstraint: m_musicDataSearchResultViewBottomConstraint)
+        
+        let searchBarText = transformJapaneseToLatin(sourceStr: musicName).uppercased()
+        currActiveMusicDataView.initialize(musicScoreDatas: Box<[MusicScoreData]>(GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
+            return item.uppercasedRomajiName.contains(searchBarText)
+        })), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder())
+        
+        self.loadMoreMusicDataCell()
+    }
+    
+    private func searchMusicById(musicId: MusicId) {
+        let currActiveMusicDataView = m_musicDataSearchResultView!
+        self.switchActiveMusicDataView(viewToActivate: currActiveMusicDataView, viewBottomConstraint: m_musicDataSearchResultViewBottomConstraint)
+        
+        currActiveMusicDataView.initialize(musicScoreDatas: Box<[MusicScoreData]>(GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
+            return item.id == musicId
+        })), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder())
+        
+        self.loadMoreMusicDataCell()
+    }
+    
 /**@section Event handler */
     public func onChangeMusicSortMode(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Void {
         m_scrollView.setContentOffset(CGPoint.zero, animated: false)
@@ -105,21 +170,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         
         m_lastSearchedMusicName = searchBar.text
         
-        // If text field is empty, then return to initial view.
-        if searchBar.text!.isEmpty {
-            self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
-            return
-        }
-        
-        let currActiveMusicDataView = m_musicDataSearchResultView!
-        self.switchActiveMusicDataView(viewToActivate: currActiveMusicDataView, viewBottomConstraint: m_musicDataSearchResultViewBottomConstraint)
-        
-        let searchBarText = transformJapaneseToLatin(sourceStr: searchBar.text!).uppercased()
-        currActiveMusicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.filter({ (item: MusicScoreData) -> Bool in
-            return item.uppercasedRomajiName.contains(searchBarText)
-        }), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder())
-        
-        self.loadMoreMusicDataCell()
+        self.searchMusicByName(musicName: searchBar.text ?? "")
     }
     
     public func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -137,7 +188,8 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
         
         if (prevActiveMusicDataViewSortMode != m_musicDataView.getCurrentMusicSortMode()) ||
-           (prevActiveMusicDataViewSortOrder != m_musicDataView.getCurrentMusicSortOrder()) {
+           (prevActiveMusicDataViewSortOrder != m_musicDataView.getCurrentMusicSortOrder() ||
+            m_musicDataView.getLoadedPageIndex() == 0) {
             m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: prevActiveMusicDataViewSortMode, musicSortOrder: prevActiveMusicDataViewSortOrder)
             
             m_musicDataView.loadMoreMusicDataCell()

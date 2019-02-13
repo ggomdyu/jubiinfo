@@ -43,6 +43,7 @@
 		FDA98C8021C510E80060CBED /* MusicDataViewToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7F21C510E80060CBED /* MusicDataViewToolBarController.swift */; };
 		FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C9F21C6A93C0060CBED /* Algorithm.swift */; };
 		FDA98CA321C6CB8F0060CBED /* LazyInitializedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98CA221C6CB8F0060CBED /* LazyInitializedView.swift */; };
+		FDB4946C2213C5E8005B7C31 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4946B2213C5E8005B7C31 /* UIView.swift */; };
 		FDB5F4FB21B6D0DC00CC1F1C /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB5F4FA21B6D0DC00CC1F1C /* DataStorage.swift */; };
 		FDBFCF7821DB1CBC00D673B4 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBFCF7721DB1CBC00D673B4 /* Language.swift */; };
 		FDC0140821BD7E160070EC37 /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6293174321BA1E9F0038E016 /* Material.framework */; };
@@ -370,6 +371,7 @@
 		FDA98C7F21C510E80060CBED /* MusicDataViewToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataViewToolBarController.swift; sourceTree = "<group>"; };
 		FDA98C9F21C6A93C0060CBED /* Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
 		FDA98CA221C6CB8F0060CBED /* LazyInitializedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyInitializedView.swift; sourceTree = "<group>"; };
+		FDB4946B2213C5E8005B7C31 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		FDB5F4FA21B6D0DC00CC1F1C /* DataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
 		FDBFCF7721DB1CBC00D673B4 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		FDC0141921BE0BBB0070EC37 /* RankDataGraphCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankDataGraphCellView.swift; sourceTree = "<group>"; };
@@ -556,6 +558,7 @@
 			isa = PBXGroup;
 			children = (
 				FD263008220E786400C58BA7 /* Date.swift */,
+				FDB4946B2213C5E8005B7C31 /* UIView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1201,6 +1204,7 @@
 				FDDAFEEE21B846580044F5C0 /* PlayDataACellView.swift in Sources */,
 				FD7F64CE2199D62100E534E7 /* AppDelegate.swift in Sources */,
 				FDA98C7C21C4FD7A0060CBED /* MusicDataView.swift in Sources */,
+				FDB4946C2213C5E8005B7C31 /* UIView.swift in Sources */,
 				FDB5F4FB21B6D0DC00CC1F1C /* DataStorage.swift in Sources */,
 				FDCF4FAE21D761B000E3CC5A /* StringTransform.swift in Sources */,
 				FDA98CA321C6CB8F0060CBED /* LazyInitializedView.swift in Sources */,

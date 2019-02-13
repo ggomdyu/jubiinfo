@@ -33,7 +33,7 @@ public class EventDispatcher {
     
 /**@section Method */
     public func subscribeEvent(eventType: EventType, eventObserver: EventObserver) {
-        let eventObservers = m_eventSubscriberTable[eventType] ?? Box<[EventObserver]> (value: [EventObserver] ())
+        let eventObservers = m_eventSubscriberTable[eventType] ?? Box<[EventObserver]> ([EventObserver] ())
         eventObservers.value.append(eventObserver)
         
         m_eventSubscriberTable.updateValue(eventObservers, forKey: eventType)
