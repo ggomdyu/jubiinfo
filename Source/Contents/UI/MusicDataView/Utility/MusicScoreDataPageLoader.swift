@@ -162,6 +162,9 @@ public class MusicScoreDataPageLoader {
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
+            else if lhs.artistName.isEmpty && rhs.artistName.isEmpty {
+                return lhs.uppercasedRomajiName < rhs.uppercasedRomajiName
+            }
             
             return (lhs.uppercasedRomajiArtistName < rhs.uppercasedRomajiArtistName) == isAscendingSort
         })

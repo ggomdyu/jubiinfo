@@ -22,7 +22,7 @@ public class MusicCellView : UIView {
     @IBOutlet weak var m_fullComboLabel: UILabel!
     private var m_musicScoreData: MusicScoreData!
     private var m_onTouchCell: (() -> Void)?
-    private var m_optMusicCellDetailView: UIView?
+    private var m_optMusicCellDetailView: MusicCellDetailView?
     private var m_tickTimer = TickTimer()
     private var m_isViewExpanded = false
     
@@ -106,7 +106,7 @@ public class MusicCellView : UIView {
     }
     
     private func prepareMusicArtistNameLabel(musicScoreData: MusicScoreData) {
-        m_musicArtistNameLabel.text = musicScoreData.artistName
+        m_musicArtistNameLabel.text = musicScoreData.artistName.isEmpty ? "-" : musicScoreData.artistName
         
         // Fit the artist name label's width to the target's left bound.
         // The 'target' will be the full combo label if it is visible, otherwise, score label.
@@ -174,7 +174,12 @@ public class MusicCellView : UIView {
         })[0]
         UIView.animate(withDuration: 0.5, animations: {
             if let musicCellDetailView = self.m_optMusicCellDetailView {
-                heightConstraint.constant += musicCellDetailView.frame.height
+                if self.m_musicScoreData.isNotPlayedYet {
+                    heightConstraint.constant += musicCellDetailView.frame.height - musicCellDetailView.scoreGraphView.frame.height
+                }
+                else {
+                    heightConstraint.constant += musicCellDetailView.frame.height
+                }
                 
                 self.superview!.layoutIfNeeded()
             }
@@ -203,8 +208,13 @@ public class MusicCellView : UIView {
         // Do view shrink animation.
         UIView.animate(withDuration: 0.5, animations: {
             if let musicCellDetailView = self.m_optMusicCellDetailView {
-                heightConstraint.constant -= musicCellDetailView.frame.height
-                
+                if self.m_musicScoreData.isNotPlayedYet {
+                    heightConstraint.constant -= musicCellDetailView.frame.height - musicCellDetailView.scoreGraphView.frame.height
+                }
+                else {
+                    heightConstraint.constant -= musicCellDetailView.frame.height
+                }
+
                 self.superview!.layoutIfNeeded()
             }
         })

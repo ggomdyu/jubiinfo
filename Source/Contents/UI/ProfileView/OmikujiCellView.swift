@@ -60,7 +60,7 @@ public class OmikujiCellView : LazyInitializedView {
         })
         
         m_randomPickedMusicNameLabel.text = randomPickedMusicData.name
-        m_randomPickedMusicArtistLabel.text = randomPickedMusicData.artistName
+        m_randomPickedMusicArtistLabel.text = randomPickedMusicData.artistName.isEmpty ? "-" : randomPickedMusicData.artistName
     }
     
     private func playOmikujiBoxDropAnim() {

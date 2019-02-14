@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 class MusicCellDetailView : UIView {
+/**@section Property */
+    public var detailScoreView: MusicDetailScoreView { return m_detailScoreView }
+    public var scoreGraphView: MusicScoreGraphView { return m_scoreGraphView }
+    public var rivalRankView: RivalRankView { return m_rivalRankView }
+    
 /**@section Variable */
     @IBOutlet weak var m_detailScoreView: MusicDetailScoreView!
     @IBOutlet weak var m_detailScoreViewTrailingConstraint: NSLayoutConstraint!
