@@ -20,10 +20,10 @@ public class MusicDataView : CustomStackView {
     private var m_minStackViewHeight: CGFloat = 0.0
     
 /**@section Method */
-    public func initialize(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
+    public func initialize(musicScoreDatas: MusicScoreDataCaches, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
         let searchBarView = self.superview!.viewWithTag(1914)
         let searchBarViewHeight = (searchBarView != nil ? searchBarView!.frame.height : 69)
-//        m_minStackViewHeight = (self.superview!.frame.bounds.height - searchBarViewHeight) + 30
+        m_minStackViewHeight = (self.superview!.superview!.frame.bounds.height - searchBarViewHeight) + 30
         
         m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
         
@@ -124,11 +124,7 @@ public class MusicDataView : CustomStackView {
     
     private func addMusicCell(musicScoreData: MusicScoreData) {
         let view = UINib(nibName: "MusicCellView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! MusicCellView
-        view.initialize(musicScoreData: musicScoreData) {
-            var a = self.superview as! UIScrollView
-//            a.setContentOffset(CGPoint(x: 0.0, y: view.frame.origin.y + 40.0
-//            , animated: true)
-        }
+        view.initialize(musicScoreData: musicScoreData)
         
         self.addView(view: view)
         self.addMargin(margin: 1.5)

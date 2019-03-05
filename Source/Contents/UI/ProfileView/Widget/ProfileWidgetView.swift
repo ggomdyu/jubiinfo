@@ -1,5 +1,5 @@
 //
-//  ProfileCellView.swift
+//  ProfileWidgetView.swift
 //  jubiinfo
 //
 //  Created by ggomdyu on 10/12/2018.
@@ -10,23 +10,41 @@ import UIKit
 import Material
 import Motion
 
-class ProfileCellView : LazyInitializedView {
+class ProfileWidgetView : WidgetView {
 /**@section Variable */
     @IBOutlet weak var m_emblemImageView: UIImageView!
     @IBOutlet weak var m_rivalIdLabel: UILabel!
     @IBOutlet weak var m_nicknameLabel: UILabel!
     @IBOutlet weak var m_designationLabel: UILabel!
     @IBOutlet weak var m_contentsView: UIView!
+    private var m_optNicknameChangeEventObserver: EventObserver?
 
-/**@section Overrided method */
-    open override func initialize() {
+/**@section Property */
+    override var canBecomeFirstResponder: Bool { return true }
+
+    
+/**@section Variable */
+    public override var lazyInitializeEventName: String {
+        return "requestMyPlayDataPageCacheComplete"
+    }
+    
+/**@section Destructor */
+    deinit {
+        if let nicknameChangeEventObserver = m_optNicknameChangeEventObserver {
+            EventDispatcher.instance.unsubscribeEvent(eventType: self.lazyInitializeEventName, eventObserver: nicknameChangeEventObserver)
+            m_optNicknameChangeEventObserver = nil
+        }
+    }
+    
+/**@section Method */
+    public override func initialize() {
         super.initialize()
 
         m_contentsView.alpha = 0.0
         m_emblemImageView.alpha = 0.0
     }
     
-    open override func lazyInitialize(_ param: Any?) {
+    public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
         let myUserData = GlobalDataStorage.instance.queryMyUserData()
@@ -42,24 +60,28 @@ class ProfileCellView : LazyInitializedView {
         m_designationLabel.text = myPlayDataPageCache.designation
 
         m_contentsView.animate(.fadeIn)
+        
+        if m_optNicknameChangeEventObserver == nil {
+            let nicknameChangeEventObserver = EventObserver(releaseAfterDispatch: false, eventHandler: { [weak self] (param: Any?) in
+                self?.m_nicknameLabel.text = param as? String
+            })
+            m_optNicknameChangeEventObserver = nicknameChangeEventObserver
+            
+            EventDispatcher.instance.subscribeEvent(eventType: "requestNicknameChangeComplete", eventObserver: nicknameChangeEventObserver)
+        }
     }
     
-    open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyPlayDataPageCacheComplete"
-    }
-    
-    override var canBecomeFirstResponder: Bool { return true }
-
-/**@section Method */
     /**@brief   Download the emblem image and set it to the user cache. */
     private func prepareEmblemImage(myPlayDataPageCache: UserData.MyPlayDataPageCache) {
-        downloadImageAsync(imageUrl: myPlayDataPageCache.emblemImageUrl, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
-            if (isDownloadSucceed) {
-                myPlayDataPageCache.emblemImage = image
-                
-                runTaskInMainThread {
-                    self.m_emblemImageView.image = image
-                    self.m_emblemImageView.animate(.fadeIn)
+        downloadImageAsync(imageUrl: myPlayDataPageCache.emblemImageUrl, isWriteCache: true, isReadCache: false, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+            if isDownloadSucceed {
+                runTaskInMainThread { [weak self] () in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    strongSelf.m_emblemImageView.image = image
+                    strongSelf.m_emblemImageView.animate(.fadeIn)
                 }
             }
         })

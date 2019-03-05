@@ -33,7 +33,7 @@ public class MusicScoreDataPageLoader {
     private var m_musicScoreDatas: Box<[MusicScoreData]>
     private var m_currMusicSortMode = MusicSortMode.None
     private var m_currMusicSortOrder = MusicSortOrder.None
-    private let m_musicDataCountPerPage = 25
+    private let m_musicDataCountPerPage = 20
     private static let m_loadStartPageIndex = 0
     private var m_loadedPageIndex = MusicScoreDataPageLoader.m_loadStartPageIndex
     private var m_isAllPageLoaded = false
@@ -47,17 +47,12 @@ public class MusicScoreDataPageLoader {
     
 /**@section Method */
     /**@brief Sorts all the sroted music data through given algorithm. */
-    public func sort(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) {
-        let isSortModeChanged = (musicSortMode != m_currMusicSortMode) || (musicSortOrder != m_currMusicSortOrder)
-        if isSortModeChanged == false {
-            return
-        }
-        
+    public func sort(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Bool {
         m_currMusicSortMode = musicSortMode
         m_currMusicSortOrder = musicSortOrder
         
         if m_musicScoreDatas.value.count <= 0 {
-            return
+            return false
         }
         
         let isAscendingSort = (musicSortOrder == .Ascending)
@@ -77,6 +72,8 @@ public class MusicScoreDataPageLoader {
         default:
             break
         }
+        
+        return true
     }
     
     public func loadNextPageCells() -> ArraySlice<MusicScoreData>? {
@@ -119,7 +116,7 @@ public class MusicScoreDataPageLoader {
     
     private func sortByLevel(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
         // Sort music datas by level.
-        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.level == rhs.level {
                 if lhs.id == rhs.id {
                     return (lhs.difficulty.rawValue < rhs.difficulty.rawValue) == isAscendingSort
@@ -131,8 +128,8 @@ public class MusicScoreDataPageLoader {
         })
     }
     
-    private func sortByScore(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
-        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+    private func sortByScore(isAscendingSort: Bool, musicScoreDatas: MusicScoreDataCaches) {
+        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.score == rhs.score {
                 if lhs.id == rhs.id {
                     return lhs.difficulty.rawValue > rhs.difficulty.rawValue
@@ -146,8 +143,8 @@ public class MusicScoreDataPageLoader {
     }
     
     /**@brief   Sorts music data by music name that transformed to romaji. */
-    private func sortByName(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
-        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+    private func sortByName(isAscendingSort: Bool, musicScoreDatas: MusicScoreDataCaches) {
+        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
@@ -158,7 +155,7 @@ public class MusicScoreDataPageLoader {
     
     /**@brief   Sorts music data by artist name that transformed to romaji. */
     private func sortByArtistName(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
-        m_musicScoreDatas = Box<[MusicScoreData]>(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }

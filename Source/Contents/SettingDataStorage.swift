@@ -9,11 +9,35 @@
 import CoreData
 import Foundation
 
+/**@warn DO NOT CHANGE THE ORDER OF THIS ENUMERATOR!! */
+public enum WidgetType : Int {
+    case profile
+    case playData
+    case visitHistory
+    case rankDataGraphA
+    case rankDataGraphB
+    case omikuji
+    case dailyRecommended
+}
+
+public enum ThemeType : Int, CaseIterable {
+    case festo
+    case clan
+    case qubell
+    case prop
+    case saucerFulfill
+    case saucer
+    case copious
+    case knit
+    case ripples
+    case original
+}
+
 public class GlobalSettingDataStorage {
 /**@section Constructor */
     private init() {
         let lastErrorCode = ErrorCode.Success
-        lastErrorRecord = LastErrorRecord(lastErrorCode, lastErrorCode.description)
+        m_lastErrorRecord = LastErrorRecord(lastErrorCode, lastErrorCode.description)
     }
  
 /**@section Method */
@@ -30,16 +54,89 @@ public class GlobalSettingDataStorage {
     }
     
     public func setLastErrorRecord(_ lastErrorRecord: LastErrorRecord) {
-        self.lastErrorRecord = lastErrorRecord
+        self.m_lastErrorRecord = lastErrorRecord
     }
     
     public func setLastErrorRecord() -> LastErrorRecord {
-        return self.lastErrorRecord
+        return self.m_lastErrorRecord
+    }
+    
+    public func setActiveWidgetList(activeWidgetList: [WidgetType]) {
+        var activeWidgetDataJson = "["
+        for activeWidget in activeWidgetList {
+            activeWidgetDataJson += "{\"widgetType\":\(activeWidget.rawValue),"
+                activeWidgetDataJson += "\"offlineCache\":{}"
+            activeWidgetDataJson += "},"
+        }
+        activeWidgetDataJson.removeLast()
+        activeWidgetDataJson += "]"
+        
+        var activeWidgetDataJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        activeWidgetDataJsonPath.appendPathComponent("activeWidgetData.json")
+        do {
+            try activeWidgetDataJson.write(to: activeWidgetDataJsonPath, atomically: false, encoding: .utf8)
+        }
+        catch {}
+        
+        m_optCachedActiveWidgetTypes = activeWidgetList
+    }
+    
+    public func getActiveWidgetList() -> [WidgetType] {
+        if let cachedActiveWidgetTypes = m_optCachedActiveWidgetTypes {
+            return cachedActiveWidgetTypes
+        }
+        
+        var activeWidgetDataJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        activeWidgetDataJsonPath.appendPathComponent("activeWidgetData.json")
+        
+        do {
+            let activeWidgetDataJsonData = try Data(contentsOf: activeWidgetDataJsonPath)
+            let jsonDict = try JSONSerialization.jsonObject(with: activeWidgetDataJsonData, options: []) as! [[String: Any]]
+            
+            var parsedWidgetTypes: [WidgetType] = []
+            for widgetJsonObject in jsonDict {
+                guard let parsedWidgetType = WidgetType(rawValue: widgetJsonObject["widgetType"] as? Int ?? -1) else {
+                    continue
+                }
+                parsedWidgetTypes.append(parsedWidgetType)
+            }
+            
+            return parsedWidgetTypes
+        }
+        catch {}
+        
+        // If failed to load or parse widget data
+        let defaultWidgetTypes = [WidgetType.profile, WidgetType.playData, WidgetType.rankDataGraphA]
+        GlobalSettingDataStorage.instance.setActiveWidgetList(activeWidgetList: defaultWidgetTypes)
+        
+        return defaultWidgetTypes
+    }
+    
+    public func setActiveTheme(themeType: ThemeType, saveToFile: Bool = true) {
+        if saveToFile {
+            self.setConfig(key: "activeTheme", value: themeType.rawValue)
+        }
+        m_optCachedActiveThemeType = themeType
+    }
+    
+    public func getActiveTheme() -> ThemeType {
+        if let cachedActiveThemeType = m_optCachedActiveThemeType {
+            return cachedActiveThemeType
+        }
+        
+        guard let activeThemeType = self.getConfig(key: "activeTheme") else {
+            let defaultActiveTheme = ThemeType.festo
+            
+            self.setActiveTheme(themeType: defaultActiveTheme)
+            return defaultActiveTheme
+        }
+        
+        return ThemeType.init(rawValue: activeThemeType as! Int)!
     }
     
 /**@section Variable */
     public static let instance = GlobalSettingDataStorage()
-    private var lastErrorRecord: LastErrorRecord
-    // widget order
-    // music data
+    private var m_lastErrorRecord: LastErrorRecord
+    private var m_optCachedActiveWidgetTypes: [WidgetType]?
+    private var m_optCachedActiveThemeType: ThemeType?
 }

@@ -11,13 +11,17 @@ import UIKit
 import CoreGraphics
 import Alamofire
 
-public func saveCookies<T>(response: DataResponse<T>) {
-    guard let urlResponse = response.response else {
+#if DEBUG
+public var g_networkDelayInSeconds: Double = 0.0
+#endif
+
+public func saveCookies<T>(dataResponse: DataResponse<T>) {
+    guard let urlResponse = dataResponse.response else {
         return
     }
     
     let headerFields = urlResponse.allHeaderFields as! [String: String]
-    let url = response.response?.url
+    let url = dataResponse.response?.url
     
     let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url!)
     Alamofire.SessionManager.default.session.configuration.httpCookieStorage?.setCookies(cookies, for: url, mainDocumentURL: nil);
@@ -33,23 +37,74 @@ public func removeCookies(url: URL) {
     }
 }
 
-public func downloadImageAsync(imageUrl: String, onDownloadComplete: @escaping (Bool, UIImage?) -> Void) {
-    let queue = DispatchQueue.init(label: "com.imageDownload.queue")
+public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache: Bool, onDownloadComplete: @escaping (Bool, UIImage?) -> Void) {
     
-    Alamofire.request(imageUrl).responseData(queue: queue) { (data: DataResponse<Data>) in
-        print("[DEBUG]: Image download has been completed. (\(imageUrl))")
+    let isUseImageCaching = isWriteCache || isReadCache
+    if isUseImageCaching {
+        let imageFormatStartIndex = imageUrl.lastIndex(of: ".")!
+        let cachedImageFileName = "\(imageUrl.hash)\(imageUrl[imageFormatStartIndex..<imageUrl.endIndex])"
         
-        onDownloadComplete(true, UIImage(data: data.data!))
+        var imageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        imageCachePath.appendPathComponent("\(cachedImageFileName)")
+        
+        if isReadCache {
+            if FileManager.default.fileExists(atPath: imageCachePath.path) {
+                do
+                {
+                    let imageData = try Data(contentsOf: imageCachePath)
+                    if let image = UIImage(data: imageData) {
+                        onDownloadComplete(true, image)
+                        return
+                    }
+                } catch {}
+            }
+        }
+        
+        let queue = DispatchQueue.init(label: "com.imageDownload.queue")
+        
+        Alamofire.request(imageUrl).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
+            guard let data = dataResponse.data else {
+                print("[DEBUG]: Failed to download image. (\(imageUrl))")
+                onDownloadComplete(false, nil)
+                return
+            }
+            
+            print("[DEBUG]: Succeed to download image. (\(imageUrl))")
+            
+            if isWriteCache {
+                do {
+                    try data.write(to: URL(fileURLWithPath: imageCachePath.path))
+                }
+                catch {}
+            }
+            
+            onDownloadComplete(true, UIImage(data: data))
+        }
+    }
+    else {
+        let queue = DispatchQueue.init(label: "com.imageDownload.queue")
+        
+        Alamofire.request(imageUrl).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
+            guard let data = dataResponse.data else {
+                print("[DEBUG]: Failed to download image. (\(imageUrl))")
+                onDownloadComplete(false, nil)
+                return
+            }
+            
+            print("[DEBUG]: Succeed to download image. (\(imageUrl))")
+            
+            onDownloadComplete(true, UIImage(data: data))
+        }
     }
 }
 
-public func downloadImageSync(imageUrl: String, onDownloadComplete: @escaping (Bool, UIImage?) -> ()) {
+public func downloadImageSync(imageUrl: String, isWriteCache: Bool, isReadCache: Bool, onDownloadComplete: @escaping (Bool, UIImage?) -> ()) {
     
     var isDownloadSucceed: Bool = false
     var downloadedImage: UIImage? = nil
     
     var isImageDownloadPending: Bool = true
-    downloadImageAsync(imageUrl: imageUrl, onDownloadComplete: {(isDownloadSucceed2: Bool, downloadedImage2: UIImage?) -> () in
+    downloadImageAsync(imageUrl: imageUrl, isWriteCache: isWriteCache, isReadCache: isReadCache, onDownloadComplete: {(isDownloadSucceed2: Bool, downloadedImage2: UIImage?) -> () in
         
         downloadedImage = downloadedImage2
         isDownloadSucceed = isDownloadSucceed2
@@ -84,8 +139,20 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
             "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
             "Referer": referer,
             "Host": host
-        ]).responseData(queue: queue) { (response: DataResponse<Data>) in
-            httpRequestHandler(url: url, onRequestComplete: onRequestComplete, response: response)
+        ]).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
+#if DEBUG
+            if g_networkDelayInSeconds > 0.0 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + g_networkDelayInSeconds, execute: {
+                    print("Response wait complete!")
+                    httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
+                })
+            }
+            else {
+                httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
+            }
+#else
+            httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
+#endif
         }
 }
 
@@ -110,27 +177,52 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
             "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
             "Referer": referer,
             "Host": host
-        ]).responseString(queue: queue, encoding: nil) { (response: DataResponse<String>) in
-            httpRequestHandler(url: url, onRequestComplete: onRequestComplete, response: response)
+        ]).responseString(queue: queue, encoding: nil) { (dataResponse: DataResponse<String>) in
+#if DEBUG
+            if g_networkDelayInSeconds > 0.0 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + g_networkDelayInSeconds, execute: {
+                    print("Response wait complete!")
+                    httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
+                })
+            }
+            else {
+                httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
+            }
+#else
+            httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
+#endif
         }
 }
 
-private func httpRequestHandler<T>(url: String, onRequestComplete: @escaping (Bool, T?) -> Void, response: DataResponse<T>) {
-    saveCookies(response: response)
+//private typealias RequestFailedData = (
+//    url: String,
+//    method: HTTPMethod,
+//    host: String,
+//    referer: String,
+//    parameters: [String: String],
+//    onRequestComplete: (Bool, Data?) -> Void
+//)
+//
+//private var g_requestFailedDatas: [RequestFailedData] = []
+
+private func httpRequestHandler<T>(url: String, onRequestComplete: @escaping (Bool, T?) -> Void, dataResponse: DataResponse<T>) {
+    saveCookies(dataResponse: dataResponse)
     
-    let statusCode = response.response?.statusCode ?? 0
+    let statusCode = dataResponse.response?.statusCode ?? 0
     
-    let requestSucceed = statusCode == 200
+    let requestSucceed = (statusCode == 200) && (dataResponse.value != nil)
     if requestSucceed {
-        onRequestComplete(true, response.value!)
+        onRequestComplete(true, dataResponse.value!)
         return
     }
-    else if statusCode == 0 {
-        recordLastError(ErrorCode.ServerNotConnected, "Server not connected. (\(url))")
+    else {
+        if statusCode == 0 {
+            recordLastError(ErrorCode.ServerNotConnected, "Server not connected. (\(url))")
+        }
+        else if statusCode == 404 {
+            recordLastError(ErrorCode.PageNotFound, "Page not found. (\(url))")
+        }
+        
+        onRequestComplete(false, nil)
     }
-    else if statusCode == 404 {
-        recordLastError(ErrorCode.PageNotFound, "Page not found. (\(url))")
-    }
-    
-    onRequestComplete(false, nil)
 }

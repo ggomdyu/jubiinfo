@@ -14,20 +14,18 @@ import Motion
 class ProfileViewController : ViewController {
 /**@section Variable */
     @IBOutlet weak var m_scrollView: UIScrollView!
-    
-/**@section Overrided method */
-    open override func prepare() {
-        super.prepare()
-        
-        m_scrollView.backgroundColor = UIColor(patternImage: UIImage(named:"background.jpg")!)
-        
-        JubeatWebServer.requestMyRivalList { (isRequestSucceed: Bool, rivalListPageCache: UserData.RivalListPageCache) in
-            
-            let myUserData = GlobalDataStorage.instance.queryMyUserData();
-            myUserData.rivalListPageCache = rivalListPageCache
+    @IBOutlet weak var m_profileView: CustomStackView!
+    @IBOutlet weak var m_topEdgeView: UIView!
+    @IBOutlet weak var m_bottomEdgeView: UIView!
+    private var m_cachedWidgetView: [Int: WidgetView] = [:]
+    private var m_optThemeChangeEventObserver: EventObserver?
+
+/**@section Destructor */
+    deinit {
+        if let themeChangeEventObserver = m_optThemeChangeEventObserver {
+            EventDispatcher.instance.unsubscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+            m_optThemeChangeEventObserver = nil
         }
-        
-        self.prepareWidget();
     }
     
 /**@section Method */
@@ -35,7 +33,7 @@ class ProfileViewController : ViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-        let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController)
+        let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController, onEditComplete: profileViewController.onEditComplete)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
         navigationDrawerController.isMotionEnabled = true
@@ -44,10 +42,310 @@ class ProfileViewController : ViewController {
         currentViewController.present(navigationDrawerController, animated: true)
     }
     
-    public func prepareWidget() {
-//        var customMusicDatasJsonPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//        customMusicDatasJsonPath.appendPathComponent("widget.json")
+    open override func prepare() {
+        super.prepare()
         
+        self.requestMyPlayDataPageCache()
+        self.requestMyRivalListPageCache()
         
+        self.prepareUI()
+        
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+    }
+    
+    private func prepareUI() {
+        m_cachedWidgetView.removeAll()
+        
+        self.prepareWidgetUI()
+        self.prepareTheme()
+    }
+    
+    private func prepareTheme() {
+        m_scrollView.backgroundColor = getCurrentThemeColorTable().backgroundImage
+        
+        m_profileView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor
+        m_bottomEdgeView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor
+        m_topEdgeView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor
+    }
+    
+    private func prepareWidgetUI() {
+        let activeWidgetList = GlobalSettingDataStorage.instance.getActiveWidgetList()
+
+        let widgetCreatorDict: [WidgetType: () -> WidgetView] = [
+            WidgetType.profile: { () in return self.createProfileWidgetView() },
+            WidgetType.playData: { () in return self.createPlayDataWidgetView() },
+            WidgetType.omikuji: { () in return self.createOmikujiWidgetView() },
+            WidgetType.dailyRecommended: { () in return self.createDailyCallengeWidgetView() },
+            WidgetType.rankDataGraphA: { () in return self.createRankDataGraphWidgetView() }
+        ]
+
+        // Used to get request function that initialize the widget
+        let widgetInitRequestFuncGetter = [
+            "": { () -> Void in },
+            "requestTopPageCacheComplete": { () -> Void in self.requestTopPageCache() },
+            "requestMyRankDataPageCacheComplete": { () -> Void in self.requestMyRankDataPageCache() }
+        ]
+        var widgetInitEventNameBatch = Set<String>()
+        
+        m_profileView.addMargin(margin: 5.0)
+        for activeWidget in activeWidgetList {
+            guard let widgetCreator = widgetCreatorDict[activeWidget] else {
+                continue
+            }
+            
+            let widget = widgetCreator()
+            
+            // If the widget was not initialized, add a request into the batch that required to initialize it.
+            if widget.isLazyInitialized == false {
+                widgetInitEventNameBatch.insert(widget.lazyInitializeEventName)
+            }
+            
+            m_profileView.addMargin(margin: 10.0)
+            m_profileView.addView(view: widget)
+        }
+        m_profileView.addMargin(margin: 15.0)
+        
+        for widgetInitEventName in widgetInitEventNameBatch {
+            let widgetInitRequestFunc = widgetInitRequestFuncGetter[widgetInitEventName]
+            widgetInitRequestFunc?()
+        }
+    }
+    
+    private func requestMyRivalListPageCache() {
+        JubeatWebServer.requestMyRivalListPageCache { (isRequestSucceed: Bool, optHtml: String?, optRivalListPageCache: UserData.RivalListPageCache?) in
+            
+            if let html = optHtml {
+                if html.range(of: "メンテナンス中") != nil {
+                    showOkPopup(self, "오류", "현재 서버가 유지보수 중이므로 일부 기능을 이용할 수 없습니다.")
+                    return
+                }
+            }
+            
+            runTaskInMainThread {
+                EventDispatcher.instance.dispatchEvent(eventType: "requestMyRivalListPageCacheComplete", eventParam: optRivalListPageCache)
+            }
+            
+            let myUserData = GlobalDataStorage.instance.queryMyUserData();
+            myUserData.rivalListPageCache = optRivalListPageCache
+        }
+    }
+    
+    private func requestMyPlayDataPageCache() {
+        JubeatWebServer.requestMyPlayDataPageCache { (isRequestSucceed: Bool, optMyPlayDataPageCache: UserData.MyPlayDataPageCache?) in
+            guard let myPlayDataPageCache = optMyPlayDataPageCache else {
+                return
+            }
+            
+            let myUserData = GlobalDataStorage.instance.queryMyUserData()
+            myUserData.rivalId = myPlayDataPageCache.rivalId
+            myUserData.playDataPageCache = myPlayDataPageCache
+            
+            runTaskInMainThread {
+                EventDispatcher.instance.dispatchEvent(eventType: "requestMyPlayDataPageCacheComplete", eventParam: myPlayDataPageCache)
+            }
+            
+            self.requestMyMusicScoreData(serverMMSDChecksum: myPlayDataPageCache.playTuneCount)
+        }
+    }
+    
+    private func requestMyRankDataPageCache() {
+        JubeatWebServer.requestMyRankDataPageCache { (isRequestSucceed: Bool, optMyRankDataPageCache: UserData.RankDataPageCache?) in
+            guard let myRankDataPageCache = optMyRankDataPageCache else {
+                return
+            }
+            
+            GlobalDataStorage.instance.queryMyUserData().rankDataPageCache = myRankDataPageCache
+            
+            runTaskInMainThread {
+                EventDispatcher.instance.dispatchEvent(eventType: "requestMyRankDataPageCacheComplete", eventParam: optMyRankDataPageCache)
+            }
+        }
+    }
+    
+    private func requestMyMusicScoreData(serverMMSDChecksum: Int) {
+        JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
+            if isRequestSucceed {
+                GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
+                
+                runTaskInMainThread {
+                    EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)
+                }
+            }
+        }
+    }
+    
+    private func requestTopPageCache() {
+        JubeatWebServer.requestStartFullComboChallenge(onRequestComplete: { (isRequestSucceed: Bool) in
+            if isRequestSucceed == false {
+                return
+            }
+            
+            JubeatWebServer.requestTopPageCache { (isRequestSucceed: Bool, topPageCache: UserData.TopPageCache?) in
+                GlobalDataStorage.instance.queryMyUserData().topPageCache = topPageCache
+                
+                runTaskInMainThread {
+                    EventDispatcher.instance.dispatchEvent(eventType: "requestTopPageCacheComplete", eventParam: topPageCache)
+                }
+            }
+        })
+    }
+    
+    private func createProfileWidgetView() -> WidgetView {
+        var view: WidgetView! = m_cachedWidgetView[ProfileWidgetView.hash()]
+        if view == nil {
+            view = UINib(nibName: "ProfileWidgetView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? WidgetView
+            view.initialize()
+            
+            m_cachedWidgetView[ProfileWidgetView.hash()] = view
+        }
+        return view
+    }
+    
+    private func createPlayDataWidgetView() -> WidgetView {
+        var view: WidgetView! = m_cachedWidgetView[PlayDataWidgetView.hash()]
+        if view == nil {
+            view = UINib(nibName: "PlayDataWidgetView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? WidgetView
+            view.initialize()
+            
+            m_cachedWidgetView[PlayDataWidgetView.hash()] = view
+        }
+        return view
+    }
+    
+    private func createRankDataGraphWidgetView() -> WidgetView {
+        var view: WidgetView! = m_cachedWidgetView[RankDataGraphWidgetView.hash()]
+        if view == nil {
+            view = UINib(nibName: "RankDataGraphWidgetView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? WidgetView
+            view.initialize()
+            
+            m_cachedWidgetView[RankDataGraphWidgetView.hash()] = view
+        }
+        return view
+    }
+    
+    private func createOmikujiWidgetView() -> WidgetView {
+        var view: WidgetView! = m_cachedWidgetView[OmikujiWidgetView.hash()]
+        if view == nil {
+            view = UINib(nibName: "OmikujiWidgetView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? WidgetView
+            view.initialize()
+            
+            m_cachedWidgetView[OmikujiWidgetView.hash()] = view
+        }
+        return view
+    }
+    
+    private func createDailyCallengeWidgetView() -> WidgetView {
+        var view: WidgetView! = m_cachedWidgetView[DailyChallengeMusicWidgetView.hash()]
+        if view == nil {
+            view = UINib(nibName: "DailyChallengeMusicWidgetView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? WidgetView
+            view.initialize()
+            
+            m_cachedWidgetView[DailyChallengeMusicWidgetView.hash()] = view
+        }
+        return view
+    }
+    
+    private func onEditComplete(isActiveWidgetChanged: Bool) {
+        if isActiveWidgetChanged {
+            m_profileView.resetStackView()
+            m_scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+            
+            self.prepareWidgetUI()
+        }
+    }
+}
+
+public class ProfileViewToolBarController: ToolbarController {
+/**@section Variable */
+    private var m_toolBarColor = UIColor(red: 36 / 255, green: 75 / 255, blue: 67 / 255, alpha: 1)
+    private var m_toolBarLabelColor = UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1)
+    private var m_leftTabMenuButton: IconButton!
+    private var m_rightTabSettingButton: IconButton!
+    private var m_onEditComplete: ((Bool) -> Void)?
+    private var m_optThemeChangeEventObserver: EventObserver?
+    
+/**@section Constructor */
+    public init(rootViewController: UIViewController, onEditComplete: ((Bool) -> Void)?) {
+        super.init(rootViewController: rootViewController)
+        
+        m_onEditComplete = onEditComplete
+    }
+    
+    internal required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+/**@section Destructor */
+    deinit {
+        if let themeChangeEventObserver = m_optThemeChangeEventObserver {
+            EventDispatcher.instance.unsubscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+            m_optThemeChangeEventObserver = nil
+        }
+    }
+    
+/**@section Method */
+    open override func prepare() {
+        super.prepare()
+        
+        self.prepareUI()
+        
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+    }
+    
+    private func prepareUI() {
+        self.prepareStatusBar()
+        self.prepareToolbarTitle()
+        self.prepareToolbarLeftIcon()
+        self.prepareToolbarRightIcon()
+        self.prepareTheme()
+    }
+    
+    private func prepareStatusBar() {
+        statusBarStyle = .lightContent
+    }
+    
+    private func prepareToolbarTitle() {
+        toolbar.title = "프로필"
+    }
+    
+    private func prepareToolbarLeftIcon() {
+        m_leftTabMenuButton = IconButton(image: Icon.cm.menu)
+        m_leftTabMenuButton.addTarget(self, action: #selector(onTouchMenuButton), for: .touchUpInside)
+        toolbar.leftViews = [m_leftTabMenuButton]
+    }
+    
+    private func prepareToolbarRightIcon() {
+        m_rightTabSettingButton = IconButton(image: Icon.cm.settings)
+        m_rightTabSettingButton.addTarget(self, action: #selector(onTouchEditButton), for: .touchUpInside)
+        toolbar.rightViews = [m_rightTabSettingButton]
+    }
+    
+    private func prepareTheme() {
+        m_leftTabMenuButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
+        m_rightTabSettingButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
+        
+        statusBar.backgroundColor = getCurrentThemeColorTable().toolBarBackgroundColor
+        
+        toolbar.titleLabel.textColor = getCurrentThemeColorTable().toolBarTitleLabelColor
+        toolbar.backgroundColor = getCurrentThemeColorTable().toolBarBackgroundColor
+    }
+    
+/**@section Event handler */
+    @objc private func onTouchMenuButton() {
+        navigationDrawerController?.toggleLeftView()
+    }
+    
+    @objc private func onTouchEditButton() {
+        ProfileViewEditController.show(currentViewController: navigationDrawerController!, onEditComplete: m_onEditComplete)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  PlayDataACellView.swift
+//  PlayDataWidgetView.swift
 //  jubiinfo
 //
 //  Created by ggomdyu on 06/12/2018.
@@ -11,53 +11,49 @@ import UIKit
 import Material
 import Motion
 
-class PlayDataACellView : LazyInitializedView {
+class PlayDataWidgetView : WidgetView {
 /**@section Variable */
     @IBOutlet weak var m_jubilityLabel: UILabel!
     @IBOutlet weak var m_totalScoreLabel: UILabel!
-    @IBOutlet weak var m_rankingLabel: UILabel!
-    @IBOutlet weak var m_lastPlayedTimeLabel: UILabel!
-    @IBOutlet weak var m_lastPlayedLocationLabel: UILabel!
+    @IBOutlet weak var m_playTuneCountLabel: UILabel!
+    @IBOutlet weak var m_fullComboCountLabel: UILabel!
+    @IBOutlet weak var m_excellentCountLabel: UILabel!
     @IBOutlet weak var m_contentsView: UIView!
+    
+/**@section Property */
+    public override var lazyInitializeEventName: String {
+        return "requestMyPlayDataPageCacheComplete"
+    }
 
-/**@section Overrided method */
-    open override func initialize() {
+/**@section Method */
+    public override func initialize() {
         super.initialize()
         
         m_contentsView.alpha = 0.0
     }
     
-    open override func lazyInitialize(_ param: Any?) {
+    public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
         let myUserData = GlobalDataStorage.instance.queryMyUserData()
         guard let myPlayDataPageCache = myUserData.playDataPageCache as? UserData.MyPlayDataPageCache else {
             return
         }
-        // Jubility
+        
         m_jubilityLabel.text = "\(myPlayDataPageCache.jubility)"
         m_jubilityLabel.textColor = self.getJubilityColor(jubility: myPlayDataPageCache.jubility)
         
-        // Total score
-        m_totalScoreLabel.text = createNumberWithComma(number: myPlayDataPageCache.totalScore)
+        m_totalScoreLabel.text = "\(createNumberWithComma(number: myPlayDataPageCache.totalScore))(\(myPlayDataPageCache.ranking)位)"
         
-        // Last played time
-        m_lastPlayedTimeLabel.text = myPlayDataPageCache.lastPlayedTime
+        m_fullComboCountLabel.text = "\(myPlayDataPageCache.fullComboCount)회"
         
-        // Last played location
-        m_lastPlayedLocationLabel.text = myPlayDataPageCache.lastPlayedLocation
+        m_excellentCountLabel.text = "\(myPlayDataPageCache.excellentCount)회"
         
-        // Ranking
-        m_rankingLabel.text = "#\(myPlayDataPageCache.ranking)"
+        m_playTuneCountLabel.text = "\(myPlayDataPageCache.playTuneCount)회"
         
         m_contentsView.animate(.fadeIn)
     }
     
-    open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyPlayDataPageCacheComplete"
-    }
-
-/**@section Method */
     private func getJubilityColor(jubility: Float) -> UIColor {
         // GOLD
         if jubility >= 9500 {

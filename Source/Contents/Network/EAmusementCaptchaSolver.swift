@@ -36,27 +36,29 @@ public class EAmusementCaptchaSolver {
     }
     
 /**@section Method */
-    public func SolveProblem() -> [Int] {
+    public func SolveProblem() -> [Int]? {
         // 1. Download main character image and identify the type of character.
         var mainCharacterType = CharacterType.Unknown
         var mainCharacterTypeQueryComplete = false
         
-        downloadImageAsync(imageUrl: self.mainCharacterImageUrl, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+        downloadImageAsync(imageUrl: self.mainCharacterImageUrl, isWriteCache: false, isReadCache: false, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
             mainCharacterType = self.getMainCharacterType(optImage: image)
             mainCharacterTypeQueryComplete = true
         })
         
         // 2. Download sub character images together while requesting.
         let subCharacterImageCount = 5;
-        var downloadedSubCharacterImageCount: Int32 = 0;
+        var downloadedSubCharacterImageCount: Int = 0;
         var subCharacterImages = [UIImage?](repeating: nil, count: subCharacterImageCount)
         for i in 0 ... 4 {
-            downloadImageAsync(imageUrl: subCharacterImageUrls[i], onDownloadComplete: { (succeed: Bool, image: UIImage?) in
-                if (succeed) {
+            downloadImageAsync(imageUrl: subCharacterImageUrls[i], isWriteCache: false, isReadCache: false, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+                if isDownloadSucceed {
                     subCharacterImages[i] = image
                 }
                 
-                OSAtomicIncrement32(&downloadedSubCharacterImageCount)
+                runTaskInMainThread {
+                    downloadedSubCharacterImageCount += 1
+                }
             })
         }
         
@@ -66,6 +68,10 @@ public class EAmusementCaptchaSolver {
         SpinLock { () -> (Bool) in
             return mainCharacterTypeQueryComplete &&
                 downloadedSubCharacterImageCount == subCharacterImageCount
+        }
+        
+        if mainCharacterType == .Unknown || (subCharacterImages.firstIndex(of: nil) != nil) {
+            return nil
         }
         
         // 4. Finally, we have to select two sub character images that matched with the main character type.
@@ -98,7 +104,7 @@ public class EAmusementCaptchaSolver {
         return CharacterType.Unknown
     }
     
-    private func getMatchedSubCharacterIndices(mainCharacterType: CharacterType, subCharacterImages: [UIImage?]) -> [Int] {
+    private func getMatchedSubCharacterIndices(mainCharacterType: CharacterType, subCharacterImages: [UIImage?]) -> [Int]? {
         
         print("[DEBUG]: ImageMatchProblemSolver begun to solve image match problem.")
         

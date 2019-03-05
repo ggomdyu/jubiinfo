@@ -66,8 +66,8 @@ public func showAlertPopup(_ viewControllerToPresent: UIViewController, _ title:
     viewControllerToPresent.present(alertController, animated: true, completion: optOnShowComplete)
 }
 
-public func showLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, _ message: String, _ onShowComplete: (() -> Void)? = nil) {
-    let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+public func showLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, _ title: String, _ message: String, _ onShowComplete: (() -> Void)? = nil) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     
     let loadingIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
     loadingIndicatorView.hidesWhenStopped = true
@@ -79,6 +79,31 @@ public func showLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, 
     viewControllerToPresent.present(alertController, animated: true, completion: onShowComplete)
 }
 
+public func showLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, _ title: String, _ onShowComplete: (() -> Void)? = nil) {
+    showLoadingIndicatorUI(viewControllerToPresent, title, "", onShowComplete)
+}
+
 public func hideLoadingIndicatorUI(_ viewControllerToPresent: UIViewController, _ onHideComplete: (() -> Void)? = nil) {
     viewControllerToPresent.dismiss(animated: false, completion: onHideComplete)
 }
+
+public func showLoadingSpinnerUI(_ viewControllerToPresent: UIViewController, _ onShowComplete: (() -> Void)? = nil) {
+    let spinnerViewController = UIViewController.init()
+//    spinnerViewController.view = UIView.init(frame: viewControllerToPresent.view.bounds)
+    spinnerViewController.view.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+    
+    let loadingIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
+    loadingIndicatorView.hidesWhenStopped = true
+    loadingIndicatorView.style = .gray
+//    loadingIndicatorView.center = spinnerViewController.view.center
+    loadingIndicatorView.startAnimating();
+    
+    spinnerViewController.view.addSubview(loadingIndicatorView)
+    
+    viewControllerToPresent.present(spinnerViewController, animated: true, completion: onShowComplete)
+}
+
+public func hideLoadingSpinnerUI(_ viewControllerToPresent: UIViewController, _ onHideComplete: (() -> Void)? = nil) {
+    viewControllerToPresent.dismiss(animated: false, completion: onHideComplete)
+}
+

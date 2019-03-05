@@ -22,7 +22,7 @@ public class CustomStackView : View {
     private var m_currContentsViewHeight: CGFloat = 0.0
     public var m_heightConstraint: NSLayoutConstraint!
     
-/**@section Overrided method */
+/**@section Method */
     override public func prepare() {
         super.prepare()
         self.prepareConstraints()
@@ -31,7 +31,6 @@ public class CustomStackView : View {
         self.addSubview(m_lastAddedView)
     }
     
-/**@section Method */
     private func prepareConstraints() {
         for constraint in self.constraints {
             if constraint.firstAttribute == .height {
@@ -53,6 +52,10 @@ public class CustomStackView : View {
         m_currViewHeight += height
         
         self.refreshHeightConstraint()
+    }
+    
+    public func getHeight() -> CGFloat {
+        return m_currViewHeight
     }
     
     public func setMargin(margin: CGFloat) {

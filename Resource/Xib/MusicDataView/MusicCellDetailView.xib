@@ -183,13 +183,13 @@
                     </connections>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="HyB-UX-rDA" firstAttribute="top" secondItem="U25-5U-QoX" secondAttribute="bottom" constant="1" id="GT0-vD-sXv"/>
                 <constraint firstItem="sTF-vO-wwn" firstAttribute="trailing" secondItem="s6T-E3-rrg" secondAttribute="trailing" id="GpZ-UW-K3a"/>
-                <constraint firstItem="HyB-UX-rDA" firstAttribute="top" secondItem="s6T-E3-rrg" secondAttribute="bottom" constant="1" id="H3v-2Q-Y6H"/>
                 <constraint firstItem="s6T-E3-rrg" firstAttribute="leading" secondItem="NGj-Sc-d1T" secondAttribute="trailing" constant="1" id="QRe-0w-d6f"/>
+                <constraint firstItem="HyB-UX-rDA" firstAttribute="top" secondItem="U25-5U-QoX" secondAttribute="bottom" constant="1" id="UTK-aN-bRi"/>
                 <constraint firstItem="sTF-vO-wwn" firstAttribute="trailing" secondItem="U25-5U-QoX" secondAttribute="trailing" constant="175" id="dCP-3I-X6u"/>
+                <constraint firstItem="s6T-E3-rrg" firstAttribute="height" secondItem="U25-5U-QoX" secondAttribute="height" id="epI-zD-oYz"/>
                 <constraint firstItem="s6T-E3-rrg" firstAttribute="top" secondItem="sTF-vO-wwn" secondAttribute="top" constant="1" id="oUM-op-orW"/>
                 <constraint firstItem="HyB-UX-rDA" firstAttribute="trailing" secondItem="sTF-vO-wwn" secondAttribute="trailing" id="rFH-WQ-7td"/>
                 <constraint firstItem="HyB-UX-rDA" firstAttribute="leading" secondItem="sTF-vO-wwn" secondAttribute="leading" id="rjG-Nu-RXS"/>

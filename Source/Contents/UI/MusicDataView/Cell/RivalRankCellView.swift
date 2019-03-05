@@ -2,8 +2,8 @@
 //  RivalRankCellView.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 05/02/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Created by ggomdyu on 05/02/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation

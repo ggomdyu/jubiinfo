@@ -213,6 +213,8 @@ public class MusicScoreData : Comparable {
     public var customData: CustomData?
 }
 
+public typealias MusicScoreDataCaches = Box<[MusicScoreData]>
+
 /**@brief   This parser does not execute DOM parsing for performance. */
 class MusicScoreDataPageParser {
 /**@section Variable */
@@ -334,16 +336,23 @@ class MusicScoreDataPageParser {
 public class JubeatWebServer {
 /**@section Enum */
     public enum LoginStatus {
-        case Succees
-        case Failure
-        case InvalidEmailOrPassword
+        case success
+        case failure
+        case invalidEmailOrPassword
+    }
+    
+    public enum ChangeNameStatus {
+        case success
+        case failure
+        case needMoreGamePlay
+        case nicknameHasForbiddenLetter
     }
     
 /**@section Method */
     public static func login(userId: String, userPassword: String, onLoginComplete: @escaping (LoginStatus) -> Void) {
         self.requestGenerateKcaptcha { (isRequestSucceed: Bool, response: Data?) in
             guard isRequestSucceed == true, let parsedData = self.parseKcaptchaJson(kcaptchaJson: response!) else {
-                onLoginComplete(LoginStatus.Failure)
+                onLoginComplete(.failure)
                 return
             }
             
@@ -353,7 +362,10 @@ public class JubeatWebServer {
             }
             
             let captchaSolver = EAmusementCaptchaSolver(parsedData.correctPickCharacterImageUrl, choiceCharacterImageUrls)
-            let matchedChoiceCharacterIndices = captchaSolver.SolveProblem()
+            guard let matchedChoiceCharacterIndices = captchaSolver.SolveProblem() else {
+                onLoginComplete(.failure)
+                return
+            }
             
             // Assemble captcha key
             var captchaKey = "k_\(parsedData.kcsess)"
@@ -369,8 +381,8 @@ public class JubeatWebServer {
             self.requestLoginAuth(userId, userPassword, captchaKey) { (isRequestSucceed: Bool, response: String?) in
                 let loginFailureCode = (response != nil) ? self.parseLoginAuthResponse(response: response!) : -1
                 onLoginComplete(
-                    loginFailureCode == 0 ? .Succees :
-                        loginFailureCode == 200 ? .InvalidEmailOrPassword : .Failure
+                    loginFailureCode == 0 ? .success :
+                        loginFailureCode == 200 ? .invalidEmailOrPassword : .failure
                 )
             }
         }
@@ -397,8 +409,37 @@ public class JubeatWebServer {
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
     public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
-        self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, response: String?) in
-            onRequestComplete(isRequestSucceed, response != nil ? self.parseMyPlayDataPageHtml(response: response!) : nil)
+        self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
+            var myPlayDataPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+            myPlayDataPageCachePath.appendPathComponent("myPlayDataPageCache.json")
+            
+            if let response = optResponse, let myPlayDataPageCache = self.parseMyPlayDataPageHtml(response: response) {
+                let encoder = JSONEncoder()
+                let optJsonData = try? encoder.encode(myPlayDataPageCache)
+                try? optJsonData?.write(to: myPlayDataPageCachePath)
+                
+                onRequestComplete(isRequestSucceed, myPlayDataPageCache)
+            }
+            // If the request failed, then use json file stored in the flash storage.
+            else {
+                repeat {
+                    let decoder = JSONDecoder()
+                    let optJsonData = try? Data(contentsOf: myPlayDataPageCachePath)
+                    guard let jsonData = optJsonData else {
+                        break
+                    }
+                    
+                    let optMyPlayDataPageCache = try? decoder.decode(UserData.MyPlayDataPageCache.self, from: jsonData)
+                    guard let myPlayDataPageCache = optMyPlayDataPageCache else {
+                        break
+                    }
+                    
+                    onRequestComplete(true, myPlayDataPageCache)
+                    return
+                } while (false)
+                
+                onRequestComplete(false, nil)
+            }
         }
     }
     
@@ -409,9 +450,11 @@ public class JubeatWebServer {
         }
     }
     
-    public static func requestMyRivalList(onRequestComplete: @escaping (Bool, UserData.RivalListPageCache) -> Void) {
+    public static func requestMyRivalListPageCache(onRequestComplete: @escaping (Bool, String?, UserData.RivalListPageCache?) -> Void) {
         self.requestMyRivalListPageHtml { (isRequestSucceed: Bool, response: String?) in
-            onRequestComplete(isRequestSucceed, self.parseMyRivalListPageHtml(response: response!))
+            if isRequestSucceed {
+                onRequestComplete(isRequestSucceed, response, self.parseMyRivalListPageHtml(response: response!))
+            }
         }
     }
     
@@ -423,7 +466,7 @@ public class JubeatWebServer {
             isOldChecksum = false
         }
         
-        var customMusicDatasJsonPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        var customMusicDatasJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         customMusicDatasJsonPath.appendPathComponent("customMusicDatas.json")
         
         if isOldChecksum {
@@ -482,43 +525,54 @@ public class JubeatWebServer {
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
-    public static func requestMyMusicScoreData(serverMMSDChecksum: Int, onRequestComplete: @escaping (Bool, Box<[MusicScoreData]>) -> Void) {
+    public static func requestMyMusicScoreData(serverMMSDChecksum: Int, onRequestComplete: @escaping (Bool, MusicScoreDataCaches) -> Void) {
         let isOldChecksum = isMMSDChecksumOld(serverMMSDChecksum: serverMMSDChecksum)
         
         // mmsd is abbreviation of 'My music score data'!!
-        var mmsdCachePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        var mmsdCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         mmsdCachePath.appendPathComponent("mmsdCache.json")
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
-        if isOldChecksum {
-            let newMusicScoreDatas = Box<[MusicScoreData]> ([])
+        if true {
+            SpinLock { return GlobalDataStorage.instance.isCustomMusicDatasInitialized() }
+            
+            let newMusicScoreDatas = MusicScoreDataCaches ([])
             
             // Start to request music score datas.
             var musicScoreDataRequestCompleteCount = 0;
-            let musicScoreDataPageEndIndex = (GlobalDataStorage.instance.queryCustomMusicDatas().count / 50) + 1
+            let musicScoreDataPageEndIndex = 1// (GlobalDataStorage.instance.queryCustomMusicDatas().count / 50) + 1
             DispatchQueue.global().async {
                 for i in 1...musicScoreDataPageEndIndex {
-                    self.requestMusicScoreData(rivalId: "", pageIndex: i) { (isRequestSucceed: Bool, musicScoreDatas2: [MusicScoreData]?) in
+                    self.requestMusicScoreData(rivalId: "", pageIndex: i) { (isRequestSucceed: Bool, optMusicScoreDatas2: [MusicScoreData]?) in
                         if isRequestSucceed {
                             runTaskInMainThread {
-                                newMusicScoreDatas.value.append(contentsOf: musicScoreDatas2!)
+                                let isPageAlreadyLoaded =  newMusicScoreDatas.value.contains(where: { (item: MusicScoreData) -> Bool in
+                                    return item.id == optMusicScoreDatas2![0].id
+                                })
+                                if isPageAlreadyLoaded == false {
+                                    newMusicScoreDatas.value.append(contentsOf: optMusicScoreDatas2!)
+                                }
+                                
                                 musicScoreDataRequestCompleteCount += 1
                             }
+                            print("Music score page load complete. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                        }
+                        else {
+                            print("Music score page load failed. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                     }
                     
-                    Thread.sleep(forTimeInterval: 0.1)
+//                    Thread.sleep(forTimeInterval: 0.1)
                 }
             }
             
-            var oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]>! = nil
-            DispatchQueue.global().async {
-                oldMusicScoreDatas = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
-            }
+            let oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]> = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
+            
+            print("Waiting for load all of the music score data page...(musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
             
             // Wait until all music data request have completed.
-            SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex && oldMusicScoreDatas != nil }
+            SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
             
             // Create a json that used to cache the music data received from the server.
             var mmsdJson = "{"
@@ -584,7 +638,7 @@ public class JubeatWebServer {
             mmsdJson += "}"
             
             do {
-                try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf16)
+                try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
                 GlobalSettingDataStorage.instance.setConfig(key: "mmsdChecksum", value: serverMMSDChecksum)
             }
             catch {}
@@ -641,8 +695,48 @@ public class JubeatWebServer {
             }
             
             let isProfilePrivated = !self.parseDetailMusicScorePageHtml(response: response, musicId: musicId, destBasicMusicScoreData: destBasicMusicScoreData, destAdvancedMusicScoreData: destAdvancedMusicScoreData, extremeAdvancedMusicScoreData: extremeAdvancedMusicScoreData);
-            
+
             onRequestComplete(isRequestSucceed, isProfilePrivated)
+        }
+    }
+    
+    public static func requestChangeName(newNickname: String, onRequestComplete: @escaping (ChangeNameStatus) -> Void) {
+        self.requestChangeNamePage { (isRequestSucceed: Bool, optResponse: String?) in
+            guard let response = optResponse, isRequestSucceed else {
+                onRequestComplete(.failure)
+                return
+            }
+            
+            guard let c = self.parseChangeNamePage(response: response) else {
+                onRequestComplete(.needMoreGamePlay)
+                return
+            }
+            
+            self.requestChangeNameConfirmPage(c: c, newNickname: newNickname) { (isRequestSucceed: Bool, optResponse: String?) in
+                guard let response = optResponse, isRequestSucceed else {
+                    onRequestComplete(.failure)
+                    return
+                }
+                
+                guard let parsedData = self.parseChangeNameConfirmPage(response: response) else {
+                    onRequestComplete(.failure)
+                    return
+                }
+                
+                self.requestChangeName(c: parsedData.c, token: parsedData.token, newNickname: newNickname) { (isRequestSucceed: Bool, optResponse: String?) in
+                    guard let response = optResponse, isRequestSucceed else {
+                        onRequestComplete(.failure)
+                        return
+                    }
+                    
+                    let isNicknameHasForbiddenLetter = response.range(of: "使用できない文字") != nil
+                    if isNicknameHasForbiddenLetter {
+                        onRequestComplete(.nicknameHasForbiddenLetter)
+                    }
+                    
+                    onRequestComplete(.success)
+                }
+            }
         }
     }
 }
@@ -679,7 +773,7 @@ extension JubeatWebServer {
                 "otp": "",
                 "resrv_url": "/gate/p/login_complete.html",
                 "captcha": captchaKey,
-                ]
+            ]
         )
     }
     
@@ -791,7 +885,7 @@ extension JubeatWebServer {
         })
     }
     
-    public static func requestDetailMusicScoreDataPageHtml(rivalId: String, musicId: Int, onRequestComplete: @escaping (Bool, String?) -> Void ) {
+    private static func requestDetailMusicScoreDataPageHtml(rivalId: String, musicId: Int, onRequestComplete: @escaping (Bool, String?) -> Void ) {
         httpRequestAsync(
             queue: DispatchQueue.global(),
             url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music_detail.html?rival_id=\(rivalId)&mid=\(musicId)",
@@ -801,6 +895,49 @@ extension JubeatWebServer {
             onRequestComplete: {(isRequestSucceed: Bool, response: String?) in
                 onRequestComplete(isRequestSucceed, response)
         })
+    }
+    
+    private static func requestChangeNamePage(_ onRequestComplete: @escaping (Bool, String?) -> Void) {
+        httpRequestAsync(
+            queue: DispatchQueue.global(),
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/change_name.html",
+            method: HTTPMethod.get,
+            host: "p.eagate.573.jp",
+            referer: "https://p.eagate.573.jp/game/jubeat/festo/playdata/change_name.html",
+            onRequestComplete: { (isRequestSucceed: Bool, response: String?) in
+                onRequestComplete(isRequestSucceed, response)
+        })
+    }
+    
+    private static func requestChangeNameConfirmPage(c: String, newNickname: String, _ onRequestComplete: @escaping (Bool, String?) -> Void) {
+        httpRequestAsync(
+            queue: DispatchQueue.global(),
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/change_name.html",
+            method: HTTPMethod.post,
+            host: "p.eagate.573.jp",
+            referer: "https://p.eagate.573.jp/game/jubeat/festo/playdata/change_name.html",
+            onRequestComplete: { (isRequestSucceed: Bool, response: String?) in
+                onRequestComplete(isRequestSucceed, response)
+        }, parameters: [
+            "c": c,
+            "namaechange": newNickname
+        ])
+    }
+    
+    private static func requestChangeName(c: String, token: String, newNickname: String, _ onRequestComplete: @escaping (Bool, String?) -> Void) {
+        httpRequestAsync(
+            queue: DispatchQueue.global(),
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/change_name.html",
+            method: HTTPMethod.post,
+            host: "p.eagate.573.jp",
+            referer: "https://p.eagate.573.jp/game/jubeat/festo/playdata/change_name.html",
+            onRequestComplete: { (isRequestSucceed: Bool, response: String?) in
+                onRequestComplete(isRequestSucceed, response)
+        }, parameters: [
+            "c": c,
+            "token": token,
+            "new_name": newNickname
+        ])
     }
 }
 
@@ -1080,13 +1217,13 @@ extension JubeatWebServer {
         return nil;
     }
     
-    private static func parseMyRivalListPageHtml(response: String) -> UserData.RivalListPageCache {
+    private static func parseMyRivalListPageHtml(response: String) -> UserData.RivalListPageCache? {
         do {
             var simpleRivalDataList = [UserData.RivalListPageCache.SimpleRivalData] ()
             
             let document = try SwiftSoup.parse(response)
             
-            let rivalListElem = try document.select("#rival_all").first()!
+            guard let rivalListElem = try document.select("#rival_all").first() else { return nil }
             for rivalListChildElem in rivalListElem.children() {
                 // Parse rival id
                 let hrefElem = try rivalListChildElem.select("a").first()!
@@ -1108,7 +1245,7 @@ extension JubeatWebServer {
         catch {}
         
         recordLastError(ErrorCode.ParseError, "Failed to parse play data page html.")
-        return UserData.RivalListPageCache();
+        return nil
     }
     
     private static func parseCustomMusicData(response: Data) -> [MusicId: MusicScoreData.CustomData]? {
@@ -1157,13 +1294,13 @@ extension JubeatWebServer {
             
             musicScoreDatas.append(contentsOf: parsedMusicScoreDatas)
         }
-            while (true)
+        while (true)
         
         return musicScoreDatas
     }
     
-    private static func parseMMSDCacheArray(mmsdCachePath: URL) -> Box<[MusicScoreData]> {
-        let ret = Box<[MusicScoreData]> ([])
+    private static func parseMMSDCacheArray(mmsdCachePath: URL) -> MusicScoreDataCaches {
+        let ret = MusicScoreDataCaches ([])
         self.parseMMSDCache(mmsdCachePath: mmsdCachePath) { (parseResult: MusicScoreData) in
             ret.value.append(parseResult)
         }
@@ -1270,6 +1407,25 @@ extension JubeatWebServer {
         
         var musicScoreDatas = [destBasicMusicScoreData, destAdvancedMusicScoreData, extremeAdvancedMusicScoreData];
         
+        // If player didn't unlocked the song
+        let musicNotUnlocked = response.range(of: "プレーしていません") != nil
+        if musicNotUnlocked {
+            for i in 0..<3 {
+                musicScoreDatas[i].detailData = MusicScoreData.DetailData(
+                    id: musicId,
+                    difficulty: MusicScoreData.Difficulty(rawValue: i)!,
+                    playTune: 0,
+                    clearCount: 0,
+                    fullComboCount: 0,
+                    excellentCount: 0,
+                    score: -1,
+                    musicRate: 0.0,
+                    ranking: -1
+                )
+            }
+            return true
+        }
+        
         var levelItemPosFinder = response.startIndex
         for i in 0..<3 {
             let optLevelStartPosFinder = response.range(of: "LEVEL:", options: String.CompareOptions.caseInsensitive, range: levelItemPosFinder..<response.endIndex)
@@ -1334,7 +1490,7 @@ extension JubeatWebServer {
             
             levelItemPosFinder = scoreItemPosFinder
             
-            let musicScoreDetailData = MusicScoreData.DetailData(
+            musicScoreDatas[i].detailData = MusicScoreData.DetailData(
                 id: musicId,
                 difficulty: MusicScoreData.Difficulty(rawValue: i)!,
                 playTune: scoreItemDatas[0] as! Int,
@@ -1345,9 +1501,43 @@ extension JubeatWebServer {
                 musicRate: scoreItemDatas[5] as! Float,
                 ranking: scoreItemDatas[6] as! Int
             )
-            musicScoreDatas[i].detailData = musicScoreDetailData
         }
         
         return true
+    }
+    
+    private static func parseChangeNamePage(response: String) -> String? {
+        guard let cElemStartPosFinder = response.range(of: "name=\"c\" value=\"") else {
+            return nil
+        }
+        
+        guard let cElemEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: cElemStartPosFinder.upperBound..<response.endIndex) else {
+            return nil
+        }
+        
+        let c = String(response[cElemStartPosFinder.upperBound..<cElemEndPosFinder.lowerBound])
+        return c
+    }
+    
+    private static func parseChangeNameConfirmPage(response: String) -> (c: String, token: String)? {
+        guard let cElemStartPosFinder = response.range(of: "name=\"c\" value=\"") else {
+            return nil
+        }
+        
+        guard let cElemEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: cElemStartPosFinder.upperBound..<response.endIndex) else {
+            return nil
+        }
+        
+        guard let tokenElemStartPosFinder = response.range(of: "\"token\" value=\"", options: String.CompareOptions.caseInsensitive, range: cElemEndPosFinder.upperBound..<response.endIndex) else {
+            return nil
+        }
+        
+        guard let tokenElemEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: tokenElemStartPosFinder.upperBound..<response.endIndex) else {
+            return nil
+        }
+        
+        let c = String(response[cElemStartPosFinder.upperBound..<cElemEndPosFinder.lowerBound])
+        let token = String(response[tokenElemStartPosFinder.upperBound..<tokenElemEndPosFinder.lowerBound])
+        return (c: c, token: token)
     }
 }

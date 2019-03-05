@@ -1,5 +1,5 @@
 //
-//  RankDataGraphCellView.swift
+//  RankDataGraphWidgetView.swift
 //  jubiinfo
 //
 //  Created by ggomdyu on 10/12/2018.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Charts
 
-public class RankDataGraphCellView : LazyInitializedView {
+public class RankDataGraphWidgetView : WidgetView {
 /**@section Variable */
     @IBOutlet weak var m_excRankCountLabel: UILabel!
     @IBOutlet weak var m_sssRankCountLabel: UILabel!
@@ -23,14 +23,19 @@ public class RankDataGraphCellView : LazyInitializedView {
     @IBOutlet weak var m_contentsView: UIView!
     @IBOutlet weak var m_graphView: UIView!
     
-/**@section Overrided Method */
-    open override func initialize() {
+/**@section Property */
+    public override var lazyInitializeEventName: String {
+        return "requestMyRankDataPageCacheComplete"
+    }
+    
+/**@section Method */
+    public override func initialize() {
         super.initialize()
         
         m_contentsView.alpha = 0.0
     }
     
-    open override func lazyInitialize(_ param: Any?) {
+    public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
         self.prepareRankCountLabels()
@@ -39,11 +44,6 @@ public class RankDataGraphCellView : LazyInitializedView {
         m_contentsView.animate(.fadeIn)
     }
     
-    open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyRankDataPageCacheComplete"
-    }
-
-/**@section Method */
     private func prepareRankCountLabels() {
         let myUserData = GlobalDataStorage.instance.queryMyUserData()
         guard let myRankDataPageCache = myUserData.rankDataPageCache else {

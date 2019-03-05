@@ -2,21 +2,22 @@
 //  RivalRankView.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 05/02/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Created by ggomdyu on 05/02/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-public class RivalRankView : LazyInitializedView {
+public class RivalRankView : UIView {
 /**@section Variable */
     @IBOutlet weak var m_contentsView: UIView!
+    private var m_musicScoreData: MusicScoreData!
     
 /**@section Method */
     public func initialize(musicScoreData: MusicScoreData) {
-        super.initialize()
-
+        m_musicScoreData = musicScoreData
+        
         self.prepareRivalRankCellView(musicScoreData: musicScoreData)
     }
     
@@ -27,17 +28,15 @@ public class RivalRankView : LazyInitializedView {
     }
     
     private func prepareRivalRankCellView(musicScoreData: MusicScoreData) {
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
-        guard let rivalListPageCache = myUserData.rivalListPageCache else {
-            return
-        }
-        
-        var rivalRankCellDatas = [(score: Int, isProfilePrivated: Bool, nickname: String)] ()
-        rivalRankCellDatas.append((musicScoreData.score, false, myUserData.playDataPageCache?.nickname ?? ""))
-        
         var requestCompleteCount = 0
         DispatchQueue.global().async {
-            for simpleRivalData in rivalListPageCache.simpleRivalDataList {
+            let myUserData = GlobalDataStorage.instance.queryMyUserData()
+            SpinLock { return myUserData.rivalListPageCache != nil && myUserData.playDataPageCache != nil }
+            
+            var rivalRankCellDatas = [(score: Int, isProfilePrivated: Bool, nickname: String)] ()
+            rivalRankCellDatas.append((musicScoreData.score, false, myUserData.playDataPageCache!.nickname))
+            
+            for simpleRivalData in myUserData.rivalListPageCache!.simpleRivalDataList {
                 let rivalUserData = GlobalDataStorage.instance.queryOtherUserData(rivalId:
                     simpleRivalData.rivalId)
                 
@@ -47,6 +46,9 @@ public class RivalRankView : LazyInitializedView {
                     runTaskInMainThread {
                         rivalRankCellDatas.append((rivalUserData.isProfilePrivated ? -2 : optRivalMusicScoreDataCache!.score, rivalUserData.isProfilePrivated, simpleRivalData.nickname))
                         requestCompleteCount += 1
+                        if requestCompleteCount == myUserData.rivalListPageCache!.simpleRivalDataList.count {
+                            self.onRequestAllRivalMusicDataComplete(rivalRankCellDatas: &rivalRankCellDatas)
+                        }
                     }
                 }
                 // Request rival's score data from the server, and cache it into the storage.
@@ -67,30 +69,31 @@ public class RivalRankView : LazyInitializedView {
                             }
                             
                             requestCompleteCount += 1
+                            if requestCompleteCount == myUserData.rivalListPageCache!.simpleRivalDataList.count {
+                                self.onRequestAllRivalMusicDataComplete(rivalRankCellDatas: &rivalRankCellDatas)
+                            }
                         }
                     }
                 }
             }
-        
-            SpinLock { requestCompleteCount == rivalListPageCache.simpleRivalDataList.count }
-            
-            // Rival sort priority
-            // 1. High score user
-            // 2. Low score user
-            // 3. Not played user
-            // 4. Private profile user
-            rivalRankCellDatas.sort(by: { (lhs: (Int, Bool, String), rhs: (Int, Bool, String)) -> Bool in
-                return lhs.0 > rhs.0
-            })
-            
-            for _ in 0..<(4 - rivalRankCellDatas.count) {
-                rivalRankCellDatas.append((-1, true, "•••"))
-            }
-            
-            runTaskInMainThread {
-                EventDispatcher.instance.dispatchEvent(eventType: "requestRivalDetailMusicScoreData", eventParam: rivalRankCellDatas)
-            }
         }
+    }
+    
+    private func onRequestAllRivalMusicDataComplete(rivalRankCellDatas: inout [(score: Int, isProfilePrivated: Bool, nickname: String)]) {
+        // Rival sort priority
+        // 1. High score user
+        // 2. Low score user
+        // 3. Not played user
+        // 4. Private profile user
+        rivalRankCellDatas.sort(by: { (lhs: (Int, Bool, String), rhs: (Int, Bool, String)) -> Bool in
+            return lhs.0 > rhs.0
+        })
+        
+        for _ in 0..<(4 - rivalRankCellDatas.count) {
+            rivalRankCellDatas.append((-1, true, "•••"))
+        }
+        
+        self.lazyInitialize(rivalRankCellDatas: rivalRankCellDatas)
     }
     
     private func createRivalRankCellView(nickname: String, isProfilePrivated: Bool, ranking: Int = 0, score: Int = 0) -> RivalRankCellView {
@@ -100,11 +103,7 @@ public class RivalRankView : LazyInitializedView {
         return rivalRankCellView
     }
     
-    open override func lazyInitialize(_ param: Any?) {
-        super.lazyInitialize(param)
-        
-        let rivalRankCellDatas = param as! [(Int, Bool, String)]
-        
+    private func lazyInitialize(rivalRankCellDatas: [(Int, Bool, String)]) {
         var currRanking = 0
         var nextRanking = 0
         var optOldRivalRankCellData: (Int, Bool, String)?
@@ -126,7 +125,6 @@ public class RivalRankView : LazyInitializedView {
             }
             
             let rivalRankCellView = self.createRivalRankCellView(nickname: rivalRankCellData.2, isProfilePrivated: rivalRankCellData.1, ranking: currRanking, score: rivalRankCellData.0)
-            
             let rivalRankCellStartYPos = (self.frame.height - (rivalRankCellView.frame.height * CGFloat(rivalRankCellDatas.count))) * 0.5
             m_contentsView.layout(rivalRankCellView).top(rivalRankCellStartYPos + (rivalRankCellView.frame.height * CGFloat(i))).left(0.0).right(0.0).height(rivalRankCellView.frame.height)
             
@@ -134,9 +132,5 @@ public class RivalRankView : LazyInitializedView {
         }
         
         m_contentsView.animate(.fadeIn)
-    }
-    
-    open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestRivalDetailMusicScoreData"
     }
 }

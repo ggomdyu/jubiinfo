@@ -2,38 +2,59 @@
 //  MusicCellDetailScoreView.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 15/01/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Created by ggomdyu on 15/01/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation
 import UIKit
 import Charts
 
-class MusicDetailScoreView : LazyInitializedView {
+class MusicDetailScoreView : UIView {
     @IBOutlet weak var m_contentsView: UIView!
     @IBOutlet weak var m_totalPlayCountLabel: UILabel!
     @IBOutlet weak var m_fullComboCountLabel: UILabel!
     @IBOutlet weak var m_excellentCountLabel: UILabel!
     @IBOutlet weak var m_rateLabel: UILabel!
     @IBOutlet weak var m_rankingLabel: UILabel!
-    private var m_musicScoreData: MusicScoreData?
+    private var m_musicScoreData: MusicScoreData!
 
 /**@section Method */
     public func initialize(musicScoreData: MusicScoreData) {
-        super.initialize()
-        
         m_musicScoreData = musicScoreData
         
         m_contentsView.alpha = 0.0
+        
+        self.prepareInitDetailData(musicScoreData: musicScoreData) { [weak self] in
+            self?.lazyInitialize()
+        }
     }
     
-/**@section Overrided method */
-    open override func lazyInitialize(_ param: Any?) {
-        super.lazyInitialize(param)
-        
-        let optMusicScoreData = param as? MusicScoreData
-        guard let musicScoreData = optMusicScoreData, m_musicScoreData!.id == musicScoreData.id else {
+    private func prepareInitDetailData(musicScoreData: MusicScoreData, onPrepareComplate: @escaping () -> Void) {
+        let isDetailDataInitialized = musicScoreData.isDetailDataInitialized()
+        if isDetailDataInitialized == false {
+            let myUserData = GlobalDataStorage.instance.queryMyUserData()
+            let optDetailDataInitTargetIndex = myUserData.musicScoreDataCaches.value.firstIndex { (item: MusicScoreData) -> Bool in return musicScoreData.id == item.id }
+            guard let detailDataInitTargetIndex = optDetailDataInitTargetIndex else {
+                return
+            }
+            
+            let basicMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex]
+            let advancedMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 1]
+            let extremeMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 2]
+            JubeatWebServer.requestDetailMusicScoreData(rivalId: myUserData.rivalId, musicId: musicScoreData.id, destBasicMusicScoreData: basicMusicScoreData, destAdvancedMusicScoreData: advancedMusicScoreData, extremeAdvancedMusicScoreData: extremeMusicScoreData) { (isRequestSucceed: Bool, isParseSucceed: Bool) in
+                runTaskInMainThread {
+                    onPrepareComplate()
+                }
+            }
+        }
+        else {
+            onPrepareComplate()
+        }
+    }
+    
+    private func lazyInitialize() {
+        guard let musicScoreData = m_musicScoreData else {
             return
         }
         
@@ -54,17 +75,6 @@ class MusicDetailScoreView : LazyInitializedView {
             m_rankingLabel.text =  "#\(musicScoreRanking)"
         }
         
-        self.prepareScoreHistoryGraph(musicScoreData: musicScoreData);
-        
         m_contentsView.animate(.fadeIn)
-    }
-    
-    open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestDetailMusicScoreDataComplete"
-    }
-
-/**@section Method */
-    private func prepareScoreHistoryGraph(musicScoreData: MusicScoreData) {
-        
     }
 }

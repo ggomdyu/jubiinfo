@@ -14,30 +14,58 @@ class ProfileViewMenuController : ViewController {
 /**@section Variable */
     private var m_menuBackgroundColor = Color.init(red: 0.141176, green: 0.294117, blue: 0.262745, alpha: 1.0)
     private var m_nextButtonAddYPos: CGFloat = 60.0
+    private var m_optThemeChangeEventObserver: EventObserver?
+    private var m_menuButtonList: [FlatButton] = []
     
-/**@section Overrided method */
+/**@section Destructor */
+    deinit {
+        if let themeChangeEventObserver = m_optThemeChangeEventObserver {
+            EventDispatcher.instance.unsubscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+            m_optThemeChangeEventObserver = nil
+        }
+    }
+    
+/**@section Method */
     open override func prepare() {
         super.prepare()
         
-        view.backgroundColor = m_menuBackgroundColor
+        self.prepareUI()
         
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+    }
+    
+    private func prepareUI() {
         self.addButtonToStackView(title: "프로필", action: #selector(self.onTouchProfileViewButton))
         self.addButtonToStackView(title: "음악 데이터", action: #selector(self.onTouchMusicDataButton))
-        self.addButtonToStackView(title: "라이벌", action: #selector(self.onTouchRivalButton))
         self.addButtonToStackView(title: "엠블럼", action: #selector(self.onTouchEmblemButton))
         self.addButtonToStackView(title: "랭킹", action: #selector(onTouchRankingButton))
         self.addButtonToStackView(title: "로그아웃", action: #selector(self.onTouchLogOutButton))
+        
+        self.prepareTheme()
+    }
+    
+    private func prepareTheme() {
+        self.view.backgroundColor = getCurrentThemeColorTable().profileViewMenuBackgroundColor
+        
+        for menuButton in m_menuButtonList {
+            menuButton.titleColor = getCurrentThemeColorTable().profileViewMenuLabelColor
+            menuButton.pulseColor = getCurrentThemeColorTable().profileViewMenuLabelColor
+        }
     }
 
-/**@section Method */
     private func addButtonToStackView(title: String, action: Selector) {
-        let button = FlatButton(title: title, titleColor: .white)
-        button.pulseColor = .white
+        let button = FlatButton(title: title)
         button.addTarget(self, action: action, for: .touchUpInside)
         
         view.layout(button).horizontally().top(m_nextButtonAddYPos)
-        
+
         m_nextButtonAddYPos += button.frame.height + 3.0
+        m_menuButtonList.append(button)
     }
 
 /**@section Event handler */

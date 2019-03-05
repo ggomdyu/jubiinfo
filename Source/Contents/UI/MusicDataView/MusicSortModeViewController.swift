@@ -18,8 +18,7 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
     
     @IBOutlet weak var m_sortModePickerView: UIPickerView!
     @IBOutlet weak var m_okButton: UIButton!
-    @IBOutlet weak var m_sortOrderView: UIView!
-    private var m_sortOrderSwitch: Switch!
+    @IBOutlet weak var m_sortOrderSwitch: UISwitch!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
     private var m_sortModeTable = [
         ("레벨", MusicSortMode.Level),
@@ -28,7 +27,7 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         ("아티스트", MusicSortMode.Artist)
     ]
 
-/**@section Overrided method */
+/**@section Method */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,7 +35,6 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         m_sortModePickerView.dataSource = self
     }
 
-/**@section Method */
     public static func show(currentViewController: UIViewController, currMusicSortMode: MusicSortMode, currMusicSortOrder: MusicSortOrder, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "MusicSortModeViewController") as! MusicSortModeViewController
@@ -45,17 +43,6 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         rootViewController.show(onViewController: currentViewController)
         
         viewController.initialize(currMusicSortMode: currMusicSortMode, currMusicSortOrder: currMusicSortOrder, onChangeMusicSortMode: onChangeMusicSortMode)
-    }
-    
-    private func prepareSwitch(currMusicSortOrder: MusicSortOrder) {
-        let sortOrderSwitch = Switch(state: .off, style: .light, size: .small)
-        sortOrderSwitch.isOn = (currMusicSortOrder == .Ascending)
-        sortOrderSwitch.buttonOnColor = UIColor(red: 89.0 / 255.0, green: 158.0 / 255.0, blue: 80.0 / 255.0, alpha: 1.0)
-        sortOrderSwitch.trackOnColor = UIColor(red: 162.0 / 255.0, green: 216.0 / 255.0, blue: 150.0 / 255.0, alpha: 1.0)
-        
-        m_sortOrderSwitch = sortOrderSwitch
-        
-        m_sortOrderView.layout(sortOrderSwitch).centerVertically().right(5.0)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -78,8 +65,9 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
             return currMusicSortMode == musicSortMode
         } ?? 0
         m_sortModePickerView.selectRow(pickerRowToSelect, inComponent: 0, animated: false)
-        
-        self.prepareSwitch(currMusicSortOrder: currMusicSortOrder)
+
+        // Change the toggle state of switch
+        m_sortOrderSwitch.isOn = (currMusicSortOrder == .Ascending)
     }
     
 /**@section Event handler */

@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func prepareMainStoryboard() {
-        
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         

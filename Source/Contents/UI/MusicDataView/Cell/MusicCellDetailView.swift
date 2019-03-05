@@ -2,8 +2,8 @@
 //  MusicCellDetailView.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 30/01/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Created by ggomdyu on 30/01/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation
@@ -24,7 +24,11 @@ class MusicCellDetailView : UIView {
 /**@section Method */
     public func initialize(musicScoreData: MusicScoreData) {
         m_detailScoreView.initialize(musicScoreData: musicScoreData)
-        m_scoreGraphView.initialize(musicScoreData: musicScoreData)
+        
+        // Don't initialize score graph if this music not played yet
+        if musicScoreData.scoreHistories != nil {
+            m_scoreGraphView.initialize(musicScoreData: musicScoreData)
+        }
         
         let myUserData = GlobalDataStorage.instance.queryMyUserData()
         if let rivalListPageCache = myUserData.rivalListPageCache, rivalListPageCache.simpleRivalDataList.count > 0 {

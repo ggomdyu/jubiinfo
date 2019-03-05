@@ -14,7 +14,7 @@ class LoginViewToolBarController: ToolbarController {
     private let toolBarColor = UIColor(red: 36 / 255, green: 75 / 255, blue: 67 / 255, alpha: 1)
     private let toolBarLabelColor = UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1)
     
-/**@section Overrided method */
+/**@section Method */
     open override func prepare() {
         super.prepare()
         

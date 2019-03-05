@@ -98,13 +98,12 @@ public class UserData {
     }
     
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index_other.html?rival_id= */
-    public class PlayDataPageCache {
+    public class PlayDataPageCache : Codable {
     /**@section Variable */
-        public let nickname: String
+        public var nickname: String
         public let designation: String
         public let rivalId: String
         public let emblemImageUrl: String
-        public var emblemImage: UIImage?
         public let lastPlayedTime: String
         public let lastPlayedLocation: String
         public let ranking: Int
@@ -120,7 +119,6 @@ public class UserData {
             self.designation = designation
             self.rivalId = rivalId
             self.emblemImageUrl = emblemImageUrl
-            self.emblemImage = nil
             self.lastPlayedTime = lastPlayedTime
             self.lastPlayedLocation = lastPlayedLocation
             self.ranking = ranking
@@ -183,7 +181,7 @@ public class UserData {
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
     public class MyPlayDataPageCache : PlayDataPageCache {
     /**@section Variable */
-        public private(set) var jubility: Float
+        public let jubility: Float
         
     /**@section Constructor */
         public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageURL: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
@@ -191,6 +189,10 @@ public class UserData {
             self.jubility = jubility
             
             super.init(nickname, designation, rivalId, emblemImageURL, lastPlayedTime, lastPlayedLocation, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
+        }
+        
+        required init(from decoder: Decoder) throws {
+            fatalError("init(from:) has not been implemented")
         }
     }
 
@@ -205,8 +207,8 @@ public class UserData {
     
 /**@section Variable */
     public var rivalId: String
-    public var isProfilePrivated: Bool
-    public var musicScoreDataCaches = Box<[MusicScoreData]> ([])
+    public var isProfilePrivated: Bool = false
+    public var musicScoreDataCaches = MusicScoreDataCaches ([])
     public var playDataPageCache: PlayDataPageCache?
     public var rankDataPageCache: RankDataPageCache?
     public var rivalListPageCache: RivalListPageCache?

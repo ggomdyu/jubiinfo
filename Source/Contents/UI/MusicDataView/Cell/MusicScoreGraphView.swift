@@ -2,8 +2,8 @@
 //  MusicScoreDataGraphView.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 30/01/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Created by ggomdyu on 30/01/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation
@@ -27,7 +27,12 @@ class MusicScoreGraphView : UIView, ChartViewDelegate {
         
         /**@section Method */
         public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-            return m_dateFormatter.string(from: Date(timeIntervalSince1970: value))
+            var scoreHistoryIndex = Int(value)
+            if scoreHistoryIndex >= m_musicScoreData.scoreHistories!.count {
+                scoreHistoryIndex = m_musicScoreData.scoreHistories!.count - 1
+            }
+            
+            return m_dateFormatter.string(from: Date(timeIntervalSince1970: Double(m_musicScoreData.scoreHistories![scoreHistoryIndex].0)))
         }
     }
     
@@ -49,37 +54,46 @@ class MusicScoreGraphView : UIView, ChartViewDelegate {
         m_lineChartView.setScaleEnabled(false)
         m_lineChartView.pinchZoomEnabled = false
         m_lineChartView.legend.enabled = false
-        m_lineChartView.extraTopOffset = CGFloat((m_musicScoreData.score >= 1000000) ? 22 : 0)
-        m_lineChartView.extraLeftOffset = 5.0
-        m_lineChartView.extraRightOffset = 15.0 + CGFloat((m_musicScoreData.score >= 1000000) ? 5 : 0)
         
+        let scoreHistories = m_musicScoreData.scoreHistories ?? [(Timestamp(Date().timeIntervalSince1970), m_musicScoreData.score)]
+        self.prepareLineChartViewDataSet(scoreHistories: scoreHistories)
+        
+        // Extra margin
+        m_lineChartView.extraTopOffset = (m_musicScoreData.score >= 995000) ? 22.0 : 0.0
+        m_lineChartView.extraLeftOffset = 2.0 + 5.0
+        m_lineChartView.extraRightOffset = 15.0 + 5.0
+        
+        // xAxis
         m_lineChartView.xAxis.gridLineDashLengths = [1.5, 1.5]
         m_lineChartView.xAxis.gridLineDashPhase = 0
         m_lineChartView.xAxis.labelPosition = .bottom
         m_lineChartView.xAxis.labelTextColor = UIColor(red: 152.0 / 255.0, green: 152.0 / 255.0, blue: 152.0 / 255.0, alpha: 1.0)
         m_lineChartView.xAxis.valueFormatter = DateValueFormatter(musicScoreData: m_musicScoreData)
+        m_lineChartView.xAxis.setLabelCount(scoreHistories.count, force: true)
+        m_lineChartView.xAxis.drawGridLinesEnabled = false
         
+        // leftAxis
+        let axisMaximum = Double((min(1000000, scoreHistories.last!.1 + 5000) / 1000) * 1000)
+        let axisMinimum = Double((max(0, scoreHistories.first!.1 - 5000) / 1000) * 1000)
+        m_lineChartView.leftAxis.axisMaximum = axisMaximum
+        m_lineChartView.leftAxis.axisMinimum = axisMinimum
+        m_lineChartView.leftAxis.setLabelCount(6, force: true)
         m_lineChartView.leftAxis.removeAllLimitLines()
         m_lineChartView.leftAxis.gridLineDashLengths = [1.5, 1.5]
         m_lineChartView.leftAxis.drawLimitLinesBehindDataEnabled = true
         m_lineChartView.leftAxis.labelTextColor = UIColor(red: 152.0 / 255.0, green: 152.0 / 255.0, blue: 152.0 / 255.0, alpha: 1.0)
         
+        // rightAxis
         m_lineChartView.rightAxis.enabled = false
-        
-        let scoreHistories = m_musicScoreData.scoreHistories ?? [(Timestamp(Date().timeIntervalSince1970), m_musicScoreData.score)]
-        self.prepareLineChartViewDataSet(scoreHistories: scoreHistories)
-        
-        m_lineChartView.xAxis.setLabelCount(scoreHistories.count, force: true)
-        m_lineChartView.leftAxis.axisMaximum = Double(min(1000000, scoreHistories.last!.1 + 5000))
-        m_lineChartView.leftAxis.axisMinimum = Double(max(0, scoreHistories.first!.1 - 5000))
         
         m_lineChartView.animate(yAxisDuration: 0)
     }
     
     func prepareLineChartViewDataSet(scoreHistories: [(Timestamp, MusicScore)]) {
         var chartDataEntries = [ChartDataEntry] ();
-        for scoreHistory in scoreHistories {
-            chartDataEntries.append(ChartDataEntry(x: Double(scoreHistory.0), y: Double(scoreHistory.1)))
+        for i in 0..<scoreHistories.count {
+            let scoreHistory = scoreHistories[i]
+            chartDataEntries.append(ChartDataEntry(x: Double(i), y: Double(scoreHistory.1)))
         }
         
         let scoreDataSet = LineChartDataSet(values: chartDataEntries, label: nil)
@@ -96,7 +110,7 @@ class MusicScoreGraphView : UIView, ChartViewDelegate {
         scoreDataSet.highlightEnabled = false
         
         scoreDataSet.fillAlpha = 1.0
-        scoreDataSet.fill = Fill(color: UIColor.init(red: 250.0 / 255.0, green: 244.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0))
+        scoreDataSet.fill = Fill(color: getCurrentThemeColorTable().musicCellViewGraphFillColor)
         scoreDataSet.drawFilledEnabled = true
         
         m_lineChartView.data = LineChartData(dataSet: scoreDataSet)

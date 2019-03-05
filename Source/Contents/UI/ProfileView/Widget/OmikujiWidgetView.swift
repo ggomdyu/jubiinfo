@@ -1,15 +1,16 @@
 //
-//  OmikujiCellView.swift
+//  OmikujiWidgetView.swift
 //  jubiinfo
 //
-//  Created by 차준호 on 08/02/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Created by ggomdyu on 08/02/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-public class OmikujiCellView : LazyInitializedView {
+public class OmikujiWidgetView : WidgetView {
+/**@section Variable */
     @IBOutlet weak var m_omikujiImageView1: UIImageView!
     @IBOutlet weak var m_omikujiImageView1TopConstraint: NSLayoutConstraint!
     private var m_omikujiBoxDropStartYPos: CGFloat = -150.0
@@ -24,12 +25,22 @@ public class OmikujiCellView : LazyInitializedView {
     @IBOutlet weak var m_randomPickedMusicArtistLabel: UILabel!
     private var m_optRandomPickedMusicData: MusicScoreData?
 
-    /**@section Overrided method */
+/**@section Property */
+    open override var lazyInitializeEventName: String {
+        return "requestMyMusicScoreDataComplete"
+    }
+    
+/**@section Method */
     override public func initialize() {
-        super.initialize()
-        
         m_omikujiBoxDropEndYPos = m_omikujiImageView1TopConstraint.constant
         m_omikujiImageView1TopConstraint.constant = m_omikujiBoxDropStartYPos
+        
+        if GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.count > 0 {
+            self.lazyInitialize(nil)
+        }
+        else {
+            super.initialize()
+        }
     }
     
     override public func lazyInitialize(_ param: Any?) {
@@ -43,14 +54,9 @@ public class OmikujiCellView : LazyInitializedView {
         self.playOmikujiBoxDropAnim()
     }
     
-    open override func getEventNameRequiredToLazyPrepare() -> String {
-        return "requestMyMusicScoreDataComplete"
-    }
-    
-/**@section Method */
     private func prepareRandomMusicPickResultView(randomPickedMusicData: MusicScoreData) {
         let musicCoverImageUrl = "https://p.eagate.573.jp/game/jubeat/festo/images/top/jacket/\(randomPickedMusicData.id / 10000000)/id\(randomPickedMusicData.id).gif"
-        downloadImageAsync(imageUrl: musicCoverImageUrl, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+        downloadImageAsync(imageUrl: musicCoverImageUrl, isWriteCache: true, isReadCache: true, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
             runTaskInMainThread {
                 if isDownloadSucceed {
                     self.m_randomPickedMusicCoverImageView.image = image

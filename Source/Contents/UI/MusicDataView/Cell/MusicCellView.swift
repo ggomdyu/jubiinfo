@@ -22,11 +22,12 @@ public class MusicCellView : UIView {
     @IBOutlet weak var m_fullComboLabel: UILabel!
     private var m_musicScoreData: MusicScoreData!
     private var m_onTouchCell: (() -> Void)?
-    private var m_optMusicCellDetailView: MusicCellDetailView?
+    private var m_musicCellDetailView: MusicCellDetailView!
     private var m_tickTimer = TickTimer()
     private var m_isViewExpanded = false
+    private static var topBarHeight: CGFloat!
     
-/**@section Overrided method */
+/**@section Property */
     override public var canBecomeFirstResponder: Bool { return true }
     
 /**@section Method */
@@ -67,7 +68,7 @@ public class MusicCellView : UIView {
         let imageUrl = "https://p.eagate.573.jp/game/jubeat/festo/images/top/jacket/\(musicScoreData.id / 10000000)/id\(musicScoreData.id).gif"
 #endif
         
-        downloadImageAsync(imageUrl: imageUrl, onDownloadComplete: { [weak self] (isDownloadSucceed: Bool, image: UIImage?) in
+        downloadImageAsync(imageUrl: imageUrl, isWriteCache: true, isReadCache: true, onDownloadComplete: { [weak self] (isDownloadSucceed: Bool, image: UIImage?) in
             if isDownloadSucceed {
                 runTaskInMainThread {
                     self?.m_jacketImageView.image = image
@@ -116,19 +117,19 @@ public class MusicCellView : UIView {
 
     private func prepareBackgroundColor(musicScoreData: MusicScoreData) {
         if musicScoreData.isExcellent {
-            m_contentsView.backgroundColor = UIColor(red: 1.0, green: 250 / 255, blue: 194 / 255, alpha: 1.0)
+            m_contentsView.backgroundColor = getCurrentThemeColorTable().musicCellViewExcBackgroundColor
         }
     }
     
     private func getMusicDifficultyColor(musicDifficulty: MusicScoreData.Difficulty) -> UIColor {
         if musicDifficulty == .Extreme {
-            return UIColor(red: 1.0, green: 0.0, blue: 10 / 255, alpha: 1.0)
+            return UIColor(red: 1.0, green: 54 / 255, blue: 54 / 255, alpha: 1.0)
         }
         else if musicDifficulty == .Advanced {
-            return UIColor(red: 245 / 255, green: 190 / 255, blue: 15 / 255, alpha: 1.0)
+            return UIColor(red: 1.0, green: 192 / 255, blue: 0, alpha: 1.0)
         }
         else {
-            return UIColor(red: 147 / 255, green: 230 / 255, blue: 33 / 255, alpha: 1.0)
+            return UIColor(red: 132 / 255, green: 227 / 255, blue: 61 / 255, alpha: 1.0)
         }
     }
     
@@ -169,76 +170,131 @@ public class MusicCellView : UIView {
         self.prepareInitDetailDataView()
         
         // Finally, do view expand animation.
-        let heightConstraint = self.constraints.filter({ (item: NSLayoutConstraint) -> Bool in
+        let musicCellViewHeightConstraint = self.constraints.filter({ (item: NSLayoutConstraint) -> Bool in
             return item.firstAttribute == .height
         })[0]
-        UIView.animate(withDuration: 0.5, animations: {
-            if let musicCellDetailView = self.m_optMusicCellDetailView {
-                if self.m_musicScoreData.isNotPlayedYet {
-                    heightConstraint.constant += musicCellDetailView.frame.height - musicCellDetailView.scoreGraphView.frame.height
-                }
-                else {
-                    heightConstraint.constant += musicCellDetailView.frame.height
-                }
-                
-                self.superview!.layoutIfNeeded()
-            }
-        })
-        // HACK: If you change the heightConstraint's constant and add margin to MusicDataView in UIView.animate animation block at same time, the animation result will not be what I expected. so I seperated both animation logic, one of which is the below code.
-        var prevAddedHeight = 0.0
-        m_tickTimer.initialize(0.5, { (tickTime: Double) in
-            guard let musicCellDetailView = self.m_optMusicCellDetailView else {
+
+        // HACK: If you change the heightConstraint's constant and add margin to MusicDataView in UIView.animate animation block at same time, the animation results wrong so you sholuld animte it with another way like below.
+        let musicDataView = self.superview as! MusicDataView
+        let prevMusicDataViewHeight = musicDataView.getHeight()
+        let prevMusicCellViewHeightConstant = musicCellViewHeightConstraint.constant
+        
+        // Block touch event while playing view animation
+        let scrollView = self.superview!.superview! as! UIScrollView
+        scrollView.isUserInteractionEnabled = false
+        
+        var detailViewHeight = m_musicCellDetailView.frame.height
+        if m_musicScoreData.isNotPlayedYet {
+            detailViewHeight -= m_musicCellDetailView.scoreGraphView.frame.height
+        }
+        
+        // Check the scroll view needs to scroll.
+        let myScreenPos = self.superview?.convert(self.frame.origin, to: nil) ?? CGPoint(x: 0.0, y: 0.0)
+        let screenHeight = UIApplication.shared.keyWindow!.frame.height
+        let isNeedToScrollParentView = myScreenPos.y + self.frame.height + detailViewHeight > screenHeight
+        let prevScrollViewContentsOffsetY = scrollView.contentOffset.y
+        let scrollOffsetToAdd = (myScreenPos.y + self.frame.height + detailViewHeight) - screenHeight
+
+        // Expand height of music data view which contains the music cell view
+        let currViewHeight = detailViewHeight + prevMusicDataViewHeight
+        musicDataView.setHeight(height: currViewHeight)
+        
+        func processExpandAnim(interpolated: CGFloat) {
+            // Expand music cell view
+            musicCellViewHeightConstraint.constant = (interpolated * detailViewHeight) + prevMusicCellViewHeightConstant
+        }
+        
+        func processScrollAnim(interpolated: CGFloat) {
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: prevScrollViewContentsOffsetY + (interpolated * (scrollOffsetToAdd + 20.0))), animated: false)
+        }
+        
+        m_tickTimer.initialize(Double(0.5 * (detailViewHeight / m_musicCellDetailView.frame.height)), isNeedToScrollParentView ? { [weak self] (tickTime: Double) in
+            guard let strongSelf = self else {
                 return
             }
             
-            let tempHeight = easeInOutSine(t: self.m_tickTimer.totalElapsedTime / self.m_tickTimer.duration) * Double(musicCellDetailView.frame.height)
-            let heightToAdd = tempHeight - prevAddedHeight
-            prevAddedHeight = tempHeight
+            let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
+            processExpandAnim(interpolated: interpolated)
+            processScrollAnim(interpolated: interpolated)
+        } : { [weak self] (tickTime: Double) in
+            guard let strongSelf = self else {
+                return
+            }
             
-            let castedView = self.superview as! MusicDataView
-            castedView.addHeight(height: CGFloat(heightToAdd))
+            let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
+            processExpandAnim(interpolated: interpolated)
+        }, {
+           scrollView.isUserInteractionEnabled = true
         })
     }
     
     public func Shrink() {
-        let heightConstraint = self.constraints.filter({ (item: NSLayoutConstraint) -> Bool in
+        let musicCellViewHeightConstraint = self.constraints.filter({ (item: NSLayoutConstraint) -> Bool in
             return item.firstAttribute == .height
         })[0]
         
-        // Do view shrink animation.
-        UIView.animate(withDuration: 0.5, animations: {
-            if let musicCellDetailView = self.m_optMusicCellDetailView {
-                if self.m_musicScoreData.isNotPlayedYet {
-                    heightConstraint.constant -= musicCellDetailView.frame.height - musicCellDetailView.scoreGraphView.frame.height
-                }
-                else {
-                    heightConstraint.constant -= musicCellDetailView.frame.height
-                }
+        // HACK: If you change the heightConstraint's constant and add margin to MusicDataView in UIView.animate animation block at same time, the animation results wrong so you sholuld animte it with another way like below.
+        let musicDataView = self.superview as! MusicDataView
+        let prevMusicDataViewHeight = musicDataView.getHeight()
+        let prevMusicCellViewHeightConstant = musicCellViewHeightConstraint.constant
+        
+        // Block touch event while playing view animation
+        let scrollView = self.superview!.superview! as! UIScrollView
+        scrollView.isUserInteractionEnabled = false
+        
+        var detailViewHeight = m_musicCellDetailView.frame.height
+        if self.m_musicScoreData.isNotPlayedYet {
+            detailViewHeight -= m_musicCellDetailView.scoreGraphView.frame.height
+        }
+        
+        // Check the scroll view needs to scroll.
+        if MusicCellView.topBarHeight == nil {
+            let toolBarController = (parentViewController!.parent as! MusicDataViewToolBarController)
+            MusicCellView.topBarHeight = toolBarController.toolbar.frame.height + toolBarController.statusBar.frame.height
+        }
+        let myScreenPos = self.superview?.convert(self.frame.origin, to: nil) ?? CGPoint(x: 0.0, y: 0.0)
+        let myClientPosY = myScreenPos.y - MusicCellView.topBarHeight
+        let isNeedToScrollParentView = myClientPosY < -(self.frame.height - detailViewHeight)
+        let prevScrollViewContentsOffsetY = scrollView.contentOffset.y
 
-                self.superview!.layoutIfNeeded()
-            }
-        })
-        // HACK: If you change the heightConstraint's constant and add margin to MusicDataView in UIView.animate animation block at same time, the animation result will not be what I expected. so I seperated both animation logic, one of which is the below code.
-        var prevAddedHeight = 0.0
-        m_tickTimer.initialize(0.5, { (tickTime: Double) in
-            guard let musicCellDetailView = self.m_optMusicCellDetailView else {
+        func processShrinkAnim(interpolated: CGFloat) {
+            // Expand height of music data view which contains the music cell view
+            let currViewHeight = prevMusicDataViewHeight - (interpolated * detailViewHeight)
+            musicDataView.setHeight(height: currViewHeight)
+            
+            // Expand music cell view
+            musicCellViewHeightConstraint.constant = prevMusicCellViewHeightConstant - (interpolated * detailViewHeight)
+        }
+        
+        func processScrollAnim(interpolated: CGFloat) {
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: max(0, prevScrollViewContentsOffsetY - (interpolated * detailViewHeight))), animated: false)
+        }
+        
+        m_tickTimer.initialize(Double(0.5 * (detailViewHeight / m_musicCellDetailView.frame.height)), isNeedToScrollParentView ? { [weak self] (tickTime: Double) in
+            guard let strongSelf = self else {
                 return
             }
             
-            let tempHeight = easeInOutSine(t: self.m_tickTimer.totalElapsedTime / self.m_tickTimer.duration) * Double(musicCellDetailView.frame.height)
-            let heightToAdd = tempHeight - prevAddedHeight
-            prevAddedHeight = tempHeight
+            let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
+            processShrinkAnim(interpolated: interpolated)
+            processScrollAnim(interpolated: interpolated)
+        } : { [weak self] (tickTime: Double) in
+            guard let strongSelf = self else {
+                return
+            }
             
-            let castedView = self.superview as! MusicDataView
-            castedView.addHeight(height: CGFloat(-heightToAdd))
+            let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
+            processShrinkAnim(interpolated: interpolated)
+        }, {
+            scrollView.isUserInteractionEnabled = true
         })
     }
     
     private func prepareInitDetailDataView() {
-        if m_optMusicCellDetailView == nil {
+        if m_musicCellDetailView == nil {
             // Create the detail view.
             let musicCellDetailView = UINib(nibName: "MusicCellDetailView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! MusicCellDetailView
-            m_optMusicCellDetailView = musicCellDetailView
+            m_musicCellDetailView = musicCellDetailView
             
             // And set its position to bottom of MusicCellView.
             musicCellDetailView.frame.origin.y += self.frame.height;
@@ -249,33 +305,6 @@ public class MusicCellView : UIView {
             m_contentsView.layoutIfNeeded()
             
             musicCellDetailView.initialize(musicScoreData: m_musicScoreData)
-        }
-        
-        self.prepareInitDetailData()
-    }
-    
-    private func prepareInitDetailData() {
-        let isDetailDataInitialized = m_musicScoreData.isDetailDataInitialized()
-        if isDetailDataInitialized == false {
-            let myUserData = GlobalDataStorage.instance.queryMyUserData()
-            let myRivalId = myUserData.rivalId
-            
-            let optDetailDataInitTargetIndex = myUserData.musicScoreDataCaches.value.firstIndex { (item: MusicScoreData) -> Bool in return m_musicScoreData.id == item.id }
-            guard let detailDataInitTargetIndex = optDetailDataInitTargetIndex else {
-                return
-            }
-            
-            let basicMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex]
-            let advancedMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 1]
-            let extremeMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 2]
-            JubeatWebServer.requestDetailMusicScoreData(rivalId: myRivalId, musicId: m_musicScoreData.id, destBasicMusicScoreData: basicMusicScoreData, destAdvancedMusicScoreData: advancedMusicScoreData, extremeAdvancedMusicScoreData: extremeMusicScoreData) { [weak self] (isRequestSucceed: Bool, isParseSucceed: Bool) in
-                runTaskInMainThread {
-                    EventDispatcher.instance.dispatchEvent(eventType: "requestDetailMusicScoreDataComplete", eventParam: self?.m_musicScoreData)
-                }
-            }
-        }
-        else {
-            EventDispatcher.instance.dispatchEvent(eventType: "requestDetailMusicScoreDataComplete", eventParam: m_musicScoreData)
         }
     }
     

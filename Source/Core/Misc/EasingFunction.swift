@@ -10,6 +10,10 @@ import Foundation
 
 private let PI = 3.14159265358979
 
+public func easeInSine(t: Double) -> Double {
+    return sin( 1.5707963 * t );
+}
+
 public func easeOutSine(t: Double) -> Double {
     return 1 + sin((PI * 0.5) * (t - 1.0));
 }
@@ -28,10 +32,18 @@ public func easeInOutBack(t: Double) -> Double {
     }
 }
 
+public func easeInCubic(t: Double) -> Double {
+    return t * t * t;
+}
+
 public func easeOutBounce(t: Double) -> Double {
     return 1 - pow( 2, -6 * t ) * abs( cos( t * PI * 3.5 ) );
 }
 
 public func easeOutLowBounce(t: Double) -> Double {
     return 1 - pow( 2, -12 * t ) * abs( cos( t * PI * 3.5 ) );
+}
+
+public func easeOutQuad(t: Double) -> Double {
+    return t * (2 - t);
 }
