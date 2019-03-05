@@ -331,7 +331,8 @@ public class MusicDataViewToolBarController: ToolbarController {
 //        m_rightTabFilterButton = IconButton(image: UIImage(named: "ic_filter_white"))
 //        m_rightTabFilterButton.addTarget(self, action: #selector(onTouchFilterButton), for: .touchUpInside)
         
-        m_rightTabSortButton = IconButton(image: UIImage(named: "ic_sort_white")!)
+        m_rightTabSortButton = IconButton(image: UIImage(named: "ic_sort_white")!.withRenderingMode(.alwaysTemplate))
+
         m_rightTabSortButton.addTarget(self, action: #selector(onTouchSortButton), for: .touchUpInside)
         //rightTabFilterButton,
         toolbar.rightViews = [m_rightTabSortButton]
