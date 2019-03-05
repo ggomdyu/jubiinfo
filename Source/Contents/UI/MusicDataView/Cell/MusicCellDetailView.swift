@@ -25,7 +25,7 @@ class MusicCellDetailView : UIView {
     public func initialize(musicScoreData: MusicScoreData) {
         m_detailScoreView.initialize(musicScoreData: musicScoreData)
         
-        // Don't initialize score graph if this music not played yet
+        // Don't initialize score graph if the music not played yet
         if musicScoreData.scoreHistories != nil {
             m_scoreGraphView.initialize(musicScoreData: musicScoreData)
         }

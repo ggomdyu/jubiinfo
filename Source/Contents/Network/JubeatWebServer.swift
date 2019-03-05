@@ -534,14 +534,14 @@ public class JubeatWebServer {
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
-        if true {
+        if isOldChecksum {
             SpinLock { return GlobalDataStorage.instance.isCustomMusicDatasInitialized() }
             
             let newMusicScoreDatas = MusicScoreDataCaches ([])
             
             // Start to request music score datas.
             var musicScoreDataRequestCompleteCount = 0;
-            let musicScoreDataPageEndIndex = 1// (GlobalDataStorage.instance.queryCustomMusicDatas().count / 50) + 1
+            let musicScoreDataPageEndIndex = (GlobalDataStorage.instance.queryCustomMusicDatas().count / 50) + 1
             DispatchQueue.global().async {
                 for i in 1...musicScoreDataPageEndIndex {
                     self.requestMusicScoreData(rivalId: "", pageIndex: i) { (isRequestSucceed: Bool, optMusicScoreDatas2: [MusicScoreData]?) in
@@ -556,10 +556,10 @@ public class JubeatWebServer {
                                 
                                 musicScoreDataRequestCompleteCount += 1
                             }
-                            print("Music score page load complete. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                            print("Succeed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                         else {
-                            print("Music score page load failed. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                            print("Failed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                     }
                     
@@ -569,7 +569,7 @@ public class JubeatWebServer {
             
             let oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]> = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
             
-            print("Waiting for load all of the music score data page...(musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
+            print("Waiting for load all of the music score data page... (musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
             
             // Wait until all music data request have completed.
             SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
@@ -627,6 +627,10 @@ public class JubeatWebServer {
                         }
                         else {
                             mmsdJson += "],"
+                        }
+                        
+                        if newMusicScoreData.score != -1 {
+                            newMusicScoreData.scoreHistories = [(currUnixTime, newMusicScoreData.score)]
                         }
                     }
                 }

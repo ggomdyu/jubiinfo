@@ -31,6 +31,9 @@ class MusicScoreGraphView : UIView, ChartViewDelegate {
             if scoreHistoryIndex >= m_musicScoreData.scoreHistories!.count {
                 scoreHistoryIndex = m_musicScoreData.scoreHistories!.count - 1
             }
+            else if scoreHistoryIndex < 0 {
+                scoreHistoryIndex = 0
+            }
             
             return m_dateFormatter.string(from: Date(timeIntervalSince1970: Double(m_musicScoreData.scoreHistories![scoreHistoryIndex].0)))
         }
