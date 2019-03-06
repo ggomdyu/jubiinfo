@@ -124,7 +124,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     }
     
     private func prepareTheme() {
-        m_scrollView.backgroundColor = getCurrentThemeColorTable().backgroundImage
+        m_scrollView.backgroundColor = getCurrentThemeColorTable().backgroundImageColor
         
         m_musicDataView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor
         m_musicDataSearchResultView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor

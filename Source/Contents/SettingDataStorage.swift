@@ -72,7 +72,7 @@ public class GlobalSettingDataStorage {
         activeWidgetDataJson += "]"
         
         var activeWidgetDataJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        activeWidgetDataJsonPath.appendPathComponent("activeWidgetData.json")
+        activeWidgetDataJsonPath.appendPathComponent("\(m_activeUserId)/activeWidgetData.json")
         do {
             try activeWidgetDataJson.write(to: activeWidgetDataJsonPath, atomically: false, encoding: .utf8)
         }
@@ -87,7 +87,7 @@ public class GlobalSettingDataStorage {
         }
         
         var activeWidgetDataJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        activeWidgetDataJsonPath.appendPathComponent("activeWidgetData.json")
+        activeWidgetDataJsonPath.appendPathComponent("\(m_activeUserId)/activeWidgetData.json")
         
         do {
             let activeWidgetDataJsonData = try Data(contentsOf: activeWidgetDataJsonPath)
@@ -134,9 +134,18 @@ public class GlobalSettingDataStorage {
         return ThemeType.init(rawValue: activeThemeType as! Int)!
     }
     
+    public func setActiveUserId(userId: String) {
+        m_activeUserId = userId
+    }
+    
+    public func getActiveUserId() -> String {
+        return m_activeUserId
+    }
+    
 /**@section Variable */
     public static let instance = GlobalSettingDataStorage()
     private var m_lastErrorRecord: LastErrorRecord
     private var m_optCachedActiveWidgetTypes: [WidgetType]?
     private var m_optCachedActiveThemeType: ThemeType?
+    private var m_activeUserId: String = ""
 }

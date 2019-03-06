@@ -180,19 +180,34 @@ public class UserData {
     
     /**@brief The parsed data from https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
     public class MyPlayDataPageCache : PlayDataPageCache {
+        public enum MyPlayDataPageCacheCodingKey : String, CodingKey {
+            case jubility
+        }
+        
     /**@section Variable */
         public let jubility: Float
         
     /**@section Constructor */
-        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageURL: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
         {
             self.jubility = jubility
             
-            super.init(nickname, designation, rivalId, emblemImageURL, lastPlayedTime, lastPlayedLocation, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
+            super.init(nickname, designation, rivalId, emblemImageUrl, lastPlayedTime, lastPlayedLocation, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
         }
         
         required init(from decoder: Decoder) throws {
-            fatalError("init(from:) has not been implemented")
+            let container = try decoder.container(keyedBy: MyPlayDataPageCacheCodingKey.self)
+
+            self.jubility = try container.decode(Float.self, forKey: .jubility)
+            
+            try super.init(from: decoder)
+        }
+        
+        public override func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: MyPlayDataPageCacheCodingKey.self)
+            try container.encode(jubility, forKey: .jubility)
+            
+            try super.encode(to: encoder)
         }
     }
 

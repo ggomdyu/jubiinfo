@@ -66,7 +66,7 @@ class ProfileViewController : ViewController {
     }
     
     private func prepareTheme() {
-        m_scrollView.backgroundColor = getCurrentThemeColorTable().backgroundImage
+        m_scrollView.backgroundColor = getCurrentThemeColorTable().backgroundImageColor
         
         m_profileView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor
         m_bottomEdgeView.backgroundColor = getCurrentThemeColorTable().scrollViewBackgroundColor

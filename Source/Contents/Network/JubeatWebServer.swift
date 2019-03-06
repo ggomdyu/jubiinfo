@@ -378,12 +378,13 @@ public class JubeatWebServer {
                 captchaKey += captchaKeyUrlKey
             }
             
-            self.requestLoginAuth(userId, userPassword, captchaKey) { (isRequestSucceed: Bool, response: String?) in
-                let loginFailureCode = (response != nil) ? self.parseLoginAuthResponse(response: response!) : -1
-                onLoginComplete(
-                    loginFailureCode == 0 ? .success :
-                        loginFailureCode == 200 ? .invalidEmailOrPassword : .failure
-                )
+            self.requestLoginAuth(userId, userPassword, captchaKey) { (isRequestSucceed: Bool, optResponse: String?) in
+                let loginStatus = self.parseLoginAuthResponse(response: optResponse!)
+                if loginStatus == .success {
+                    GlobalSettingDataStorage.instance.setActiveUserId(userId: userId)
+                }
+                
+                onLoginComplete(loginStatus)
             }
         }
     }
@@ -411,34 +412,28 @@ public class JubeatWebServer {
     public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
         self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
             var myPlayDataPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            myPlayDataPageCachePath.appendPathComponent("myPlayDataPageCache.json")
+            myPlayDataPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId())/myPlayDataPageCache.json")
             
             if let response = optResponse, let myPlayDataPageCache = self.parseMyPlayDataPageHtml(response: response) {
                 let encoder = JSONEncoder()
                 let optJsonData = try? encoder.encode(myPlayDataPageCache)
                 try? optJsonData?.write(to: myPlayDataPageCachePath)
-                
+
                 onRequestComplete(isRequestSucceed, myPlayDataPageCache)
             }
             // If the request failed, then use json file stored in the flash storage.
             else {
-                repeat {
+                do {
                     let decoder = JSONDecoder()
-                    let optJsonData = try? Data(contentsOf: myPlayDataPageCachePath)
-                    guard let jsonData = optJsonData else {
-                        break
-                    }
+                    let jsonData = try Data(contentsOf: myPlayDataPageCachePath)
                     
-                    let optMyPlayDataPageCache = try? decoder.decode(UserData.MyPlayDataPageCache.self, from: jsonData)
-                    guard let myPlayDataPageCache = optMyPlayDataPageCache else {
-                        break
-                    }
+                    let myPlayDataPageCache = try decoder.decode(UserData.MyPlayDataPageCache.self, from: jsonData)
                     
                     onRequestComplete(true, myPlayDataPageCache)
-                    return
-                } while (false)
-                
-                onRequestComplete(false, nil)
+                }
+                catch {
+                    onRequestComplete(false, nil)
+                }
             }
         }
     }
@@ -530,7 +525,7 @@ public class JubeatWebServer {
         
         // mmsd is abbreviation of 'My music score data'!!
         var mmsdCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        mmsdCachePath.appendPathComponent("mmsdCache.json")
+        mmsdCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId())/mmsdCache.json")
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
@@ -643,23 +638,28 @@ public class JubeatWebServer {
             
             do {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
-                GlobalSettingDataStorage.instance.setConfig(key: "mmsdChecksum", value: serverMMSDChecksum)
+                
+                let settingDataStorage = GlobalSettingDataStorage.instance
+                GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId())_mmsdChecksum", value: serverMMSDChecksum)
             }
             catch {}
             
             onRequestComplete(true, newMusicScoreDatas)
         }
         else {
-            let musicScoreDatas = self.parseMMSDCacheArray(mmsdCachePath: mmsdCachePath)
-            
-            onRequestComplete(musicScoreDatas.value.count > 0, musicScoreDatas)
+            runTaskInMainThread {
+                let musicScoreDatas = self.parseMMSDCacheArray(mmsdCachePath: mmsdCachePath)
+                
+                onRequestComplete(musicScoreDatas.value.count > 0, musicScoreDatas)
+            }
         }
     }
     
     public static func isMMSDChecksumOld(serverMMSDChecksum: Int) -> Bool {
         var isOldChecksum = true
         
-        let clientMMSDChecksum = GlobalSettingDataStorage.instance.getConfig(key: "mmsdChecksum") as? Int ?? -1
+        let settingDataStorage = GlobalSettingDataStorage.instance
+        let clientMMSDChecksum = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId())_mmsdChecksum") as? Int ?? -1
         if clientMMSDChecksum == serverMMSDChecksum {
             isOldChecksum = false
         }
@@ -1001,25 +1001,24 @@ extension JubeatWebServer {
         return nil
     }
     
-    private static func parseLoginAuthResponse(response: String) -> Int {
+    private static func parseLoginAuthResponse(response: String) -> LoginStatus {
         repeat {
             let optJsonData = response.data(using: .utf8)
             guard let jsonData = optJsonData else {
                 break
             }
             
-            do {
-                guard let responseJsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
-                    break
-                }
-                
-                return responseJsonDict["fail_code"] as? Int ?? 0
+            guard let responseJsonDict = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+                break
             }
-            catch {}
+            
+            let loginAuthCode = responseJsonDict?["fail_code"] as? Int ?? -1
+            return loginAuthCode == 0 ? .success :
+                   loginAuthCode == 200 ? .invalidEmailOrPassword : .failure
         } while(false)
         
         recordLastError(ErrorCode.ParseError, "Failed to parse login auth response.")
-        return 0
+        return .failure
     }
     
     private static func parseLoginPageHtml(_ loginPageHtml: String) -> (document: Document, mainCharacterImageURL: String, subCharacterImageURLs: [String], kcsess: String)? {

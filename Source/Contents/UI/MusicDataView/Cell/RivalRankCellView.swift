@@ -37,6 +37,8 @@ public class RivalRankCellView : UIView {
                     m_crownImageLeadingConstraint.constant -= m_crownImageView.frame.width + 5
                     m_crownImageView.isHidden = true
                 }
+                
+                m_colorBoxView.backgroundColor = getCurrentThemeColorTable().musicCellViewRivalScoreBarColor
             }
             // User not played the music yet
             else {

@@ -61,11 +61,11 @@ class EditThemeViewController : EasyUITableViewController {
                     cell.accessoryType = .none
                     cell.textLabel?.text = "페스토"
                 }, ThemeType.festo),
-                (RowType.basic, { (param: Any?) in
-                    let cell = param as! UITableViewCell
-                    cell.accessoryType = .none
-                    cell.textLabel?.text = "클랜"
-                }, ThemeType.clan),
+//                (RowType.basic, { (param: Any?) in
+//                    let cell = param as! UITableViewCell
+//                    cell.accessoryType = .none
+//                    cell.textLabel?.text = "클랜"
+//                }, ThemeType.clan),
                 (RowType.basic, { (param: Any?) in
                     let cell = param as! UITableViewCell
                     cell.accessoryType = .none
@@ -77,9 +77,10 @@ class EditThemeViewController : EasyUITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let currActiveTheme = GlobalSettingDataStorage.instance.getActiveTheme()
-        if currActiveTheme.rawValue == indexPath.row {
+        let cellTheme = sectionDataTable[0].1[indexPath.row].param as! ThemeType
+        if currActiveTheme == cellTheme {
             m_optCurrSelectedCell = cell
-            m_currSelectedTheme = sectionDataTable[0].1[currActiveTheme.rawValue].param as! ThemeType
+            m_currSelectedTheme = cellTheme
             
             cell.accessoryType = .checkmark
         }
