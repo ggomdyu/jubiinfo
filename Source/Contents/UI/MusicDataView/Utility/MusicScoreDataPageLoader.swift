@@ -159,11 +159,14 @@ public class MusicScoreDataPageLoader {
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
-            else if lhs.artistName.isEmpty && rhs.artistName.isEmpty {
-                return lhs.uppercasedRomajiName < rhs.uppercasedRomajiName
+            else {
+                if lhs.uppercasedRomajiArtistName == rhs.uppercasedRomajiArtistName {
+                    return (lhs.uppercasedRomajiName < rhs.uppercasedRomajiName) == isAscendingSort
+                }
+                else {
+                    return (lhs.uppercasedRomajiArtistName < rhs.uppercasedRomajiArtistName) == isAscendingSort
+                }
             }
-            
-            return (lhs.uppercasedRomajiArtistName < rhs.uppercasedRomajiArtistName) == isAscendingSort
         })
     }
 }
