@@ -12,8 +12,17 @@ import Material
 
 class EditThemeViewController : EasyUITableViewController {
 /**@section Variable */
-    private var m_optPrevSelectedCell: UITableViewCell?
-    private var m_prevSelectedTheme = ThemeType.festo
+    private var m_optCurrSelectedCell: UITableViewCell?
+    private var m_currSelectedTheme = ThemeType.festo
+    private var m_optThemeChangeEventObserver: EventObserver?
+    
+/**@section Destructor */
+    deinit {
+        if let themeChangeEventObserver = m_optThemeChangeEventObserver {
+            EventDispatcher.instance.unsubscribeEvent(eventType: "temporaryChangeTheme", eventObserver: themeChangeEventObserver)
+            m_optThemeChangeEventObserver = nil
+        }
+    }
     
 /**@section Method */
     public static func show(currentViewController: UIViewController) {
@@ -29,6 +38,13 @@ class EditThemeViewController : EasyUITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "temporaryChangeTheme", eventObserver: themeChangeEventObserver)
         
         self.prepareTheme()
     }
@@ -62,33 +78,46 @@ class EditThemeViewController : EasyUITableViewController {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let currActiveTheme = GlobalSettingDataStorage.instance.getActiveTheme()
         if currActiveTheme.rawValue == indexPath.row {
-            m_optPrevSelectedCell = cell
-            m_prevSelectedTheme = sectionDataTable[0].1[currActiveTheme.rawValue].param as! ThemeType
+            m_optCurrSelectedCell = cell
+            m_currSelectedTheme = sectionDataTable[0].1[currActiveTheme.rawValue].param as! ThemeType
             
             cell.accessoryType = .checkmark
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let prevSelectedCell = m_optPrevSelectedCell {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let selectedCell = self.tableView.cellForRow(at: indexPath) else {
+            return
+        }
+        
+        if let prevSelectedCell = m_optCurrSelectedCell {
+            if prevSelectedCell == selectedCell {
+                return
+            }
+            
             prevSelectedCell.accessoryType = .none
         }
         
-        let selectedCell = self.tableView.cellForRow(at: indexPath)
-        selectedCell?.accessoryType = .checkmark
-        m_optPrevSelectedCell = selectedCell
-        m_prevSelectedTheme = sectionDataTable[0].1[indexPath.row].param as! ThemeType
+        selectedCell.accessoryType = .checkmark
+        m_optCurrSelectedCell = selectedCell
         
-        self.tableView.deselectRow(at: indexPath, animated: true)
+        let prevSelectedTheme = m_currSelectedTheme
+        m_currSelectedTheme = sectionDataTable[0].1[indexPath.row].param as! ThemeType
+        
+        GlobalSettingDataStorage.instance.setActiveTheme(themeType: m_currSelectedTheme, saveToFile: false)
+        EventDispatcher.instance.dispatchEvent(eventType: "temporaryChangeTheme")
+        GlobalSettingDataStorage.instance.setActiveTheme(themeType: prevSelectedTheme, saveToFile: false)
     }
     
 /**@section Event handler */
     private func onTouchEditCompleteBtn() {
-        if m_prevSelectedTheme == GlobalSettingDataStorage.instance.getActiveTheme() {
+        if m_currSelectedTheme == GlobalSettingDataStorage.instance.getActiveTheme() {
             return
         }
         
-        GlobalSettingDataStorage.instance.setActiveTheme(themeType: m_prevSelectedTheme)
+        GlobalSettingDataStorage.instance.setActiveTheme(themeType: m_currSelectedTheme)
         EventDispatcher.instance.dispatchEvent(eventType: "changeThemeComplete")
     }
 }
@@ -98,6 +127,15 @@ public class EditThemeViewToolBarController : ToolbarController {
     private var m_leftTabPrevButton: Button!
     private var m_rightTabPrevButton: Button!
     private var m_onTouchEditCompleteBtn: (() -> Void)?
+    private var m_optThemeChangeEventObserver: EventObserver?
+    
+/**@section Destructor */
+    deinit {
+        if let themeChangeEventObserver = m_optThemeChangeEventObserver {
+            EventDispatcher.instance.unsubscribeEvent(eventType: "temporaryChangeTheme", eventObserver: themeChangeEventObserver)
+            m_optThemeChangeEventObserver = nil
+        }
+    }
     
 /**@section Constructor */
     public init(rootViewController: UIViewController, onTouchEditCompleteBtn: (() -> Void)?) {
@@ -114,20 +152,22 @@ public class EditThemeViewToolBarController : ToolbarController {
     open override func prepare() {
         super.prepare()
         
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "temporaryChangeTheme", eventObserver: themeChangeEventObserver)
+        
         self.prepareStatusBar()
-        self.prepareToolbar()
+        self.prepareToolbarTitle()
+        self.prepareToolbarLeftIcon()
+        self.prepareToolbarRightIcon()
+        self.prepareTheme()
     }
     
     private func prepareStatusBar() {
         statusBarStyle = .lightContent
-    }
-    
-    private func prepareToolbar() {
-        self.prepareToolbarTitle()
-        self.prepareToolbarLeftIcon()
-        self.prepareToolbarRightIcon()
-        
-        self.prepareTheme()
     }
     
     private func prepareToolbarTitle() {
