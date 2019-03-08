@@ -59,7 +59,7 @@ public class QubellThemeColorTable : ThemeColorTable {
     public override var toolBarBackgroundColor: UIColor { return UIColor(red: 222 / 255, green: 222 / 255, blue: 222 / 255, alpha: 1) }
     public override var toolBarTitleLabelColor: UIColor { return toolBarIconColor }
     public override var toolBarIconColor: UIColor { return UIColor(red: 58 / 255, green: 77 / 255, blue: 116 / 255, alpha: 1) }
-    public override var musicCellViewExcBackgroundColor: UIColor { return UIColor(red: 222 / 255, green: 245 / 255, blue: 254 / 255, alpha: 1.0) }
+    public override var musicCellViewExcBackgroundColor: UIColor { return UIColor(red: 217 / 255, green: 240 / 255, blue: 249 / 255, alpha: 1.0) }
     public override var musicCellViewRivalScoreBarColor: UIColor { return UIColor(red: 211 / 255, green: 229 / 255, blue: 238 / 255, alpha: 1.0 ) }
     public override var musicCellViewGraphFillColor: UIColor { return UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1.0) }
     public override var profileViewMenuBackgroundColor: UIColor { return UIColor(red: 230 / 255, green: 230 / 255, blue: 230 / 255, alpha: 1) }

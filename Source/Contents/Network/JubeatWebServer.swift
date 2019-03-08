@@ -412,7 +412,7 @@ public class JubeatWebServer {
     public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
         self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
             var myPlayDataPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            myPlayDataPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId())/myPlayDataPageCache.json")
+            myPlayDataPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)/myPlayDataPageCache.json")
             
             if let response = optResponse, let myPlayDataPageCache = self.parseMyPlayDataPageHtml(response: response) {
                 let encoder = JSONEncoder()
@@ -525,7 +525,7 @@ public class JubeatWebServer {
         
         // mmsd is abbreviation of 'My music score data'!!
         var mmsdCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        mmsdCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId())/mmsdCache.json")
+        mmsdCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_mmsdCache.json")
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
@@ -640,7 +640,7 @@ public class JubeatWebServer {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
                 
                 let settingDataStorage = GlobalSettingDataStorage.instance
-                GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId())_mmsdChecksum", value: serverMMSDChecksum)
+                GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
             }
             catch {}
             
@@ -659,7 +659,7 @@ public class JubeatWebServer {
         var isOldChecksum = true
         
         let settingDataStorage = GlobalSettingDataStorage.instance
-        let clientMMSDChecksum = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId())_mmsdChecksum") as? Int ?? -1
+        let clientMMSDChecksum = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum") as? Int ?? -1
         if clientMMSDChecksum == serverMMSDChecksum {
             isOldChecksum = false
         }
