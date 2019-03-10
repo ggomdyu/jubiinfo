@@ -379,14 +379,29 @@ public class JubeatWebServer {
             }
             
             self.requestLoginAuth(userId, userPassword, captchaKey) { (isRequestSucceed: Bool, optResponse: String?) in
-                let loginStatus = self.parseLoginAuthResponse(response: optResponse!)
-                if loginStatus == .success {
-                    GlobalSettingDataStorage.instance.setActiveUserId(userId: userId)
+                if isRequestSucceed {
+                    let loginStatus = self.parseLoginAuthResponse(response: optResponse!)
+                    if loginStatus == .success {
+                        GlobalSettingDataStorage.instance.setActiveUserId(userId: userId)
+                        GlobalSettingDataStorage.instance.setConfig(key: "autoLoginUserId", value: userId)
+                        GlobalSettingDataStorage.instance.setSecurityConfig(key: "autoLoginUserPassword", value: userPassword)
+                    }
+                    
+                    onLoginComplete(loginStatus)
                 }
-                
-                onLoginComplete(loginStatus)
+                else {
+                    onLoginComplete(.failure)
+                }
             }
         }
+    }
+    
+    public static func logout() {
+        // Remove all of user's login cache
+        removeCookies(url: URL(string: "https://p.eagate.573.jp/")!)
+        GlobalSettingDataStorage.instance.removeConfig(key: "autoLoginUserId")
+        GlobalSettingDataStorage.instance.removeSecurityConfig(key: "autoLoginUserPassword")
+        GlobalSettingDataStorage.instance.removeActiveUserId()
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/top/index.html */
@@ -412,7 +427,7 @@ public class JubeatWebServer {
     public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
         self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
             var myPlayDataPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            myPlayDataPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)/myPlayDataPageCache.json")
+            myPlayDataPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_myPlayDataPageCache.json")
             
             if let response = optResponse, let myPlayDataPageCache = self.parseMyPlayDataPageHtml(response: response) {
                 let encoder = JSONEncoder()
@@ -527,11 +542,11 @@ public class JubeatWebServer {
         var mmsdCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         mmsdCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_mmsdCache.json")
         
+        SpinLock { return GlobalDataStorage.instance.isCustomMusicDatasInitialized() }
+        
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
         if isOldChecksum {
-            SpinLock { return GlobalDataStorage.instance.isCustomMusicDatasInitialized() }
-            
             let newMusicScoreDatas = MusicScoreDataCaches ([])
             
             // Start to request music score datas.
@@ -1410,7 +1425,7 @@ extension JubeatWebServer {
         
         var musicScoreDatas = [destBasicMusicScoreData, destAdvancedMusicScoreData, extremeAdvancedMusicScoreData];
         
-        // If player didn't unlocked the song
+        // If player didn't unlocked the music
         let musicNotUnlocked = response.range(of: "プレーしていません") != nil
         if musicNotUnlocked {
             for i in 0..<3 {

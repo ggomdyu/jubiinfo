@@ -30,6 +30,11 @@ class ProfileViewController : ViewController {
     
 /**@section Method */
     public static func show(currentViewController: UIViewController) {
+        let viewController = self.create()
+        currentViewController.present(viewController, animated: true)
+    }
+    
+    public static func create() -> UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
@@ -39,7 +44,7 @@ class ProfileViewController : ViewController {
         navigationDrawerController.isMotionEnabled = true
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         
-        currentViewController.present(navigationDrawerController, animated: true)
+        return navigationDrawerController
     }
     
     open override func prepare() {
@@ -49,13 +54,7 @@ class ProfileViewController : ViewController {
         self.requestMyRivalListPageCache()
         
         self.prepareUI()
-        
-        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
-            self?.prepareTheme()
-        }
-        m_optThemeChangeEventObserver = themeChangeEventObserver
-        
-        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+        self.prepareEventObserver()
     }
     
     private func prepareUI() {
@@ -114,6 +113,15 @@ class ProfileViewController : ViewController {
             let widgetInitRequestFunc = widgetInitRequestFuncGetter[widgetInitEventName]
             widgetInitRequestFunc?()
         }
+    }
+    
+    private func prepareEventObserver() {
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
     }
     
     private func requestMyRivalListPageCache() {
@@ -293,13 +301,7 @@ public class ProfileViewToolBarController: ToolbarController {
         super.prepare()
         
         self.prepareUI()
-        
-        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
-            self?.prepareTheme()
-        }
-        m_optThemeChangeEventObserver = themeChangeEventObserver
-        
-        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+        self.prepareEventObserver()
     }
     
     private func prepareUI() {
@@ -340,12 +342,22 @@ public class ProfileViewToolBarController: ToolbarController {
         toolbar.backgroundColor = getCurrentThemeColorTable().toolBarBackgroundColor
     }
     
+    private func prepareEventObserver() {
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+    }
+    
 /**@section Event handler */
     @objc private func onTouchMenuButton() {
         navigationDrawerController?.toggleLeftView()
     }
     
     @objc private func onTouchEditButton() {
-        ProfileViewEditController.show(currentViewController: navigationDrawerController!, onEditComplete: m_onEditComplete)
+        let profileViewEditController = ProfileViewEditController.create(onEditComplete: m_onEditComplete)
+        navigationDrawerController?.present(profileViewEditController, animated: true)
     }
 }

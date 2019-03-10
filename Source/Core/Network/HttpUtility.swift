@@ -37,6 +37,18 @@ public func removeCookies(url: URL) {
     }
 }
 
+public func isSessionExpired(url: String) -> Bool {
+    guard let oldCookies = HTTPCookieStorage.shared.cookies(for: URL(string: url)!) else {
+        return true
+    }
+    
+    guard let expireDate = oldCookies.last?.expiresDate else {
+        return true
+    }
+    
+    return expireDate.timeIntervalSince1970 <= Date().timeIntervalSince1970
+}
+
 public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache: Bool, onDownloadComplete: @escaping (Bool, UIImage?) -> Void) {
     
     let isUseImageCaching = isWriteCache || isReadCache

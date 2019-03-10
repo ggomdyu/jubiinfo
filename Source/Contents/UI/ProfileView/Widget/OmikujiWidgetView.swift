@@ -24,7 +24,8 @@ public class OmikujiWidgetView : WidgetView {
     @IBOutlet weak var m_randomPickedMusicNameLabel: UILabel!
     @IBOutlet weak var m_randomPickedMusicArtistLabel: UILabel!
     private var m_optRandomPickedMusicData: MusicScoreData?
-
+    @IBOutlet weak var m_retryBtn: UIButton!
+    
 /**@section Property */
     open override var lazyInitializeEventName: String {
         return "requestMyMusicScoreDataComplete"
@@ -67,6 +68,8 @@ public class OmikujiWidgetView : WidgetView {
         
         m_randomPickedMusicNameLabel.text = randomPickedMusicData.name
         m_randomPickedMusicArtistLabel.text = randomPickedMusicData.artistName.isEmpty ? "-" : randomPickedMusicData.artistName
+        
+        m_retryBtn.isUserInteractionEnabled = true
     }
     
     private func playOmikujiBoxDropAnim() {
@@ -150,6 +153,7 @@ public class OmikujiWidgetView : WidgetView {
         m_omikujiImageView2.isHidden = true
         m_omikujiImageView2.alpha = 1.0
         m_randomMusicPickResultView.animate(.fadeOut)
+        m_retryBtn.isUserInteractionEnabled = false
         
         self.playOmikujiBoxDropAnim()
     }

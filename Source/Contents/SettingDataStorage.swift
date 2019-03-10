@@ -8,6 +8,7 @@
 
 import CoreData
 import Foundation
+import Security
 
 /**@warn DO NOT CHANGE THE ORDER OF THIS ENUMERATOR!! */
 public enum WidgetType : Int {
@@ -33,6 +34,91 @@ public enum ThemeType : Int, CaseIterable {
     case original
 }
 
+private class KeychainService {
+    private static let keyChainServiceName = "com.ggomdyu.jubiinfo"
+    
+    private static let kSecClassValue = NSString(format: kSecClass)
+    private static let kSecAttrAccountValue = NSString(format: kSecAttrAccount)
+    private static let kSecValueDataValue = NSString(format: kSecValueData)
+    private static let kSecClassGenericPasswordValue = NSString(format: kSecClassGenericPassword)
+    private static let kSecAttrServiceValue = NSString(format: kSecAttrService)
+    private static let kSecMatchLimitValue = NSString(format: kSecMatchLimit)
+    private static let kSecReturnDataValue = NSString(format: kSecReturnData)
+    private static let kSecMatchLimitOneValue = NSString(format: kSecMatchLimitOne)
+    
+    public static func setSecurityConfig(key: String, value: String) {
+        guard let data = value.data(using: .utf8, allowLossyConversion: false) else {
+            return
+        }
+        
+        let keychainQuery = NSMutableDictionary(
+            objects: [
+                KeychainService.kSecClassGenericPasswordValue,
+                KeychainService.keyChainServiceName,
+                key,
+                data
+            ],
+            forKeys: [
+                KeychainService.kSecClassValue,
+                KeychainService.kSecAttrServiceValue,
+                KeychainService.kSecAttrAccountValue,
+                KeychainService.kSecValueDataValue
+            ]
+        )
+        
+        SecItemDelete(keychainQuery)
+        SecItemAdd(keychainQuery, nil)
+    }
+    
+    public static func getSecurityConfig(key: String) -> String? {
+        let keychainQuery = NSMutableDictionary(
+            objects: [
+                KeychainService.kSecClassGenericPasswordValue,
+                KeychainService.keyChainServiceName,
+                key,
+                kCFBooleanTrue,
+                KeychainService.kSecMatchLimitOneValue
+            ],
+            forKeys: [
+                KeychainService.kSecClassValue,
+                KeychainService.kSecAttrServiceValue,
+                KeychainService.kSecAttrAccountValue,
+                KeychainService.kSecReturnDataValue,
+                KeychainService.kSecMatchLimitValue
+            ]
+        )
+
+        var dataTypeRef: AnyObject?
+        let status = SecItemCopyMatching(keychainQuery, &dataTypeRef)
+        if status == errSecSuccess {
+            guard let data = dataTypeRef as? Data else {
+                return nil
+            }
+            
+            return String(data: data, encoding: .utf8)
+        }
+        
+        return nil
+    }
+    
+    public static func removeSecurityConfig(key: String) {
+        let keychainQuery = NSMutableDictionary(
+            objects: [
+                KeychainService.kSecClassGenericPasswordValue,
+                KeychainService.keyChainServiceName,
+                key
+            ],
+            forKeys: [
+                KeychainService.kSecClassValue,
+                KeychainService.kSecAttrServiceValue,
+                KeychainService.kSecAttrAccountValue
+            ]
+        )
+        
+        SecItemDelete(keychainQuery)
+    }
+}
+
 public class GlobalSettingDataStorage {
 /**@section Constructor */
     private init() {
@@ -45,12 +131,24 @@ public class GlobalSettingDataStorage {
         UserDefaults.standard.set(value, forKey: key)
     }
     
+    public func setSecurityConfig(key: String, value: String) {
+        KeychainService.setSecurityConfig(key: key, value: value)
+    }
+    
     public func getConfig(key: String) -> Any? {
         return UserDefaults.standard.value(forKey: key)
     }
     
-    public func removeConfig(key: String, value: Any?) {
+    public func getSecurityConfig(key: String) -> String? {
+        return KeychainService.getSecurityConfig(key: key)
+    }
+    
+    public func removeConfig(key: String) {
         UserDefaults.standard.removeObject(forKey: key)
+    }
+    
+    public func removeSecurityConfig(key: String) {
+        KeychainService.removeSecurityConfig(key: key)
     }
     
     public func setLastErrorRecord(_ lastErrorRecord: LastErrorRecord) {
@@ -72,7 +170,7 @@ public class GlobalSettingDataStorage {
         activeWidgetDataJson += "]"
         
         var activeWidgetDataJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        activeWidgetDataJsonPath.appendPathComponent("\(m_activeUserId)/activeWidgetData.json")
+        activeWidgetDataJsonPath.appendPathComponent("\(m_activeUserId)_activeWidgetData.json")
         do {
             try activeWidgetDataJson.write(to: activeWidgetDataJsonPath, atomically: false, encoding: .utf8)
         }
@@ -87,7 +185,7 @@ public class GlobalSettingDataStorage {
         }
         
         var activeWidgetDataJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        activeWidgetDataJsonPath.appendPathComponent("\(m_activeUserId)/activeWidgetData.json")
+        activeWidgetDataJsonPath.appendPathComponent("\(m_activeUserId)_activeWidgetData.json")
         
         do {
             let activeWidgetDataJsonData = try Data(contentsOf: activeWidgetDataJsonPath)
@@ -135,11 +233,15 @@ public class GlobalSettingDataStorage {
     }
     
     public func setActiveUserId(userId: String) {
-        m_activeUserId = userId
+        m_activeUserId = userId.lowercased()
     }
     
     public func getActiveUserId() -> String {
         return m_activeUserId
+    }
+    
+    public func removeActiveUserId() {
+        m_activeUserId.removeAll()
     }
     
 /**@section Variable */

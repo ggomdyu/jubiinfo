@@ -24,36 +24,37 @@ public class ProfileViewEditController : EasyUITableViewController {
     }
     
 /**@section Method */
-    public static func show(currentViewController: UIViewController, onEditComplete: ((Bool) -> Void)?) {
+    public static func create(onEditComplete: ((Bool) -> Void)?) -> ProfileViewEditToolbarController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let profileViewEditController = storyboard.instantiateViewController(withIdentifier: "ProfileViewEditController") as! ProfileViewEditController
+        
         let toolBarController = ProfileViewEditToolbarController(rootViewController: profileViewEditController, onTouchEditCompleteBtn: profileViewEditController.onEditComplete)
-        toolBarController.isMotionEnabled = true
-        toolBarController.motionTransitionType = .autoReverse(presenting: .push(direction: .up))
+        profileViewEditController.initialize(onEditComplete: onEditComplete)
         
-        currentViewController.present(toolBarController, animated: true)
-        
-        profileViewEditController.initialize(onEditComplete: onEditComplete);
+        return toolBarController
     }
     
     public func initialize(onEditComplete: ((Bool) -> Void)?) {
         m_onEditComplete = onEditComplete
         
+        tableView.setEditing(true, animated: false)
+        
+        self.prepareTheme()
+        self.prepareEventObserver()
+    }
+    
+    private func prepareTheme() {
+        self.tableView.backgroundColor = getCurrentThemeColorTable().tableViewBackgroundColor
+    }
+    
+    private func prepareEventObserver() {
         let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
             self?.prepareTheme()
         }
         m_optThemeChangeEventObserver = themeChangeEventObserver
         
         EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
-        
-        tableView.setEditing(true, animated: false)
-        
-        self.prepareTheme()
-    }
-    
-    private func prepareTheme() {
-        self.tableView.backgroundColor = getCurrentThemeColorTable().tableViewBackgroundColor
     }
     
     private func createActivatedWidgetRowDatas() -> [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)] {
@@ -243,14 +244,11 @@ public class ProfileViewEditToolbarController: ToolbarController {
     open override func prepare() {
         super.prepare()
         
+        self.isMotionEnabled = true
+        self.motionTransitionType = .autoReverse(presenting: .push(direction: .up))
+        
         self.prepareUI()
-        
-        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
-            self?.prepareTheme()
-        }
-        m_optThemeChangeEventObserver = themeChangeEventObserver
-        
-        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+        self.prepareEventObserver()
     }
     
     private func prepareUI() {
@@ -258,6 +256,15 @@ public class ProfileViewEditToolbarController: ToolbarController {
         self.prepareToolbarTitle()
         self.prepareToolbarRightIcon()
         self.prepareTheme()
+    }
+    
+    private func prepareEventObserver() {
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
     }
     
     private func prepareStatusBar() {

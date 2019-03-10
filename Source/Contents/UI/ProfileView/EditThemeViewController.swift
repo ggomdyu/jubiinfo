@@ -39,18 +39,21 @@ class EditThemeViewController : EasyUITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.prepareTheme()
+        self.prepareEventObserver()
+    }
+    
+    private func prepareTheme() {
+        self.tableView.backgroundColor = getCurrentThemeColorTable().tableViewBackgroundColor
+    }
+    
+    private func prepareEventObserver() {
         let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
             self?.prepareTheme()
         }
         m_optThemeChangeEventObserver = themeChangeEventObserver
         
         EventDispatcher.instance.subscribeEvent(eventType: "temporaryChangeTheme", eventObserver: themeChangeEventObserver)
-        
-        self.prepareTheme()
-    }
-    
-    private func prepareTheme() {
-        self.tableView.backgroundColor = getCurrentThemeColorTable().tableViewBackgroundColor
     }
     
     public override func createSectionDataTable() -> [(sectionTitle: String, [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)])] {
@@ -153,18 +156,21 @@ public class EditThemeViewToolBarController : ToolbarController {
     open override func prepare() {
         super.prepare()
         
+        self.prepareEventObserver()
+        self.prepareStatusBar()
+        self.prepareToolbarTitle()
+        self.prepareToolbarLeftIcon()
+        self.prepareToolbarRightIcon()
+        self.prepareTheme()
+    }
+    
+    private func prepareEventObserver() {
         let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
             self?.prepareTheme()
         }
         m_optThemeChangeEventObserver = themeChangeEventObserver
         
         EventDispatcher.instance.subscribeEvent(eventType: "temporaryChangeTheme", eventObserver: themeChangeEventObserver)
-        
-        self.prepareStatusBar()
-        self.prepareToolbarTitle()
-        self.prepareToolbarLeftIcon()
-        self.prepareToolbarRightIcon()
-        self.prepareTheme()
     }
     
     private func prepareStatusBar() {

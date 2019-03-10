@@ -19,18 +19,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        self.prepareMainStoryboard()
+        self.prepareUpdateCustomMusicDatas()
+        self.prepareViewController()
         return true
     }
     
-    private func prepareMainStoryboard() {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        
+    private func prepareViewController() {
         window = UIWindow(frame: Screen.bounds)
-        window!.rootViewController = viewController//LoginViewToolBarController(rootViewController: viewController)
+        window!.rootViewController = self.createSuitableViewController()
         window!.makeKeyAndVisible()
+    }
+    
+    private func createSuitableViewController() -> UIViewController? {
+        if let autoLoginUserId = GlobalSettingDataStorage.instance.getConfig(key: "autoLoginUserId") as? String,
+           let autoLoginUserPassword = GlobalSettingDataStorage.instance.getSecurityConfig(key: "autoLoginUserPassword") {
+            if isSessionExpired(url: "https://p.eagate.573.jp/") {
+                removeCookies(url: URL(string: "https://p.eagate.573.jp/")!)
+                
+                let loginStatus = self.requestLoginSync(loginUserId: autoLoginUserId, loginUserPassword: autoLoginUserPassword)
+                if loginStatus != .success {
+                    if loginStatus == .invalidEmailOrPassword {
+                        return LoginViewController.create()
+                    }
+                    else {
+                        return LoginViewController.create()
+                    }
+                }
+            }
+            
+            GlobalSettingDataStorage.instance.setActiveUserId(userId: autoLoginUserId)
+            return ProfileViewController.create()
+        }
+        else {
+            return LoginViewController.create()
+        }
+    }
+    
+    private func requestLoginSync(loginUserId: String, loginUserPassword: String) -> JubeatWebServer.LoginStatus {
+        var optLoginStatus: JubeatWebServer.LoginStatus?
+        JubeatWebServer.login(userId: loginUserId, userPassword: loginUserPassword) { (loginStatus: JubeatWebServer.LoginStatus) in
+            optLoginStatus = loginStatus
+        }
+        
+        SpinLock { return optLoginStatus != nil }
+        
+        return optLoginStatus!
+    }
+    
+    private func prepareUpdateCustomMusicDatas() {
+        JubeatWebServer.requestCMDChecksum { (isRequestSucceed: Bool, checksum: String?) in
+            if isRequestSucceed {
+                JubeatWebServer.requestCustomMusicDatas(serverCMDChecksum: checksum!, onRequestComplete: {(isRequestSucceed2: Bool, optCustomMusicDatas: [MusicId : MusicScoreData.CustomData]?) in
+                    if let customMusicDatas = optCustomMusicDatas {
+                        runTaskInMainThread {
+                            GlobalDataStorage.instance.initCustomMusicDatas(musicCustomDatas: customMusicDatas)
+                            
+                            EventDispatcher.instance.dispatchEvent(eventType: "requestCustomMusicDatasDataComplete", eventParam: customMusicDatas)
+                        }
+                    }
+                })
+            }
+            else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                    self?.prepareUpdateCustomMusicDatas();
+                })
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -45,6 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        EventDispatcher.instance.dispatchEvent(eventType: "applicationEnterForeground")
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

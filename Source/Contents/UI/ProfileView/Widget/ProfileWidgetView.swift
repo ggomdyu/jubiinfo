@@ -62,12 +62,7 @@ class ProfileWidgetView : WidgetView {
         m_contentsView.animate(.fadeIn)
         
         if m_optNicknameChangeEventObserver == nil {
-            let nicknameChangeEventObserver = EventObserver(releaseAfterDispatch: false, eventHandler: { [weak self] (param: Any?) in
-                self?.m_nicknameLabel.text = param as? String
-            })
-            m_optNicknameChangeEventObserver = nicknameChangeEventObserver
-            
-            EventDispatcher.instance.subscribeEvent(eventType: "requestNicknameChangeComplete", eventObserver: nicknameChangeEventObserver)
+            self.prepareEventObserver()
         }
     }
     
@@ -91,6 +86,15 @@ class ProfileWidgetView : WidgetView {
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPressCell))
         longPressGestureRecognizer.minimumPressDuration = 0.3
         self.addGestureRecognizer(longPressGestureRecognizer)
+    }
+    
+    private func prepareEventObserver() {
+        let nicknameChangeEventObserver = EventObserver(releaseAfterDispatch: false, eventHandler: { [weak self] (param: Any?) in
+            self?.m_nicknameLabel.text = param as? String
+        })
+        m_optNicknameChangeEventObserver = nicknameChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "requestNicknameChangeComplete", eventObserver: nicknameChangeEventObserver)
     }
     
 /**@section Event handler */

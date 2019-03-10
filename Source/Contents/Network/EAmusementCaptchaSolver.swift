@@ -48,7 +48,7 @@ public class EAmusementCaptchaSolver {
         
         // 2. Download sub character images together while requesting.
         let subCharacterImageCount = 5;
-        var downloadedSubCharacterImageCount: Int = 0;
+        var downloadedSubCharacterImageCount: Int32 = 0;
         var subCharacterImages = [UIImage?](repeating: nil, count: subCharacterImageCount)
         for i in 0 ... 4 {
             downloadImageAsync(imageUrl: subCharacterImageUrls[i], isWriteCache: false, isReadCache: false, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
@@ -56,9 +56,7 @@ public class EAmusementCaptchaSolver {
                     subCharacterImages[i] = image
                 }
                 
-                runTaskInMainThread {
-                    downloadedSubCharacterImageCount += 1
-                }
+                OSAtomicIncrement32(&downloadedSubCharacterImageCount)
             })
         }
         

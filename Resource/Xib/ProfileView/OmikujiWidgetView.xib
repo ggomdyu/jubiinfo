@@ -172,6 +172,7 @@
                 <outlet property="m_randomPickedMusicArtistLabel" destination="PXU-3u-lB7" id="WqF-Tc-D1U"/>
                 <outlet property="m_randomPickedMusicCoverImageView" destination="4gh-QE-HnE" id="XsQ-p5-RH8"/>
                 <outlet property="m_randomPickedMusicNameLabel" destination="P4G-4I-Y1o" id="UXY-y0-7jB"/>
+                <outlet property="m_retryBtn" destination="BXu-Su-icF" id="dIp-fz-yOC"/>
             </connections>
             <point key="canvasLocation" x="76.799999999999997" y="85.907046476761622"/>
         </view>

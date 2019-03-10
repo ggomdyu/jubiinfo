@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 import Material
+import MessageUI
 
-class ProfileViewMenuController : ViewController {
+class ProfileViewMenuController : ViewController, MFMailComposeViewControllerDelegate {
 /**@section Variable */
     private var m_menuBackgroundColor = Color.init(red: 0.141176, green: 0.294117, blue: 0.262745, alpha: 1.0)
     private var m_nextButtonAddYPos: CGFloat = 60.0
@@ -30,20 +31,15 @@ class ProfileViewMenuController : ViewController {
         super.prepare()
         
         self.prepareUI()
-        
-        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
-            self?.prepareTheme()
-        }
-        m_optThemeChangeEventObserver = themeChangeEventObserver
-        
-        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
+        self.prepareEventObserver()
     }
     
     private func prepareUI() {
         self.addButtonToStackView(title: "프로필", action: #selector(self.onTouchProfileViewButton))
         self.addButtonToStackView(title: "음악 데이터", action: #selector(self.onTouchMusicDataButton))
-        self.addButtonToStackView(title: "엠블럼", action: #selector(self.onTouchEmblemButton))
-        self.addButtonToStackView(title: "랭킹", action: #selector(onTouchRankingButton))
+//        self.addButtonToStackView(title: "엠블럼", action: #selector(self.onTouchEmblemButton))
+//        self.addButtonToStackView(title: "랭킹", action: #selector(onTouchRankingButton))
+        self.addButtonToStackView(title: "문의", action: #selector(self.onTouchSupport))
         self.addButtonToStackView(title: "로그아웃", action: #selector(self.onTouchLogOutButton))
         
         self.prepareTheme()
@@ -56,6 +52,15 @@ class ProfileViewMenuController : ViewController {
             menuButton.titleColor = getCurrentThemeColorTable().profileViewMenuLabelColor
             menuButton.pulseColor = getCurrentThemeColorTable().profileViewMenuLabelColor
         }
+    }
+    
+    private func prepareEventObserver() {
+        let themeChangeEventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) in
+            self?.prepareTheme()
+        }
+        m_optThemeChangeEventObserver = themeChangeEventObserver
+        
+        EventDispatcher.instance.subscribeEvent(eventType: "changeThemeComplete", eventObserver: themeChangeEventObserver)
     }
 
     private func addButtonToStackView(title: String, action: Selector) {
@@ -89,9 +94,27 @@ class ProfileViewMenuController : ViewController {
         showOkPopup(self, "에러", "구현 예정")
     }
     
+    @objc private func onTouchSupport() {
+        if MFMailComposeViewController.canSendMail() {
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.setToRecipients(["ggomdyu@gmail.com"])
+            mailComposer.mailComposeDelegate = self
+            self.present(mailComposer, animated: true)
+        }
+        else {
+            showOkPopup(self, "에러", "설정 앱에서 이메일 계정을 등록해주세요.")
+        }
+    }
+    
     @objc private func onTouchLogOutButton() {
         showYesNoPopup(self, nil, "로그아웃 하시겠습니까?", {
-            self.dismiss(animated: true)
+            JubeatWebServer.logout()
+            
+            LoginViewController.show(currentViewController: self)
         })
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

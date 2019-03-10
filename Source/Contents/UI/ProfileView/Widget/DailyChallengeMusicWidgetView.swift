@@ -101,7 +101,7 @@ class DailyChallengeMusicWidgetView : WidgetView {
         guard let viewController = self.parentViewController else {
             return
         }
-        
+
         MusicDataViewController.show(currentViewController: viewController, musicId: m_dailyRecommendedMusicId)
     }
     

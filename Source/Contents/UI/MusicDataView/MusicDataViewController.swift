@@ -27,36 +27,34 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     private var m_lastSearchedMusicName: String?
     private var m_isDeleteKeyEntered = false
     private var m_optScrollDetectTimer: Timer?
+    private var m_optNetworkPendingIndicatorView: UIView?
     
 /**@section Method */
-    public static func show(currentViewController: UIViewController, musicId: MusicId) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    public static func show(currentViewController: UIViewController) {
+        let toolBarViewController = self.create()
+        let viewController = toolBarViewController.rootViewController as! MusicDataViewController
         
-        let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
-        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
-        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
+        currentViewController.present(toolBarViewController, animated: true)
         
-        navigationDrawerController.isMotionEnabled = true
-        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
-        
-        musicDataViewController.initialize(musicId: musicId)
-        
-        currentViewController.present(navigationDrawerController, animated: true)
+        viewController.initialize()
     }
     
-    public static func show(currentViewController: UIViewController) {
+    public static func show(currentViewController: UIViewController, musicId: MusicId) {
+        let musicDataToolBarController = self.create()
+        let musicDataViewController = musicDataToolBarController.rootViewController as! MusicDataViewController
+        
+        currentViewController.present(musicDataToolBarController, animated: true)
+        
+        musicDataViewController.initialize(musicId: musicId)
+    }
+    
+    private static func create() -> MusicDataViewToolBarController  {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
+        
         let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
-        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
-        
-        navigationDrawerController.isMotionEnabled = true
-        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
-        
-        musicDataViewController.initialize()
-        
-        currentViewController.present(navigationDrawerController, animated: true)
+        return toolBarController
     }
     
     public func initialize() {
@@ -67,15 +65,42 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
         if musicScoreDataCaches.value.count <= 0 {
             EventDispatcher.instance.subscribeEvent(eventType: "requestMyMusicScoreDataComplete", eventObserver: EventObserver(releaseAfterDispatch: true) { [weak self] (param: Any?) -> Void in
-                self?.lazyInitialize()
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.lazyInitialize()
+                strongSelf.disableTouchBlockForLoading()
             })
-            return
+            
+            self.enableTouchBlockLoading()
         }
         else {
             self.lazyInitialize()
         }
+    }
+    
+    public func initialize(musicId: MusicId) {
+        self.prepareUI()
         
-        showLoadingSpinnerUI(self)
+        m_musicDataSearchResultViewBottomConstraint.isActive = false
+        
+        let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
+        if musicScoreDataCaches.value.count <= 0 {
+            EventDispatcher.instance.subscribeEvent(eventType: "requestMyMusicScoreDataComplete", eventObserver: EventObserver(releaseAfterDispatch: true) { [weak self] (param: Any?) -> Void in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.lazyInitialize(musicId: musicId)
+                strongSelf.disableTouchBlockForLoading()
+            })
+            
+            self.enableTouchBlockLoading()
+        }
+        else {
+            self.lazyInitialize(musicId: musicId)
+        }
     }
     
     private func lazyInitialize() {
@@ -87,12 +112,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
     }
     
-    public func initialize(musicId: MusicId) {
-        self.prepareUI()
-        
-        // Initialize MusicDataView
-        m_musicDataSearchResultViewBottomConstraint.isActive = false
-        
+    private func lazyInitialize(musicId: MusicId) {
         let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
         // TODO: Optimize this code
         m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .Level, musicSortOrder: .Descending)
@@ -117,6 +137,39 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     
     private func prepareScrollView() {
         m_scrollView.delegate = self
+    }
+    
+    private func enableTouchBlockLoading() {
+        let loadingIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10, y: 51, width: 100, height: 100))
+        loadingIndicatorView.hidesWhenStopped = true
+        loadingIndicatorView.style = .gray
+        loadingIndicatorView.startAnimating();
+        loadingIndicatorView.center = self.view.center
+        
+        self.view.addSubview(loadingIndicatorView)
+        
+        m_searchBar.isUserInteractionEnabled = false
+        if let toolBar = self.toolbarController?.toolbar {
+            for toolBarIcon in toolBar.rightViews {
+                toolBarIcon.isUserInteractionEnabled = false
+            }
+        }
+        
+        m_optNetworkPendingIndicatorView = loadingIndicatorView
+    }
+    
+    private func disableTouchBlockForLoading() {
+        if let networkPendingIndicatorView = m_optNetworkPendingIndicatorView {
+            networkPendingIndicatorView.removeFromSuperview()
+            m_optNetworkPendingIndicatorView = nil
+        }
+        
+        m_searchBar.isUserInteractionEnabled = true
+        if let toolBar = self.toolbarController?.toolbar {
+            for toolBarIcon in toolBar.rightViews {
+                toolBarIcon.isUserInteractionEnabled = true
+            }
+        }
     }
     
     private func prepareSearchBar() {
@@ -286,23 +339,27 @@ public class MusicDataViewToolBarController: ToolbarController {
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
     
 /**@section Constructor */
-    public convenience init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> ()) {
-        self.init(rootViewController: rootViewController)
-        
+    public init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void) {
         m_onChangeMusicSortMode = onChangeMusicSortMode
-    }
-    
-    private override init(rootViewController: UIViewController) {
+        
         super.init(rootViewController: rootViewController)
     }
     
-    internal required init?(coder aDecoder: NSCoder) {
+    public override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
 /**@section Method */
     open override func prepare() {
         super.prepare()
+        
+        self.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        self.isMotionEnabled = true
+        self.isStatusBarHidden = false
         
         self.prepareStatusBar()
         
