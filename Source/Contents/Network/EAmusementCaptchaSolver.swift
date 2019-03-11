@@ -63,9 +63,8 @@ public class EAmusementCaptchaSolver {
         print("[DEBUG]: Wait until all images have downloaded.")
         
         // 3. Wait until the above task have finished
-        SpinLock { () -> (Bool) in
-            return mainCharacterTypeQueryComplete &&
-                downloadedSubCharacterImageCount == subCharacterImageCount
+        SpinLock {
+            return mainCharacterTypeQueryComplete && downloadedSubCharacterImageCount >= subCharacterImageCount
         }
         
         if mainCharacterType == .Unknown || (subCharacterImages.firstIndex(of: nil) != nil) {
