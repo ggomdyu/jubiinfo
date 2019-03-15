@@ -47,7 +47,6 @@ class LoginViewController: ViewController, TextFieldDelegate {
     private func prepareUserEmailTextField() {
         m_userEmailTextField.placeholder = "Email"
         m_userEmailTextField.detail = "e-AMUSEMENT 계정의 이메일 주소를 입력해주세요."
-        m_userEmailTextField.error = "이메일 주소가 입력되지 않았습니다."
         m_userEmailTextField.delegate = self
         m_userEmailTextField.tintColor = m_errorTextFieldTintColor
         m_userEmailTextField.dividerActiveColor = m_errorTextFieldDividerActiveColor
@@ -61,7 +60,6 @@ class LoginViewController: ViewController, TextFieldDelegate {
     private func prepareUserPasswordTextField() {
         m_userPasswordTextField.placeholder = "Password"
         m_userPasswordTextField.detail = "비밀번호를 입력해주세요."
-        m_userPasswordTextField.error = "비밀번호가 입력되지 않았습니다."
         m_userPasswordTextField.tintColor = m_errorTextFieldTintColor
         m_userPasswordTextField.dividerActiveColor = m_errorTextFieldDividerActiveColor
         m_userPasswordTextField.isPlaceholderUppercasedWhenEditing = false
@@ -83,16 +81,6 @@ class LoginViewController: ViewController, TextFieldDelegate {
     }
     
     private func startToLogin() {
-        let isCompleteEmailInput = isTextFieldInputComplete(textField: m_userEmailTextField)
-        m_userEmailTextField.isErrorRevealed = !isCompleteEmailInput
-        
-        let isCompletePasswordInput = isTextFieldInputComplete(textField: m_userPasswordTextField)
-        m_userPasswordTextField.isErrorRevealed = !isCompletePasswordInput
-        
-        if (isCompleteEmailInput || isCompletePasswordInput) == false {
-            return
-        }
-        
         removeCookies(url: URL(string:"https://p.eagate.573.jp/")!)
 
         showLoadingIndicatorUI(self, "로그인 중...")
@@ -116,15 +104,6 @@ class LoginViewController: ViewController, TextFieldDelegate {
         })
     }
     
-    private func isTextFieldInputComplete(textField: ErrorTextField) -> Bool {
-        guard let textFieldStr = textField.text else {
-            return false
-        }
-        
-        let isTextFieldEmpty: Bool = textFieldStr.count <= 0
-        return !isTextFieldEmpty;
-    }
-    
 /**@section Event handler */
     @objc internal func onTextFieldPressEnter(textField: UITextField) {
         textField.resignFirstResponder()
@@ -133,13 +112,34 @@ class LoginViewController: ViewController, TextFieldDelegate {
             return
         }
         
-        let isTextFieldInputComplete = self.isTextFieldInputComplete(textField: errorTextField)
-        errorTextField.isErrorRevealed = !isTextFieldInputComplete
+        let isTextEmpty = errorTextField.text!.count <= 0
+        errorTextField.isErrorRevealed = isTextEmpty
     }
     
     @objc internal func onTouchLoginButton(button: UIButton) {
         m_userEmailTextField.resignFirstResponder()
         m_userPasswordTextField.resignFirstResponder()
+        
+        let isEmailTextEmpty = m_userEmailTextField.text!.count <= 0
+        if isEmailTextEmpty {
+            m_userEmailTextField.error = "이메일 주소가 입력되지 않았습니다."
+            m_userEmailTextField.isErrorRevealed = true
+            return
+        }
+        
+        let isEmailTextFormat = isEmailFormat(email: m_userEmailTextField.text!)
+        if isEmailTextFormat == false {
+            m_userEmailTextField.error = "유효하지 않은 이메일 주소 형식입니다."
+            m_userEmailTextField.isErrorRevealed = true
+            return
+        }
+        
+        let isPasswordTextEmpty = m_userPasswordTextField.text!.count <= 0
+        if isPasswordTextEmpty {
+            m_userPasswordTextField.error = "비밀번호가 입력되지 않았습니다."
+            m_userPasswordTextField.isErrorRevealed = true
+            return
+        }
         
         self.startToLogin()
     }
