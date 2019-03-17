@@ -120,24 +120,30 @@ class LoginViewController: ViewController, TextFieldDelegate {
         m_userEmailTextField.resignFirstResponder()
         m_userPasswordTextField.resignFirstResponder()
         
+        var isErrorOccured = false
+        
         let isEmailTextEmpty = m_userEmailTextField.text!.count <= 0
         if isEmailTextEmpty {
             m_userEmailTextField.error = "이메일 주소가 입력되지 않았습니다."
             m_userEmailTextField.isErrorRevealed = true
-            return
+            isErrorOccured = true
         }
         
         let isEmailTextFormat = isEmailFormat(email: m_userEmailTextField.text!)
         if isEmailTextFormat == false {
             m_userEmailTextField.error = "유효하지 않은 이메일 주소 형식입니다."
             m_userEmailTextField.isErrorRevealed = true
-            return
+            isErrorOccured = true
         }
         
         let isPasswordTextEmpty = m_userPasswordTextField.text!.count <= 0
         if isPasswordTextEmpty {
             m_userPasswordTextField.error = "비밀번호가 입력되지 않았습니다."
             m_userPasswordTextField.isErrorRevealed = true
+            isErrorOccured = true
+        }
+        
+        if isErrorOccured {
             return
         }
         

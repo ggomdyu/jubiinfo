@@ -14,7 +14,7 @@ import MessageUI
 class ProfileViewMenuController : ViewController, MFMailComposeViewControllerDelegate {
 /**@section Variable */
     private var m_menuBackgroundColor = Color.init(red: 0.141176, green: 0.294117, blue: 0.262745, alpha: 1.0)
-    private var m_nextButtonAddYPos: CGFloat = 60.0
+    private var m_nextButtonAddYPos: CGFloat = 0.0
     private var m_optThemeChangeEventObserver: EventObserver?
     private var m_menuButtonList: [FlatButton] = []
     
@@ -35,6 +35,8 @@ class ProfileViewMenuController : ViewController, MFMailComposeViewControllerDel
     }
     
     private func prepareUI() {
+        m_nextButtonAddYPos = (self.view.frame.height / 667.0) * 60.0
+        
         self.addButtonToStackView(title: "프로필", action: #selector(self.onTouchProfileViewButton))
         self.addButtonToStackView(title: "음악 데이터", action: #selector(self.onTouchMusicDataButton))
 //        self.addButtonToStackView(title: "엠블럼", action: #selector(self.onTouchEmblemButton))

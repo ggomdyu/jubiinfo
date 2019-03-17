@@ -549,7 +549,7 @@ public class JubeatWebServer {
         if isOldChecksum {
             let newMusicScoreDatas = MusicScoreDataCaches ([])
             
-            // Start to request music score datas.
+            // Start to request music score data.
             var musicScoreDataRequestCompleteCount = 0;
             let musicScoreDataPageEndIndex = (GlobalDataStorage.instance.queryCustomMusicDatas().count / 50) + 1
             DispatchQueue.global().async {
@@ -656,18 +656,15 @@ public class JubeatWebServer {
                 
                 let settingDataStorage = GlobalSettingDataStorage.instance
                 GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
+                
+                onRequestComplete(true, newMusicScoreDatas)
             }
             catch {}
-            
-            onRequestComplete(true, newMusicScoreDatas)
         }
-        else {
-            runTaskInMainThread {
-                let musicScoreDatas = self.parseMMSDCacheArray(mmsdCachePath: mmsdCachePath)
-                
-                onRequestComplete(musicScoreDatas.value.count > 0, musicScoreDatas)
-            }
-        }
+        
+        let musicScoreDatas = self.parseMMSDCacheArray(mmsdCachePath: mmsdCachePath)
+    
+        onRequestComplete(musicScoreDatas.value.count > 0, musicScoreDatas)
     }
     
     public static func isMMSDChecksumOld(serverMMSDChecksum: Int) -> Bool {

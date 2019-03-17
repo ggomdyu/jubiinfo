@@ -26,6 +26,7 @@ public class MusicCellView : UIView {
     private var m_tickTimer = TickTimer()
     private var m_isViewExpanded = false
     private static var topBarHeight: CGFloat!
+    private static var isViewTouched: Bool = false
     
 /**@section Property */
     override public var canBecomeFirstResponder: Bool { return true }
@@ -49,8 +50,7 @@ public class MusicCellView : UIView {
     }
     
     private func prepareTouchEvent() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTouchCell(_:)))
-        self.addGestureRecognizer(tapGestureRecognizer)
+        self.isExclusiveTouch = true
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPressCell))
         longPressGestureRecognizer.minimumPressDuration = 0.3
@@ -309,21 +309,6 @@ public class MusicCellView : UIView {
     }
     
 /**@section Event handler */
-    @objc func onTouchCell(_ sender: UITapGestureRecognizer) {
-        m_onTouchCell?();
-
-        if m_isViewExpanded {
-            self.Shrink()
-        }
-        else {
-            self.Expand()
-        }
-
-        m_isViewExpanded = !m_isViewExpanded
-        
-        UIMenuController.shared.setMenuVisible(false, animated: true)
-    }
-    
     @objc private func onLongPressCell(_ sender: UILongPressGestureRecognizer) {
         guard let superView = self.superview, sender.state == .began else {
             return
@@ -341,6 +326,23 @@ public class MusicCellView : UIView {
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        
+        UIMenuController.shared.setMenuVisible(false, animated: true)
+    }
+    
+    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        
+        m_onTouchCell?();
+        
+        if m_isViewExpanded {
+            self.Shrink()
+        }
+        else {
+            self.Expand()
+        }
+        
+        m_isViewExpanded = !m_isViewExpanded
         
         UIMenuController.shared.setMenuVisible(false, animated: true)
     }
