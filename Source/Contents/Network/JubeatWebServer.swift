@@ -461,9 +461,20 @@ public class JubeatWebServer {
     }
     
     public static func requestMyRivalListPageCache(onRequestComplete: @escaping (Bool, String?, UserData.RivalListPageCache?) -> Void) {
-        self.requestMyRivalListPageHtml { (isRequestSucceed: Bool, response: String?) in
-            if isRequestSucceed {
-                onRequestComplete(isRequestSucceed, response, self.parseMyRivalListPageHtml(response: response!))
+        self.requestMyRivalListPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
+            
+            var rivalListPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+            rivalListPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_rivalListPageCache.json")
+            
+            if let response = optResponse, let rivalListPageCache = self.parseMyRivalListPageHtml(response: response) {
+                let encoder = JSONEncoder()
+                let optJsonData = try? encoder.encode(rivalListPageCache)
+                try? optJsonData?.write(to: rivalListPageCachePath)
+                
+                onRequestComplete(isRequestSucceed, response, rivalListPageCache)
+            }
+            else {
+                onRequestComplete(false, nil, nil)
             }
         }
     }
