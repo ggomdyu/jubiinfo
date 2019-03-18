@@ -51,7 +51,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
         
-        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
+        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode, onTouchPrevBtn: musicDataViewController.onTouchPrevBtn)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
@@ -334,6 +334,10 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
             m_optScrollDetectTimer = nil
         }
     }
+    
+    private func onTouchPrevBtn() {
+        m_searchBar.endEditing(true)
+    }
 }
 
 public class MusicDataViewToolBarController: ToolbarController {
@@ -344,10 +348,12 @@ public class MusicDataViewToolBarController: ToolbarController {
     private var m_rightTabSortButton: IconButton!
 //    private var m_rightTabFilterButton: IconButton!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
+    private var m_onTouchPrevBtn: (() -> Void)?
     
 /**@section Constructor */
-    public init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void) {
+    public init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void, onTouchPrevBtn: @escaping () -> Void) {
         m_onChangeMusicSortMode = onChangeMusicSortMode
+        m_onTouchPrevBtn = onTouchPrevBtn
         
         super.init(rootViewController: rootViewController)
     }
@@ -413,6 +419,8 @@ public class MusicDataViewToolBarController: ToolbarController {
 /**@section Event handler */
     @objc private func onTouchPrevButton() {
         self.dismiss(animated: true)
+        
+        m_onTouchPrevBtn?()
     }
     
     @objc private func onTouchFilterButton() {
