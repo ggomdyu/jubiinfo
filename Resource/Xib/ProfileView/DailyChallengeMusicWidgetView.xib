@@ -181,7 +181,6 @@
                         <constraint firstAttribute="trailing" secondItem="Yfe-VF-jNU" secondAttribute="trailing" id="ath-Uj-tiL"/>
                         <constraint firstAttribute="height" constant="163" id="evi-o3-tz4"/>
                         <constraint firstItem="QdW-W1-rXc" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" id="fzk-o6-xxI"/>
-                        <constraint firstAttribute="bottom" secondItem="Yfe-VF-jNU" secondAttribute="bottom" constant="10" id="gGX-Sc-sM6"/>
                         <constraint firstItem="Yfe-VF-jNU" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" id="zpU-Zm-30H"/>
                     </constraints>
                 </view>

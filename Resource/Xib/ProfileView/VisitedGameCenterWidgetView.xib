@@ -35,32 +35,12 @@
                             <color key="textColor" red="0.60618376730000001" green="0.60665732620000001" blue="0.60625714060000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="2019.02.03" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2F-rE-lIy">
-                            <rect key="frame" x="245" y="43" width="95" height="18"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" red="0.60618376730000001" green="0.60665732620000001" blue="0.60625714060000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🇰🇷 STYLISHMUSIK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7s-nH-IZx">
-                            <rect key="frame" x="15" y="43" width="230" height="18"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="230" id="bMd-AP-U4F"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" red="0.60618376730000001" green="0.60665732620000001" blue="0.60625714060000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="K7s-nH-IZx" firstAttribute="leading" secondItem="82C-IF-wKO" secondAttribute="leading" constant="15" id="4do-NM-blk"/>
-                        <constraint firstItem="Y2F-rE-lIy" firstAttribute="leading" secondItem="K7s-nH-IZx" secondAttribute="trailing" id="8aY-Wx-kEo"/>
-                        <constraint firstAttribute="trailing" secondItem="Y2F-rE-lIy" secondAttribute="trailing" constant="15" id="9Ch-qO-rye"/>
-                        <constraint firstItem="K7s-nH-IZx" firstAttribute="top" secondItem="5cO-Ok-tu9" secondAttribute="bottom" constant="10" id="Gip-J8-hva"/>
                         <constraint firstAttribute="trailing" secondItem="5cO-Ok-tu9" secondAttribute="trailing" constant="15" id="KjW-4k-M0w"/>
                         <constraint firstItem="5cO-Ok-tu9" firstAttribute="top" secondItem="82C-IF-wKO" secondAttribute="top" constant="15" id="Pa2-cM-s7a"/>
                         <constraint firstItem="5cO-Ok-tu9" firstAttribute="leading" secondItem="82C-IF-wKO" secondAttribute="leading" constant="15" id="adK-9f-eTW"/>
                         <constraint firstAttribute="height" constant="160" id="qlg-p4-AbT"/>
-                        <constraint firstItem="Y2F-rE-lIy" firstAttribute="centerY" secondItem="K7s-nH-IZx" secondAttribute="centerY" id="tSN-P8-kU0"/>
                     </constraints>
                 </view>
             </subviews>
@@ -92,9 +72,8 @@
             </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="m_contentsView" destination="82C-IF-wKO" id="ZGR-hG-sUs"/>
-                <outlet property="m_playTuneCountLabel" destination="Y2F-rE-lIy" id="2jX-83-CrX"/>
             </connections>
-            <point key="canvasLocation" x="138.40000000000001" y="116.94152923538232"/>
+            <point key="canvasLocation" x="138.40000000000001" y="116.49175412293854"/>
         </view>
     </objects>
 </document>

@@ -79,6 +79,21 @@ class ProfileWidgetView : WidgetView {
                     strongSelf.m_emblemImageView.animate(.fadeIn)
                 }
             }
+            else {
+                // If an server error ocurred, then use cached emblem image.
+                downloadImageAsync(imageUrl: myPlayDataPageCache.emblemImageUrl, isWriteCache: false, isReadCache: true, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+                    if isDownloadSucceed {
+                        runTaskInMainThread { [weak self] () in
+                            guard let strongSelf = self else {
+                                return
+                            }
+                            
+                            strongSelf.m_emblemImageView.image = image
+                            strongSelf.m_emblemImageView.animate(.fadeIn)
+                        }
+                    }
+                })
+            }
         })
     }
     

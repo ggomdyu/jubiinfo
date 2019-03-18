@@ -83,14 +83,22 @@ public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache
             
             print("[DEBUG]: Succeed to download image. (\(imageUrl))")
             
-            if isWriteCache {
-                do {
-                    try data.write(to: URL(fileURLWithPath: imageCachePath.path))
-                }
-                catch {}
-            }
+            let optImage = UIImage(data: data)
             
-            onDownloadComplete(true, UIImage(data: data))
+            let isDownloadSucceed = optImage != nil
+            if isDownloadSucceed {
+                if isWriteCache {
+                    do {
+                        try data.write(to: URL(fileURLWithPath: imageCachePath.path))
+                    }
+                    catch {}
+                }
+                
+                onDownloadComplete(true, optImage)
+            }
+            else {
+                onDownloadComplete(false, nil)
+            }
         }
     }
     else {

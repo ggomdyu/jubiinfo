@@ -12,6 +12,7 @@
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
 		FD11B8E021B3C21D003E3403 /* ProfileWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* ProfileWidgetView.swift */; };
 		FD21A639220605E7008F25FA /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD21A638220605E7008F25FA /* Box.swift */; };
+		FD25202C223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */; };
 		FD262FEB220D5E1200C58BA7 /* OmikujiWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD262FDE220D5E1200C58BA7 /* OmikujiWidgetView.xib */; };
 		FD262FF0220D60D800C58BA7 /* omikuji01.png in Resources */ = {isa = PBXBuildFile; fileRef = FD262FEE220D60D800C58BA7 /* omikuji01.png */; };
 		FD262FF1220D60D800C58BA7 /* omikuji02.png in Resources */ = {isa = PBXBuildFile; fileRef = FD262FEF220D60D800C58BA7 /* omikuji02.png */; };
@@ -38,6 +39,7 @@
 		FD7F64D72199D62200E534E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD7F64D62199D62200E534E7 /* Assets.xcassets */; };
 		FD9366A52200C5DF00919C67 /* MusicScoreGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9366A42200C5DF00919C67 /* MusicScoreGraphView.swift */; };
 		FD9366B52200CB9D00919C67 /* MusicCellDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9366B42200CB9D00919C67 /* MusicCellDetailView.swift */; };
+		FD98F0C7223DDE7A00027F81 /* StringUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD98F0C6223DDE7A00027F81 /* StringUtility.swift */; };
 		FDA58B2A222A2FBD00415703 /* EditNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA58B29222A2FBD00415703 /* EditNicknameViewController.swift */; };
 		FDA58B38222BC75400415703 /* EditThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA58B37222BC75400415703 /* EditThemeViewController.swift */; };
 		FDA58B3A222BD93100415703 /* PasteDisabledUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA58B39222BD93100415703 /* PasteDisabledUITextField.swift */; };
@@ -340,6 +342,7 @@
 		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-1.4.3/Motion.xcodeproj"; sourceTree = "<group>"; };
 		FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.7.3/Alamofire.xcodeproj"; sourceTree = "<group>"; };
 		FD21A638220605E7008F25FA /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VisitedGameCenterWidgetCellView.xib; sourceTree = "<group>"; };
 		FD262FDE220D5E1200C58BA7 /* OmikujiWidgetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OmikujiWidgetView.xib; sourceTree = "<group>"; };
 		FD262FEE220D60D800C58BA7 /* omikuji01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omikuji01.png; sourceTree = "<group>"; };
 		FD262FEF220D60D800C58BA7 /* omikuji02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omikuji02.png; sourceTree = "<group>"; };
@@ -373,6 +376,7 @@
 		FD7F64EB2199D62300E534E7 /* jubiinfoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jubiinfoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD9366A42200C5DF00919C67 /* MusicScoreGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicScoreGraphView.swift; sourceTree = "<group>"; };
 		FD9366B42200CB9D00919C67 /* MusicCellDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCellDetailView.swift; sourceTree = "<group>"; };
+		FD98F0C6223DDE7A00027F81 /* StringUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtility.swift; sourceTree = "<group>"; };
 		FDA58B29222A2FBD00415703 /* EditNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNicknameViewController.swift; sourceTree = "<group>"; };
 		FDA58B37222BC75400415703 /* EditThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeViewController.swift; sourceTree = "<group>"; };
 		FDA58B39222BD93100415703 /* PasteDisabledUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteDisabledUITextField.swift; sourceTree = "<group>"; };
@@ -472,6 +476,7 @@
 				FD4C4C7221AECA2E00ABCE53 /* Image */,
 				FDD2250A21AC5138008C7DB1 /* Network */,
 				FDD2250421AC50E0008C7DB1 /* Math */,
+				FD98F0C5223DDE7A00027F81 /* String */,
 				FDD2250321AC50DA008C7DB1 /* Thread */,
 			);
 			path = Core;
@@ -687,6 +692,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		FD98F0C5223DDE7A00027F81 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				FD98F0C6223DDE7A00027F81 /* StringUtility.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
 		FDA5EB2621CAA4AE00D41143 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +804,7 @@
 				FD262FDE220D5E1200C58BA7 /* OmikujiWidgetView.xib */,
 				FDC66FA821D175270094F322 /* RankDataGraphWidgetView.xib */,
 				FDD8F703221920B90005A90A /* VisitedGameCenterWidgetView.xib */,
+				FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -1162,6 +1176,7 @@
 				FD262FF1220D60D800C58BA7 /* omikuji02.png in Resources */,
 				FD2D860F21EB6B7C00FAE9E2 /* NanumSquareRegular.ttf in Resources */,
 				FD262FEB220D5E1200C58BA7 /* OmikujiWidgetView.xib in Resources */,
+				FD25202C223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib in Resources */,
 				FD4C4C7621AECEBB00ABCE53 /* Main.storyboard in Resources */,
 				FD7F6192222D7C56006FE95B /* background_clan.png in Resources */,
 				FDD8F704221920B90005A90A /* VisitedGameCenterWidgetView.xib in Resources */,
@@ -1237,6 +1252,7 @@
 				FDB5F4FB21B6D0DC00CC1F1C /* DataStorage.swift in Sources */,
 				FDCF4FAE21D761B000E3CC5A /* StringTransform.swift in Sources */,
 				FDA98CA321C6CB8F0060CBED /* WidgetView.swift in Sources */,
+				FD98F0C7223DDE7A00027F81 /* StringUtility.swift in Sources */,
 				FDCF4F7E21D6458100E3CC5A /* EAmusementCaptchaSolver.swift in Sources */,
 				FDA58B2A222A2FBD00415703 /* EditNicknameViewController.swift in Sources */,
 				62ED01B421C2185900056141 /* SettingDataStorage.swift in Sources */,
@@ -1462,7 +1478,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Junho Cha (LR2WNJNFRA)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Junho Cha (LR2WNJNFRA)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = WU734J36XA;
 				INFOPLIST_FILE = jubiinfo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1470,8 +1488,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ggomdyu.jubiinfo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ggomdyu.jubiinfo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = jubiinfo_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
@@ -1486,7 +1505,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Junho Cha (WU734J36XA)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Junho Cha (WU734J36XA)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = WU734J36XA;
 				INFOPLIST_FILE = jubiinfo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1494,8 +1515,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ggomdyu.jubiinfo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ggomdyu.jubiinfo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = jubiinfo_adhoc;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 4.2;

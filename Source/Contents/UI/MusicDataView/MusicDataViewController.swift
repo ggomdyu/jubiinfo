@@ -31,30 +31,34 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     
 /**@section Method */
     public static func show(currentViewController: UIViewController) {
-        let toolBarViewController = self.create()
-        let viewController = toolBarViewController.rootViewController as! MusicDataViewController
+        let navigationDrawerController = self.create()
+        currentViewController.present(navigationDrawerController, animated: true)
         
-        currentViewController.present(toolBarViewController, animated: true)
-        
+        let viewController = (navigationDrawerController.rootViewController as! ToolbarController).rootViewController as! MusicDataViewController
         viewController.initialize()
     }
     
     public static func show(currentViewController: UIViewController, musicId: MusicId) {
-        let musicDataToolBarController = self.create()
-        let musicDataViewController = musicDataToolBarController.rootViewController as! MusicDataViewController
+        let navigationDrawerController = self.create()
+        currentViewController.present(navigationDrawerController, animated: true)
         
-        currentViewController.present(musicDataToolBarController, animated: true)
-        
-        musicDataViewController.initialize(musicId: musicId)
+        let viewController = (navigationDrawerController.rootViewController as! ToolbarController).rootViewController as! MusicDataViewController
+        viewController.initialize(musicId: musicId)
     }
     
-    private static func create() -> MusicDataViewToolBarController  {
+    private static func create() -> NavigationDrawerController  {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
         
         let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
-        return toolBarController
+        
+        let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
+        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        navigationDrawerController.isMotionEnabled = true
+        navigationDrawerController.isHiddenStatusBarEnabled = false
+        
+        return navigationDrawerController
     }
     
     public func initialize() {
@@ -137,6 +141,8 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     
     private func prepareScrollView() {
         m_scrollView.delegate = self
+        m_scrollView.contentInsetAdjustmentBehavior = .never
+        m_scrollView.insetsLayoutMarginsFromSafeArea = false
     }
     
     private func enableTouchBlockLoading() {
@@ -145,6 +151,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         loadingIndicatorView.style = .gray
         loadingIndicatorView.startAnimating();
         loadingIndicatorView.center = self.view.center
+        loadingIndicatorView.center.y -= self.m_searchBar.frame.height
         
         self.view.addSubview(loadingIndicatorView)
         
@@ -356,10 +363,6 @@ public class MusicDataViewToolBarController: ToolbarController {
 /**@section Method */
     open override func prepare() {
         super.prepare()
-        
-        self.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
-        self.isMotionEnabled = true
-        self.isStatusBarHidden = false
         
         self.prepareStatusBar()
         

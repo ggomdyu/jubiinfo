@@ -61,8 +61,9 @@ public class OmikujiWidgetView : WidgetView {
             runTaskInMainThread {
                 if isDownloadSucceed {
                     self.m_randomPickedMusicCoverImageView.image = image
-                    self.m_randomMusicPickResultView.animate(.fadeIn)
                 }
+                
+                self.m_randomMusicPickResultView.animate(.fadeIn)
             }
         })
         

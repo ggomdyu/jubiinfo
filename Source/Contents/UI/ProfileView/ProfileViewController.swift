@@ -43,6 +43,7 @@ class ProfileViewController : ViewController {
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
         navigationDrawerController.isMotionEnabled = true
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        navigationDrawerController.isHiddenStatusBarEnabled = false
         
         return navigationDrawerController
     }
@@ -59,6 +60,9 @@ class ProfileViewController : ViewController {
     
     private func prepareUI() {
         m_cachedWidgetView.removeAll()
+        
+        m_scrollView.contentInsetAdjustmentBehavior = .never
+        m_scrollView.insetsLayoutMarginsFromSafeArea = false
         
         self.prepareWidgetUI()
         self.prepareTheme()
@@ -91,7 +95,7 @@ class ProfileViewController : ViewController {
         ]
         var widgetInitEventNameBatch = Set<String>()
         
-        m_profileView.addMargin(margin: 5.0)
+        m_profileView.addMargin(margin: 10.0)
         for activeWidget in activeWidgetList {
             guard let widgetCreator = widgetCreatorDict[activeWidget] else {
                 continue
@@ -99,7 +103,7 @@ class ProfileViewController : ViewController {
             
             let widget = widgetCreator()
             
-            // If the widget was not initialized, add a request into the batch that required to initialize it.
+            // If the widget was not initialized, add a request into the batch.
             if widget.isLazyInitialized == false {
                 widgetInitEventNameBatch.insert(widget.lazyInitializeEventName)
             }
@@ -107,7 +111,7 @@ class ProfileViewController : ViewController {
             m_profileView.addMargin(margin: 10.0)
             m_profileView.addView(view: widget)
         }
-        m_profileView.addMargin(margin: 15.0)
+        m_profileView.addMargin(margin: 20.0)
         
         for widgetInitEventName in widgetInitEventNameBatch {
             let widgetInitRequestFunc = widgetInitRequestFuncGetter[widgetInitEventName]
