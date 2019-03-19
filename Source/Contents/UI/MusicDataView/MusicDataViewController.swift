@@ -315,10 +315,12 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
             return
         }
         
+        // Set a timer to detect scroll position each frame, so that we can load the next music data page while scrolling.
         let scrollDetectTimer = Timer(timeInterval: 0.05, target: self, selector: #selector(self.onDraggingScrollView), userInfo: nil, repeats: true)
         m_optScrollDetectTimer = scrollDetectTimer
-        
         RunLoop.main.add(scrollDetectTimer, forMode: RunLoop.Mode.common)
+        
+        UIMenuController.shared.setMenuVisible(false, animated: true)
     }
     
     @objc private func onDraggingScrollView() {

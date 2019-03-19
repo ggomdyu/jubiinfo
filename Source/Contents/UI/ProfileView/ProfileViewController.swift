@@ -11,7 +11,7 @@ import Foundation
 import Material
 import Motion
 
-class ProfileViewController : ViewController {
+class ProfileViewController : ViewController, UIScrollViewDelegate {
 /**@section Variable */
     @IBOutlet weak var m_scrollView: UIScrollView!
     @IBOutlet weak var m_profileView: CustomStackView!
@@ -61,6 +61,7 @@ class ProfileViewController : ViewController {
     private func prepareUI() {
         m_cachedWidgetView.removeAll()
         
+        m_scrollView.delegate = self
         m_scrollView.contentInsetAdjustmentBehavior = .never
         m_scrollView.insetsLayoutMarginsFromSafeArea = false
         
@@ -261,6 +262,7 @@ class ProfileViewController : ViewController {
         return view
     }
     
+/**@section Event handler */
     private func onEditComplete(isActiveWidgetChanged: Bool) {
         if isActiveWidgetChanged {
             m_profileView.resetStackView()
@@ -268,6 +270,10 @@ class ProfileViewController : ViewController {
             
             self.prepareWidgetUI()
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        UIMenuController.shared.setMenuVisible(false, animated: true)
     }
 }
 
