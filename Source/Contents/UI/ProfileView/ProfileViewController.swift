@@ -134,16 +134,15 @@ class ProfileViewController : ViewController {
             if let html = optHtml {
                 if html.range(of: "メンテナンス中") != nil {
                     showOkPopup(self, "오류", "현재 서버가 유지보수 중이므로 일부 기능을 이용할 수 없습니다.")
-                    return
                 }
-            }
-            
-            runTaskInMainThread {
-                EventDispatcher.instance.dispatchEvent(eventType: "requestMyRivalListPageCacheComplete", eventParam: optRivalListPageCache)
             }
             
             let myUserData = GlobalDataStorage.instance.queryMyUserData();
             myUserData.rivalListPageCache = optRivalListPageCache
+            
+            runTaskInMainThread {
+                EventDispatcher.instance.dispatchEvent(eventType: "requestMyRivalListPageCacheComplete", eventParam: optRivalListPageCache)
+            }
         }
     }
     

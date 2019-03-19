@@ -161,9 +161,9 @@ public class UserData {
         }
     }
     
-    public class RivalListPageCache {
+    public class RivalListPageCache : Codable {
     /**@section Class */
-        public struct SimpleRivalData {
+        public struct SimpleRivalData : Codable {
             public let rivalId: String
             public let nickname: String
             public let designation: String

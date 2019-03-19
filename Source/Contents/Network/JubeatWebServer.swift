@@ -469,12 +469,25 @@ public class JubeatWebServer {
             if let response = optResponse, let rivalListPageCache = self.parseMyRivalListPageHtml(response: response) {
                 let encoder = JSONEncoder()
                 let optJsonData = try? encoder.encode(rivalListPageCache)
+
+                // Caching the rival list page
                 try? optJsonData?.write(to: rivalListPageCachePath)
-                
+
                 onRequestComplete(isRequestSucceed, response, rivalListPageCache)
             }
             else {
-                onRequestComplete(false, nil, nil)
+                // If the network request failed, then use cached file
+                do {
+                    let decoder = JSONDecoder()
+                    let jsonData = try Data(contentsOf: rivalListPageCachePath)
+                    
+                    let rivalListDataPageCache = try decoder.decode(UserData.RivalListPageCache.self, from: jsonData)
+                    
+                    onRequestComplete(true, nil, rivalListDataPageCache)
+                }
+                catch {
+                    onRequestComplete(false, nil, nil)
+                }
             }
         }
     }
