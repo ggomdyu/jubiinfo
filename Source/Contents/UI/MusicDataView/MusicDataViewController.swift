@@ -72,7 +72,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
                 guard let strongSelf = self else {
                     return
                 }
-                
+
                 strongSelf.lazyInitialize()
                 strongSelf.disableTouchBlockForLoading()
             })
@@ -153,7 +153,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         loadingIndicatorView.center = self.view.center
         loadingIndicatorView.center.y -= self.m_searchBar.frame.height
         
-        self.view.addSubview(loadingIndicatorView)
+        m_musicDataView.addSubview(loadingIndicatorView)
         
         m_searchBar.isUserInteractionEnabled = false
         if let toolBar = self.toolbarController?.toolbar {

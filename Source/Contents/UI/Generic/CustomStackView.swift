@@ -86,7 +86,7 @@ public class CustomStackView : View {
     }
     
     /**@brief   The height value is calculated by adding viewHeight(height of CustomStackView itself) and contentsViewHeight(total height of contents in CustomStackView). */
-    private func refreshHeightConstraint() {
+    public func refreshHeightConstraint() {
         m_heightConstraint.constant = max(minViewHeight, m_currContentsViewHeight + m_currViewHeight)
     }
     
@@ -102,5 +102,7 @@ public class CustomStackView : View {
         }
         
         m_lastAddedView = m_topMarginView
+        
+        self.refreshHeightConstraint()
     }
 }

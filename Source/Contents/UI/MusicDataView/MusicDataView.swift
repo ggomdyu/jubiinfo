@@ -21,13 +21,19 @@ public class MusicDataView : CustomStackView {
     
 /**@section Method */
     public func initialize(musicScoreDatas: MusicScoreDataCaches, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
+        m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+        
+        self.resetStackView()
+    }
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        
         let searchBarView = self.superview!.viewWithTag(1914)
         let searchBarViewHeight = (searchBarView != nil ? searchBarView!.frame.height : 69)
         m_minStackViewHeight = (self.superview!.superview!.frame.bounds.height - searchBarViewHeight) + 30
         
-        m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
-        
-        self.resetStackView()
+        self.refreshHeightConstraint()
     }
     
     public func sort(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) {
