@@ -28,7 +28,7 @@ public class ThemeColorTable {
 
 public class FestoThemeColorTable : ThemeColorTable {
     public override var backgroundImageName: String { return "background_festo.jpg" }
-    public override var scrollViewBackgroundColor: UIColor { return UIColor(red: 250 / 255, green: 245 / 255, blue: 228 / 255, alpha: 1) }
+    public override var scrollViewBackgroundColor: UIColor { return UIColor(red: 250 / 255, green: 245 / 255, blue: 228 / 255, alpha: 0.98) }
     public override var tableViewBackgroundColor: UIColor { return scrollViewBackgroundColor }
     public override var toolBarBackgroundColor: UIColor { return UIColor(red: 36 / 255, green: 75 / 255, blue: 67 / 255, alpha: 1) }
     public override var toolBarTitleLabelColor: UIColor { return UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1) }

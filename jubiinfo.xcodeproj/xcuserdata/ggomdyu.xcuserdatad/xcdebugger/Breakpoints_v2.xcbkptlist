@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Contents/UI/ProfileView/ProfileViewController.swift"
-            timestampString = "574624975.917325"
+            filePath = "ThirdParty/SBCardPopup/SBCardPopup/SBCardPopupViewController.swift"
+            timestampString = "574799007.487833"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "requestMyRivalListPageCache()"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
+            landmarkName = "applyContainerViewConstraints()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -74,7 +74,12 @@ public class CustomStackView : View {
     }
     
     public func addView(view: UIView) {
-        self.layout(view).left(15).right(15)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.layout(view).centerHorizontally().width(420)
+        }
+        else {
+            self.layout(view).left(15).right(15)
+        }
         
         self.addConstraint(NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: m_lastAddedView, attribute: .bottom, multiplier: 1, constant: m_lastMarginHeight))
         

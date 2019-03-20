@@ -608,6 +608,13 @@ public class JubeatWebServer {
             // Wait until all music data request have completed.
             SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
             
+            if musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex {
+                print("A: HAIRU")
+            }
+            else {
+                print("B: URIAR")
+            }
+            
             // Create a json that used to cache the music data received from the server.
             var mmsdJson = "{"
             mmsdJson.reserveCapacity(65536)

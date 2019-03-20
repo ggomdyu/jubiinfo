@@ -24,6 +24,8 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     @IBOutlet weak var m_bottomBackgroundHiderView: UIView!
     @IBOutlet weak var m_searchBarView: UIView!
     @IBOutlet weak var m_searchBar: UISearchBar!
+    @IBOutlet weak var m_searchBarLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var m_searchBarTrailingConstraint: NSLayoutConstraint!
     private var m_lastSearchedMusicName: String?
     private var m_isDeleteKeyEntered = false
     private var m_optScrollDetectTimer: Timer?

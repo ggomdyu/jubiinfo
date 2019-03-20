@@ -18,14 +18,19 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>NanumSquareBold.ttf</string>
+		<string>NanumSquareRegular.ttf</string>
+		<string>NanumGothic.ttf</string>
+		<string>NanumGothicBold.ttf</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
+	<key>CFBundleDisplayName</key>
+	<string>jubiinfo</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -51,6 +56,11 @@
 			<false/>
 		</dict>
 	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -64,12 +74,5 @@
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>NanumSquareBold.ttf</string>
-		<string>NanumSquareRegular.ttf</string>
-		<string>NanumGothic.ttf</string>
-		<string>NanumGothicBold.ttf</string>
-	</array>
 </dict>
 </plist>

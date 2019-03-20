@@ -9,6 +9,7 @@
 import CoreData
 import Foundation
 import Security
+import UIKit
 
 /**@warn DO NOT CHANGE THE ORDER OF THIS ENUMERATOR!! */
 public enum WidgetType : Int {
@@ -204,7 +205,12 @@ public class GlobalSettingDataStorage {
         catch {}
         
         // If failed to load or parse widget data
-        let defaultWidgetTypes = [WidgetType.profile, WidgetType.playData, WidgetType.rankDataGraphA]
+        var defaultWidgetTypes = [WidgetType.profile, WidgetType.playData, WidgetType.rankDataGraphA]
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            defaultWidgetTypes.append(WidgetType.omikuji)
+            defaultWidgetTypes.append(WidgetType.dailyRecommended)
+        }
+        
         GlobalSettingDataStorage.instance.setActiveWidgetList(activeWidgetList: defaultWidgetTypes)
         
         return defaultWidgetTypes

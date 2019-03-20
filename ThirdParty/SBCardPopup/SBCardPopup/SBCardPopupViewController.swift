@@ -223,24 +223,48 @@ public class SBCardPopupViewController: UIViewController {
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
-        let sideMargin = CGFloat(20)
         let verticalMargins = CGFloat(20)
         
-        let left = NSLayoutConstraint(item: containerView,
-                                      attribute: .left,
-                                      relatedBy: .equal,
-                                      toItem: view,
-                                      attribute: .left,
-                                      multiplier: 1.0,
-                                      constant: sideMargin)
-        
-        let right = NSLayoutConstraint(item: containerView,
-                                       attribute: .right,
-                                       relatedBy: .equal,
-                                       toItem: view,
-                                       attribute: .right,
-                                       multiplier: 1.0,
-                                       constant: -sideMargin)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let maxWidth: CGFloat = 400.0
+            
+            let width = NSLayoutConstraint(item: containerView,
+                                           attribute: .width,
+                                           relatedBy: .equal,
+                                           toItem: nil,
+                                           attribute: .notAnAttribute,
+                                           multiplier: 1.0,
+                                           constant: maxWidth)
+            
+            let centerXConstraint = NSLayoutConstraint(item: containerView,
+                                                       attribute: .centerX,
+                                                       relatedBy: .equal,
+                                                       toItem: view,
+                                                       attribute: .centerX,
+                                                       multiplier: 1.0,
+                                                       constant: 0)
+            
+            view.addConstraints([width, centerXConstraint])
+        }
+        else {
+            let left = NSLayoutConstraint(item: containerView,
+                                          attribute: .left,
+                                          relatedBy: .equal,
+                                          toItem: view,
+                                          attribute: .left,
+                                          multiplier: 1.0,
+                                          constant: 20)
+            
+            let right = NSLayoutConstraint(item: containerView,
+                                           attribute: .right,
+                                           relatedBy: .equal,
+                                           toItem: view,
+                                           attribute: .right,
+                                           multiplier: 1.0,
+                                           constant: -20)
+            
+            view.addConstraints([left, right])
+        }
         
         containerCenterYConstraint = NSLayoutConstraint(item: containerView,
                                          attribute: .centerY,
@@ -269,7 +293,7 @@ public class SBCardPopupViewController: UIViewController {
                                            constant: 0)
         containerOffscreenConstraint.priority = UILayoutPriority.required
         
-        view.addConstraints([left, right, containerCenterYConstraint, limitHeight, containerOffscreenConstraint])
+        view.addConstraints([containerCenterYConstraint, limitHeight, containerOffscreenConstraint])
     }
     
     private func pinContainerOffscreen(_ pinOffscreen: Bool) {
