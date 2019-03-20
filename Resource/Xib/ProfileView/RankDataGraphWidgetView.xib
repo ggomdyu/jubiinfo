@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="355" height="226"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kIb-MX-Z6d" userLabel="Background View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kIb-MX-Z6d" userLabel="Background View">
                     <rect key="frame" x="0.0" y="0.0" width="355" height="226"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <userDefinedRuntimeAttributes>
@@ -228,11 +228,14 @@
             </subviews>
             <constraints>
                 <constraint firstItem="nvo-O0-deI" firstAttribute="height" secondItem="UXX-r4-Jik" secondAttribute="height" id="45s-Z3-r0k"/>
-                <constraint firstItem="nvo-O0-deI" firstAttribute="leading" secondItem="UXX-r4-Jik" secondAttribute="leading" id="BfZ-ot-z5K"/>
-                <constraint firstItem="kIb-MX-Z6d" firstAttribute="height" secondItem="UXX-r4-Jik" secondAttribute="height" id="Cla-Yr-bqt"/>
+                <constraint firstItem="kIb-MX-Z6d" firstAttribute="bottom" secondItem="rG2-wh-WjV" secondAttribute="bottom" id="4cU-3p-lrv"/>
                 <constraint firstItem="nvo-O0-deI" firstAttribute="width" secondItem="UXX-r4-Jik" secondAttribute="width" id="JdG-I6-192"/>
-                <constraint firstItem="nvo-O0-deI" firstAttribute="top" secondItem="rG2-wh-WjV" secondAttribute="top" id="aaf-za-Z5w"/>
-                <constraint firstItem="kIb-MX-Z6d" firstAttribute="width" secondItem="UXX-r4-Jik" secondAttribute="width" id="jcM-sM-0gx"/>
+                <constraint firstItem="nvo-O0-deI" firstAttribute="top" secondItem="rG2-wh-WjV" secondAttribute="top" id="Quo-L5-EcW"/>
+                <constraint firstItem="kIb-MX-Z6d" firstAttribute="top" secondItem="rG2-wh-WjV" secondAttribute="top" id="W9N-7s-8Le"/>
+                <constraint firstItem="nvo-O0-deI" firstAttribute="trailing" secondItem="rG2-wh-WjV" secondAttribute="trailing" id="b2o-kO-vIv"/>
+                <constraint firstItem="nvo-O0-deI" firstAttribute="leading" secondItem="rG2-wh-WjV" secondAttribute="leading" id="eJ5-nC-0ho"/>
+                <constraint firstItem="kIb-MX-Z6d" firstAttribute="trailing" secondItem="rG2-wh-WjV" secondAttribute="trailing" id="qSd-o1-oBc"/>
+                <constraint firstItem="kIb-MX-Z6d" firstAttribute="leading" secondItem="rG2-wh-WjV" secondAttribute="leading" id="t9h-jj-vfg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="rG2-wh-WjV"/>
