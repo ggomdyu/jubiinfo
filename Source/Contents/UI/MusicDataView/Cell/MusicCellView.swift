@@ -225,6 +225,7 @@ public class MusicCellView : UIView {
             processExpandAnim(interpolated: interpolated)
         }, {
            scrollView.isUserInteractionEnabled = true
+            processExpandAnim(interpolated: 1.0)
         })
     }
     
@@ -287,6 +288,7 @@ public class MusicCellView : UIView {
             processShrinkAnim(interpolated: interpolated)
         }, {
             scrollView.isUserInteractionEnabled = true
+            processShrinkAnim(interpolated: 1.0)
         })
     }
     
