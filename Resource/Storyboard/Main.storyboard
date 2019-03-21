@@ -269,8 +269,6 @@
                         <outlet property="m_musicDataViewBottomConstraint" destination="L9f-Kq-uGG" id="ps9-RX-4vh"/>
                         <outlet property="m_scrollView" destination="MIO-LA-Y25" id="VNO-RS-8ok"/>
                         <outlet property="m_searchBar" destination="4Iy-Q8-I94" id="wY0-lc-Elm"/>
-                        <outlet property="m_searchBarLeadingConstraint" destination="tnE-1X-Z57" id="cwf-Ab-eJz"/>
-                        <outlet property="m_searchBarTrailingConstraint" destination="NUo-zw-8Pf" id="YHt-VL-q8s"/>
                         <outlet property="m_searchBarView" destination="UZ5-ft-75d" id="jsg-dl-oad"/>
                         <outlet property="m_topEdgeView" destination="dYt-Mb-YMY" id="mns-dC-9WF"/>
                     </connections>
