@@ -60,7 +60,7 @@ public class EAmusementCaptchaSolver {
             })
         }
         
-        print("[DEBUG]: Wait until all images have downloaded.")
+        log("[DEBUG]: Wait until all images have downloaded.")
         
         // 3. Wait until the above task have finished
         SpinLock {
@@ -103,7 +103,7 @@ public class EAmusementCaptchaSolver {
     
     private func getMatchedSubCharacterIndices(mainCharacterType: CharacterType, subCharacterImages: [UIImage?]) -> [Int]? {
         
-        print("[DEBUG]: ImageMatchProblemSolver begun to solve image match problem.")
+        log("[DEBUG]: ImageMatchProblemSolver begun to solve image match problem.")
         
         var characterTypeMatchConditionTable = [
             CharacterType.Bomberman: ([Point<Int>(49, 9), Point<Int>(48, 34), Point<Int>(57, 32), Point<Int>(51, 20), Point<Int>(31, 29)], bombermanIdentifierColor),
@@ -128,7 +128,7 @@ public class EAmusementCaptchaSolver {
             }
         }
         
-        print("[DEBUG]: ImageMatchProblemSolver finished to solve image match problem.")
+        log("[DEBUG]: ImageMatchProblemSolver finished to solve image match problem.")
         
         return matchedSubCharacterIncides
     }

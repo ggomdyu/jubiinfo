@@ -590,10 +590,10 @@ public class JubeatWebServer {
                                 
                                 musicScoreDataRequestCompleteCount += 1
                             }
-                            print("Succeed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                            log("Succeed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                         else {
-                            print("Failed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                            log("Failed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                     }
                     
@@ -603,17 +603,10 @@ public class JubeatWebServer {
             
             let oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]> = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
             
-            print("Waiting for load all of the music score data page... (musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
+            log("Waiting for load all of the music score data page... (musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
             
             // Wait until all music data request have completed.
             SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
-            
-            if musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex {
-                print("A: HAIRU")
-            }
-            else {
-                print("B: URIAR")
-            }
             
             // Create a json that used to cache the music data received from the server.
             var mmsdJson = "{"
@@ -803,7 +796,7 @@ extension JubeatWebServer {
     }
     
     private static func requestLoginAuth(_ userEmail: String, _ userPassword: String, _ captchaKey: String, _ onRequestComplete: @escaping (Bool, String?) -> Void) {
-        print("[DEBUG]: Start to request login. (userEmail: \(userEmail), userPassword: \(userPassword), captchaKey: \(captchaKey))")
+        log("[DEBUG]: Start to request login. (userEmail: \(userEmail), userPassword: \(userPassword), captchaKey: \(captchaKey))")
         
         httpRequestAsync(
             queue: DispatchQueue.global(),

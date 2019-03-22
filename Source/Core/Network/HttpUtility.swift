@@ -76,12 +76,12 @@ public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache
         
         Alamofire.request(imageUrl).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
             guard let data = dataResponse.data else {
-                print("[DEBUG]: Failed to download image. (\(imageUrl))")
+                log("[DEBUG]: Failed to download image. (\(imageUrl))")
                 onDownloadComplete(false, nil)
                 return
             }
             
-            print("[DEBUG]: Succeed to download image. (\(imageUrl))")
+            log("[DEBUG]: Succeed to download image. (\(imageUrl))")
             
             let optImage = UIImage(data: data)
             
@@ -106,12 +106,12 @@ public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache
         
         Alamofire.request(imageUrl).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
             guard let data = dataResponse.data else {
-                print("[DEBUG]: Failed to download image. (\(imageUrl))")
+                log("[DEBUG]: Failed to download image. (\(imageUrl))")
                 onDownloadComplete(false, nil)
                 return
             }
             
-            print("[DEBUG]: Succeed to download image. (\(imageUrl))")
+            log("[DEBUG]: Succeed to download image. (\(imageUrl))")
             
             onDownloadComplete(true, UIImage(data: data))
         }
@@ -163,7 +163,7 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
 #if DEBUG
             if g_networkDelayInSeconds > 0.0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + g_networkDelayInSeconds, execute: {
-                    print("Response wait complete!")
+                    log("Response wait complete!")
                     httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
                 })
             }
@@ -201,7 +201,7 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
 #if DEBUG
             if g_networkDelayInSeconds > 0.0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + g_networkDelayInSeconds, execute: {
-                    print("Response wait complete!")
+                    log("Response wait complete!")
                     httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
                 })
             }
