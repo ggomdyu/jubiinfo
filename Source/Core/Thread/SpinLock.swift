@@ -13,5 +13,6 @@ public func SpinLock(isLockFinish: @escaping () -> (Bool)) {
         if isLockFinish() {
             break;
         }
+        print() // DISABLE OPTIMIZATION OF SPINLOCK
     }
 }

@@ -1040,7 +1040,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        recordLastError(ErrorCode.DataConversionError, "Failed to convert kcaptcha data to dictionary.")
+        recordLastError(ErrorCode.DataConversionError, "Failed to convert the kcaptcha data to dictionary.")
         return nil
     }
     
@@ -1060,7 +1060,7 @@ extension JubeatWebServer {
                    loginAuthCode == 200 ? .invalidEmailOrPassword : .failure
         } while(false)
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse login auth response.")
+        recordLastError(ErrorCode.ParseError, "Failed to parse the login auth response.")
         return .failure
     }
     
@@ -1092,7 +1092,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse login page html.")
+        recordLastError(ErrorCode.ParseError, "Failed to parse the login page html.")
         return nil;
     }
     
@@ -1214,7 +1214,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse my play data page html.")
+        recordLastError(ErrorCode.ParseError, "Failed to parse the my play data page html.")
         return nil;
     }
     
@@ -1259,7 +1259,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse play data page html.")
+        recordLastError(ErrorCode.ParseError, "Failed to parse the play data page html.")
         return nil;
     }
     
@@ -1290,7 +1290,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse play data page html.")
+        recordLastError(ErrorCode.ParseError, "Failed to parse the play data page html.")
         return nil
     }
     
@@ -1445,7 +1445,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        recordLastError(ErrorCode.ParseError, "Failed to parse rank data page html.")
+        recordLastError(ErrorCode.ParseError, "Failed to parse the rank data page html.")
         return nil;
     }
     
