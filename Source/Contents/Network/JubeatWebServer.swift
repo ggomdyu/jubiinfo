@@ -590,10 +590,10 @@ public class JubeatWebServer {
                                 
                                 musicScoreDataRequestCompleteCount += 1
                             }
-                            log("Succeed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                            Debug.log("Succeed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                         else {
-                            log("Failed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
+                            Debug.log("Failed to load the music score page. (index: \(i), progress: \(musicScoreDataRequestCompleteCount)/\(musicScoreDataPageEndIndex)")
                         }
                     }
                     
@@ -603,7 +603,7 @@ public class JubeatWebServer {
             
             let oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]> = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
             
-            log("Waiting for load all of the music score data page... (musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
+            Debug.log("Waiting for load all of the music score data page... (musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
             
             // Wait until all music data request have completed.
             SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
@@ -796,7 +796,7 @@ extension JubeatWebServer {
     }
     
     private static func requestLoginAuth(_ userEmail: String, _ userPassword: String, _ captchaKey: String, _ onRequestComplete: @escaping (Bool, String?) -> Void) {
-        log("[DEBUG]: Start to request login. (userEmail: \(userEmail), userPassword: \(userPassword), captchaKey: \(captchaKey))")
+        Debug.log("[DEBUG]: Start to request login. (userEmail: \(userEmail), userPassword: \(userPassword), captchaKey: \(captchaKey))")
         
         httpRequestAsync(
             queue: DispatchQueue.global(),

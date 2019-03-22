@@ -8,8 +8,10 @@
 
 import Foundation
 
-public func log(items: Any...) {
-#if DEBUG
-    print(items)
-#endif
+class Debug {
+    public static func log(_ items: Any...) {
+    #if DEBUG
+        print(items)
+    #endif
+    }
 }

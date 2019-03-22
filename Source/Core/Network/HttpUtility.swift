@@ -76,12 +76,12 @@ public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache
         
         Alamofire.request(imageUrl).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
             guard let data = dataResponse.data else {
-                log("[DEBUG]: Failed to download image. (\(imageUrl))")
+                Debug.log("[DEBUG]: Failed to download image. (\(imageUrl))")
                 onDownloadComplete(false, nil)
                 return
             }
             
-            log("[DEBUG]: Succeed to download image. (\(imageUrl))")
+            Debug.log("[DEBUG]: Succeed to download image. (\(imageUrl))")
             
             let optImage = UIImage(data: data)
             
@@ -106,12 +106,12 @@ public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache
         
         Alamofire.request(imageUrl).responseData(queue: queue) { (dataResponse: DataResponse<Data>) in
             guard let data = dataResponse.data else {
-                log("[DEBUG]: Failed to download image. (\(imageUrl))")
+                Debug.log("[DEBUG]: Failed to download image. (\(imageUrl))")
                 onDownloadComplete(false, nil)
                 return
             }
             
-            log("[DEBUG]: Succeed to download image. (\(imageUrl))")
+            Debug.log("[DEBUG]: Succeed to download image. (\(imageUrl))")
             
             onDownloadComplete(true, UIImage(data: data))
         }
