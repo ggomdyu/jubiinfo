@@ -311,6 +311,8 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        UIMenuController.shared.setMenuVisible(false, animated: true)
+        
         if m_optScrollDetectTimer != nil || m_optCurrActiveMusicDataView?.isAllPageLoaded() ?? true {
             return
         }
@@ -319,8 +321,6 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let scrollDetectTimer = Timer(timeInterval: 0.05, target: self, selector: #selector(self.onDraggingScrollView), userInfo: nil, repeats: true)
         m_optScrollDetectTimer = scrollDetectTimer
         RunLoop.main.add(scrollDetectTimer, forMode: RunLoop.Mode.common)
-        
-        UIMenuController.shared.setMenuVisible(false, animated: true)
     }
     
     @objc private func onDraggingScrollView() {
