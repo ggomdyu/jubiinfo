@@ -26,22 +26,12 @@ public class OmikujiWidgetView : WidgetView {
     private var m_optRandomPickedMusicData: MusicScoreData?
     @IBOutlet weak var m_retryBtn: UIButton!
     
-/**@section Property */
-    open override var lazyInitializeEventName: String {
-        return "requestMyMusicScoreDataComplete"
-    }
-    
 /**@section Method */
     override public func initialize() {
         m_omikujiBoxDropEndYPos = m_omikujiImageView1TopConstraint.constant
         m_omikujiImageView1TopConstraint.constant = m_omikujiBoxDropStartYPos
         
-        if GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.count > 0 {
-            self.lazyInitialize(nil)
-        }
-        else {
-            super.initialize()
-        }
+        self.lazyInitialize(nil)
     }
     
     override public func lazyInitialize(_ param: Any?) {
@@ -143,10 +133,17 @@ public class OmikujiWidgetView : WidgetView {
     }
     
     private func onFinishOmikujiShakeAnim() {
-        let randomPickedMusicData = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.randomElement()!
-        self.prepareRandomMusicPickResultView(randomPickedMusicData: randomPickedMusicData)
-
-        m_optRandomPickedMusicData = randomPickedMusicData
+        if GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.count > 0 {
+            let randomPickedMusicData = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.randomElement()!
+            self.prepareRandomMusicPickResultView(randomPickedMusicData: randomPickedMusicData)
+            
+            m_optRandomPickedMusicData = randomPickedMusicData
+        }
+        else {
+            EventDispatcher.instance.subscribeEvent(eventType: "requestMyMusicScoreDataComplete", eventObserver: EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) -> Void in
+                self?.onFinishOmikujiShakeAnim()
+            })
+        }
     }
     
     @IBAction func onRetryOmikuji(_ sender: Any) {
