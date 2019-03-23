@@ -10,8 +10,8 @@ import Foundation
 
 class Debug {
     public static func log(_ items: Any...) {
-    #if DEBUG
+#if DEBUG
         print(items)
-    #endif
+#endif
     }
 }

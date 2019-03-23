@@ -682,6 +682,7 @@ public class JubeatWebServer {
                 GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
                 
                 onRequestComplete(true, newMusicScoreDatas)
+                return
             }
             catch {}
         }

@@ -163,7 +163,7 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
 #if DEBUG
             if g_networkDelayInSeconds > 0.0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + g_networkDelayInSeconds, execute: {
-                    log("Response wait complete!")
+                    Debug.log("Response wait complete!")
                     httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
                 })
             }
@@ -201,7 +201,7 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
 #if DEBUG
             if g_networkDelayInSeconds > 0.0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + g_networkDelayInSeconds, execute: {
-                    log("Response wait complete!")
+                    Debug.log("Response wait complete!")
                     httpRequestHandler(url: url, onRequestComplete: onRequestComplete, dataResponse: dataResponse)
                 })
             }

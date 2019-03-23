@@ -38,13 +38,13 @@ public func recordLastError(_ errorCode: ErrorCode, _ optDescription: String? = 
     GlobalSettingDataStorage.instance.setLastErrorRecord(LastErrorRecord(errorCode, optDescription))
     
     if let log = optLog {
-        log("[DEBUG]: \(log)")
+        Debug.log("[DEBUG]: \(log)")
     }
     else if let description = optDescription {
-        log("[DEBUG]: \(description)")
+        Debug.log("[DEBUG]: \(description)")
     }
     else {
-        log("[DEBUG]: \(errorCode.description)")
+        Debug.log("[DEBUG]: \(errorCode.description)")
     }
 }
 

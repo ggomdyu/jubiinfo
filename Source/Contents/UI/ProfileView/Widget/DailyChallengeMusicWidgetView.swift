@@ -45,55 +45,40 @@ class DailyChallengeMusicWidgetView : WidgetView {
         
         myUserData.topPageCache = topPageCache
         
-        DispatchQueue.global().async { [weak self] in
-            var coverImageDownloadCount = 0
-            
-            // Initialize daily recommended music view
-            if let dailyRecommendedChallengeMusicData = topPageCache.dailyRecommendedChallengeMusicData {
-                downloadImageAsync(imageUrl: dailyRecommendedChallengeMusicData.coverImageUrl, isWriteCache: true, isReadCache: true, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
-                    runTaskInMainThread { [weak self] in
-                        coverImageDownloadCount += 1
-                        
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        
-                        if isDownloadSucceed {
-                            strongSelf.m_dailyRecommendedMusicCoverImageView.image = image
-                        }
-                        strongSelf.m_dailyRecommendedMusicId = dailyRecommendedChallengeMusicData.id
-                        strongSelf.m_dailyRecommendedMusicNameLabel.text = dailyRecommendedChallengeMusicData.name
-                        strongSelf.m_dailyRecommendedMusicArtistNameLabel.text = dailyRecommendedChallengeMusicData.artistName
+        // Initialize daily recommended music view
+        if let dailyRecommendedChallengeMusicData = topPageCache.dailyRecommendedChallengeMusicData {
+            downloadImageAsync(imageUrl: dailyRecommendedChallengeMusicData.coverImageUrl, isWriteCache: true, isReadCache: true, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+                runTaskInMainThread { [weak self] in
+                    if isDownloadSucceed {
+                        self?.m_dailyRecommendedMusicCoverImageView.image = image
                     }
-                })
-            }
+                }
+            })
             
-            // Initialize full combo challenge music view
-            if let dailyFullComboChallengeMusicData = topPageCache.dailyFullComboChallengeMusicData {
-                downloadImageAsync(imageUrl: dailyFullComboChallengeMusicData.coverImageUrl, isWriteCache: true, isReadCache: true, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
-                    runTaskInMainThread { [weak self] in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        
-                        coverImageDownloadCount += 1
-                        if coverImageDownloadCount >= 2 {
-                            strongSelf.m_dailyRecommendedMusicView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(strongSelf.onTouchRecommendedMusicView)))
-                            strongSelf.m_dailyFullComboChallengeMusicView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(strongSelf.onTouchFullComboChallengeMusicView)))
-                            
-                            strongSelf.m_contentsView.animate(.fadeIn)
-                        }
-                        
-                        if isDownloadSucceed {
-                            strongSelf.m_dailyFullComboChallengeMusicCoverImageView.image = image
-                        }
-                        strongSelf.m_dailyFullComboChallengeMusicId = dailyFullComboChallengeMusicData.id
-                        strongSelf.m_dailyFullComboChallengeMusicNameLabel.text = dailyFullComboChallengeMusicData.name
-                        strongSelf.m_dailyFullComboChallengeMusicArtistNameLabel.text = dailyFullComboChallengeMusicData.artistName
-                    }
-                })
-            }
+            self.m_dailyRecommendedMusicId = dailyRecommendedChallengeMusicData.id
+            self.m_dailyRecommendedMusicNameLabel.text = dailyRecommendedChallengeMusicData.name
+            self.m_dailyRecommendedMusicArtistNameLabel.text = dailyRecommendedChallengeMusicData.artistName
         }
+        
+        // Initialize full combo challenge music view
+        if let dailyFullComboChallengeMusicData = topPageCache.dailyFullComboChallengeMusicData {
+            downloadImageAsync(imageUrl: dailyFullComboChallengeMusicData.coverImageUrl, isWriteCache: true, isReadCache: true, onDownloadComplete: { (isDownloadSucceed: Bool, image: UIImage?) in
+                runTaskInMainThread { [weak self] in
+                    if isDownloadSucceed {
+                        self?.m_dailyFullComboChallengeMusicCoverImageView.image = image
+                    }
+                }
+            })
+            
+            self.m_dailyFullComboChallengeMusicId = dailyFullComboChallengeMusicData.id
+            self.m_dailyFullComboChallengeMusicNameLabel.text = dailyFullComboChallengeMusicData.name
+            self.m_dailyFullComboChallengeMusicArtistNameLabel.text = dailyFullComboChallengeMusicData.artistName
+        }
+        
+        self.m_dailyRecommendedMusicView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onTouchRecommendedMusicView)))
+        self.m_dailyFullComboChallengeMusicView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onTouchFullComboChallengeMusicView)))
+            
+        self.m_contentsView.animate(.fadeIn)
     }
     
 /**@section Event handler */
