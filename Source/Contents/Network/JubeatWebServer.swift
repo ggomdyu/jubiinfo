@@ -19,42 +19,83 @@ public typealias MusicScore = Int
 public class MusicScoreData : Comparable {
 /**@section Enum */
     public enum Difficulty : Int {
-        case Basic
-        case Advanced
-        case Extreme
+        case basic
+        case advanced
+        case extreme
     }
     
-    public enum ScoreRank : Int {
-        case EXC
-        case SSS
-        case SS
-        case S
-        case A
-        case B
-        case C
-        case D
-        case E
-        case NotPlayedYet
+    public enum Version : Int {
+        case unknown
+        case original
+        case ripples
+        case knit
+        case copious
+        case saucer
+        case saucerFulfill
+        case prop
+        case qubell
+        case clan
+        case festo
         
         public func toString() -> String {
             switch self {
-            case .EXC:
+            case .original:
+                return "Original"
+            case .ripples:
+                return "Ripples"
+            case .knit:
+                return "Knit"
+            case .copious:
+                return "Copious"
+            case .saucer:
+                return "Saucer"
+            case .saucerFulfill:
+                return "Saucer fulfill"
+            case .prop:
+                return "Prop"
+            case .qubell:
+                return "Qubell"
+            case .clan:
+                return "Clan"
+            case .festo:
+                return "Festo"
+            case .unknown:
+                return "Festo"
+            }
+        }
+    }
+    
+    public enum ScoreRank : Int {
+        case exc
+        case sss
+        case ss
+        case s
+        case a
+        case b
+        case c
+        case d
+        case e
+        case notPlayedYet
+        
+        public func toString() -> String {
+            switch self {
+            case .exc:
                 return "EXC"
-            case .SSS:
+            case .sss:
                 return "SSS"
-            case .SS:
+            case .ss:
                 return "SS"
-            case .S:
+            case .s:
                 return "S"
-            case .A:
+            case .a:
                 return "A"
-            case .B:
+            case .b:
                 return "B"
-            case .C:
+            case .c:
                 return "C"
-            case .D:
+            case .d:
                 return "D"
-            case .E:
+            case .e:
                 return "E"
             default:
                 return "Not played yet"
@@ -113,18 +154,20 @@ public class MusicScoreData : Comparable {
     public struct CustomData {
         public let artistName: String
         public let uppercasedRomajiArtistName: String
+        public let version: Version
         public let levels: [Int]
         public var isNewMusic: Bool { return levels[0] == CustomData.newMusicIndicateValue }
         private static let newMusicIndicateValue = 999
         
-        public init(artistName: String, levels: [Int]) {
+        public init(artistName: String, version: Version, levels: [Int]) {
             self.artistName = artistName
+            self.version = version
             self.uppercasedRomajiArtistName = removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: artistName).uppercased())
             self.levels = levels
         }
         
         public init() {
-            self.init(artistName: "", levels: [CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue])
+            self.init(artistName: "", version: Version.unknown, levels: [CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue])
         }
     }
     
@@ -143,32 +186,32 @@ public class MusicScoreData : Comparable {
     public var uppercasedRomajiName: String { return simpleData?.uppercasedRomajiName ?? "" }
     public var id: Int { return simpleData?.id ?? detailData?.id ?? 0 }
     public var score: Int { return simpleData?.score ?? detailData?.score ?? 0 }
-    public var difficulty: Difficulty { return simpleData?.difficulty ?? detailData?.difficulty ?? Difficulty.Basic }
+    public var difficulty: Difficulty { return simpleData?.difficulty ?? detailData?.difficulty ?? Difficulty.basic }
     public var isFullCombo: Bool { return simpleData?.isFullCombo ?? false }
     public var isExcellent: Bool { return self.score >= 1000000 }
     public var isNotPlayedYet: Bool { return self.score == -1 }
     public var musicScoreRank: ScoreRank {
         switch self.score {
         case 1000000:
-            return .EXC
+            return .exc
         case 980000..<1000000:
-            return .SSS
+            return .sss
         case 950000..<980000:
-            return .SS
+            return .ss
         case 900000..<950000:
-            return .S
+            return .s
         case 850000..<900000:
-            return .A
+            return .a
         case 800000..<850000:
-            return .B
+            return .b
         case 700000..<800000:
-            return .C
+            return .c
         case 500000..<700000:
-            return .D
+            return .d
         case 0..<500000:
-            return .E
+            return .e
         default:
-            return .NotPlayedYet
+            return .notPlayedYet
         }
     }
     public var scoreHistories: [(Timestamp, MusicScore)]? {
@@ -193,6 +236,7 @@ public class MusicScoreData : Comparable {
     public var extremeLevel: Int { return customData?.levels[2] ?? 0 }
     public var level: Int { return customData?.levels[simpleData?.difficulty.rawValue ?? 0] ?? 0 }
     public var isNewMusic: Bool { return customData?.isNewMusic ?? false }
+    public var version: Version { return customData?.version ?? .festo }
     
 /**@section Method */
     public func isDetailDataInitialized() -> Bool {
@@ -302,7 +346,7 @@ class MusicScoreDataPageParser {
                     uppercasedRomajiName: uppercasedRomajiMusicName,
                     id: musicId,
                     score: scoreDataTable[0].score,
-                    difficulty: .Basic,
+                    difficulty: .basic,
                     isFullCombo: scoreDataTable[0].isFullCombo
                 ),
                 customData: customMusicData
@@ -313,7 +357,7 @@ class MusicScoreDataPageParser {
                     uppercasedRomajiName: uppercasedRomajiMusicName,
                     id: musicId,
                     score: scoreDataTable[1].score,
-                    difficulty: .Advanced,
+                    difficulty: .advanced,
                     isFullCombo: scoreDataTable[1].isFullCombo
                 ),
                 customData: customMusicData
@@ -324,7 +368,7 @@ class MusicScoreDataPageParser {
                     uppercasedRomajiName: uppercasedRomajiMusicName,
                     id: musicId,
                     score: scoreDataTable[2].score,
-                    difficulty: .Extreme,
+                    difficulty: .extreme,
                     isFullCombo: scoreDataTable[2].isFullCombo
                 ),
                 customData: customMusicData
@@ -1302,15 +1346,18 @@ extension JubeatWebServer {
             }
             
             var customMusicDatas = [MusicId : MusicScoreData.CustomData] ()
+            customMusicDatas.reserveCapacity(musicArrayElem.count)
+            
             for musicElem in musicArrayElem {
-                
                 let musicArtistName = musicElem.value[0] as? String ?? ""
                 let musicBasicLevel = musicElem.value[1] as? Int ?? 0
                 let musicAdvancedLevel = musicElem.value[2] as? Int ?? 0
                 let musicExtremeLevel = musicElem.value[3] as? Int ?? 0
+                let musicVersion = musicElem.value[4] as? Int ?? 0
                 
                 customMusicDatas[Int(musicElem.key) ?? 0] = MusicScoreData.CustomData(
                     artistName: musicArtistName,
+                    version: MusicScoreData.Version(rawValue: musicVersion) ?? .unknown,
                     levels: [musicBasicLevel, musicAdvancedLevel, musicExtremeLevel]
                 )
             }

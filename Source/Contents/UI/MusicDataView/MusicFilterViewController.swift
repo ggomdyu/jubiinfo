@@ -11,11 +11,67 @@ import SBCardPopup
 import Material
 
 
-public protocol MusicFilter {
+public class BaseFilterUITableViewCell : UITableViewCell {
+    public func initialize(text: String) {
+        self.textLabel!.text = text
+        
+        // Add a disclosure button right side of textLabel
+        let disclosureView = UITableViewCell()
+        disclosureView.frame = CGRect(x: 0.0, y: 0.0, width: self.textLabel!.frame.origin.x + self.textLabel!.intrinsicContentSize.width + 25.0 + 35.0, height: self.frame.height)
+        disclosureView.accessoryType = .disclosureIndicator
+        disclosureView.isUserInteractionEnabled = false
+        disclosureView.backgroundColor = UIColor.clear
+        self.addSubview(disclosureView)
+
+        // Add a line
+        let divisionLineView = UIView(frame: CGRect(x: disclosureView.frame.width, y: 0.0, width: 1.0, height: self.frame.height))
+        divisionLineView.backgroundColor = UIColor(red: 230.0 / 255.0, green: 230.0 / 255.0, blue: 230.0 / 255.0, alpha: 1.0)
+        self.addSubview(divisionLineView)
+       
+//        let divisionLineView = UIView()
+//        divisionLineView.backgroundColor = UIColor.red
+//        self.layout(divisionLineView).top(0.0).left(disclosureView.frame.width).right(0.0).bottom(0.0)
+    }
+}
+
+public class PickerFilterUITableViewCell : UITableViewCell {
+    public func initialize(text: String) {
+        self.textLabel!.text = text
+        
+        // Add a disclosure button right side of textLabel
+        let disclosureView = UITableViewCell()
+        disclosureView.frame = CGRect(x: 0.0, y: 0.0, width: self.textLabel!.frame.origin.x + self.textLabel!.intrinsicContentSize.width + 25.0 + 35.0, height: self.frame.height)
+        disclosureView.accessoryType = .disclosureIndicator
+        disclosureView.isUserInteractionEnabled = false
+        disclosureView.backgroundColor = UIColor.clear
+        self.addSubview(disclosureView)
+        
+        // Add a line
+        let divisionLineView = UIView(frame: CGRect(x: disclosureView.frame.width, y: 0.0, width: 1.0, height: self.frame.height))
+        divisionLineView.backgroundColor = UIColor(red: 230.0 / 255.0, green: 230.0 / 255.0, blue: 230.0 / 255.0, alpha: 1.0)
+        self.addSubview(divisionLineView)
+        
+        //        let divisionLineView = UIView()
+        //        divisionLineView.backgroundColor = UIColor.red
+        //        self.layout(divisionLineView).top(0.0).left(disclosureView.frame.width).right(0.0).bottom(0.0)
+    }
+}
+
+
+private enum MusicFilterType {
+    case notPlayedYet
+    case fullCombo
+    case excellent
+    case score
+    case level
+    case series
+}
+
+private protocol MusicFilter {
     func filterOut(musicScoreData: MusicScoreData) -> Bool
 }
 
-public class MusicLevelFilter : MusicFilter {
+private class MusicLevelFilter : MusicFilter {
     private let m_minLevel: Int
     private let m_maxLevel: Int
     
@@ -30,19 +86,19 @@ public class MusicLevelFilter : MusicFilter {
     }
 }
 
-public class MusicFullComboFilter : MusicFilter {
+private class MusicFullComboFilter : MusicFilter {
     public func filterOut(musicScoreData: MusicScoreData) -> Bool {
         return musicScoreData.isFullCombo
     }
 }
 
-public class MusicNotPlayedFilter : MusicFilter {
+private class MusicNotPlayedFilter : MusicFilter {
     public func filterOut(musicScoreData: MusicScoreData) -> Bool {
         return musicScoreData.isNotPlayedYet
     }
 }
 
-public class MusicScoreFilter : MusicFilter {
+private class MusicScoreFilter : MusicFilter {
     private let m_minScore: Int
     private let m_maxScore: Int
     
@@ -66,12 +122,18 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     @IBOutlet weak var m_filterTableView: UITableView!
     @IBOutlet weak var m_okButton: UIButton!
     
+    private var m_filterTableData: [MusicFilterType] = [
+        MusicFilterType.fullCombo
+    ]
+    
 /**@section Method */
     override func viewDidLoad() {
         super.viewDidLoad()
         
         m_filterTableView.delegate = self
         m_filterTableView.dataSource = self
+        
+        m_filterTableView.setEditing(true, animated: false)
     }
     
     public static func show(currentViewController: UIViewController) {
@@ -88,12 +150,13 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "filterCellIdenfier")!
-        cell.textLabel?.text = "\(indexPath.row)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "filterCellIdenfier") as! BaseFilterUITableViewCell
+        cell.initialize(text: "\(indexPath.row * 10)")
+        
         return cell
     }
     
@@ -102,13 +165,21 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+        if indexPath.row == tableView.numberOfRows(inSection: 0) - 1 {
+            return .insert
+        }
+        else {
+            return .delete
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        else if editingStyle == .insert {
+//            tableView.insertRows(at: [IndexPath(row: sectionDataTable[1].1.count - 1, section: 1)], with: .left)
         }
     }
     

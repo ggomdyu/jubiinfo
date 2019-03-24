@@ -18,8 +18,8 @@ public class GlobalDataStorage {
     }
     
 /**@section Method */
-    public func initCustomMusicDatas(musicCustomDatas: [MusicId: MusicScoreData.CustomData]) {
-        m_customMusicDatas = musicCustomDatas
+    public func initCustomMusicDatas(customMusicDatas: [MusicId: MusicScoreData.CustomData]) {
+        m_customMusicDatas = customMusicDatas
     }
     
     public func isCustomMusicDatasInitialized() -> Bool {
@@ -235,7 +235,7 @@ public class MyUserData : UserData {
     public init(rivalId: String = "", playDataPageCache: PlayDataPageCache? = nil, rankDataPageCache: RankDataPageCache? = nil) {
         super.init(rivalId: rivalId, playDataPageCache: playDataPageCache, rankDataPageCache: rankDataPageCache)
         
-        self.musicScoreDataCaches.value.reserveCapacity(2714)
+        self.musicScoreDataCaches.value.reserveCapacity(2048)
     }
 }
 

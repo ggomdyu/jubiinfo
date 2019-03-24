@@ -21,10 +21,11 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
     @IBOutlet weak var m_sortOrderSwitch: UISwitch!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
     private var m_sortModeTable = [
-        ("레벨", MusicSortMode.Level),
-        ("제목", MusicSortMode.Name),
-        ("스코어", MusicSortMode.Score),
-        ("아티스트", MusicSortMode.Artist)
+        ("레벨", MusicSortMode.level),
+        ("제목", MusicSortMode.name),
+        ("스코어", MusicSortMode.score),
+        ("아티스트", MusicSortMode.artist),
+        ("버전", MusicSortMode.version)
     ]
 
 /**@section Method */
@@ -67,13 +68,13 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         m_sortModePickerView.selectRow(pickerRowToSelect, inComponent: 0, animated: false)
 
         // Change the toggle state of switch
-        m_sortOrderSwitch.isOn = (currMusicSortOrder == .Ascending)
+        m_sortOrderSwitch.isOn = (currMusicSortOrder == .ascending)
     }
     
 /**@section Event handler */
     @IBAction func onClickOkButton(_ sender: UIButton, forEvent event: UIEvent) {
         let selectedSortModeStr = m_sortModeTable[m_sortModePickerView.selectedRow(inComponent: 0)].1
-        let selectedSortOrder = m_sortOrderSwitch.isOn ? MusicSortOrder.Ascending : MusicSortOrder.Descending
+        let selectedSortOrder = m_sortOrderSwitch.isOn ? MusicSortOrder.ascending : MusicSortOrder.descending
         m_onChangeMusicSortMode?(selectedSortModeStr, selectedSortOrder)
         
         popupViewController?.close()

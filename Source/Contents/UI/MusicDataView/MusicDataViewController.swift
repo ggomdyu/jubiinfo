@@ -110,7 +110,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     private func lazyInitialize() {
         let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
         
-        m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .Level, musicSortOrder: .Descending)
+        m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .level, musicSortOrder: .descending)
         m_musicDataView.loadMoreMusicDataCell()
         
         self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
@@ -119,7 +119,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     private func lazyInitialize(musicId: MusicId) {
         let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
         // TODO: Optimize this code
-        m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .Level, musicSortOrder: .Descending)
+        m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .level, musicSortOrder: .descending)
         
         self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
         
@@ -348,7 +348,7 @@ public class MusicDataViewToolBarController: ToolbarController {
     private let m_toolBarLabelColor = UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1)
     private var m_leftTabPrevButton: IconButton!
     private var m_rightTabSortButton: IconButton!
-//    private var m_rightTabFilterButton: IconButton!
+    private var m_rightTabFilterButton: IconButton!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
     private var m_onTouchPrevBtn: (() -> Void)?
     
@@ -396,15 +396,15 @@ public class MusicDataViewToolBarController: ToolbarController {
     }
     
     private func prepareToolbarRightIcon() {
-//        m_rightTabFilterButton = IconButton(image: UIImage(named: "ic_filter_white"))
-//        m_rightTabFilterButton.addTarget(self, action: #selector(onTouchFilterButton), for: .touchUpInside)
-        
-        m_rightTabSortButton = IconButton(image: UIImage(named: "ic_sort_white")!.withRenderingMode(.alwaysTemplate))
+        m_rightTabFilterButton = IconButton(image: UIImage(named: "ic_filter_white"))
+        m_rightTabFilterButton.addTarget(self, action: #selector(onTouchFilterButton), for: .touchUpInside)
 
+        m_rightTabSortButton = IconButton(image: UIImage(named: "ic_sort_white")!.withRenderingMode(.alwaysTemplate))
         m_rightTabSortButton.addTarget(self, action: #selector(onTouchSortButton), for: .touchUpInside)
-        //rightTabFilterButton,
-        toolbar.rightViews = [m_rightTabSortButton]
-        //        toolbar.interimSpace = -23.0
+
+        toolbar.rightViews = [m_rightTabFilterButton, m_rightTabSortButton]
+        
+        toolbar.interimSpace = -18.0
     }
     
     private func prepareTheme() {
@@ -414,7 +414,8 @@ public class MusicDataViewToolBarController: ToolbarController {
         toolbar.backgroundColor = getCurrentThemeColorTable().toolBarBackgroundColor
         
         m_leftTabPrevButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
-//        m_rightTabFilterButton.tintColor = UIColor.white
+        
+        m_rightTabFilterButton.tintColor = UIColor.white
         m_rightTabSortButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
     }
 

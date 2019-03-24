@@ -9,37 +9,32 @@
 import Foundation
 
 public enum MusicSortMode {
-    case None
-    case Level
-    case Artist
-    case Score
-    case Name
+    case none
+    case level
+    case artist
+    case score
+    case name
+    case version
 }
 
 public enum MusicSortOrder {
-    case None
-    case Ascending
-    case Descending
-}
-
-public enum MusicDataVisibleOptionFlag: Int {
-    case Basic = 0x01
-    case Advanced = 0x02
-    case Extreme = 0x04
+    case none
+    case ascending
+    case descending
 }
 
 public class MusicScoreDataPageLoader {
 /**@section Variable */
     private var m_musicScoreDatas: Box<[MusicScoreData]>
-    private var m_currMusicSortMode = MusicSortMode.None
-    private var m_currMusicSortOrder = MusicSortOrder.None
+    private var m_currMusicSortMode = MusicSortMode.none
+    private var m_currMusicSortOrder = MusicSortOrder.none
     private let m_musicDataCountPerPage = 20
     private static let m_loadStartPageIndex = 0
     private var m_loadedPageIndex = MusicScoreDataPageLoader.m_loadStartPageIndex
     private var m_isAllPageLoaded = false
     
 /**@section Constructor */
-    public init(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
+    public init(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder) {
         m_musicScoreDatas = musicScoreDatas
         
         self.sort(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
@@ -55,19 +50,22 @@ public class MusicScoreDataPageLoader {
             return false
         }
         
-        let isAscendingSort = (musicSortOrder == .Ascending)
+        let isAscendingSort = (musicSortOrder == .ascending)
         switch musicSortMode {
-        case .Level:
+        case .level:
             sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break
-        case .Name:
+        case .name:
             sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break
-        case .Score:
+        case .score:
             sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break;
-        case .Artist:
+        case .artist:
             sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
+            break
+        case .version:
+            sortByVersion(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
             break
         default:
             break
@@ -139,6 +137,20 @@ public class MusicScoreDataPageLoader {
             }
             
             return (lhs.score < rhs.score) == isAscendingSort
+        })
+    }
+    
+    private func sortByVersion(isAscendingSort: Bool, musicScoreDatas: MusicScoreDataCaches) {
+        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+            if lhs.version == rhs.version {
+                if lhs.id == rhs.id {
+                    return lhs.difficulty.rawValue > rhs.difficulty.rawValue
+                }
+                
+                return lhs.uppercasedRomajiName < rhs.uppercasedRomajiName
+            }
+            
+            return (lhs.version.rawValue < rhs.version.rawValue) == isAscendingSort
         })
     }
     

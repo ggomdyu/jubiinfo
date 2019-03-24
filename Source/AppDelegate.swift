@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 JubeatWebServer.requestCustomMusicDatas(serverCMDChecksum: checksum!, onRequestComplete: {(isRequestSucceed2: Bool, optCustomMusicDatas: [MusicId : MusicScoreData.CustomData]?) in
                     if let customMusicDatas = optCustomMusicDatas {
                         runTaskInMainThread {
-                            GlobalDataStorage.instance.initCustomMusicDatas(musicCustomDatas: customMusicDatas)
+                            GlobalDataStorage.instance.initCustomMusicDatas(customMusicDatas: customMusicDatas)
                             
                             EventDispatcher.instance.dispatchEvent(eventType: "requestCustomMusicDatasDataComplete", eventParam: customMusicDatas)
                         }

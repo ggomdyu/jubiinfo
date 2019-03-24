@@ -20,7 +20,7 @@ public class MusicDataView : CustomStackView {
     private var m_minStackViewHeight: CGFloat = 0.0
     
 /**@section Method */
-    public func initialize(musicScoreDatas: MusicScoreDataCaches, musicSortMode: MusicSortMode = MusicSortMode.Level, musicSortOrder: MusicSortOrder) {
+    public func initialize(musicScoreDatas: MusicScoreDataCaches, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder) {
         m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
         
         self.resetStackView()
@@ -74,7 +74,7 @@ public class MusicDataView : CustomStackView {
         }
         
         switch musicDataPageLoader.getCurrentMusicSortMode() {
-        case .Name:
+        case .name:
             let newDivisionLineValue = musicScoreData.uppercasedRomajiName.unicodeScalars.first!
             if newDivisionLineValue == (m_oldDivisionLineValue as? Unicode.Scalar) {
                 return (false, nil)
@@ -83,7 +83,7 @@ public class MusicDataView : CustomStackView {
             m_oldDivisionLineValue = newDivisionLineValue
             return (true, String(newDivisionLineValue))
             
-        case .Level:
+        case .level:
             let newDivisionLineValue = musicScoreData.level
             if newDivisionLineValue == (m_oldDivisionLineValue as? Int) {
                 return (false, nil)
@@ -101,7 +101,7 @@ public class MusicDataView : CustomStackView {
                 return (true, String(sectionText))
             }
             
-        case .Score:
+        case .score:
             let newDivisionLineValue = musicScoreData.musicScoreRank
             if newDivisionLineValue == (m_oldDivisionLineValue as? MusicScoreData.ScoreRank) {
                 return (false, nil)
@@ -111,7 +111,7 @@ public class MusicDataView : CustomStackView {
             
             return (true, newDivisionLineValue.toString())
             
-        case .Artist:
+        case .artist:
             let optNewDivisionLineValue = musicScoreData.uppercasedRomajiArtistName.unicodeScalars.first
             
             let newDivisionLineValue = (optNewDivisionLineValue != nil) ? optNewDivisionLineValue! : Unicode.Scalar(" ")!
@@ -122,6 +122,16 @@ public class MusicDataView : CustomStackView {
             m_oldDivisionLineValue = newDivisionLineValue
             
             return (true, optNewDivisionLineValue != nil ? String(optNewDivisionLineValue!) : String("Unknown artist"))
+            
+        case .version:
+            let newDivisionLineValue = musicScoreData.version
+            if newDivisionLineValue == (m_oldDivisionLineValue as? MusicScoreData.Version) {
+                return (false, nil)
+            }
+            
+            m_oldDivisionLineValue = newDivisionLineValue
+            
+            return (true, newDivisionLineValue.toString())
             
         default:
             return (false, nil)
