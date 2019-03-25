@@ -178,7 +178,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5a-SL-eGJ">
-                            <rect key="frame" x="160" y="15" width="170" height="196"/>
+                            <rect key="frame" x="175" y="15" width="170" height="196"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="170" id="SOs-WF-ZTU"/>
                             </constraints>
@@ -213,7 +213,6 @@
                         <constraint firstItem="lnk-dw-sBw" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="lxX-lP-P1k"/>
                         <constraint firstItem="KLa-Aw-ZZY" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="oPO-92-4Jo"/>
                         <constraint firstItem="Y5a-SL-eGJ" firstAttribute="top" secondItem="nvo-O0-deI" secondAttribute="top" constant="15" id="ocv-pv-aM9"/>
-                        <constraint firstItem="Y5a-SL-eGJ" firstAttribute="leading" secondItem="PNe-gf-PaQ" secondAttribute="trailing" id="qDb-bk-2Um"/>
                         <constraint firstItem="f6p-We-n2m" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="rYi-Ez-xu8"/>
                         <constraint firstItem="f6p-We-n2m" firstAttribute="top" secondItem="3hh-ew-H4R" secondAttribute="bottom" constant="5" id="rfK-sn-TMY"/>
                         <constraint firstItem="PNe-gf-PaQ" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="60" id="s71-sa-JQE"/>

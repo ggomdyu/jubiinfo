@@ -137,7 +137,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-LA-Y25" userLabel="Scroll View">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-LA-Y25" userLabel="Scroll View" customClass="EndEditScrollView" customModule="jubiinfo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-Mb-YMY" userLabel="Top Edge View">
@@ -286,14 +286,14 @@
                         <viewControllerLayoutGuide type="bottom" id="iPG-DQ-5Q9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Uod-tT-Rrr">
-                        <rect key="frame" x="0.0" y="0.0" width="250" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lCa-sK-rW1">
-                                <rect key="frame" x="20" y="10" width="210" height="300"/>
+                                <rect key="frame" x="20" y="10" width="335" height="300"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="정렬" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLe-vP-PAt">
-                                        <rect key="frame" x="0.0" y="0.0" width="210" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="xDD-R7-6uk"/>
@@ -303,7 +303,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTS-5y-MYG">
-                                        <rect key="frame" x="0.0" y="30" width="210" height="50"/>
+                                        <rect key="frame" x="0.0" y="30" width="335" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="오름차순" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdE-Yi-ALo">
                                                 <rect key="frame" x="8" y="15" width="59" height="20.5"/>
@@ -312,7 +312,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ud-Ua-syn">
-                                                <rect key="frame" x="156" y="9.5" width="51" height="31"/>
+                                                <rect key="frame" x="281" y="9.5" width="51" height="31"/>
                                             </switch>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -325,7 +325,7 @@
                                         </constraints>
                                     </view>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8E-hl-Rzy">
-                                        <rect key="frame" x="0.0" y="80" width="210" height="180"/>
+                                        <rect key="frame" x="0.0" y="80" width="335" height="180"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="150" id="k6y-pj-TUk"/>
@@ -338,7 +338,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sod-gk-RUo">
-                                        <rect key="frame" x="0.0" y="260" width="210" height="40"/>
+                                        <rect key="frame" x="0.0" y="260" width="335" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="IC7-ru-dBh"/>
                                         </constraints>
@@ -374,7 +374,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="250" height="320"/>
+                    <size key="freeformSize" width="375" height="320"/>
                     <connections>
                         <outlet property="m_okButton" destination="sod-gk-RUo" id="4c7-Yv-lvs"/>
                         <outlet property="m_sortModePickerView" destination="S8E-hl-Rzy" id="Djy-kl-NPO"/>
@@ -383,7 +383,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U3T-Yz-rm0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1608" y="-450"/>
+            <point key="canvasLocation" x="1708" y="-451"/>
         </scene>
         <!--Profile View Edit Controller-->
         <scene sceneID="xXI-2J-6qe">
@@ -555,14 +555,14 @@
                         <viewControllerLayoutGuide type="bottom" id="4bc-tR-6yF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fLG-AO-AGt">
-                        <rect key="frame" x="0.0" y="0.0" width="250" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="233"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qMW-Qx-0eE">
-                                <rect key="frame" x="20" y="10" width="210" height="300"/>
+                                <rect key="frame" x="20" y="10" width="335" height="213"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="필터" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD6-FO-hRW">
-                                        <rect key="frame" x="0.0" y="0.0" width="210" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="Zzs-jo-Xiy"/>
@@ -572,33 +572,413 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1wP-WH-OGy">
-                                        <rect key="frame" x="0.0" y="30" width="210" height="230"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <rect key="frame" x="0.0" y="30" width="335" height="143"/>
+                                        <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="230" id="kHC-Zf-hRZ"/>
+                                            <constraint firstAttribute="height" constant="87" id="kHC-Zf-hRZ"/>
                                         </constraints>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="filterCellIdenfier" textLabel="FIs-3a-0db" style="IBUITableViewCellStyleDefault" id="jC0-wI-ijQ">
-                                                <rect key="frame" x="0.0" y="28" width="210" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="insertCellIdenfier" rowHeight="44" id="jC0-wI-ijQ">
+                                                <rect key="frame" x="0.0" y="28" width="335" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jC0-wI-ijQ" id="5hP-bQ-jmQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="210" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FIs-3a-0db">
-                                                            <rect key="frame" x="15" y="0.0" width="180" height="43.5"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="필터 추가" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3F-yY-cbv">
+                                                            <rect key="frame" x="10" y="0.0" width="56" height="44"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="w3F-yY-cbv" firstAttribute="top" secondItem="5hP-bQ-jmQ" secondAttribute="top" id="Oto-0W-6AD"/>
+                                                        <constraint firstItem="w3F-yY-cbv" firstAttribute="leading" secondItem="5hP-bQ-jmQ" secondAttribute="leading" constant="10" id="bvd-mw-jla"/>
+                                                    </constraints>
                                                 </tableViewCellContentView>
+                                                <constraints>
+                                                    <constraint firstItem="w3F-yY-cbv" firstAttribute="height" secondItem="jC0-wI-ijQ" secondAttribute="height" id="jdo-tl-e3P"/>
+                                                </constraints>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="2" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="scoreFilterCellIdenfier" rowHeight="44" id="L1A-wa-nJd" customClass="ScoreFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="72" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L1A-wa-nJd" id="mZz-LH-D7O">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9fL-Oe-hoU">
+                                                            <rect key="frame" x="10" y="0.0" width="69" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="cYt-cR-lXI"/>
+                                                            </constraints>
+                                                            <state key="normal" title="스코어 범위"/>
+                                                        </button>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xfd-vA-FV6" customClass="PasteDisabledUITextField" customModule="jubiinfo" customModuleProvider="target">
+                                                            <rect key="frame" x="140" y="-0.5" width="13" height="44.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="44" id="7f6-L8-WwI"/>
+                                                            </constraints>
+                                                            <nil key="textColor"/>
+                                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        </textField>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="1,000,000" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IEo-of-UgP" customClass="PasteDisabledUITextField" customModule="jubiinfo" customModuleProvider="target">
+                                                            <rect key="frame" x="170" y="-0.5" width="85" height="44.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="85" id="Ern-gh-fU4"/>
+                                                                <constraint firstAttribute="height" constant="44" id="sHU-Wt-WGm"/>
+                                                            </constraints>
+                                                            <nil key="textColor"/>
+                                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        </textField>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYk-LQ-1Ws">
+                                                            <rect key="frame" x="157" y="12.5" width="9" height="17"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="9" id="nSy-yg-L24"/>
+                                                                <constraint firstAttribute="height" constant="17" id="zJ2-jt-X9j"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="xfd-vA-FV6" firstAttribute="centerY" secondItem="mZz-LH-D7O" secondAttribute="centerY" id="17d-Gc-47e"/>
+                                                        <constraint firstItem="9fL-Oe-hoU" firstAttribute="top" secondItem="mZz-LH-D7O" secondAttribute="top" id="8W3-Ne-OiF"/>
+                                                        <constraint firstItem="aYk-LQ-1Ws" firstAttribute="top" secondItem="mZz-LH-D7O" secondAttribute="top" constant="12.5" id="aJY-9b-df4"/>
+                                                        <constraint firstItem="aYk-LQ-1Ws" firstAttribute="leading" secondItem="xfd-vA-FV6" secondAttribute="trailing" constant="4" id="eTU-7Y-Cli"/>
+                                                        <constraint firstItem="9fL-Oe-hoU" firstAttribute="leading" secondItem="mZz-LH-D7O" secondAttribute="leading" constant="10" id="l6m-8Y-tUU"/>
+                                                        <constraint firstItem="IEo-of-UgP" firstAttribute="centerY" secondItem="mZz-LH-D7O" secondAttribute="centerY" id="ron-hU-cnY"/>
+                                                        <constraint firstItem="IEo-of-UgP" firstAttribute="leading" secondItem="aYk-LQ-1Ws" secondAttribute="trailing" constant="4" id="spd-H5-NL9"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <constraints>
+                                                    <constraint firstItem="xfd-vA-FV6" firstAttribute="leading" secondItem="L1A-wa-nJd" secondAttribute="leading" constant="140" id="Qdp-me-Fcq"/>
+                                                </constraints>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="9fL-Oe-hoU" id="Tnp-V7-zav"/>
+                                                    <outlet property="m_maxScoreTextField" destination="IEo-of-UgP" id="ffa-So-bfy"/>
+                                                    <outlet property="m_minScoreTextField" destination="xfd-vA-FV6" id="gTx-Oh-U0a"/>
+                                                    <outlet property="m_tildeLabel" destination="aYk-LQ-1Ws" id="2xH-df-MbQ"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="versionOnlyFilterCellIdenfier" rowHeight="44" id="PQg-Tf-tFT" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="116" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PQg-Tf-tFT" id="yeB-P5-27u">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMN-ko-gyC">
+                                                            <rect key="frame" x="10" y="0.0" width="112" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="ohQ-eA-ZVW"/>
+                                                            </constraints>
+                                                            <state key="normal" title="특정 시리즈만 표시"/>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4D-e7-P01">
+                                                            <rect key="frame" x="160" y="0.0" width="39" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="39" id="3mg-By-e5i"/>
+                                                                <constraint firstAttribute="height" constant="43.5" id="WEg-OR-vHy"/>
+                                                            </constraints>
+                                                            <state key="normal" title="페스토"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="WMN-ko-gyC" firstAttribute="leading" secondItem="yeB-P5-27u" secondAttribute="leading" constant="10" id="LI6-fe-2Fp"/>
+                                                        <constraint firstItem="g4D-e7-P01" firstAttribute="leading" secondItem="yeB-P5-27u" secondAttribute="leading" constant="160" id="S5x-vB-2o4"/>
+                                                        <constraint firstItem="g4D-e7-P01" firstAttribute="centerY" secondItem="yeB-P5-27u" secondAttribute="centerY" id="gFG-8Z-QtZ"/>
+                                                        <constraint firstItem="WMN-ko-gyC" firstAttribute="top" secondItem="yeB-P5-27u" secondAttribute="top" id="wnZ-Y9-tdt"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="WMN-ko-gyC" id="ldW-yh-mlr"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="versionFilterCellIdenfier" id="5C3-c9-iBE" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="160" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5C3-c9-iBE" id="pVl-lt-D5s">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaQ-zH-lgi">
+                                                            <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="jW7-KY-yGv"/>
+                                                            </constraints>
+                                                            <state key="normal" title="특정 시리즈 제외"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="GaQ-zH-lgi" firstAttribute="top" secondItem="pVl-lt-D5s" secondAttribute="top" id="TbI-YA-j76"/>
+                                                        <constraint firstItem="GaQ-zH-lgi" firstAttribute="leading" secondItem="pVl-lt-D5s" secondAttribute="leading" constant="10" id="yyM-hz-Bze"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="GaQ-zH-lgi" id="xtf-VY-ELI"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelOnlyFilterCellIdenfier" id="caf-tj-UNa" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="204" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="caf-tj-UNa" id="Lhi-Dp-GxG">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muI-gL-jZ3">
+                                                            <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="vPK-mi-nlv"/>
+                                                            </constraints>
+                                                            <state key="normal" title="특정 레벨만 표시"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="muI-gL-jZ3" firstAttribute="leading" secondItem="Lhi-Dp-GxG" secondAttribute="leading" constant="10" id="dPM-AY-iYO"/>
+                                                        <constraint firstItem="muI-gL-jZ3" firstAttribute="top" secondItem="Lhi-Dp-GxG" secondAttribute="top" id="faI-Ud-NW8"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="muI-gL-jZ3" id="VTj-mX-KLy"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelFilterCellIdenfier" id="lJY-PC-vrv" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="248" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lJY-PC-vrv" id="v6E-YD-9ao">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VzT-BP-yHo">
+                                                            <rect key="frame" x="10" y="0.0" width="86" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="86W-L8-qKX"/>
+                                                            </constraints>
+                                                            <state key="normal" title="특정 레벨 제외"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="VzT-BP-yHo" firstAttribute="leading" secondItem="v6E-YD-9ao" secondAttribute="leading" constant="10" id="0Ph-Kt-dIv"/>
+                                                        <constraint firstItem="VzT-BP-yHo" firstAttribute="top" secondItem="v6E-YD-9ao" secondAttribute="top" id="ceW-68-BSa"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="VzT-BP-yHo" id="5wL-RR-U1R"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="excOnlyFilterCellIdenfier" id="qJ5-l0-e7T" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="292" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qJ5-l0-e7T" id="jiV-jG-pTB">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BaL-pa-0Z9">
+                                                            <rect key="frame" x="10" y="0.0" width="142" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="uqF-MC-dO1"/>
+                                                            </constraints>
+                                                            <state key="normal" title="엑설런트 달성 곡만 표시"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="BaL-pa-0Z9" firstAttribute="leading" secondItem="jiV-jG-pTB" secondAttribute="leading" constant="10" id="4ju-5g-h6d"/>
+                                                        <constraint firstItem="BaL-pa-0Z9" firstAttribute="top" secondItem="jiV-jG-pTB" secondAttribute="top" id="Wsm-cm-5zC"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="BaL-pa-0Z9" id="0cy-oX-gPK"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="excFilterCellIdenfier" id="2cz-78-PW5" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="336" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2cz-78-PW5" id="edI-x9-7mi">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iV4-DD-SJc">
+                                                            <rect key="frame" x="10" y="0.0" width="129" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="Rmt-dP-Ypu"/>
+                                                            </constraints>
+                                                            <state key="normal" title="엑설런트 달성 곡 제외"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="iV4-DD-SJc" firstAttribute="leading" secondItem="edI-x9-7mi" secondAttribute="leading" constant="10" id="C09-nY-YsL"/>
+                                                        <constraint firstItem="iV4-DD-SJc" firstAttribute="top" secondItem="edI-x9-7mi" secondAttribute="top" id="kHn-yT-A8B"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="iV4-DD-SJc" id="4hU-a2-pK0"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboOnlyFilterCellIdenfier" id="R4g-dC-Wyw" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="380" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R4g-dC-Wyw" id="YRv-mP-Gm2">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obz-Gw-giV">
+                                                            <rect key="frame" x="10" y="0.0" width="133" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="qe6-EB-TGF"/>
+                                                            </constraints>
+                                                            <state key="normal" title="풀 콤보 달성 곡만 표시"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="obz-Gw-giV" firstAttribute="leading" secondItem="YRv-mP-Gm2" secondAttribute="leading" constant="10" id="b5X-5u-jzf"/>
+                                                        <constraint firstItem="obz-Gw-giV" firstAttribute="top" secondItem="YRv-mP-Gm2" secondAttribute="top" id="jRl-vl-Gmg"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="obz-Gw-giV" id="PoC-Zz-RWa"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboFilterCellIdenfier" id="BVL-0I-QwJ" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="424" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BVL-0I-QwJ" id="0Cv-vk-h3F">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IvE-i5-Icv">
+                                                            <rect key="frame" x="10" y="0.0" width="120" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="5As-7k-Sj2"/>
+                                                            </constraints>
+                                                            <state key="normal" title="풀 콤보 달성 곡 제외"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="IvE-i5-Icv" firstAttribute="leading" secondItem="0Cv-vk-h3F" secondAttribute="leading" constant="10" id="38E-x8-Qba"/>
+                                                        <constraint firstItem="IvE-i5-Icv" firstAttribute="top" secondItem="0Cv-vk-h3F" secondAttribute="top" id="lbL-Az-of6"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="IvE-i5-Icv" id="8AY-fO-6Kg"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="notPlayedOnlyFilterCellIdenfier" id="Ehq-9m-5t4" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="468" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ehq-9m-5t4" id="30j-EG-IQt">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BLN-2z-qNH">
+                                                            <rect key="frame" x="10" y="0.0" width="155" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="vrg-lf-hxO"/>
+                                                            </constraints>
+                                                            <state key="normal" title="플레이하지 못한 곡만 표시"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="BLN-2z-qNH" firstAttribute="top" secondItem="30j-EG-IQt" secondAttribute="top" id="Igs-8M-0mf"/>
+                                                        <constraint firstItem="BLN-2z-qNH" firstAttribute="leading" secondItem="30j-EG-IQt" secondAttribute="leading" constant="10" id="k9E-S1-Ejk"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="BLN-2z-qNH" id="q8i-yh-j04"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="notPlayedFilterCellIdenfier" id="E6I-Yi-4G8" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="512" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E6I-Yi-4G8" id="sel-Zp-F10">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMD-Xj-ZZe">
+                                                            <rect key="frame" x="10" y="0.0" width="142" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="uy5-J2-0LW"/>
+                                                            </constraints>
+                                                            <state key="normal" title="플레이하지 못한 곡 제외"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="AMD-Xj-ZZe" firstAttribute="leading" secondItem="sel-Zp-F10" secondAttribute="leading" constant="10" id="Gw9-UK-1BQ"/>
+                                                        <constraint firstItem="AMD-Xj-ZZe" firstAttribute="top" secondItem="sel-Zp-F10" secondAttribute="top" id="Kpr-Hw-y76"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="m_button" destination="AMD-Xj-ZZe" id="WJM-ga-VCb"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="rankOnlyFilterCellIdenfier" id="BeU-tQ-SKB" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="556" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BeU-tQ-SKB" id="jaK-1K-yJc">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgQ-s2-4yM">
+                                                            <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="WvP-W3-QIy"/>
+                                                            </constraints>
+                                                            <state key="normal" title="특정 랭크만 표시"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="zgQ-s2-4yM" firstAttribute="top" secondItem="jaK-1K-yJc" secondAttribute="top" id="RFA-vE-fFs"/>
+                                                        <constraint firstItem="zgQ-s2-4yM" firstAttribute="leading" secondItem="jaK-1K-yJc" secondAttribute="leading" constant="10" id="dIo-Ld-lhu"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="m_button" destination="zgQ-s2-4yM" id="jIj-kL-Qpa"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="rankFilterCellIdenfier" id="J4N-Bg-6wN" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="600" width="335" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J4N-Bg-6wN" id="vuL-a5-ZSI">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JSy-Zy-7Gj">
+                                                            <rect key="frame" x="10" y="0.0" width="86" height="43.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="43.5" id="JZF-Yu-oxU"/>
+                                                            </constraints>
+                                                            <state key="normal" title="특정 랭크 제외"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="JSy-Zy-7Gj" firstAttribute="leading" secondItem="vuL-a5-ZSI" secondAttribute="leading" constant="10" id="KYk-rs-oVj"/>
+                                                        <constraint firstItem="JSy-Zy-7Gj" firstAttribute="top" secondItem="vuL-a5-ZSI" secondAttribute="top" id="Pnd-Jq-4kO"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="m_button" destination="JSy-Zy-7Gj" id="wLZ-18-hLB"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sfc-yk-ZoT">
-                                        <rect key="frame" x="0.0" y="260" width="210" height="40"/>
+                                        <rect key="frame" x="0.0" y="173" width="335" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="0Yr-FF-Xhh"/>
                                         </constraints>
@@ -606,6 +986,7 @@
                                         <state key="normal" title="확인"/>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="Sfc-yk-ZoT" firstAttribute="leading" secondItem="qMW-Qx-0eE" secondAttribute="leading" id="7P6-cK-AcZ"/>
                                     <constraint firstItem="GD6-FO-hRW" firstAttribute="leading" secondItem="qMW-Qx-0eE" secondAttribute="leading" id="7fs-eS-n5P"/>
@@ -617,7 +998,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="qMW-Qx-0eE" firstAttribute="leading" secondItem="fLG-AO-AGt" secondAttribute="leading" constant="20" id="5Xw-rK-TSb"/>
                             <constraint firstItem="qMW-Qx-0eE" firstAttribute="top" secondItem="fLG-AO-AGt" secondAttribute="top" constant="10" id="VL5-99-8ft"/>
@@ -630,15 +1011,16 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="250" height="320"/>
+                    <size key="freeformSize" width="375" height="233"/>
                     <connections>
                         <outlet property="m_filterTableView" destination="1wP-WH-OGy" id="qt6-vs-TT7"/>
                         <outlet property="m_okButton" destination="Sfc-yk-ZoT" id="Hie-t2-BFG"/>
+                        <outlet property="m_tableViewHeightConstraint" destination="kHC-Zf-hRZ" id="x3D-dA-b3q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VNs-jc-JSU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1608" y="-103"/>
+            <point key="canvasLocation" x="1708" y="-114.69265367316342"/>
         </scene>
         <!--Edit Theme View Controller-->
         <scene sceneID="3RY-v4-Jt6">

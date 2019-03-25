@@ -51,7 +51,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
         
-        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode, onTouchPrevBtn: musicDataViewController.onTouchPrevBtn)
+        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
@@ -337,8 +337,10 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         }
     }
     
-    private func onTouchPrevBtn() {
-        m_searchBar.endEditing(true)
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        self.view.endEditing(true)
     }
 }
 
@@ -350,12 +352,10 @@ public class MusicDataViewToolBarController: ToolbarController {
     private var m_rightTabSortButton: IconButton!
     private var m_rightTabFilterButton: IconButton!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
-    private var m_onTouchPrevBtn: (() -> Void)?
     
 /**@section Constructor */
-    public init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void, onTouchPrevBtn: @escaping () -> Void) {
+    public init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void) {
         m_onChangeMusicSortMode = onChangeMusicSortMode
-        m_onTouchPrevBtn = onTouchPrevBtn
         
         super.init(rootViewController: rootViewController)
     }
@@ -396,7 +396,7 @@ public class MusicDataViewToolBarController: ToolbarController {
     }
     
     private func prepareToolbarRightIcon() {
-        m_rightTabFilterButton = IconButton(image: UIImage(named: "ic_filter_white"))
+        m_rightTabFilterButton = IconButton(image: UIImage(named: "ic_filter_white")!.withRenderingMode(.alwaysTemplate))
         m_rightTabFilterButton.addTarget(self, action: #selector(onTouchFilterButton), for: .touchUpInside)
 
         m_rightTabSortButton = IconButton(image: UIImage(named: "ic_sort_white")!.withRenderingMode(.alwaysTemplate))
@@ -415,22 +415,25 @@ public class MusicDataViewToolBarController: ToolbarController {
         
         m_leftTabPrevButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
         
-        m_rightTabFilterButton.tintColor = UIColor.white
+        m_rightTabFilterButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
         m_rightTabSortButton.tintColor = getCurrentThemeColorTable().toolBarIconColor
     }
 
 /**@section Event handler */
     @objc private func onTouchPrevButton() {
+        self.view.endEditing(true)
         self.dismiss(animated: true)
-        
-        m_onTouchPrevBtn?()
     }
     
     @objc private func onTouchFilterButton() {
+        self.view.endEditing(true)
+        
         MusicFilterViewController.show(currentViewController: self)
     }
     
     @objc private func onTouchSortButton() {
+        self.view.endEditing(true)
+        
         let musicDataViewController = self.rootViewController as! MusicDataViewController
         let optCurrActivatedMusicDataView = musicDataViewController.getCurrActiveMusicDataView()
         guard let currActivatedMusicDataView = optCurrActivatedMusicDataView else {
@@ -438,5 +441,11 @@ public class MusicDataViewToolBarController: ToolbarController {
         }
         
         MusicSortModeViewController.show(currentViewController: self, currMusicSortMode: currActivatedMusicDataView.getCurrentMusicSortMode(), currMusicSortOrder: currActivatedMusicDataView.getCurrentMusicSortOrder(), onChangeMusicSortMode: m_onChangeMusicSortMode!)
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        self.view.endEditing(true)
     }
 }

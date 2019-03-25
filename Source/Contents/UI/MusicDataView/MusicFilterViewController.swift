@@ -1,77 +1,198 @@
 //
-//  ChangeSizePopupContentViewController.swift
-//  SBCardPopupExample
+//  MusicFilterViewController.swift
+//  jubiinfo
 //
-//  Created by Steve Barnegren on 22/06/2017.
-//  Copyright © 2017 Steve Barnegren. All rights reserved.
+//  Created by ggomdyu on 03/23/2019.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import UIKit
 import SBCardPopup
 import Material
 
+public class MusicFilter {
+/**@section Method */
+    public func filterOut(musicScoreData: MusicScoreData) -> Bool {
+        return false
+    }
+}
 
 public class BaseFilterUITableViewCell : UITableViewCell {
-    public func initialize(text: String) {
-        self.textLabel!.text = text
-        
+/**@section Variable */
+    @IBOutlet weak var m_button: UIButton!
+    private var m_disclosureView: UIView!
+    private var m_divisionLineView: UIView!
+    
+/**@section Method */
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+    
         // Add a disclosure button right side of textLabel
-        let disclosureView = UITableViewCell()
-        disclosureView.frame = CGRect(x: 0.0, y: 0.0, width: self.textLabel!.frame.origin.x + self.textLabel!.intrinsicContentSize.width + 25.0 + 35.0, height: self.frame.height)
-        disclosureView.accessoryType = .disclosureIndicator
-        disclosureView.isUserInteractionEnabled = false
-        disclosureView.backgroundColor = UIColor.clear
-        self.addSubview(disclosureView)
-
+        if m_disclosureView == nil {
+            let disclosureView = UITableViewCell()
+            disclosureView.accessoryType = .disclosureIndicator
+            disclosureView.isUserInteractionEnabled = false
+            disclosureView.backgroundColor = UIColor.clear
+            self.contentView.addSubview(disclosureView)
+            
+            m_disclosureView = disclosureView
+        }
+        
+        let minusButtonWidth: CGFloat = 35.0
+        m_disclosureView.frame = CGRect(x: 0.0, y: 0.0, width: m_button.frame.origin.x + m_button.titleLabel!.intrinsicContentSize.width + minusButtonWidth - 10.0, height: self.frame.height)
+        
         // Add a line
-        let divisionLineView = UIView(frame: CGRect(x: disclosureView.frame.width, y: 0.0, width: 1.0, height: self.frame.height))
-        divisionLineView.backgroundColor = UIColor(red: 230.0 / 255.0, green: 230.0 / 255.0, blue: 230.0 / 255.0, alpha: 1.0)
-        self.addSubview(divisionLineView)
-       
-//        let divisionLineView = UIView()
-//        divisionLineView.backgroundColor = UIColor.red
-//        self.layout(divisionLineView).top(0.0).left(disclosureView.frame.width).right(0.0).bottom(0.0)
+        if m_divisionLineView == nil {
+            let divisionLineView = UIView()
+            divisionLineView.backgroundColor = UIColor(red: 207.0 / 255.0, green: 207.0 / 255.0, blue: 207.0 / 255.0, alpha: 1.0)
+            self.contentView.addSubview(divisionLineView)
+            
+            m_divisionLineView = divisionLineView
+        }
+        m_divisionLineView.frame = CGRect(x: m_disclosureView.frame.width, y: 0.0, width: 0.5, height: self.frame.height)
+        
+        for subview in self.subviews {
+            if String(describing: type(of: subview)).hasSuffix("SeparatorView") {
+                subview.frame.size.width += 10.0
+            }
+            
+            subview.frame.origin.x -= 10.0
+        }
+        
+        self.separatorInset = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 0.0)
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        self.endEditing(true)
+    }
+    
+    public func createMusicFilter() -> MusicFilter {
+        return MusicFilter()
     }
 }
 
-public class PickerFilterUITableViewCell : UITableViewCell {
-    public func initialize(text: String) {
-        self.textLabel!.text = text
+public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextFieldDelegate {
+/**@section Class */
+    public class MusicScoreFilter : MusicFilter {
+    /**@section Variable */
+        private let m_minScore: Int
+        private let m_maxScore: Int
         
-        // Add a disclosure button right side of textLabel
-        let disclosureView = UITableViewCell()
-        disclosureView.frame = CGRect(x: 0.0, y: 0.0, width: self.textLabel!.frame.origin.x + self.textLabel!.intrinsicContentSize.width + 25.0 + 35.0, height: self.frame.height)
-        disclosureView.accessoryType = .disclosureIndicator
-        disclosureView.isUserInteractionEnabled = false
-        disclosureView.backgroundColor = UIColor.clear
-        self.addSubview(disclosureView)
+    /**@section Constructor */
+        public init(minScore: Int, maxScore: Int) {
+            m_minScore = minScore
+            m_maxScore = maxScore
+        }
         
-        // Add a line
-        let divisionLineView = UIView(frame: CGRect(x: disclosureView.frame.width, y: 0.0, width: 1.0, height: self.frame.height))
-        divisionLineView.backgroundColor = UIColor(red: 230.0 / 255.0, green: 230.0 / 255.0, blue: 230.0 / 255.0, alpha: 1.0)
-        self.addSubview(divisionLineView)
+    /**@section Method */
+        public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
+            let musicScore = musicScoreData.score
+            return m_minScore <= musicScore && musicScore <= m_maxScore
+        }
+    }
+    
+/**@section Variable */
+    public static let cellIdenfierName = "scoreFilterCellIdenfier"
+    private var m_version: MusicScoreData.Version = .festo
+    private var m_minScore: Int = 0
+    private var m_maxScore: Int = 1000000
+    @IBOutlet weak var m_minScoreTextField: UITextField!
+    @IBOutlet weak var m_maxScoreTextField: UITextField!
+    @IBOutlet weak var m_tildeLabel: UILabel!
+    
+/**@section Method */
+    override public func layoutSubviews() {
+        super.layoutSubviews()
         
-        //        let divisionLineView = UIView()
-        //        divisionLineView.backgroundColor = UIColor.red
-        //        self.layout(divisionLineView).top(0.0).left(disclosureView.frame.width).right(0.0).bottom(0.0)
+        m_minScoreTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        m_minScoreTextField.delegate = self
+        
+        m_maxScoreTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        m_maxScoreTextField.delegate = self
+    }
+    
+    public override func createMusicFilter() -> MusicFilter {
+        return MusicScoreFilter(minScore: m_minScore, maxScore: m_maxScore)
+    }
+    
+/**@section Event handler */
+    /**@brief Use to handle the remove event */
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let isRemoveText = string.count == 0
+        if isRemoveText {
+            // If textfield will be empty after changed
+            if m_minScoreTextField.text!.count + m_maxScoreTextField.text!.count == 1 {
+                m_tildeLabel.textColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
+            }
+        }
+        
+        return true
+    }
+    
+    /**@brief Use to handle the input event */
+    @objc private func textFieldDidChange(textField: UITextField) {
+        guard let score = Int(textField.text!) else {
+            return
+        }
+
+        if score > 1000000 {
+            textField.text = "1000000"
+        }
+            
+        else if score == 0 {
+            // Prevent multiple input of 0
+            textField.text = "0"
+        }
+
+        textField.invalidateIntrinsicContentSize()
+
+        m_tildeLabel.textColor = .black
     }
 }
 
+public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+/**@section Class */
+    public class MusicVersionOnlyFilter : MusicFilter {
+    /**@section Variable */
+        private var m_version: MusicScoreData.Version
+        
+    /**@section Method */
+        public init(version: MusicScoreData.Version) {
+            m_version = version
+        }
+        
+        public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
+            return musicScoreData.version == m_version
+        }
+    }
+    
+/**@section Variable */
+    public static let cellIdenfierName = "versionOnlyFilterCellIdenfier"
+    private var m_version: MusicScoreData.Version = .festo
+    
+/**@section Method */
+    public override func createMusicFilter() -> MusicFilter {
+        return MusicVersionOnlyFilter(version: m_version)
+    }
+}
 
 private enum MusicFilterType {
-    case notPlayedYet
-    case fullCombo
-    case excellent
     case score
+    case versionOnly
+    case version
+    case levelOnly
     case level
-    case series
+    case excellentOnly
+    case excellent
+    case fullComboOnly
+    case fullCombo
+    case notPlayedYetOnly
+    case notPlayedYet
 }
 
-private protocol MusicFilter {
-    func filterOut(musicScoreData: MusicScoreData) -> Bool
-}
-
-private class MusicLevelFilter : MusicFilter {
+public class MusicLevelFilter : MusicFilter {
     private let m_minLevel: Int
     private let m_maxLevel: Int
     
@@ -80,36 +201,21 @@ private class MusicLevelFilter : MusicFilter {
         m_maxLevel = maxLevel
     }
     
-    public func filterOut(musicScoreData: MusicScoreData) -> Bool {
+    public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
         let musicLevel = musicScoreData.level
         return m_minLevel <= musicLevel && musicLevel <= m_maxLevel
     }
 }
 
-private class MusicFullComboFilter : MusicFilter {
-    public func filterOut(musicScoreData: MusicScoreData) -> Bool {
+public class MusicFullComboFilter : MusicFilter {
+    public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
         return musicScoreData.isFullCombo
     }
 }
 
-private class MusicNotPlayedFilter : MusicFilter {
-    public func filterOut(musicScoreData: MusicScoreData) -> Bool {
+public class MusicNotPlayedFilter : MusicFilter {
+    public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
         return musicScoreData.isNotPlayedYet
-    }
-}
-
-private class MusicScoreFilter : MusicFilter {
-    private let m_minScore: Int
-    private let m_maxScore: Int
-    
-    public init(minScore: Int, maxScore: Int) {
-        m_minScore = minScore
-        m_maxScore = maxScore
-    }
-    
-    public func filterOut(musicScoreData: MusicScoreData) -> Bool {
-        let musicScore = musicScoreData.score
-        return m_minScore <= musicScore && musicScore <= m_maxScore
     }
 }
 
@@ -117,13 +223,14 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
 /**@section Variable */
     var popupViewController: SBCardPopupViewController?
     var allowsTapToDismissPopupCard = true
-    var allowsSwipeToDismissPopupCard = true
+    var allowsSwipeToDismissPopupCard = false
     
     @IBOutlet weak var m_filterTableView: UITableView!
     @IBOutlet weak var m_okButton: UIButton!
+    @IBOutlet weak var m_tableViewHeightConstraint: NSLayoutConstraint!
     
-    private var m_filterTableData: [MusicFilterType] = [
-        MusicFilterType.fullCombo
+    private var m_filterDataSource: [MusicFilterType] = [
+        MusicFilterType.score
     ]
     
 /**@section Method */
@@ -150,14 +257,26 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return m_filterDataSource.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "filterCellIdenfier") as! BaseFilterUITableViewCell
-        cell.initialize(text: "\(indexPath.row * 10)")
-        
-        return cell
+        if indexPath.row == m_filterDataSource.count {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "insertCellIdenfier")!
+            return cell
+        }
+        else {
+            switch m_filterDataSource[indexPath.row] {
+            case .score:
+                return tableView.dequeueReusableCell(withIdentifier: ScoreFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
+                
+            case .version:
+                return tableView.dequeueReusableCell(withIdentifier: VersionOnlyFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
+                
+            default:
+                return tableView.dequeueReusableCell(withIdentifier: "")!
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -165,7 +284,7 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        if indexPath.row == tableView.numberOfRows(inSection: 0) - 1 {
+        if indexPath.row == m_filterDataSource.count {
             return .insert
         }
         else {
@@ -175,16 +294,37 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            m_filterDataSource.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
+                tableView.frame.size.height -= 44.0
+                self.view.frame.size.height -= 44.0
+            })
         }
         else if editingStyle == .insert {
-//            tableView.insertRows(at: [IndexPath(row: sectionDataTable[1].1.count - 1, section: 1)], with: .left)
+            m_filterDataSource.append(.version)
+            tableView.insertRows(at: [IndexPath(row: indexPath.row, section: indexPath.section)], with: .top)
+            
+//            self.m_tableViewHeightConstraint.constant += 44.0
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut], animations: {
+                self.view.frame.size.height += 44
+                tableView.superview!.frame.size.height += 44
+                
+                self.stackView.setNeedsLayout()
+                self.stackView.layoutIfNeeded()
+            })
         }
     }
     
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        self.view.endEditing(true)
     }
     
 /**@section Event handler */

@@ -107,3 +107,8 @@ public func hideLoadingSpinnerUI(_ viewControllerToPresent: UIViewController, _ 
     viewControllerToPresent.dismiss(animated: false, completion: onHideComplete)
 }
 
+//public func showPickerUI(_ viewControllerToPresent: UIViewController) {
+//}
+//
+//public func hidePickerUI() {
+//}
