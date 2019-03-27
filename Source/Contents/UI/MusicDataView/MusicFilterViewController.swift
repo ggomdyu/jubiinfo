@@ -227,7 +227,8 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     
     @IBOutlet weak var m_filterTableView: UITableView!
     @IBOutlet weak var m_okButton: UIButton!
-    @IBOutlet weak var m_tableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var m_filterTableViewHeightConstraint: NSLayoutConstraint!
+    
     
     private var m_filterDataSource: [MusicFilterType] = [
         MusicFilterType.score
@@ -306,13 +307,8 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
             m_filterDataSource.append(.version)
             tableView.insertRows(at: [IndexPath(row: indexPath.row, section: indexPath.section)], with: .top)
             
-//            self.m_tableViewHeightConstraint.constant += 44.0
             UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut], animations: {
-                self.view.frame.size.height += 44
-                tableView.superview!.frame.size.height += 44
-                
-                self.stackView.setNeedsLayout()
-                self.stackView.layoutIfNeeded()
+                self.m_filterTableViewHeightConstraint.constant += 44
             })
         }
     }
