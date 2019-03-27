@@ -294,21 +294,28 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let tableViewCellHeight: CGFloat = 44
+        
         if editingStyle == .delete {
             m_filterDataSource.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
-                tableView.frame.size.height -= 44.0
-                self.view.frame.size.height -= 44.0
+                self.m_filterTableViewHeightConstraint.constant = min(self.m_filterTableViewHeightConstraint.constant - tableViewCellHeight, tableViewCellHeight * 2)
+                
+                self.m_filterTableView.layoutIfNeeded()
+                self.view.layoutIfNeeded()
             })
         }
         else if editingStyle == .insert {
             m_filterDataSource.append(.version)
             tableView.insertRows(at: [IndexPath(row: indexPath.row, section: indexPath.section)], with: .top)
             
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut], animations: {
-                self.m_filterTableViewHeightConstraint.constant += 44
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
+                self.m_filterTableViewHeightConstraint.constant = min(self.m_filterTableViewHeightConstraint.constant + tableViewCellHeight, tableViewCellHeight * 5)
+
+                self.m_filterTableView.layoutIfNeeded()
+                self.view.layoutIfNeeded()
             })
         }
     }
