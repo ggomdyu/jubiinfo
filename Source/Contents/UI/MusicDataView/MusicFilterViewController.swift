@@ -17,7 +17,23 @@ public class MusicFilter {
     }
 }
 
-public class BaseFilterUITableViewCell : UITableViewCell {
+public class LeftMarginRemovedUITableViewCell : UITableViewCell {
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        
+        for subview in self.subviews {
+            if String(describing: type(of: subview)).hasSuffix("SeparatorView") {
+                subview.frame.size.width += 10.0
+            }
+            
+            subview.frame.origin.x -= 10.0
+        }
+        
+        self.separatorInset = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 0.0)
+    }
+}
+
+public class BaseFilterUITableViewCell : LeftMarginRemovedUITableViewCell {
 /**@section Variable */
     @IBOutlet weak var m_button: UIButton!
     private var m_disclosureView: UIView!
@@ -50,26 +66,17 @@ public class BaseFilterUITableViewCell : UITableViewCell {
             m_divisionLineView = divisionLineView
         }
         m_divisionLineView.frame = CGRect(x: m_disclosureView.frame.width, y: 0.0, width: 0.5, height: self.frame.height)
-        
-        for subview in self.subviews {
-            if String(describing: type(of: subview)).hasSuffix("SeparatorView") {
-                subview.frame.size.width += 10.0
-            }
-            
-            subview.frame.origin.x -= 10.0
-        }
-        
-        self.separatorInset = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 0.0)
-    }
-    
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        
-        self.endEditing(true)
     }
     
     public func createMusicFilter() -> MusicFilter {
         return MusicFilter()
+    }
+    
+/**@section Event handler */
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        self.endEditing(true)
     }
 }
 
@@ -178,18 +185,63 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
 }
 
-private enum MusicFilterType {
+public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+/**@section Class */
+    public class DifficultyOnlyFilter : MusicFilter {
+    /**@section Variable */
+        private var m_difficulty: MusicScoreData.Difficulty
+        
+    /**@section Method */
+        public init(difficulty: MusicScoreData.Difficulty) {
+            m_difficulty = difficulty
+        }
+        
+        public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
+            return musicScoreData.difficulty == m_difficulty
+        }
+    }
+    
+/**@section Variable */
+    public static let cellIdenfierName = "difficultyOnlyFilterCellIdenfier"
+    private var m_difficulty: MusicScoreData.Difficulty = .basic
+    
+/**@section Method */
+    public override func createMusicFilter() -> MusicFilter {
+        return DifficultyOnlyFilter(difficulty: m_difficulty)
+    }
+}
+
+public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+/**@section Class */
+    public class LevelOnlyFilter : MusicFilter {
+    /**@section Variable */
+        private var m_level: Int
+        
+    /**@section Method */
+        public init(level: Int) {
+            m_level = level
+        }
+        
+        public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
+            return musicScoreData.level == m_level
+        }
+    }
+    
+/**@section Variable */
+    public static let cellIdenfierName = "levelOnlyFilterCellIdenfier"
+    private var m_level: Int = 109
+    
+/**@section Method */
+    public override func createMusicFilter() -> MusicFilter {
+        return LevelOnlyFilter(level: m_level)
+    }
+}
+
+private enum MusicFilterType : Int {
     case score
     case versionOnly
-    case version
+    case difficultyOnly
     case levelOnly
-    case level
-    case excellentOnly
-    case excellent
-    case fullComboOnly
-    case fullCombo
-    case notPlayedYetOnly
-    case notPlayedYet
 }
 
 public class MusicLevelFilter : MusicFilter {
@@ -228,7 +280,6 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     @IBOutlet weak var m_filterTableView: UITableView!
     @IBOutlet weak var m_okButton: UIButton!
     @IBOutlet weak var m_filterTableViewHeightConstraint: NSLayoutConstraint!
-    
     
     private var m_filterDataSource: [MusicFilterType] = [
         MusicFilterType.score
@@ -271,8 +322,14 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
             case .score:
                 return tableView.dequeueReusableCell(withIdentifier: ScoreFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
                 
-            case .version:
+            case .versionOnly:
                 return tableView.dequeueReusableCell(withIdentifier: VersionOnlyFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
+                
+            case .difficultyOnly:
+                return tableView.dequeueReusableCell(withIdentifier: DifficultyOnlyFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
+                
+            case .levelOnly:
+                return tableView.dequeueReusableCell(withIdentifier: LevelOnlyFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
                 
             default:
                 return tableView.dequeueReusableCell(withIdentifier: "")!
@@ -298,22 +355,46 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
         
         if editingStyle == .delete {
             m_filterDataSource.remove(at: indexPath.row)
+            
             tableView.deleteRows(at: [indexPath], with: .fade)
+            if tableView.numberOfRows(inSection: 0) >= 5 {
+                return
+            }
+            
+            self.m_filterTableViewHeightConstraint.constant -= tableViewCellHeight
             
             UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
-                self.m_filterTableViewHeightConstraint.constant = min(self.m_filterTableViewHeightConstraint.constant - tableViewCellHeight, tableViewCellHeight * 2)
-                
                 self.m_filterTableView.layoutIfNeeded()
                 self.view.layoutIfNeeded()
             })
         }
         else if editingStyle == .insert {
-            m_filterDataSource.append(.version)
-            tableView.insertRows(at: [IndexPath(row: indexPath.row, section: indexPath.section)], with: .top)
+            // Select a filter type which is not already in table view
+            var i = 0
+            while true {
+                let optMusicFilterType = MusicFilterType(rawValue: i)
+                guard let musicFilterType = optMusicFilterType else {
+                    i = 0
+                    break
+                }
+                
+                if m_filterDataSource.contains(musicFilterType) == false {
+                    break
+                }
+                
+                i += 1
+            }
             
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
-                self.m_filterTableViewHeightConstraint.constant = min(self.m_filterTableViewHeightConstraint.constant + tableViewCellHeight, tableViewCellHeight * 5)
+            m_filterDataSource.append(MusicFilterType(rawValue: i)!)
+            
+            tableView.insertRows(at: [IndexPath(row: indexPath.row, section: indexPath.section)], with: .top)
+            if tableView.numberOfRows(inSection: 0) > 5 {
+                return
+            }
+            
+            self.m_filterTableViewHeightConstraint.constant += tableViewCellHeight
 
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
                 self.m_filterTableView.layoutIfNeeded()
                 self.view.layoutIfNeeded()
             })
