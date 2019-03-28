@@ -17,7 +17,6 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
     var allowsSwipeToDismissPopupCard = false
     
     @IBOutlet weak var m_sortModePickerView: UIPickerView!
-    @IBOutlet weak var m_okButton: UIButton!
     @IBOutlet weak var m_sortOrderSwitch: UISwitch!
     private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
     private var m_sortModeTable = [

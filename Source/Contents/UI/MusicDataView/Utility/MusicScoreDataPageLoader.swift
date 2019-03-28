@@ -26,6 +26,8 @@ public enum MusicSortOrder {
 public class MusicScoreDataPageLoader {
 /**@section Variable */
     private var m_musicScoreDatas: Box<[MusicScoreData]>
+    private var m_filteredMusicScoreDatas: Box<[MusicScoreData]> = Box<[MusicScoreData]>([])
+    private var m_musicFilter: [MusicFilter] = []
     private var m_currMusicSortMode = MusicSortMode.none
     private var m_currMusicSortOrder = MusicSortOrder.none
     private let m_musicDataCountPerPage = 20
@@ -37,12 +39,12 @@ public class MusicScoreDataPageLoader {
     public init(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder) {
         m_musicScoreDatas = musicScoreDatas
         
-        self.sort(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+        self.changeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
     }
     
 /**@section Method */
     /**@brief Sorts all the sroted music data through given algorithm. */
-    public func sort(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Bool {
+    public func changeMusicSortMode(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Bool {
         m_currMusicSortMode = musicSortMode
         m_currMusicSortOrder = musicSortOrder
         
@@ -50,22 +52,38 @@ public class MusicScoreDataPageLoader {
             return false
         }
         
+        if m_musicFilter.count > 0 {
+            m_filteredMusicScoreDatas.value = m_musicScoreDatas.value.filtered({ (item: MusicScoreData) -> Bool in
+                for musicFilter in m_musicFilter {
+                    let isNeedToFilterOut = musicFilter.filterOut(musicScoreData: item)
+                    if isNeedToFilterOut {
+                        return false
+                    }
+                }
+                
+                return true
+            })
+        }
+        else {
+            m_filteredMusicScoreDatas = m_musicScoreDatas
+        }
+        
         let isAscendingSort = (musicSortOrder == .ascending)
         switch musicSortMode {
         case .level:
-            sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
+            sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
             break
         case .name:
-            sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
+            sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
             break
         case .score:
-            sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
+            sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
             break;
         case .artist:
-            sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
+            sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
             break
         case .version:
-            sortByVersion(isAscendingSort: isAscendingSort, musicScoreDatas: m_musicScoreDatas)
+            sortByVersion(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
             break
         default:
             break
@@ -74,21 +92,27 @@ public class MusicScoreDataPageLoader {
         return true
     }
     
+    public func applyMusicFilter(musicFilters: [MusicFilter]) {
+        m_musicFilter = musicFilters
+        
+        self.changeMusicSortMode(musicSortMode: m_currMusicSortMode, musicSortOrder: m_currMusicSortOrder)
+    }
+    
     public func loadNextPageCells() -> ArraySlice<MusicScoreData>? {
         let musicScoreDataStartIndex = m_musicDataCountPerPage * m_loadedPageIndex
-        if musicScoreDataStartIndex >= m_musicScoreDatas.value.count {
+        if musicScoreDataStartIndex >= m_filteredMusicScoreDatas.value.count {
             return nil
         }
         
         var musicScoreDataEndIndex = m_musicDataCountPerPage * (m_loadedPageIndex + 1)
-        if musicScoreDataEndIndex >= m_musicScoreDatas.value.count {
-            musicScoreDataEndIndex = m_musicScoreDatas.value.count
+        if musicScoreDataEndIndex >= m_filteredMusicScoreDatas.value.count {
+            musicScoreDataEndIndex = m_filteredMusicScoreDatas.value.count
             m_isAllPageLoaded = true
         }
         
         m_loadedPageIndex += 1
         
-        return m_musicScoreDatas.value[musicScoreDataStartIndex..<musicScoreDataEndIndex]
+        return m_filteredMusicScoreDatas.value[musicScoreDataStartIndex..<musicScoreDataEndIndex]
     }
     
     public func resetLoadedPage() {
@@ -114,7 +138,7 @@ public class MusicScoreDataPageLoader {
     
     private func sortByLevel(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
         // Sort music datas by level.
-        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        musicScoreDatas.value.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.level == rhs.level {
                 if lhs.id == rhs.id {
                     return (lhs.difficulty.rawValue < rhs.difficulty.rawValue) == isAscendingSort
@@ -123,11 +147,11 @@ public class MusicScoreDataPageLoader {
             }
             
             return (lhs.level < rhs.level) == isAscendingSort
-        })
+        }
     }
     
     private func sortByScore(isAscendingSort: Bool, musicScoreDatas: MusicScoreDataCaches) {
-        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        musicScoreDatas.value.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.score == rhs.score {
                 if lhs.id == rhs.id {
                     return lhs.difficulty.rawValue > rhs.difficulty.rawValue
@@ -137,11 +161,11 @@ public class MusicScoreDataPageLoader {
             }
             
             return (lhs.score < rhs.score) == isAscendingSort
-        })
+        }
     }
     
     private func sortByVersion(isAscendingSort: Bool, musicScoreDatas: MusicScoreDataCaches) {
-        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        musicScoreDatas.value.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.version == rhs.version {
                 if lhs.id == rhs.id {
                     return lhs.difficulty.rawValue > rhs.difficulty.rawValue
@@ -151,23 +175,23 @@ public class MusicScoreDataPageLoader {
             }
             
             return (lhs.version.rawValue < rhs.version.rawValue) == isAscendingSort
-        })
+        }
     }
     
     /**@brief   Sorts music data by music name that transformed to romaji. */
     private func sortByName(isAscendingSort: Bool, musicScoreDatas: MusicScoreDataCaches) {
-        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        musicScoreDatas.value.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
             
             return (lhs.uppercasedRomajiName < rhs.uppercasedRomajiName) == isAscendingSort
-        })
+        }
     }
     
     /**@brief   Sorts music data by artist name that transformed to romaji. */
     private func sortByArtistName(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {
-        m_musicScoreDatas = MusicScoreDataCaches(musicScoreDatas.value.sorted { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
+        musicScoreDatas.value.sort { (lhs: MusicScoreData, rhs: MusicScoreData) -> Bool in
             if lhs.id == rhs.id {
                 return lhs.difficulty.rawValue > rhs.difficulty.rawValue
             }
@@ -179,6 +203,6 @@ public class MusicScoreDataPageLoader {
                     return (lhs.uppercasedRomajiArtistName < rhs.uppercasedRomajiArtistName) == isAscendingSort
                 }
             }
-        })
+        }
     }
 }

@@ -37,7 +37,7 @@ public class MusicDataView : CustomStackView {
     }
     
     public func sort(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) {
-        m_optMusicDataPageLoader?.sort(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+        m_optMusicDataPageLoader?.changeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
     }
     
     public func loadMoreMusicDataCell() -> Bool {
@@ -178,11 +178,18 @@ public class MusicDataView : CustomStackView {
         return m_optMusicDataPageLoader!.getCurrentMusicSortOrder()
     }
     
-/**@section Event handler */
-    public func onChangeMusicSortMode(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Void {
+    public func changeMusicSortMode(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Void {
         self.resetStackView()
         
-        m_optMusicDataPageLoader?.sort(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+        m_optMusicDataPageLoader?.changeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+        
+        self.loadMoreMusicDataCell()
+    }
+    
+    public func applyMusicFilter(musicFilters: [MusicFilter]) {
+        self.resetStackView()
+        
+        m_optMusicDataPageLoader?.applyMusicFilter(musicFilters: musicFilters)
         
         self.loadMoreMusicDataCell()
     }

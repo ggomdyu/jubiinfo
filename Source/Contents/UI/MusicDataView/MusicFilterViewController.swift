@@ -97,7 +97,7 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
     /**@section Method */
         public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
             let musicScore = musicScoreData.score
-            return m_minScore <= musicScore && musicScore <= m_maxScore
+            return !(m_minScore <= musicScore && musicScore <= m_maxScore)
         }
     }
     
@@ -176,7 +176,7 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
         }
         
         public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-            return musicScoreData.version == m_version
+            return !(musicScoreData.version == m_version)
         }
     }
     
@@ -218,7 +218,7 @@ public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
         }
         
         public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-            return musicScoreData.difficulty == m_difficulty
+            return !(musicScoreData.difficulty == m_difficulty)
         }
     }
     
@@ -244,7 +244,7 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
         }
         
         public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-            return musicScoreData.level == m_level
+            return !(musicScoreData.level == m_level)
         }
     }
     
@@ -298,13 +298,13 @@ private enum MusicFilterType : Int {
 
 public class MusicFullComboFilter : MusicFilter {
     public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-        return musicScoreData.isFullCombo
+        return !(musicScoreData.isFullCombo)
     }
 }
 
 public class MusicNotPlayedFilter : MusicFilter {
     public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-        return musicScoreData.isNotPlayedYet
+        return !(musicScoreData.isNotPlayedYet)
     }
 }
 

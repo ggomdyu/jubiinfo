@@ -345,7 +345,7 @@
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                         <state key="normal" title="확인"/>
                                         <connections>
-                                            <action selector="onTouchOkButton:,forEvent:" destination="MYl-3q-Pj2" eventType="touchUpInside" id="hCi-O6-YGD"/>
+                                            <action selector="onTouchOkButton:forEvent:" destination="MYl-3q-Pj2" eventType="touchUpInside" id="d8V-cn-9V2"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -376,7 +376,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="320"/>
                     <connections>
-                        <outlet property="m_okButton" destination="sod-gk-RUo" id="4c7-Yv-lvs"/>
                         <outlet property="m_sortModePickerView" destination="S8E-hl-Rzy" id="Djy-kl-NPO"/>
                         <outlet property="m_sortOrderSwitch" destination="6Ud-Ua-syn" id="7lo-ls-zGz"/>
                     </connections>

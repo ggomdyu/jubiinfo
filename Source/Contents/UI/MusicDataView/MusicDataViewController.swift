@@ -260,12 +260,12 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         if isSortModeChanged {
             m_scrollView.setContentOffset(CGPoint.zero, animated: false)
             
-            m_optCurrActiveMusicDataView?.onChangeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+            currActiveMusicDataView.changeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
         }
     }
     
     public func onApplyMusicFilter(musicFilters: [MusicFilter]) {
-        
+        m_optCurrActiveMusicDataView?.applyMusicFilter(musicFilters: musicFilters)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -418,7 +418,7 @@ public class MusicDataViewToolBarController: ToolbarController {
         
         MusicFilterViewController.show(currentViewController: self) {
             musicFilters in
-            guard let parentViewController = self.parent as? MusicDataViewController else {
+            guard let parentViewController = self.rootViewController as? MusicDataViewController else {
                 return
             }
             
@@ -437,7 +437,7 @@ public class MusicDataViewToolBarController: ToolbarController {
         
         MusicSortModeViewController.show(currentViewController: self, currMusicSortMode: currActivatedMusicDataView.getCurrentMusicSortMode(), currMusicSortOrder: currActivatedMusicDataView.getCurrentMusicSortOrder()) {
             musicSortMode, musicSortOrder in
-            guard let parentViewController = self.parent as? MusicDataViewController else {
+            guard let parentViewController = self.rootViewController as? MusicDataViewController else {
                 return
             }
             
