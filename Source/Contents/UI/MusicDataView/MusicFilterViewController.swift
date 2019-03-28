@@ -103,9 +103,6 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
     
 /**@section Variable */
     public static let cellIdenfierName = "scoreFilterCellIdenfier"
-    private var m_version: MusicScoreData.Version = .festo
-    private var m_minScore: Int = 0
-    private var m_maxScore: Int = 1000000
     @IBOutlet weak var m_minScoreTextField: UITextField!
     @IBOutlet weak var m_maxScoreTextField: UITextField!
     @IBOutlet weak var m_tildeLabel: UILabel!
@@ -114,15 +111,22 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        m_minScoreTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        m_minScoreTextField.delegate = self
+        if m_minScoreTextField.delegate == nil {
+            m_minScoreTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            m_minScoreTextField.delegate = self
+        }
         
-        m_maxScoreTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        m_maxScoreTextField.delegate = self
+        if m_maxScoreTextField.delegate == nil {
+            m_maxScoreTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            m_maxScoreTextField.delegate = self
+        }
     }
     
     public override func createMusicFilter() -> MusicFilter {
-        return MusicScoreFilter(minScore: m_minScore, maxScore: m_maxScore)
+        let minScore = m_minScoreTextField.text == nil ? 0 : Int(m_minScoreTextField.text!) ?? 0
+        let maxScore = m_maxScoreTextField.text == nil ? 1000000 : Int(m_maxScoreTextField.text!) ?? 1000000
+        
+        return MusicScoreFilter(minScore: minScore, maxScore: maxScore)
     }
     
 /**@section Event handler */
@@ -178,20 +182,19 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     
 /**@section Variable */
     public static let cellIdenfierName = "versionOnlyFilterCellIdenfier"
-    private var m_version: MusicScoreData.Version = .festo
     private var m_currSelectedRow = 0
     private let m_versionStrDataSource = ["페스토", "클랜", "큐벨", "프롭", "소서 풀필", "소서", "코피어스", "니트", "리플즈", "오리지널"]
     private let m_versionDataSource: [MusicScoreData.Version] = [.festo, .clan, .qubell, .prop, .saucerFulfill, .saucer, .copious, .knit, .ripples, .original]
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return MusicVersionOnlyFilter(version: m_version)
+        return MusicVersionOnlyFilter(version: m_versionDataSource[m_currSelectedRow])
     }
 
     @IBAction func onTouchVersionButton(_ sender: UIButton) {
         let pickerView = ActionSheetStringPicker(title: nil, rows: m_versionStrDataSource, initialSelection: m_currSelectedRow, doneBlock: {
             picker, selectedIndex, selectedValue in
-            sender.titleLabel!.text = self.m_versionStrDataSource[selectedIndex]
+            sender.setTitle(self.m_versionStrDataSource[selectedIndex], for: .normal)
             self.m_currSelectedRow = selectedIndex
         }, cancel: nil, origin: sender)!
         
@@ -221,11 +224,11 @@ public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     
 /**@section Variable */
     public static let cellIdenfierName = "difficultyOnlyFilterCellIdenfier"
-    private var m_difficulty: MusicScoreData.Difficulty = .basic
+    @IBOutlet weak var m_difficultySegmentedControl: UISegmentedControl!
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return DifficultyOnlyFilter(difficulty: m_difficulty)
+        return DifficultyOnlyFilter(difficulty: MusicScoreData.Difficulty(rawValue: m_difficultySegmentedControl.selectedSegmentIndex)!)
     }
 }
 
@@ -249,8 +252,8 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     public static let cellIdenfierName = "levelOnlyFilterCellIdenfier"
     private var m_currSelectedRow = 0
     @IBOutlet weak var m_levelLabel: UILabel!
-    private let m_levelStrDataSource = ["10.9", "10.8", "10.7", "10.6", "10.5", "10.4", "10.3", "10.2", "10.1", "10.0", "9", "8", "7", "6", "5", "4", "3", "2", "1"]
-    private let m_levelDataSource = [109, 108, 107, 106, 105, 104, 103, 102, 101, 100, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    private let m_levelStrDataSource = ["10레벨 이상", "10.9", "10.8", "10.7", "10.6", "10.5", "10.4", "10.3", "10.2", "10.1", "10.0", "9", "8", "7", "6", "5", "4", "3", "2", "1"]
+    private let m_levelDataSource = [11, 109, 108, 107, 106, 105, 104, 103, 102, 101, 100, 9, 8, 7, 6, 5, 4, 3, 2, 1]
     private var m_tapGestureRecognizer: UITapGestureRecognizer!
     
 /**@section Method */
@@ -293,21 +296,6 @@ private enum MusicFilterType : Int {
     case levelOnly
 }
 
-public class MusicLevelFilter : MusicFilter {
-    private let m_minLevel: Int
-    private let m_maxLevel: Int
-    
-    public init(minLevel: Int, maxLevel: Int) {
-        m_minLevel = minLevel
-        m_maxLevel = maxLevel
-    }
-    
-    public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-        let musicLevel = musicScoreData.level
-        return m_minLevel <= musicLevel && musicLevel <= m_maxLevel
-    }
-}
-
 public class MusicFullComboFilter : MusicFilter {
     public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
         return musicScoreData.isFullCombo
@@ -327,12 +315,11 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
     var allowsSwipeToDismissPopupCard = false
     
     @IBOutlet weak var m_filterTableView: UITableView!
-    @IBOutlet weak var m_okButton: UIButton!
     @IBOutlet weak var m_filterTableViewHeightConstraint: NSLayoutConstraint!
-    
     private var m_filterDataSource: [MusicFilterType] = [
         MusicFilterType.score
     ]
+    private var m_optOnTouchOkButton: (([MusicFilter]) -> Void)?
     
 /**@section Method */
     override func viewDidLoad() {
@@ -344,17 +331,18 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
         m_filterTableView.setEditing(true, animated: false)
     }
     
-    public static func show(currentViewController: UIViewController) {
+    public static func show(currentViewController: UIViewController, optOnTouchOkButton: (([MusicFilter]) -> Void)? = nil) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "MusicFilterViewController") as! MusicFilterViewController
         
         let rootViewController = SBCardPopupViewController(contentViewController: viewController)
         rootViewController.show(onViewController: currentViewController)
         
-        viewController.initialize()
+        viewController.initialize(optOnTouchOkButton: optOnTouchOkButton)
     }
     
-    private func initialize() {
+    private func initialize(optOnTouchOkButton: (([MusicFilter]) -> Void)?) {
+        m_optOnTouchOkButton = optOnTouchOkButton
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -379,9 +367,6 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
                 
             case .levelOnly:
                 return tableView.dequeueReusableCell(withIdentifier: LevelOnlyFilterUITableViewCell.cellIdenfierName) as! BaseFilterUITableViewCell
-                
-            default:
-                return tableView.dequeueReusableCell(withIdentifier: "")!
             }
         }
     }
@@ -454,11 +439,30 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
         return true
     }
     
+/**@section Event handler */
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
         self.view.endEditing(true)
     }
     
-/**@section Event handler */
+    @IBAction func onTouchOkButton(_ sender: Any) {
+        guard let onTouchOkButton = m_optOnTouchOkButton else {
+            return
+        }
+        
+        var filters: [MusicFilter] = []
+        
+        let rowCount = m_filterTableView.numberOfRows(inSection: 0)
+        for i in 0..<rowCount {
+            guard let filterCell = m_filterTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? BaseFilterUITableViewCell else {
+                continue
+            }
+            filters.append(filterCell.createMusicFilter())
+        }
+        
+        onTouchOkButton(filters);
+        
+        popupViewController?.close()
+    }
 }

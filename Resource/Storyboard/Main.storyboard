@@ -345,7 +345,7 @@
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                         <state key="normal" title="확인"/>
                                         <connections>
-                                            <action selector="onClickOkButton:forEvent:" destination="MYl-3q-Pj2" eventType="touchUpInside" id="hCi-O6-YGD"/>
+                                            <action selector="onTouchOkButton:,forEvent:" destination="MYl-3q-Pj2" eventType="touchUpInside" id="hCi-O6-YGD"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -673,13 +673,13 @@
                                                     <rect key="frame" x="10" y="0.0" width="112" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="ohQ-eA-ZVW"/>
+                                                        <constraint firstAttribute="width" constant="112" id="tHK-ou-7IJ"/>
                                                     </constraints>
                                                     <state key="normal" title="특정 시리즈만 표시"/>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4D-e7-P01">
-                                                    <rect key="frame" x="162" y="0.0" width="39" height="43.5"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4D-e7-P01">
+                                                    <rect key="frame" x="162" y="0.0" width="163" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="39" id="3mg-By-e5i"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="WEg-OR-vHy"/>
                                                     </constraints>
                                                     <state key="normal" title="페스토"/>
@@ -689,8 +689,9 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="g4D-e7-P01" firstAttribute="leading" secondItem="WMN-ko-gyC" secondAttribute="trailing" constant="40" id="CPF-lc-jdq"/>
                                                 <constraint firstItem="WMN-ko-gyC" firstAttribute="leading" secondItem="yeB-P5-27u" secondAttribute="leading" constant="10" id="LI6-fe-2Fp"/>
+                                                <constraint firstItem="g4D-e7-P01" firstAttribute="leading" secondItem="WMN-ko-gyC" secondAttribute="trailing" constant="40" id="OPZ-bQ-98O"/>
+                                                <constraint firstAttribute="trailing" secondItem="g4D-e7-P01" secondAttribute="trailing" constant="10" id="WHm-dl-Ugc"/>
                                                 <constraint firstItem="g4D-e7-P01" firstAttribute="centerY" secondItem="yeB-P5-27u" secondAttribute="centerY" id="gFG-8Z-QtZ"/>
                                                 <constraint firstItem="WMN-ko-gyC" firstAttribute="top" secondItem="yeB-P5-27u" secondAttribute="top" id="wnZ-Y9-tdt"/>
                                             </constraints>
@@ -779,7 +780,7 @@
                                                     <state key="normal" title="특정 난이도만 표시"/>
                                                 </button>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="wW6-Ju-3IF">
-                                                    <rect key="frame" x="162" y="8" width="183" height="29"/>
+                                                    <rect key="frame" x="155" y="8" width="185" height="29"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="kjt-tA-NCk"/>
                                                     </constraints>
@@ -792,15 +793,16 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="VzT-BP-yHo" firstAttribute="leading" secondItem="v6E-YD-9ao" secondAttribute="leading" constant="10" id="0Ph-Kt-dIv"/>
-                                                <constraint firstAttribute="trailing" secondItem="wW6-Ju-3IF" secondAttribute="trailing" constant="-10" id="Yn2-iI-UyW"/>
+                                                <constraint firstAttribute="trailing" secondItem="wW6-Ju-3IF" secondAttribute="trailing" constant="-5" id="Yn2-iI-UyW"/>
                                                 <constraint firstItem="VzT-BP-yHo" firstAttribute="top" secondItem="v6E-YD-9ao" secondAttribute="top" id="ceW-68-BSa"/>
                                                 <constraint firstItem="wW6-Ju-3IF" firstAttribute="centerY" secondItem="v6E-YD-9ao" secondAttribute="centerY" id="kOT-4v-2m7"/>
-                                                <constraint firstItem="wW6-Ju-3IF" firstAttribute="leading" secondItem="v6E-YD-9ao" secondAttribute="leading" constant="162" id="kl9-1d-F81"/>
+                                                <constraint firstItem="wW6-Ju-3IF" firstAttribute="leading" secondItem="v6E-YD-9ao" secondAttribute="leading" constant="155" id="kl9-1d-F81"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="m_button" destination="VzT-BP-yHo" id="5wL-RR-U1R"/>
+                                            <outlet property="m_difficultySegmentedControl" destination="wW6-Ju-3IF" id="wua-5i-eJb"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboOnlyFilterCellIdenfier" id="R4g-dC-Wyw" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
@@ -912,6 +914,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                 <state key="normal" title="확인"/>
+                                <connections>
+                                    <action selector="onTouchOkButton:" destination="E5O-Vj-hkD" eventType="touchUpInside" id="VmD-Ji-PV4"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -937,7 +942,6 @@
                     <connections>
                         <outlet property="m_filterTableView" destination="1wP-WH-OGy" id="qt6-vs-TT7"/>
                         <outlet property="m_filterTableViewHeightConstraint" destination="BZi-q3-lWR" id="1o0-yW-Akc"/>
-                        <outlet property="m_okButton" destination="Sfc-yk-ZoT" id="Hie-t2-BFG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VNs-jc-JSU" userLabel="First Responder" sceneMemberID="firstResponder"/>

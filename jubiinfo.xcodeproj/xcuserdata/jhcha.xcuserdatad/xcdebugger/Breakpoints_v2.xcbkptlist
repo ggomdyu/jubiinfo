@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Contents/UI/ProfileView/ProfileViewEditController.swift"
-            timestampString = "573451271.067642"
+            filePath = "Source/Contents/UI/MusicDataView/MusicDataViewController.swift"
+            timestampString = "575439912.127741"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "tableView(_:didSelectRowAt:)"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "onApplyMusicFilter(musicFilters:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

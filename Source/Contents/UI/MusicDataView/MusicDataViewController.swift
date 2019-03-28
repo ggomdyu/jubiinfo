@@ -51,7 +51,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
         
-        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController, onChangeMusicSortMode: musicDataViewController.onChangeMusicSortMode)
+        let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
@@ -264,6 +264,10 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         }
     }
     
+    public func onApplyMusicFilter(musicFilters: [MusicFilter]) {
+        
+    }
+    
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         
@@ -351,22 +355,6 @@ public class MusicDataViewToolBarController: ToolbarController {
     private var m_leftTabPrevButton: IconButton!
     private var m_rightTabSortButton: IconButton!
     private var m_rightTabFilterButton: IconButton!
-    private var m_onChangeMusicSortMode: ((MusicSortMode, MusicSortOrder) -> Void)?
-    
-/**@section Constructor */
-    public init(rootViewController: UIViewController, onChangeMusicSortMode: @escaping (MusicSortMode, MusicSortOrder) -> Void) {
-        m_onChangeMusicSortMode = onChangeMusicSortMode
-        
-        super.init(rootViewController: rootViewController)
-    }
-    
-    public override init(rootViewController: UIViewController) {
-        super.init(rootViewController: rootViewController)
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
     
 /**@section Method */
     open override func prepare() {
@@ -428,7 +416,14 @@ public class MusicDataViewToolBarController: ToolbarController {
     @objc private func onTouchFilterButton() {
         self.view.endEditing(true)
         
-        MusicFilterViewController.show(currentViewController: self)
+        MusicFilterViewController.show(currentViewController: self) {
+            musicFilters in
+            guard let parentViewController = self.parent as? MusicDataViewController else {
+                return
+            }
+            
+            parentViewController.onApplyMusicFilter(musicFilters: musicFilters)
+        }
     }
     
     @objc private func onTouchSortButton() {
@@ -440,7 +435,14 @@ public class MusicDataViewToolBarController: ToolbarController {
             return
         }
         
-        MusicSortModeViewController.show(currentViewController: self, currMusicSortMode: currActivatedMusicDataView.getCurrentMusicSortMode(), currMusicSortOrder: currActivatedMusicDataView.getCurrentMusicSortOrder(), onChangeMusicSortMode: m_onChangeMusicSortMode!)
+        MusicSortModeViewController.show(currentViewController: self, currMusicSortMode: currActivatedMusicDataView.getCurrentMusicSortMode(), currMusicSortOrder: currActivatedMusicDataView.getCurrentMusicSortOrder()) {
+            musicSortMode, musicSortOrder in
+            guard let parentViewController = self.parent as? MusicDataViewController else {
+                return
+            }
+            
+            parentViewController.onChangeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+        }
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

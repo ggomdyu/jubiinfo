@@ -72,7 +72,7 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
     }
     
 /**@section Event handler */
-    @IBAction func onClickOkButton(_ sender: UIButton, forEvent event: UIEvent) {
+    @IBAction func onTouchOkButton(_ sender: UIButton, forEvent event: UIEvent) {
         let selectedSortModeStr = m_sortModeTable[m_sortModePickerView.selectedRow(inComponent: 0)].1
         let selectedSortOrder = m_sortOrderSwitch.isOn ? MusicSortOrder.ascending : MusicSortOrder.descending
         m_onChangeMusicSortMode?(selectedSortModeStr, selectedSortOrder)
