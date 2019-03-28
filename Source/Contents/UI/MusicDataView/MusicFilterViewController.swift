@@ -9,6 +9,7 @@
 import UIKit
 import SBCardPopup
 import Material
+import CoreActionSheetPicker
 
 public class MusicFilter {
 /**@section Method */
@@ -178,10 +179,27 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Variable */
     public static let cellIdenfierName = "versionOnlyFilterCellIdenfier"
     private var m_version: MusicScoreData.Version = .festo
+    private var m_currSelectedRow = 0
+    private let m_versionStrDataSource = ["페스토", "클랜", "큐벨", "프롭", "소서 풀필", "소서", "코피어스", "니트", "리플즈", "오리지널"]
+    private let m_versionDataSource: [MusicScoreData.Version] = [.festo, .clan, .qubell, .prop, .saucerFulfill, .saucer, .copious, .knit, .ripples, .original]
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
         return MusicVersionOnlyFilter(version: m_version)
+    }
+
+    @IBAction func onTouchVersionButton(_ sender: UIButton) {
+        let pickerView = ActionSheetStringPicker(title: nil, rows: m_versionStrDataSource, initialSelection: m_currSelectedRow, doneBlock: {
+            picker, selectedIndex, selectedValue in
+            sender.titleLabel!.text = self.m_versionStrDataSource[selectedIndex]
+            self.m_currSelectedRow = selectedIndex
+        }, cancel: nil, origin: sender)!
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        
+        pickerView.pickerTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 23.0), NSAttributedString.Key.paragraphStyle: paragraphStyle]
+        pickerView.show()
     }
 }
 
@@ -229,11 +247,42 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     
 /**@section Variable */
     public static let cellIdenfierName = "levelOnlyFilterCellIdenfier"
-    private var m_level: Int = 109
+    private var m_currSelectedRow = 0
+    @IBOutlet weak var m_levelLabel: UILabel!
+    private let m_levelStrDataSource = ["10.9", "10.8", "10.7", "10.6", "10.5", "10.4", "10.3", "10.2", "10.1", "10.0", "9", "8", "7", "6", "5", "4", "3", "2", "1"]
+    private let m_levelDataSource = [109, 108, 107, 106, 105, 104, 103, 102, 101, 100, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    private var m_tapGestureRecognizer: UITapGestureRecognizer!
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return LevelOnlyFilter(level: m_level)
+        return LevelOnlyFilter(level: m_levelDataSource[m_currSelectedRow])
+    }
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        
+        m_levelLabel.isUserInteractionEnabled = true
+        
+        if m_tapGestureRecognizer == nil {
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTouchLabel))
+            m_levelLabel.addGestureRecognizer(tapGestureRecognizer)
+            
+            m_tapGestureRecognizer = tapGestureRecognizer
+        }
+    }
+    
+    @objc private func onTouchLabel() {
+        let pickerView = ActionSheetStringPicker(title: nil, rows: m_levelStrDataSource, initialSelection: m_currSelectedRow, doneBlock: {
+            picker, selectedIndex, selectedValue in
+            self.m_levelLabel.text = self.m_levelStrDataSource[selectedIndex]
+            self.m_currSelectedRow = selectedIndex
+        }, cancel: nil, origin: m_levelLabel)!
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        pickerView.pickerTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 23.0), NSAttributedString.Key.paragraphStyle: paragraphStyle]
+        pickerView.show()
     }
 }
 

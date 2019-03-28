@@ -53,6 +53,8 @@
 		FDA98C7E21C4FD9F0060CBED /* MusicCellSectionLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7D21C4FD9F0060CBED /* MusicCellSectionLineView.swift */; };
 		FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C9F21C6A93C0060CBED /* Algorithm.swift */; };
 		FDA98CA321C6CB8F0060CBED /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98CA221C6CB8F0060CBED /* WidgetView.swift */; };
+		FDAC300D224BFB7100625B0E /* CoreActionSheetPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD342CC6224BFA25001096DA /* CoreActionSheetPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FDAC301C224BFBCE00625B0E /* CoreActionSheetPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAC301B224BFBCE00625B0E /* CoreActionSheetPicker.framework */; };
 		FDB4946C2213C5E8005B7C31 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4946B2213C5E8005B7C31 /* UIView.swift */; };
 		FDB5F4FB21B6D0DC00CC1F1C /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB5F4FA21B6D0DC00CC1F1C /* DataStorage.swift */; };
 		FDBFCF7821DB1CBC00D673B4 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBFCF7721DB1CBC00D673B4 /* Language.swift */; };
@@ -166,6 +168,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = E4202FE01B667AA100C997FB;
 			remoteInfo = "Alamofire watchOS";
+		};
+		FD342CC5224BFA25001096DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD342CC0224BFA25001096DA /* CoreActionSheetPicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CCA90431AE0EFB000368F5E;
+			remoteInfo = CoreActionSheetPicker;
+		};
+		FD342CC7224BFA25001096DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD342CC0224BFA25001096DA /* CoreActionSheetPicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CCA904E1AE0EFB000368F5E;
+			remoteInfo = CoreActionSheetPickerTests;
 		};
 		FD6AD4A321A7282A0038D130 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -307,13 +323,6 @@
 			remoteGlobalIDString = 6765DAE21EFC3FED00B38628;
 			remoteInfo = SBCardPopup;
 		};
-		FDE87D0121F32E7C00E74CDF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FDE87CFB21F32E7000E74CDF /* SBCardPopup.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6765DAE11EFC3FED00B38628;
-			remoteInfo = SBCardPopup;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -323,6 +332,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FDAC300D224BFB7100625B0E /* CoreActionSheetPicker.framework in Embed Frameworks */,
 				FDE87D0421F32EA700E74CDF /* SBCardPopup.framework in Embed Frameworks */,
 				FDC0140D21BD7E160070EC37 /* Motion.framework in Embed Frameworks */,
 				FDC0140921BD7E160070EC37 /* Material.framework in Embed Frameworks */,
@@ -358,6 +368,7 @@
 		FD32E4FC21BEC4F5001DF4CB /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		FD32E50C21C1942B001DF4CB /* ProfileViewMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewMenuController.swift; sourceTree = "<group>"; };
 		FD342C80224807A1001096DA /* EndEditScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndEditScrollView.swift; sourceTree = "<group>"; };
+		FD342CC0224BFA25001096DA /* CoreActionSheetPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreActionSheetPicker.xcodeproj; path = "ActionSheetPicker-3.0-2.3.0/CoreActionSheetPicker/CoreActionSheetPicker.xcodeproj"; sourceTree = "<group>"; };
 		FD46C0AE2211A44000632493 /* DailyChallengeMusicWidgetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DailyChallengeMusicWidgetView.xib; sourceTree = "<group>"; };
 		FD46C0BC2211C3BF00632493 /* DailyChallengeMusicWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeMusicWidgetView.swift; sourceTree = "<group>"; };
 		FD4C4C6D21AEC44F00ABCE53 /* jubiinfoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jubiinfoText.png; sourceTree = "<group>"; };
@@ -392,6 +403,7 @@
 		FDA98C7D21C4FD9F0060CBED /* MusicCellSectionLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCellSectionLineView.swift; sourceTree = "<group>"; };
 		FDA98C9F21C6A93C0060CBED /* Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
 		FDA98CA221C6CB8F0060CBED /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
+		FDAC301B224BFBCE00625B0E /* CoreActionSheetPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreActionSheetPicker.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/jubiinfo-cqbngkkejkqxtgbtuejzukhhtsqj/Build/Products/Debug-iphonesimulator/CoreActionSheetPicker.framework"; sourceTree = "<group>"; };
 		FDB4946B2213C5E8005B7C31 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		FDB5F4FA21B6D0DC00CC1F1C /* DataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
 		FDBFCF7721DB1CBC00D673B4 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
@@ -437,6 +449,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDAC301C224BFBCE00625B0E /* CoreActionSheetPicker.framework in Frameworks */,
 				FDE87D0321F32E8300E74CDF /* SBCardPopup.framework in Frameworks */,
 				FDC0140C21BD7E160070EC37 /* Motion.framework in Frameworks */,
 				FDC0140821BD7E160070EC37 /* Material.framework in Frameworks */,
@@ -531,6 +544,7 @@
 		FD11B90721B56599003E3403 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FDAC301B224BFBCE00625B0E /* CoreActionSheetPicker.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -538,6 +552,7 @@
 		FD15B4BF21A720320013BB97 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				FD342CC0224BFA25001096DA /* CoreActionSheetPicker.xcodeproj */,
 				FDE87CFB21F32E7000E74CDF /* SBCardPopup.xcodeproj */,
 				FDC0141B21BE49540070EC37 /* Charts.xcodeproj */,
 				6293173D21BA1E9F0038E016 /* Material.xcodeproj */,
@@ -599,6 +614,15 @@
 				FD2D860D21EB6A6A00FAE9E2 /* NanumSquareRegular.ttf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		FD342CC1224BFA25001096DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD342CC6224BFA25001096DA /* CoreActionSheetPicker.framework */,
+				FD342CC8224BFA25001096DA /* CoreActionSheetPickerTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FD4C4C6C21AEC44F00ABCE53 /* Resource */ = {
@@ -925,7 +949,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FDE87D0221F32E7C00E74CDF /* PBXTargetDependency */,
 				FDC0142521BE495C0070EC37 /* PBXTargetDependency */,
 				FDC0140121BD7DD40070EC37 /* PBXTargetDependency */,
 				FDC0140321BD7DEA0070EC37 /* PBXTargetDependency */,
@@ -1026,6 +1049,10 @@
 					ProjectRef = FDC0141B21BE49540070EC37 /* Charts.xcodeproj */;
 				},
 				{
+					ProductGroup = FD342CC1224BFA25001096DA /* Products */;
+					ProjectRef = FD342CC0224BFA25001096DA /* CoreActionSheetPicker.xcodeproj */;
+				},
+				{
 					ProductGroup = 6293173E21BA1E9F0038E016 /* Products */;
 					ProjectRef = 6293173D21BA1E9F0038E016 /* Material.xcodeproj */;
 				},
@@ -1113,6 +1140,20 @@
 			fileType = wrapper.framework;
 			path = Alamofire.framework;
 			remoteRef = FD15B4D721A720450013BB97 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FD342CC6224BFA25001096DA /* CoreActionSheetPicker.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreActionSheetPicker.framework;
+			remoteRef = FD342CC5224BFA25001096DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FD342CC8224BFA25001096DA /* CoreActionSheetPickerTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = CoreActionSheetPickerTests.xctest;
+			remoteRef = FD342CC7224BFA25001096DA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FD6AD4A421A7282A0038D130 /* SwiftSoup.framework */ = {
@@ -1363,11 +1404,6 @@
 			isa = PBXTargetDependency;
 			name = Charts;
 			targetProxy = FDC0142821BE49630070EC37 /* PBXContainerItemProxy */;
-		};
-		FDE87D0221F32E7C00E74CDF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SBCardPopup;
-			targetProxy = FDE87D0121F32E7C00E74CDF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
