@@ -20,8 +20,8 @@ public class MusicDataView : CustomStackView {
     private var m_minStackViewHeight: CGFloat = 0.0
     
 /**@section Method */
-    public func initialize(musicScoreDatas: MusicScoreDataCaches, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder) {
-        m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
+    public func initialize(musicScoreDatas: MusicScoreDataCaches, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder, musicFilters: [MusicFilter] = []) {
+        m_optMusicDataPageLoader = MusicScoreDataPageLoader(musicScoreDatas: musicScoreDatas, musicSortMode: musicSortMode, musicSortOrder: musicSortOrder, musicFilters: musicFilters)
         
         self.resetStackView()
     }
@@ -176,6 +176,10 @@ public class MusicDataView : CustomStackView {
     
     public func getCurrentMusicSortOrder() -> MusicSortOrder {
         return m_optMusicDataPageLoader!.getCurrentMusicSortOrder()
+    }
+    
+    public func getMusicFilters() -> [MusicFilter] {
+        return m_optMusicDataPageLoader!.getMusicFilters()
     }
     
     public func changeMusicSortMode(musicSortMode: MusicSortMode, musicSortOrder: MusicSortOrder) -> Void {

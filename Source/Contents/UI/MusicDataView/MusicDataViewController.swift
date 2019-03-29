@@ -234,7 +234,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let searchBarText = transformJapaneseToLatin(sourceStr: musicName).uppercased()
         currActiveMusicDataView.initialize(musicScoreDatas: MusicScoreDataCaches(GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
             return item.uppercasedRomajiName.contains(searchBarText)
-        })), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder())
+        })), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder(), musicFilters: m_musicDataView!.getMusicFilters())
         
         self.loadMoreMusicDataCell()
     }
@@ -265,6 +265,8 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     }
     
     public func onApplyMusicFilter(musicFilters: [MusicFilter]) {
+        m_scrollView.setContentOffset(CGPoint.zero, animated: false)
+        
         m_optCurrActiveMusicDataView?.applyMusicFilter(musicFilters: musicFilters)
     }
     
@@ -291,13 +293,15 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let currActiveMusicDataView = m_optCurrActiveMusicDataView!
         let prevActiveMusicDataViewSortMode = currActiveMusicDataView.getCurrentMusicSortMode()
         let prevActiveMusicDataViewSortOrder = currActiveMusicDataView.getCurrentMusicSortOrder()
+        let prevActiveMusicDataViewFilters = currActiveMusicDataView.getMusicFilters()
         
         self.switchActiveMusicDataView(viewToActivate: m_musicDataView, viewBottomConstraint: m_musicDataViewBottomConstraint)
         
         if (prevActiveMusicDataViewSortMode != m_musicDataView.getCurrentMusicSortMode()) ||
            (prevActiveMusicDataViewSortOrder != m_musicDataView.getCurrentMusicSortOrder() ||
-            m_musicDataView.getLoadedPageIndex() == 0) {
-            m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: prevActiveMusicDataViewSortMode, musicSortOrder: prevActiveMusicDataViewSortOrder)
+            m_musicDataView.getLoadedPageIndex() == 0 ||
+            prevActiveMusicDataViewFilters.count > 0) {
+            m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: prevActiveMusicDataViewSortMode, musicSortOrder: prevActiveMusicDataViewSortOrder, musicFilters: prevActiveMusicDataViewFilters)
             
             m_musicDataView.loadMoreMusicDataCell()
         }

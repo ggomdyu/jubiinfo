@@ -25,9 +25,15 @@ public enum MusicSortOrder {
 
 public class MusicScoreDataPageLoader {
 /**@section Variable */
+    /**@brief   The music data array before sort and filter process. */
     private var m_musicScoreDatas: Box<[MusicScoreData]>
-    private var m_filteredMusicScoreDatas: Box<[MusicScoreData]> = Box<[MusicScoreData]>([])
-    private var m_musicFilter: [MusicFilter] = []
+    
+    /**@brief   The music data array after sort and filter process. Unprocessed data is stored in m_musicScoreDatas. */
+    private var m_sortedAndFilteredMusicScoreDatas: Box<[MusicScoreData]> = Box<[MusicScoreData]>([])
+    
+    /**@brief   The filter objects that used for filter out m_musicScoreDatas. */
+    private var m_musicFilters: [MusicFilter] = []
+    
     private var m_currMusicSortMode = MusicSortMode.none
     private var m_currMusicSortOrder = MusicSortOrder.none
     private let m_musicDataCountPerPage = 20
@@ -36,8 +42,9 @@ public class MusicScoreDataPageLoader {
     private var m_isAllPageLoaded = false
     
 /**@section Constructor */
-    public init(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder) {
+    public init(musicScoreDatas: Box<[MusicScoreData]>, musicSortMode: MusicSortMode = MusicSortMode.level, musicSortOrder: MusicSortOrder, musicFilters: [MusicFilter] = []) {
         m_musicScoreDatas = musicScoreDatas
+        m_musicFilters = musicFilters
         
         self.changeMusicSortMode(musicSortMode: musicSortMode, musicSortOrder: musicSortOrder)
     }
@@ -52,9 +59,9 @@ public class MusicScoreDataPageLoader {
             return false
         }
         
-        if m_musicFilter.count > 0 {
-            m_filteredMusicScoreDatas.value = m_musicScoreDatas.value.filtered({ (item: MusicScoreData) -> Bool in
-                for musicFilter in m_musicFilter {
+        if m_musicFilters.count > 0 {
+            m_sortedAndFilteredMusicScoreDatas = Box<[MusicScoreData]>(m_musicScoreDatas.value.filter({ (item: MusicScoreData) -> Bool in
+                for musicFilter in m_musicFilters {
                     let isNeedToFilterOut = musicFilter.filterOut(musicScoreData: item)
                     if isNeedToFilterOut {
                         return false
@@ -62,28 +69,28 @@ public class MusicScoreDataPageLoader {
                 }
                 
                 return true
-            })
+            }))
         }
         else {
-            m_filteredMusicScoreDatas = m_musicScoreDatas
+            m_sortedAndFilteredMusicScoreDatas = m_musicScoreDatas
         }
         
         let isAscendingSort = (musicSortOrder == .ascending)
         switch musicSortMode {
         case .level:
-            sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
+            sortByLevel(isAscendingSort: isAscendingSort, musicScoreDatas: m_sortedAndFilteredMusicScoreDatas)
             break
         case .name:
-            sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
+            sortByName(isAscendingSort: isAscendingSort, musicScoreDatas: m_sortedAndFilteredMusicScoreDatas)
             break
         case .score:
-            sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
+            sortByScore(isAscendingSort: isAscendingSort, musicScoreDatas: m_sortedAndFilteredMusicScoreDatas)
             break;
         case .artist:
-            sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
+            sortByArtistName(isAscendingSort: isAscendingSort, musicScoreDatas: m_sortedAndFilteredMusicScoreDatas)
             break
         case .version:
-            sortByVersion(isAscendingSort: isAscendingSort, musicScoreDatas: m_filteredMusicScoreDatas)
+            sortByVersion(isAscendingSort: isAscendingSort, musicScoreDatas: m_sortedAndFilteredMusicScoreDatas)
             break
         default:
             break
@@ -93,26 +100,26 @@ public class MusicScoreDataPageLoader {
     }
     
     public func applyMusicFilter(musicFilters: [MusicFilter]) {
-        m_musicFilter = musicFilters
+        m_musicFilters = musicFilters
         
         self.changeMusicSortMode(musicSortMode: m_currMusicSortMode, musicSortOrder: m_currMusicSortOrder)
     }
     
     public func loadNextPageCells() -> ArraySlice<MusicScoreData>? {
         let musicScoreDataStartIndex = m_musicDataCountPerPage * m_loadedPageIndex
-        if musicScoreDataStartIndex >= m_filteredMusicScoreDatas.value.count {
+        if musicScoreDataStartIndex >= m_sortedAndFilteredMusicScoreDatas.value.count {
             return nil
         }
         
         var musicScoreDataEndIndex = m_musicDataCountPerPage * (m_loadedPageIndex + 1)
-        if musicScoreDataEndIndex >= m_filteredMusicScoreDatas.value.count {
-            musicScoreDataEndIndex = m_filteredMusicScoreDatas.value.count
+        if musicScoreDataEndIndex >= m_sortedAndFilteredMusicScoreDatas.value.count {
+            musicScoreDataEndIndex = m_sortedAndFilteredMusicScoreDatas.value.count
             m_isAllPageLoaded = true
         }
         
         m_loadedPageIndex += 1
         
-        return m_filteredMusicScoreDatas.value[musicScoreDataStartIndex..<musicScoreDataEndIndex]
+        return m_sortedAndFilteredMusicScoreDatas.value[musicScoreDataStartIndex..<musicScoreDataEndIndex]
     }
     
     public func resetLoadedPage() {
@@ -134,6 +141,10 @@ public class MusicScoreDataPageLoader {
     
     public func getCurrentMusicSortOrder() -> MusicSortOrder {
         return m_currMusicSortOrder
+    }
+    
+    public func getMusicFilters() -> [MusicFilter] {
+        return m_musicFilters
     }
     
     private func sortByLevel(isAscendingSort: Bool, musicScoreDatas: Box<[MusicScoreData]>) {

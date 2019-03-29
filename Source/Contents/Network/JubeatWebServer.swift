@@ -151,7 +151,7 @@ public class MusicScoreData : Comparable {
     }
     
     /**@brief   The data which are not provided on the official site. */
-    public struct CustomData {
+    public class CustomData {
         public let artistName: String
         public let uppercasedRomajiArtistName: String
         public let version: Version
@@ -166,8 +166,8 @@ public class MusicScoreData : Comparable {
             self.levels = levels
         }
         
-        public init() {
-            self.init(artistName: "", version: Version.unknown, levels: [CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue])
+        public convenience init() {
+            self.init(artistName: "", version: Version.festo, levels: [CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue])
         }
     }
     
@@ -1379,7 +1379,7 @@ extension JubeatWebServer {
                 
                 customMusicDatas[Int(musicElem.key) ?? 0] = MusicScoreData.CustomData(
                     artistName: musicArtistName,
-                    version: MusicScoreData.Version(rawValue: musicVersion) ?? .unknown,
+                    version: MusicScoreData.Version(rawValue: musicVersion) ?? .festo,
                     levels: [musicBasicLevel, musicAdvancedLevel, musicExtremeLevel]
                 )
             }

@@ -123,13 +123,13 @@ public class MusicCellView : UIView {
     
     private func getMusicDifficultyColor(musicDifficulty: MusicScoreData.Difficulty) -> UIColor {
         if musicDifficulty == .extreme {
-            return UIColor(red: 1.0, green: 54 / 255, blue: 54 / 255, alpha: 1.0)
+            return UIColor(red: 255.0 / 255.0, green: 110.0 / 255.0, blue: 110.0 / 255.0, alpha: 1.0)
         }
         else if musicDifficulty == .advanced {
-            return UIColor(red: 1.0, green: 192 / 255, blue: 0, alpha: 1.0)
+            return UIColor(red: 246.0 / 255.0, green: 190.0 / 255.0, blue: 66.0 / 255.0, alpha: 1.0)
         }
         else {
-            return UIColor(red: 132 / 255, green: 227 / 255, blue: 61 / 255, alpha: 1.0)
+            return UIColor(red: 132 / 255, green: 225 / 255, blue: 69 / 255, alpha: 1.0)
         }
     }
     

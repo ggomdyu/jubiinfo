@@ -90,7 +90,8 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
         
     /**@section Constructor */
         public init(minScore: Int, maxScore: Int) {
-            m_minScore = minScore
+            // Consider not played music
+            m_minScore = (minScore == 0) ? -1 : minScore
             m_maxScore = maxScore
         }
         
