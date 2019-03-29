@@ -104,7 +104,7 @@ public class MusicScoreData : Comparable {
     }
     
 /**@section Class */
-    /**@brief   The below datas are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=(RIVAL_ID) */
+    /**@brief   The below data are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=(RIVAL_ID) */
     public struct SimpleData {
         public init(name: String, uppercasedRomajiName: String, id: Int, score: Int, difficulty: Difficulty, isFullCombo: Bool, scoreHistory: [(Timestamp, MusicScore)]? = nil) {
             self.name = name
@@ -125,7 +125,7 @@ public class MusicScoreData : Comparable {
         public var scoreHistories: [(Timestamp, MusicScore)]?
     }
     
-    /**@brief   The below datas are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music_detail.html?rival_id=(RIVAL_ID)&mid=(MUSIC_ID) */
+    /**@brief   The below data are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music_detail.html?rival_id=(RIVAL_ID)&mid=(MUSIC_ID) */
     public class DetailData {
         public init(id: Int, difficulty: Difficulty, playTune: Int, clearCount: Int, fullComboCount: Int, excellentCount: Int, score: Int, musicRate: Float, ranking: Int) {
             self.id = id
@@ -150,7 +150,7 @@ public class MusicScoreData : Comparable {
         public var ranking: Int
     }
     
-    /**@brief   The data which is not provided on the official site. */
+    /**@brief   The data which are not provided on the official site. */
     public struct CustomData {
         public let artistName: String
         public let uppercasedRomajiArtistName: String
@@ -580,9 +580,15 @@ public class JubeatWebServer {
     }
     
     public static func requestCMDChecksum(onRequestComplete: @escaping (Bool, String?) -> ()) {
+#if DEBUG
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_dev.txt"
+#else
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_live.txt"
+#endif
+        
         httpRequestAsync(
             queue: DispatchQueue.global(),
-            url: "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum.txt",
+            url: url,
             method: HTTPMethod.get,
             host: "raw.githubusercontent.com",
             referer: "",
@@ -723,6 +729,10 @@ public class JubeatWebServer {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
                 
                 let settingDataStorage = GlobalSettingDataStorage.instance
+                if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                    settingDataStorage.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_appVersion", value: appVersion)
+                }
+                
                 GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
                 
                 onRequestComplete(true, newMusicScoreDatas)
@@ -737,15 +747,21 @@ public class JubeatWebServer {
     }
     
     public static func isMMSDChecksumOld(serverMMSDChecksum: Int) -> Bool {
-        var isOldChecksum = true
-        
+        // If the app version is old, count as checksum is old because mmsd file structure can be changed on newer version of app.
         let settingDataStorage = GlobalSettingDataStorage.instance
-        let clientMMSDChecksum = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum") as? Int ?? -1
-        if clientMMSDChecksum == serverMMSDChecksum {
-            isOldChecksum = false
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            let cachedAppVersion = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId().hash)_appVersion") as? String ?? ""
+            if appVersion != cachedAppVersion {
+                return true
+            }
         }
         
-        return isOldChecksum
+        let clientMMSDChecksum = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum") as? Int ?? -1
+        if clientMMSDChecksum == serverMMSDChecksum {
+            return false
+        }
+        
+        return true
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id= */
@@ -925,9 +941,15 @@ extension JubeatWebServer {
     private static func requestCustomMusicDatasJson(onRequestComplete: @escaping (Bool, Data?) -> Void) {
         let queue = DispatchQueue.init(label: "com.cmd.queue")
         
+#if DEBUG
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_dev.json"
+#else
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_live.json"
+#endif
+        
         httpRequestAsync(
             queue: queue,
-            url: "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas.json",
+            url: url,
             method: HTTPMethod.get,
             host: "raw.githubusercontent.com",
             referer: "",
