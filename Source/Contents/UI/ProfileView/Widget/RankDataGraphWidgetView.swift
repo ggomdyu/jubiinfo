@@ -45,7 +45,7 @@ public class RankDataGraphWidgetView : WidgetView {
     }
     
     private func prepareRankCountLabels() {
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         guard let myRankDataPageCache = myUserData.rankDataPageCache else {
             return
         }
@@ -100,7 +100,7 @@ public class RankDataGraphWidgetView : WidgetView {
     }
     
     private func prepareRankDataGraph() {
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         guard let myRankDataPageCache = myUserData.rankDataPageCache else {
             return
         }

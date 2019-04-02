@@ -79,7 +79,7 @@ class EditThemeViewController : EasyUITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let currActiveTheme = GlobalSettingDataStorage.instance.getActiveTheme()
+        let currActiveTheme = SettingDataStorage.instance.getActiveTheme()
         let cellTheme = sectionDataTable[0].1[indexPath.row].param as! ThemeType
         if currActiveTheme == cellTheme {
             m_optCurrSelectedCell = cell
@@ -110,18 +110,18 @@ class EditThemeViewController : EasyUITableViewController {
         let prevSelectedTheme = m_currSelectedTheme
         m_currSelectedTheme = sectionDataTable[0].1[indexPath.row].param as! ThemeType
         
-        GlobalSettingDataStorage.instance.setActiveTheme(themeType: m_currSelectedTheme, saveToFile: false)
+        SettingDataStorage.instance.setActiveTheme(themeType: m_currSelectedTheme, saveToFile: false)
         EventDispatcher.instance.dispatchEvent(eventType: "temporaryChangeTheme")
-        GlobalSettingDataStorage.instance.setActiveTheme(themeType: prevSelectedTheme, saveToFile: false)
+        SettingDataStorage.instance.setActiveTheme(themeType: prevSelectedTheme, saveToFile: false)
     }
     
 /**@section Event handler */
     private func onTouchEditCompleteBtn() {
-        if m_currSelectedTheme == GlobalSettingDataStorage.instance.getActiveTheme() {
+        if m_currSelectedTheme == SettingDataStorage.instance.getActiveTheme() {
             return
         }
         
-        GlobalSettingDataStorage.instance.setActiveTheme(themeType: m_currSelectedTheme)
+        SettingDataStorage.instance.setActiveTheme(themeType: m_currSelectedTheme)
         EventDispatcher.instance.dispatchEvent(eventType: "changeThemeComplete")
     }
 }

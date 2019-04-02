@@ -30,14 +30,14 @@ public class RivalRankView : UIView {
     private func prepareRivalRankCellView(musicScoreData: MusicScoreData) {
         var requestCompleteCount = 0
         DispatchQueue.global().async {
-            let myUserData = GlobalDataStorage.instance.queryMyUserData()
+            let myUserData = DataStorage.instance.queryMyUserData()
             SpinLock { return myUserData.rivalListPageCache != nil && myUserData.playDataPageCache != nil }
             
             var rivalRankCellDatas = [(score: Int, isProfilePrivated: Bool, nickname: String)] ()
             rivalRankCellDatas.append((musicScoreData.score, false, myUserData.playDataPageCache!.nickname))
             
             for simpleRivalData in myUserData.rivalListPageCache!.simpleRivalDataList {
-                let rivalUserData = GlobalDataStorage.instance.queryOtherUserData(rivalId:
+                let rivalUserData = DataStorage.instance.queryOtherUserData(rivalId:
                     simpleRivalData.rivalId)
                 
                 let optRivalMusicScoreDataCache = self.getRivalMusicScoreDataCache(musicScoreData: musicScoreData, rivalUserData: rivalUserData)

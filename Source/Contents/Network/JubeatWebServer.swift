@@ -336,7 +336,7 @@ class MusicScoreDataPageParser {
         
         self.lastParsedPos = musicScoreFinder
         
-        let customMusicData = GlobalDataStorage.instance.queryCustomMusicData(musicId: musicId)
+        let customMusicData = DataStorage.instance.queryCustomMusicData(musicId: musicId)
         let uppercasedRomajiMusicName = removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: musicName).uppercased())
         
         return [
@@ -426,9 +426,9 @@ public class JubeatWebServer {
                 if isRequestSucceed {
                     let loginStatus = self.parseLoginAuthResponse(response: optResponse!)
                     if loginStatus == .success {
-                        GlobalSettingDataStorage.instance.setActiveUserId(userId: userId)
-                        GlobalSettingDataStorage.instance.setConfig(key: "autoLoginUserId", value: userId)
-                        GlobalSettingDataStorage.instance.setSecurityConfig(key: "autoLoginUserPassword", value: userPassword)
+                        SettingDataStorage.instance.setActiveUserId(userId: userId)
+                        SettingDataStorage.instance.setConfig(key: "autoLoginUserId", value: userId)
+                        SettingDataStorage.instance.setSecurityConfig(key: "autoLoginUserPassword", value: userPassword)
                     }
                     
                     onLoginComplete(loginStatus)
@@ -443,9 +443,9 @@ public class JubeatWebServer {
     public static func logout() {
         // Remove all of user's login cache
         removeCookies(url: URL(string: "https://p.eagate.573.jp/")!)
-        GlobalSettingDataStorage.instance.removeConfig(key: "autoLoginUserId")
-        GlobalSettingDataStorage.instance.removeSecurityConfig(key: "autoLoginUserPassword")
-        GlobalSettingDataStorage.instance.removeActiveUserId()
+        SettingDataStorage.instance.removeConfig(key: "autoLoginUserId")
+        SettingDataStorage.instance.removeSecurityConfig(key: "autoLoginUserPassword")
+        SettingDataStorage.instance.removeActiveUserId()
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/top/index.html */
@@ -471,7 +471,7 @@ public class JubeatWebServer {
     public static func requestMyPlayDataPageCache(onRequestComplete: @escaping (Bool, UserData.MyPlayDataPageCache?) -> Void) {
         self.requestMyPlayDataPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
             var myPlayDataPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            myPlayDataPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_myPlayDataPageCache.json")
+            myPlayDataPageCachePath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_myPlayDataPageCache.json")
             
             if let response = optResponse, let myPlayDataPageCache = self.parseMyPlayDataPageHtml(response: response) {
                 let encoder = JSONEncoder()
@@ -508,7 +508,7 @@ public class JubeatWebServer {
         self.requestMyRivalListPageHtml { (isRequestSucceed: Bool, optResponse: String?) in
             
             var rivalListPageCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            rivalListPageCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_rivalListPageCache.json")
+            rivalListPageCachePath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_rivalListPageCache.json")
             
             if let response = optResponse, let rivalListPageCache = self.parseMyRivalListPageHtml(response: response) {
                 let encoder = JSONEncoder()
@@ -539,7 +539,7 @@ public class JubeatWebServer {
     /**@brief Do GET Request to  */
     public static func requestCustomMusicDatas(serverCMDChecksum: String, onRequestComplete: @escaping (Bool, [MusicId: MusicScoreData.CustomData]?) -> ()) {
         var isOldChecksum = true
-        let clientCMDhecksum = GlobalSettingDataStorage.instance.getConfig(key: "cmdChecksum") as? String ?? ""
+        let clientCMDhecksum = SettingDataStorage.instance.getConfig(key: "cmdChecksum") as? String ?? ""
         if clientCMDhecksum == serverCMDChecksum {
             isOldChecksum = false
         }
@@ -552,7 +552,7 @@ public class JubeatWebServer {
                 if isRequestSucceed {
                     do {
                         try response!.write(to: customMusicDatasJsonPath, atomically: false, encoding: .utf8)
-                        GlobalSettingDataStorage.instance.setConfig(key: "cmdChecksum", value: serverCMDChecksum)
+                        SettingDataStorage.instance.setConfig(key: "cmdChecksum", value: serverCMDChecksum)
                     }
                     catch {
                         recordLastError(ErrorCode.FileWriteError, "Failed to write CustomMusicDatas json file.")
@@ -601,7 +601,7 @@ public class JubeatWebServer {
     private static func isCMDChecksumOld(serverCMDChecksum: String) -> Bool {
         var isOldChecksum = true
         
-        let clientCMDhecksum = GlobalSettingDataStorage.instance.getConfig(key: "cmdChecksum") as? String ?? ""
+        let clientCMDhecksum = SettingDataStorage.instance.getConfig(key: "cmdChecksum") as? String ?? ""
         if clientCMDhecksum == serverCMDChecksum {
             isOldChecksum = false
         }
@@ -615,9 +615,9 @@ public class JubeatWebServer {
         
         // mmsd is abbreviation of 'My music score data'!!
         var mmsdCachePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        mmsdCachePath.appendPathComponent("\(GlobalSettingDataStorage.instance.getActiveUserId().hash)_mmsdCache.json")
+        mmsdCachePath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_mmsdCache.json")
         
-        SpinLock { return GlobalDataStorage.instance.isCustomMusicDatasInitialized() }
+        SpinLock { return DataStorage.instance.isCustomMusicDatasInitialized() }
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
@@ -626,7 +626,7 @@ public class JubeatWebServer {
             
             // Start to request music score data.
             var musicScoreDataRequestCompleteCount = 0;
-            let musicScoreDataPageEndIndex = (GlobalDataStorage.instance.queryCustomMusicDatas().count / 50) + 1
+            let musicScoreDataPageEndIndex = (DataStorage.instance.queryCustomMusicDatas().count / 50) + 1
             DispatchQueue.global().async {
                 for i in 1...musicScoreDataPageEndIndex {
                     self.requestMusicScoreData(rivalId: "", pageIndex: i) { (isRequestSucceed: Bool, optMusicScoreDatas2: [MusicScoreData]?) in
@@ -729,12 +729,12 @@ public class JubeatWebServer {
             do {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
                 
-                let settingDataStorage = GlobalSettingDataStorage.instance
+                let settingDataStorage = SettingDataStorage.instance
                 if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                     settingDataStorage.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_appVersion", value: appVersion)
                 }
                 
-                GlobalSettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
+                SettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
                 
                 onRequestComplete(true, newMusicScoreDatas)
                 return
@@ -749,7 +749,7 @@ public class JubeatWebServer {
     
     public static func isMMSDChecksumOld(serverMMSDChecksum: Int) -> Bool {
         // If the app version is old, count as checksum is old because mmsd file structure can be changed on newer version of app.
-        let settingDataStorage = GlobalSettingDataStorage.instance
+        let settingDataStorage = SettingDataStorage.instance
         if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             let cachedAppVersion = settingDataStorage.getConfig(key: "\(settingDataStorage.getActiveUserId().hash)_appVersion") as? String ?? ""
             if appVersion != cachedAppVersion {
@@ -1368,59 +1368,48 @@ extension JubeatWebServer {
         
         var musicPosFinder = rootPosFinder.upperBound
         while true {
-            guard let musicNameStartPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicPosFinder..<response.endIndex) else {
+            guard let musicIdStartPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicPosFinder..<response.endIndex) else {
                 break
             }
             
-            guard let musicNameEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicNameStartPosFinder.upperBound..<response.endIndex) else {
+            guard let musicIdEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicIdStartPosFinder.upperBound..<response.endIndex) else {
                 break
             }
             
-            let musicName = response[musicNameStartPosFinder.upperBound..<musicNameEndPosFinder.lowerBound]
+            let musicId = Int(response[musicIdStartPosFinder.upperBound..<musicIdEndPosFinder.lowerBound])!
+            
+            guard let musicArtistNameStartPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicIdEndPosFinder.upperBound..<response.endIndex) else {
+                break
+            }
+            
+            guard let musicArtistNameEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicArtistNameStartPosFinder.upperBound..<response.endIndex) else {
+                break
+            }
+            
+            let musicArtistName = String(response[musicArtistNameStartPosFinder.upperBound..<musicArtistNameEndPosFinder.lowerBound])
             
             parsedIntArray.removeAll()
-            var intValueStartPosFinder = response.range(of: ",", options: String.CompareOptions.caseInsensitive, range: musicNameEndPosFinder.upperBound..<response.endIndex)!.upperBound
+            var intValueStartPosFinder = response.range(of: "\n", options: String.CompareOptions.caseInsensitive, range: musicArtistNameEndPosFinder.upperBound..<response.endIndex)!.upperBound
             for i in 0..<4 {
-                let intValueEndPosFinder = response.range(of: ",", options: String.CompareOptions.caseInsensitive, range: intValueStartPosFinder..<response.endIndex)!
-                 parsedIntArray.append(Int(response[intValueStartPosFinder..<intValueEndPosFinder.lowerBound])!)
+                let intValueEndPosFinder = response.range(of: "\n", options: String.CompareOptions.caseInsensitive, range: intValueStartPosFinder..<response.endIndex)!
+                
+                let intStr = String(response[intValueStartPosFinder..<intValueEndPosFinder.lowerBound]).filter { (character: Character) -> Bool in
+                    return character != " " && character != ","
+                }
+                parsedIntArray.append(Int(intStr)!)
                 
                 intValueStartPosFinder = intValueEndPosFinder.upperBound
             }
+            
+            customMusicDatas[musicId] = MusicScoreData.CustomData(
+                artistName: musicArtistName,
+                version: MusicScoreData.Version(rawValue: parsedIntArray[3]) ?? .festo,
+                levels: [parsedIntArray[0], parsedIntArray[1], parsedIntArray[2]]
+            )
+            
+            musicPosFinder = intValueStartPosFinder
         }
         
-        // Parse the music ID
-//        let optMusicIdStartPosFinder =
-        
-        
-        
-//            let optJsonDict = try JSONSerialization.jsonObject(with: response, options: []) as? [String: Any]
-//            guard let jsonDict = optJsonDict else {
-//                return nil
-//            }
-//
-//            // Parse the MusicScoreData.CustomData
-//            let optMusicArrayElem = jsonDict["music"] as? [String: [Any]]
-//            guard let musicArrayElem = optMusicArrayElem else {
-//                return nil
-//            }
-//
-//            var customMusicDatas = [MusicId : MusicScoreData.CustomData] ()
-//            customMusicDatas.reserveCapacity(musicArrayElem.count)
-//
-//            for musicElem in musicArrayElem {
-//                let musicArtistName = musicElem.value[0] as? String ?? ""
-//                let musicBasicLevel = musicElem.value[1] as? Int ?? 0
-//                let musicAdvancedLevel = musicElem.value[2] as? Int ?? 0
-//                let musicExtremeLevel = musicElem.value[3] as? Int ?? 0
-//                let musicVersion = musicElem.value[4] as? Int ?? 0
-//
-//                customMusicDatas[Int(musicElem.key) ?? 0] = MusicScoreData.CustomData(
-//                    artistName: musicArtistName,
-//                    version: MusicScoreData.Version(rawValue: musicVersion) ?? .festo,
-//                    levels: [musicBasicLevel, musicAdvancedLevel, musicExtremeLevel]
-//                )
-//            }
-            
         return customMusicDatas
     }
     
@@ -1482,7 +1471,7 @@ extension JubeatWebServer {
             let musicId = Int(jsonElem.key)!
             let musicName = jsonElem.value[0] as! String
             
-            let customMusicData = GlobalDataStorage.instance.queryCustomMusicData(musicId: musicId)
+            let customMusicData = DataStorage.instance.queryCustomMusicData(musicId: musicId)
             let uppercasedRomajiMusicName = removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: musicName).uppercased())
             
             for i in 1...3 {

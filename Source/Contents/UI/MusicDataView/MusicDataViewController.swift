@@ -66,7 +66,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         
         m_musicDataSearchResultViewBottomConstraint.isActive = false
         
-        let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
+        let musicScoreDataCaches = DataStorage.instance.queryMyUserData().musicScoreDataCaches
         if musicScoreDataCaches.value.count <= 0 {
             EventDispatcher.instance.subscribeEvent(eventType: "requestMyMusicScoreDataComplete", eventObserver: EventObserver(releaseAfterDispatch: true) { [weak self] (param: Any?) -> Void in
                 guard let strongSelf = self else {
@@ -89,7 +89,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         
         m_musicDataSearchResultViewBottomConstraint.isActive = false
         
-        let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
+        let musicScoreDataCaches = DataStorage.instance.queryMyUserData().musicScoreDataCaches
         if musicScoreDataCaches.value.count <= 0 {
             EventDispatcher.instance.subscribeEvent(eventType: "requestMyMusicScoreDataComplete", eventObserver: EventObserver(releaseAfterDispatch: true) { [weak self] (param: Any?) -> Void in
                 guard let strongSelf = self else {
@@ -108,7 +108,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     }
     
     private func lazyInitialize() {
-        let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
+        let musicScoreDataCaches = DataStorage.instance.queryMyUserData().musicScoreDataCaches
         
         m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .level, musicSortOrder: .descending)
         m_musicDataView.loadMoreMusicDataCell()
@@ -117,7 +117,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     }
     
     private func lazyInitialize(musicId: MusicId) {
-        let musicScoreDataCaches = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches
+        let musicScoreDataCaches = DataStorage.instance.queryMyUserData().musicScoreDataCaches
         // TODO: Optimize this code
         m_musicDataView.initialize(musicScoreDatas: musicScoreDataCaches, musicSortMode: .level, musicSortOrder: .descending)
         
@@ -232,7 +232,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         self.switchActiveMusicDataView(viewToActivate: currActiveMusicDataView, viewBottomConstraint: m_musicDataSearchResultViewBottomConstraint)
         
         let searchBarText = transformJapaneseToLatin(sourceStr: musicName).uppercased()
-        currActiveMusicDataView.initialize(musicScoreDatas: MusicScoreDataCaches(GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
+        currActiveMusicDataView.initialize(musicScoreDatas: MusicScoreDataCaches(DataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
             return item.uppercasedRomajiName.contains(searchBarText)
         })), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder(), musicFilters: m_musicDataView!.getMusicFilters())
         
@@ -243,7 +243,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let currActiveMusicDataView = m_musicDataSearchResultView!
         self.switchActiveMusicDataView(viewToActivate: currActiveMusicDataView, viewBottomConstraint: m_musicDataSearchResultViewBottomConstraint)
         
-        currActiveMusicDataView.initialize(musicScoreDatas: MusicScoreDataCaches(GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
+        currActiveMusicDataView.initialize(musicScoreDatas: MusicScoreDataCaches(DataStorage.instance.queryMyUserData().musicScoreDataCaches.value.filter({ (item: MusicScoreData) -> Bool in
             return item.id == musicId
         })), musicSortMode: m_musicDataView!.getCurrentMusicSortMode(), musicSortOrder: m_musicDataView!.getCurrentMusicSortOrder())
         
@@ -301,7 +301,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
            (prevActiveMusicDataViewSortOrder != m_musicDataView.getCurrentMusicSortOrder() ||
             m_musicDataView.getLoadedPageIndex() == 0 ||
             prevActiveMusicDataViewFilters.count > 0) {
-            m_musicDataView.initialize(musicScoreDatas: GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: prevActiveMusicDataViewSortMode, musicSortOrder: prevActiveMusicDataViewSortOrder, musicFilters: prevActiveMusicDataViewFilters)
+            m_musicDataView.initialize(musicScoreDatas: DataStorage.instance.queryMyUserData().musicScoreDataCaches, musicSortMode: prevActiveMusicDataViewSortMode, musicSortOrder: prevActiveMusicDataViewSortOrder, musicFilters: prevActiveMusicDataViewFilters)
             
             m_musicDataView.loadMoreMusicDataCell()
         }
@@ -359,6 +359,10 @@ public class MusicDataViewToolBarController: ToolbarController {
     private var m_leftTabPrevButton: IconButton!
     private var m_rightTabSortButton: IconButton!
     private var m_rightTabFilterButton: IconButton!
+    private let m_sortIconImage = UIImage(named: "ic_sort_white")!.withRenderingMode(.alwaysTemplate)
+    private let m_filterEnabledIconImage = UIImage(named: "ic_filter_white")!.withRenderingMode(.alwaysTemplate)
+    private let m_filterDisabledIconImage = UIImage(named: "ic_filter2_white")!.withRenderingMode(.alwaysTemplate)
+    private var m_isFilterActive = false
     
 /**@section Method */
     open override func prepare() {
@@ -388,10 +392,10 @@ public class MusicDataViewToolBarController: ToolbarController {
     }
     
     private func prepareToolbarRightIcon() {
-        m_rightTabFilterButton = IconButton(image: UIImage(named: "ic_filter_white")!.withRenderingMode(.alwaysTemplate))
+        m_rightTabFilterButton = IconButton(image: m_filterDisabledIconImage)
         m_rightTabFilterButton.addTarget(self, action: #selector(onTouchFilterButton), for: .touchUpInside)
 
-        m_rightTabSortButton = IconButton(image: UIImage(named: "ic_sort_white")!.withRenderingMode(.alwaysTemplate))
+        m_rightTabSortButton = IconButton(image: m_sortIconImage)
         m_rightTabSortButton.addTarget(self, action: #selector(onTouchSortButton), for: .touchUpInside)
 
         toolbar.rightViews = [m_rightTabFilterButton, m_rightTabSortButton]
@@ -420,13 +424,30 @@ public class MusicDataViewToolBarController: ToolbarController {
     @objc private func onTouchFilterButton() {
         self.view.endEditing(true)
         
-        MusicFilterViewController.show(currentViewController: self) {
-            musicFilters in
+        if m_isFilterActive {
             guard let parentViewController = self.rootViewController as? MusicDataViewController else {
                 return
             }
             
-            parentViewController.onApplyMusicFilter(musicFilters: musicFilters)
+            parentViewController.onApplyMusicFilter(musicFilters: [])
+            
+            m_rightTabFilterButton.image = m_filterDisabledIconImage
+            
+            self.m_isFilterActive = false
+        }
+        else {
+            MusicFilterViewController.show(currentViewController: self) {
+                musicFilters in
+                guard let parentViewController = self.rootViewController as? MusicDataViewController else {
+                    return
+                }
+                
+                parentViewController.onApplyMusicFilter(musicFilters: musicFilters)
+                
+                self.m_rightTabFilterButton.image = self.m_filterEnabledIconImage
+                
+                self.m_isFilterActive = true
+            }
         }
     }
     

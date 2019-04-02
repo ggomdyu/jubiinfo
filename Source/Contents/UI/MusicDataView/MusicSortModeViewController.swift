@@ -24,7 +24,7 @@ class MusicSortModeViewController : UIViewController, SBCardPopupContent, UIPick
         ("제목", MusicSortMode.name),
         ("스코어", MusicSortMode.score),
         ("아티스트", MusicSortMode.artist),
-        ("버전", MusicSortMode.version)
+        ("시리즈", MusicSortMode.version)
     ]
 
 /**@section Method */

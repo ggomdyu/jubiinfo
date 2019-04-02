@@ -58,7 +58,7 @@ public class ProfileViewEditController : EasyUITableViewController {
     }
     
     private func createActivatedWidgetRowDatas() -> [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)] {
-        let currActiveWidgetList = GlobalSettingDataStorage.instance.getActiveWidgetList()
+        let currActiveWidgetList = SettingDataStorage.instance.getActiveWidgetList()
         let widgetCellDescs: [WidgetType: String] = [
             WidgetType.profile: "프로필",
             WidgetType.playData: "플레이 데이터",
@@ -83,7 +83,7 @@ public class ProfileViewEditController : EasyUITableViewController {
     }
 
     private func createDeactivatedWidgetRowDatas() -> [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)] {
-        let currActiveWidgetList = GlobalSettingDataStorage.instance.getActiveWidgetList()
+        let currActiveWidgetList = SettingDataStorage.instance.getActiveWidgetList()
         let widgetCellDescs: [WidgetType: String] = [
             WidgetType.profile: "프로필",
             WidgetType.playData: "플레이 데이터",
@@ -194,7 +194,7 @@ public class ProfileViewEditController : EasyUITableViewController {
             newActiveWidgetTypes.append(newActiveWidgetType)
         }
         
-        let prevActiveWidgetList = GlobalSettingDataStorage.instance.getActiveWidgetList()
+        let prevActiveWidgetList = SettingDataStorage.instance.getActiveWidgetList()
         var isActiveWidgetChanged = newActiveWidgetTypes.count != prevActiveWidgetList.count
         if isActiveWidgetChanged == false {
             for i in 0..<newActiveWidgetTypes.count {
@@ -206,7 +206,7 @@ public class ProfileViewEditController : EasyUITableViewController {
         }
         
         if isActiveWidgetChanged {
-            GlobalSettingDataStorage.instance.setActiveWidgetList(activeWidgetList: newActiveWidgetTypes)
+            SettingDataStorage.instance.setActiveWidgetList(activeWidgetList: newActiveWidgetTypes)
         }
         
         m_onEditComplete?(isActiveWidgetChanged)

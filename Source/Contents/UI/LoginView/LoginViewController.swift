@@ -94,10 +94,10 @@ class LoginViewController: ViewController, TextFieldDelegate {
                         self.present(profileViewController, animated: true)
                     }
                     else if loginStatus == .invalidEmailOrPassword {
-                        showOkPopup(self, "에러", "올바른 이메일 계정이나 비밀번호를 입력해주세요.")
+                        showOkPopup(self, "오류", "올바른 이메일 계정이나 비밀번호를 입력해주세요.")
                     }
                     else {
-                        showOkPopup(self, "에러", "예기치 않은 오류로 로그인에 실패했습니다.")
+                        showOkPopup(self, "오류", "예기치 않은 오류로 로그인에 실패했습니다.")
                     }
                 })
             }

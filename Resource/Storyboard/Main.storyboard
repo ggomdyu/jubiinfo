@@ -567,7 +567,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1wP-WH-OGy">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1wP-WH-OGy">
                                 <rect key="frame" x="20" y="40" width="335" height="114"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -605,9 +605,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9fL-Oe-hoU">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9fL-Oe-hoU">
                                                     <rect key="frame" x="10" y="0.0" width="69" height="43.5"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="69" id="KIp-uH-vDm"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="cYt-cR-lXI"/>
                                                     </constraints>
                                                     <state key="normal" title="스코어 범위"/>
@@ -668,11 +669,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMN-ko-gyC">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMN-ko-gyC">
                                                     <rect key="frame" x="10" y="0.0" width="112" height="43.5"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="112" id="gJt-f2-qHa"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="ohQ-eA-ZVW"/>
-                                                        <constraint firstAttribute="width" constant="112" id="tHK-ou-7IJ"/>
                                                     </constraints>
                                                     <state key="normal" title="특정 시리즈만 표시"/>
                                                 </button>
@@ -698,6 +699,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="m_button" destination="WMN-ko-gyC" id="ldW-yh-mlr"/>
+                                            <outlet property="m_versionBtn" destination="g4D-e7-P01" id="SzW-f3-1wt"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="versionFilterCellIdenfier" id="5C3-c9-iBE" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
@@ -707,16 +709,26 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaQ-zH-lgi">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaQ-zH-lgi">
                                                     <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="jW7-KY-yGv"/>
+                                                        <constraint firstAttribute="width" constant="99" id="uhu-kC-xs2"/>
                                                     </constraints>
                                                     <state key="normal" title="특정 시리즈 제외"/>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yal-FT-vNL">
+                                                    <rect key="frame" x="149" y="0.0" width="39" height="43.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="43.5" id="tQO-kl-R4G"/>
+                                                    </constraints>
+                                                    <state key="normal" title="페스토"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="yal-FT-vNL" firstAttribute="centerY" secondItem="pVl-lt-D5s" secondAttribute="centerY" id="FGh-eg-nFn"/>
                                                 <constraint firstItem="GaQ-zH-lgi" firstAttribute="top" secondItem="pVl-lt-D5s" secondAttribute="top" id="TbI-YA-j76"/>
+                                                <constraint firstItem="yal-FT-vNL" firstAttribute="leading" secondItem="GaQ-zH-lgi" secondAttribute="trailing" constant="40" id="qog-if-MFI"/>
                                                 <constraint firstItem="GaQ-zH-lgi" firstAttribute="leading" secondItem="pVl-lt-D5s" secondAttribute="leading" constant="10" id="yyM-hz-Bze"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -732,10 +744,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muI-gL-jZ3">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muI-gL-jZ3">
                                                     <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="99" id="Mmp-iD-LeT"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="99" id="P57-zz-UFO"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="vPK-mi-nlv"/>
                                                     </constraints>
                                                     <state key="normal" title="특정 레벨만 표시"/>
@@ -771,10 +784,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VzT-BP-yHo">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VzT-BP-yHo">
                                                     <rect key="frame" x="10" y="0.0" width="112" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="86W-L8-qKX"/>
+                                                        <constraint firstAttribute="width" constant="112" id="pIE-sn-gHc"/>
                                                     </constraints>
                                                     <state key="normal" title="특정 난이도만 표시"/>
                                                 </button>
@@ -804,14 +818,14 @@
                                             <outlet property="m_difficultySegmentedControl" destination="wW6-Ju-3IF" id="wua-5i-eJb"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboOnlyFilterCellIdenfier" id="R4g-dC-Wyw" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboOnlyFilterCellIdenfier" id="R4g-dC-Wyw" customClass="FullComboOnlyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="292" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R4g-dC-Wyw" id="YRv-mP-Gm2">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obz-Gw-giV">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obz-Gw-giV">
                                                     <rect key="frame" x="10" y="0.0" width="116" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="qe6-EB-TGF"/>
@@ -829,14 +843,14 @@
                                             <outlet property="m_button" destination="obz-Gw-giV" id="PoC-Zz-RWa"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboFilterCellIdenfier" id="BVL-0I-QwJ" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboFilterCellIdenfier" id="BVL-0I-QwJ" customClass="FullComboFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="336" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BVL-0I-QwJ" id="0Cv-vk-h3F">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IvE-i5-Icv">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IvE-i5-Icv">
                                                     <rect key="frame" x="10" y="0.0" width="103" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="5As-7k-Sj2"/>
@@ -861,16 +875,30 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BLN-2z-qNH">
-                                                    <rect key="frame" x="10" y="0.0" width="129" height="43.5"/>
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BLN-2z-qNH">
+                                                    <rect key="frame" x="10" y="0.0" width="90" height="43.5"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="90" id="n4y-uN-GBq"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="vrg-lf-hxO"/>
                                                     </constraints>
-                                                    <state key="normal" title="플레이 못한 곡만 표시"/>
+                                                    <state key="normal" title="풀 콤보 달성 곡"/>
                                                 </button>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Uvz-Tk-qwG">
+                                                    <rect key="frame" x="129" y="8" width="121" height="29"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="28" id="15a-Ir-gKY"/>
+                                                        <constraint firstAttribute="width" constant="121" id="XCO-g6-lvV"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="포함"/>
+                                                        <segment title="제외"/>
+                                                    </segments>
+                                                </segmentedControl>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="Uvz-Tk-qwG" firstAttribute="centerY" secondItem="30j-EG-IQt" secondAttribute="centerY" id="GNY-sa-q6p"/>
                                                 <constraint firstItem="BLN-2z-qNH" firstAttribute="top" secondItem="30j-EG-IQt" secondAttribute="top" id="Igs-8M-0mf"/>
+                                                <constraint firstItem="Uvz-Tk-qwG" firstAttribute="leading" secondItem="BLN-2z-qNH" secondAttribute="trailing" constant="29" id="TMy-Tq-ylq"/>
                                                 <constraint firstItem="BLN-2z-qNH" firstAttribute="leading" secondItem="30j-EG-IQt" secondAttribute="leading" constant="10" id="k9E-S1-Ejk"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -886,7 +914,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMD-Xj-ZZe">
+                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMD-Xj-ZZe">
                                                     <rect key="frame" x="10" y="0.0" width="116" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="uy5-J2-0LW"/>

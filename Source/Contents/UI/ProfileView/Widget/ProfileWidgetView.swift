@@ -47,7 +47,7 @@ class ProfileWidgetView : WidgetView {
     public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         guard let myPlayDataPageCache = myUserData.playDataPageCache as? UserData.MyPlayDataPageCache else {
             return
         }
@@ -130,7 +130,7 @@ class ProfileWidgetView : WidgetView {
     }
     
     @objc private func onTapCopyRivalIdMenuItem() {
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         if let myPlayDataPageCache = myUserData.playDataPageCache as? UserData.MyPlayDataPageCache {
             UIPasteboard.general.string = myPlayDataPageCache.rivalId
         }

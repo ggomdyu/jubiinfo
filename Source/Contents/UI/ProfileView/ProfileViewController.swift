@@ -78,7 +78,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
     }
     
     private func prepareWidgetUI() {
-        let activeWidgetList = GlobalSettingDataStorage.instance.getActiveWidgetList()
+        let activeWidgetList = SettingDataStorage.instance.getActiveWidgetList()
 
         let widgetCreatorDict: [WidgetType: () -> WidgetView] = [
             WidgetType.profile: { () in return self.createProfileWidgetView() },
@@ -138,7 +138,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
                 }
             }
             
-            let myUserData = GlobalDataStorage.instance.queryMyUserData();
+            let myUserData = DataStorage.instance.queryMyUserData();
             myUserData.rivalListPageCache = optRivalListPageCache
             
             runTaskInMainThread {
@@ -153,7 +153,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
                 return
             }
             
-            let myUserData = GlobalDataStorage.instance.queryMyUserData()
+            let myUserData = DataStorage.instance.queryMyUserData()
             myUserData.rivalId = myPlayDataPageCache.rivalId
             myUserData.playDataPageCache = myPlayDataPageCache
             
@@ -171,7 +171,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
                 return
             }
             
-            GlobalDataStorage.instance.queryMyUserData().rankDataPageCache = myRankDataPageCache
+            DataStorage.instance.queryMyUserData().rankDataPageCache = myRankDataPageCache
             
             runTaskInMainThread {
                 EventDispatcher.instance.dispatchEvent(eventType: "requestMyRankDataPageCacheComplete", eventParam: optMyRankDataPageCache)
@@ -182,7 +182,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
     private func requestMyMusicScoreData(serverMMSDChecksum: Int) {
         JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
             if isRequestSucceed {
-                GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
+                DataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
                 
                 runTaskInMainThread {
                     EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)
@@ -198,7 +198,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
             }
             
             JubeatWebServer.requestTopPageCache { (isRequestSucceed: Bool, topPageCache: UserData.TopPageCache?) in
-                GlobalDataStorage.instance.queryMyUserData().topPageCache = topPageCache
+                DataStorage.instance.queryMyUserData().topPageCache = topPageCache
                 
                 runTaskInMainThread {
                     EventDispatcher.instance.dispatchEvent(eventType: "requestTopPageCacheComplete", eventParam: topPageCache)

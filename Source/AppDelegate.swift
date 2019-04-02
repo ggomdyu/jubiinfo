@@ -31,8 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func createSuitableViewController() -> UIViewController? {
-        if let autoLoginUserId = GlobalSettingDataStorage.instance.getConfig(key: "autoLoginUserId") as? String,
-           let autoLoginUserPassword = GlobalSettingDataStorage.instance.getSecurityConfig(key: "autoLoginUserPassword") {
+        if let autoLoginUserId = SettingDataStorage.instance.getConfig(key: "autoLoginUserId") as? String,
+           let autoLoginUserPassword = SettingDataStorage.instance.getSecurityConfig(key: "autoLoginUserPassword") {
             if isSessionExpired(url: "https://p.eagate.573.jp/") {
                 removeCookies(url: URL(string: "https://p.eagate.573.jp/")!)
                 
@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
             
-            GlobalSettingDataStorage.instance.setActiveUserId(userId: autoLoginUserId)
+            SettingDataStorage.instance.setActiveUserId(userId: autoLoginUserId)
             return ProfileViewController.create()
         }
         else {
@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 JubeatWebServer.requestCustomMusicDatas(serverCMDChecksum: checksum!, onRequestComplete: {(isRequestSucceed2: Bool, optCustomMusicDatas: [MusicId : MusicScoreData.CustomData]?) in
                     if let customMusicDatas = optCustomMusicDatas {
                         runTaskInMainThread {
-                            GlobalDataStorage.instance.initCustomMusicDatas(customMusicDatas: customMusicDatas)
+                            DataStorage.instance.initCustomMusicDatas(customMusicDatas: customMusicDatas)
                             
                             EventDispatcher.instance.dispatchEvent(eventType: "requestCustomMusicDatasDataComplete", eventParam: customMusicDatas)
                         }

@@ -120,7 +120,7 @@ private class KeychainService {
     }
 }
 
-public class GlobalSettingDataStorage {
+public class SettingDataStorage {
 /**@section Constructor */
     private init() {
         let lastErrorCode = ErrorCode.Success
@@ -211,7 +211,7 @@ public class GlobalSettingDataStorage {
             defaultWidgetTypes.append(WidgetType.dailyRecommended)
         }
         
-        GlobalSettingDataStorage.instance.setActiveWidgetList(activeWidgetList: defaultWidgetTypes)
+        SettingDataStorage.instance.setActiveWidgetList(activeWidgetList: defaultWidgetTypes)
         
         return defaultWidgetTypes
     }
@@ -250,10 +250,24 @@ public class GlobalSettingDataStorage {
         m_activeUserId.removeAll()
     }
     
+    public func setRecentMusicFilters(recentMusicFilterCaches: [(MusicFilterType, Any?)]) {
+        m_optCachedRecentMusicFilter = recentMusicFilterCaches
+    }
+    
+    public func getRecentMusicFilters() -> [(MusicFilterType, Any?)] {
+        if let cachedRecentMusicFilter = m_optCachedRecentMusicFilter {
+            return cachedRecentMusicFilter
+        }
+       
+        m_optCachedRecentMusicFilter = [(MusicFilterType.score, nil)]
+        return m_optCachedRecentMusicFilter!
+    }
+    
 /**@section Variable */
-    public static let instance = GlobalSettingDataStorage()
+    public static let instance = SettingDataStorage()
     private var m_lastErrorRecord: LastErrorRecord
     private var m_optCachedActiveWidgetTypes: [WidgetType]?
     private var m_optCachedActiveThemeType: ThemeType?
+    private var m_optCachedRecentMusicFilter: [(MusicFilterType, Any?)]?
     private var m_activeUserId: String = ""
 }

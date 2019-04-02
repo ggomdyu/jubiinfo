@@ -35,7 +35,7 @@ public enum ErrorCode : Int {
 }
 
 public func recordLastError(_ errorCode: ErrorCode, _ optDescription: String? = nil, optLog: String? = nil) {
-    GlobalSettingDataStorage.instance.setLastErrorRecord(LastErrorRecord(errorCode, optDescription))
+    SettingDataStorage.instance.setLastErrorRecord(LastErrorRecord(errorCode, optDescription))
     
     if let log = optLog {
         Debug.log("[DEBUG]: \(log)")

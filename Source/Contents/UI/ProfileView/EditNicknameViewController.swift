@@ -54,7 +54,7 @@ class EditNicknameViewController : EasyUITableViewController, UITextFieldDelegat
         self.m_nicknameTextFieldCell = cell
         
         // Is the Network request pending now?
-        guard let playDataPageCache = GlobalDataStorage.instance.queryMyUserData().playDataPageCache else {
+        guard let playDataPageCache = DataStorage.instance.queryMyUserData().playDataPageCache else {
             let loadingIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
             loadingIndicatorView.hidesWhenStopped = true
             loadingIndicatorView.style = .gray
@@ -121,7 +121,7 @@ class EditNicknameViewController : EasyUITableViewController, UITextFieldDelegat
     private func onTouchEditCompleteBtn() {
         m_nicknameTextFieldCell.endEditing(true)
         
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         
         let nicknameTextFieldText = m_nicknameTextFieldCell.textField.text!.uppercased()
         if nicknameTextFieldText.count <= 0 || nicknameTextFieldText == myUserData.playDataPageCache?.nickname {

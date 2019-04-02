@@ -80,5 +80,5 @@ public func getThemeColorTable(themeType: ThemeType) -> ThemeColorTable {
 }
 
 public func getCurrentThemeColorTable() -> ThemeColorTable {
-    return getThemeColorTable(themeType: GlobalSettingDataStorage.instance.getActiveTheme())
+    return getThemeColorTable(themeType: SettingDataStorage.instance.getActiveTheme())
 }

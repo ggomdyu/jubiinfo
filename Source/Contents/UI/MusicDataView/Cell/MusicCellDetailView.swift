@@ -30,7 +30,7 @@ class MusicCellDetailView : UIView {
             m_scoreGraphView.initialize(musicScoreData: musicScoreData)
         }
         
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         if let rivalListPageCache = myUserData.rivalListPageCache, rivalListPageCache.simpleRivalDataList.count > 0 {
             m_rivalRankView.initialize(musicScoreData: musicScoreData)
             m_detailScoreViewTrailingConstraint.constant = self.frame.width * 0.4

@@ -33,15 +33,27 @@ class MusicDetailScoreView : UIView {
     private func prepareInitDetailData(musicScoreData: MusicScoreData, onPrepareComplate: @escaping () -> Void) {
         let isDetailDataInitialized = musicScoreData.isDetailDataInitialized()
         if isDetailDataInitialized == false {
-            let myUserData = GlobalDataStorage.instance.queryMyUserData()
-            let optDetailDataInitTargetIndex = myUserData.musicScoreDataCaches.value.firstIndex { (item: MusicScoreData) -> Bool in return musicScoreData.id == item.id }
-            guard let detailDataInitTargetIndex = optDetailDataInitTargetIndex else {
+            let myUserData = DataStorage.instance.queryMyUserData()
+
+            var i = 0
+            var musicScoreDataArray = [MusicScoreData?] (repeating: nil, count: 3)
+            for item in myUserData.musicScoreDataCaches.value {
+                if musicScoreData.id == item.id {
+                    musicScoreDataArray[item.difficulty.rawValue] = item
+                    i += 1
+                    
+                    if i >= 3 {
+                        break
+                    }
+                }
+            }
+            
+            guard let basicMusicScoreData = musicScoreDataArray[0],
+                  let advancedMusicScoreData = musicScoreDataArray[1],
+                  let extremeMusicScoreData = musicScoreDataArray[2] else {
                 return
             }
             
-            let basicMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex]
-            let advancedMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 1]
-            let extremeMusicScoreData = myUserData.musicScoreDataCaches.value[detailDataInitTargetIndex + 2]
             JubeatWebServer.requestDetailMusicScoreData(rivalId: myUserData.rivalId, musicId: musicScoreData.id, destBasicMusicScoreData: basicMusicScoreData, destAdvancedMusicScoreData: advancedMusicScoreData, extremeAdvancedMusicScoreData: extremeMusicScoreData) { (isRequestSucceed: Bool, isParseSucceed: Bool) in
                 runTaskInMainThread {
                     onPrepareComplate()

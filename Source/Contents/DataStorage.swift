@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-public class GlobalDataStorage {
+public class DataStorage {
 /**@section Variable */
-    public static let instance = GlobalDataStorage()
+    public static let instance = DataStorage()
     
 /**@section Constructor */
     private init() {

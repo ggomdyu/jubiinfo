@@ -38,7 +38,7 @@ class DailyChallengeMusicWidgetView : WidgetView {
     public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         guard let topPageCache = param as? UserData.TopPageCache else {
             return
         }

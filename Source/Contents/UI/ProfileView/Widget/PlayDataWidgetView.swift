@@ -35,7 +35,7 @@ class PlayDataWidgetView : WidgetView {
     public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
-        let myUserData = GlobalDataStorage.instance.queryMyUserData()
+        let myUserData = DataStorage.instance.queryMyUserData()
         guard let myPlayDataPageCache = myUserData.playDataPageCache as? UserData.MyPlayDataPageCache else {
             return
         }

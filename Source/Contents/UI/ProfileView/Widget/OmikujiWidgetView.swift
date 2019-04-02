@@ -133,8 +133,8 @@ public class OmikujiWidgetView : WidgetView {
     }
     
     private func onFinishOmikujiShakeAnim() {
-        if GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.count > 0 {
-            let randomPickedMusicData = GlobalDataStorage.instance.queryMyUserData().musicScoreDataCaches.value.randomElement()!
+        if DataStorage.instance.queryMyUserData().musicScoreDataCaches.value.count > 0 {
+            let randomPickedMusicData = DataStorage.instance.queryMyUserData().musicScoreDataCaches.value.randomElement()!
             self.prepareRandomMusicPickResultView(randomPickedMusicData: randomPickedMusicData)
             
             m_optRandomPickedMusicData = randomPickedMusicData
