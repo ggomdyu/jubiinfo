@@ -548,17 +548,17 @@ public class JubeatWebServer {
         customMusicDatasJsonPath.appendPathComponent("customMusicDatas.json")
         
         if isOldChecksum {
-            self.requestCustomMusicDatasJson {(isRequestSucceed: Bool, response: Data?) in
+            self.requestCustomMusicDatasJson {(isRequestSucceed: Bool, response: String?) in
                 if isRequestSucceed {
                     do {
-                        try response!.write(to: customMusicDatasJsonPath)
+                        try response!.write(to: customMusicDatasJsonPath, atomically: false, encoding: .utf8)
                         GlobalSettingDataStorage.instance.setConfig(key: "cmdChecksum", value: serverCMDChecksum)
                     }
                     catch {
                         recordLastError(ErrorCode.FileWriteError, "Failed to write CustomMusicDatas json file.")
                     }
                     
-                    onRequestComplete(true, parseCustomMusicData(response: response!))
+                    onRequestComplete(true, self.parseCustomMusicData(response: response!))
                 }
                 else {
                     onRequestComplete(false, nil)
@@ -569,7 +569,8 @@ public class JubeatWebServer {
         else {
             var customMusicDatas: [MusicId: MusicScoreData.CustomData]?
             do {
-                customMusicDatas = self.parseCustomMusicData(response: try Data(contentsOf: customMusicDatasJsonPath))
+                let customMusicDatasJson = try String(contentsOf: customMusicDatasJsonPath, encoding: .utf8)
+                customMusicDatas = self.parseCustomMusicData(response: customMusicDatasJson)
             }
             catch {
                 recordLastError(ErrorCode.DataConversionError, "Failed to convert json string to Data.")
@@ -938,7 +939,7 @@ extension JubeatWebServer {
         })
     }
     
-    private static func requestCustomMusicDatasJson(onRequestComplete: @escaping (Bool, Data?) -> Void) {
+    private static func requestCustomMusicDatasJson(onRequestComplete: @escaping (Bool, String?) -> Void) {
         let queue = DispatchQueue.init(label: "com.cmd.queue")
         
 #if DEBUG
@@ -953,7 +954,7 @@ extension JubeatWebServer {
             method: HTTPMethod.get,
             host: "raw.githubusercontent.com",
             referer: "",
-            onRequestComplete: {(isRequestSucceed: Bool, response: Data?) in
+            onRequestComplete: {(isRequestSucceed: Bool, response: String?) in
                 onRequestComplete(isRequestSucceed, response)
         })
     }
@@ -1354,41 +1355,73 @@ extension JubeatWebServer {
         return nil
     }
     
-    private static func parseCustomMusicData(response: Data) -> [MusicId: MusicScoreData.CustomData]? {
-        do {
-            let optJsonDict = try JSONSerialization.jsonObject(with: response, options: []) as? [String: Any]
-            guard let jsonDict = optJsonDict else {
-                return nil
-            }
-            
-            // Parse the MusicScoreData.CustomData
-            let optMusicArrayElem = jsonDict["music"] as? [String: [Any]]
-            guard let musicArrayElem = optMusicArrayElem else {
-                return nil
-            }
-            
-            var customMusicDatas = [MusicId : MusicScoreData.CustomData] ()
-            customMusicDatas.reserveCapacity(musicArrayElem.count)
-            
-            for musicElem in musicArrayElem {
-                let musicArtistName = musicElem.value[0] as? String ?? ""
-                let musicBasicLevel = musicElem.value[1] as? Int ?? 0
-                let musicAdvancedLevel = musicElem.value[2] as? Int ?? 0
-                let musicExtremeLevel = musicElem.value[3] as? Int ?? 0
-                let musicVersion = musicElem.value[4] as? Int ?? 0
-                
-                customMusicDatas[Int(musicElem.key) ?? 0] = MusicScoreData.CustomData(
-                    artistName: musicArtistName,
-                    version: MusicScoreData.Version(rawValue: musicVersion) ?? .festo,
-                    levels: [musicBasicLevel, musicAdvancedLevel, musicExtremeLevel]
-                )
-            }
-            
-            return customMusicDatas
+    private static func parseCustomMusicData(response: String) -> [MusicId: MusicScoreData.CustomData]? {
+        guard let rootPosFinder = response.range(of: "music\"") else {
+            return nil
         }
-        catch {}
         
-        return nil
+        var customMusicDatas = [MusicId : MusicScoreData.CustomData] ()
+        
+//        customMusicDatas.reserveCapacity(musicArrayElem.count)
+        var parsedIntArray: [Int] = []
+        parsedIntArray.reserveCapacity(4)
+        
+        var musicPosFinder = rootPosFinder.upperBound
+        while true {
+            guard let musicNameStartPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicPosFinder..<response.endIndex) else {
+                break
+            }
+            
+            guard let musicNameEndPosFinder = response.range(of: "\"", options: String.CompareOptions.caseInsensitive, range: musicNameStartPosFinder.upperBound..<response.endIndex) else {
+                break
+            }
+            
+            let musicName = response[musicNameStartPosFinder.upperBound..<musicNameEndPosFinder.lowerBound]
+            
+            parsedIntArray.removeAll()
+            var intValueStartPosFinder = response.range(of: ",", options: String.CompareOptions.caseInsensitive, range: musicNameEndPosFinder.upperBound..<response.endIndex)!.upperBound
+            for i in 0..<4 {
+                let intValueEndPosFinder = response.range(of: ",", options: String.CompareOptions.caseInsensitive, range: intValueStartPosFinder..<response.endIndex)!
+                 parsedIntArray.append(Int(response[intValueStartPosFinder..<intValueEndPosFinder.lowerBound])!)
+                
+                intValueStartPosFinder = intValueEndPosFinder.upperBound
+            }
+        }
+        
+        // Parse the music ID
+//        let optMusicIdStartPosFinder =
+        
+        
+        
+//            let optJsonDict = try JSONSerialization.jsonObject(with: response, options: []) as? [String: Any]
+//            guard let jsonDict = optJsonDict else {
+//                return nil
+//            }
+//
+//            // Parse the MusicScoreData.CustomData
+//            let optMusicArrayElem = jsonDict["music"] as? [String: [Any]]
+//            guard let musicArrayElem = optMusicArrayElem else {
+//                return nil
+//            }
+//
+//            var customMusicDatas = [MusicId : MusicScoreData.CustomData] ()
+//            customMusicDatas.reserveCapacity(musicArrayElem.count)
+//
+//            for musicElem in musicArrayElem {
+//                let musicArtistName = musicElem.value[0] as? String ?? ""
+//                let musicBasicLevel = musicElem.value[1] as? Int ?? 0
+//                let musicAdvancedLevel = musicElem.value[2] as? Int ?? 0
+//                let musicExtremeLevel = musicElem.value[3] as? Int ?? 0
+//                let musicVersion = musicElem.value[4] as? Int ?? 0
+//
+//                customMusicDatas[Int(musicElem.key) ?? 0] = MusicScoreData.CustomData(
+//                    artistName: musicArtistName,
+//                    version: MusicScoreData.Version(rawValue: musicVersion) ?? .festo,
+//                    levels: [musicBasicLevel, musicAdvancedLevel, musicExtremeLevel]
+//                )
+//            }
+            
+        return customMusicDatas
     }
     
     private static func parseMusicScoreDataPageHtml(response: String) -> [MusicScoreData] {
