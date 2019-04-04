@@ -1377,7 +1377,7 @@ extension JubeatWebServer {
                 let musicBasicLevel = musicElem.value[2] as! Int
                 let musicAdvancedLevel = musicElem.value[3] as! Int
                 let musicExtremeLevel = musicElem.value[4] as! Int
-                let musicVersion = MusicScoreData.Version(rawValue: musicElem.value[4] as! Int) ?? .festo
+                let musicVersion = MusicScoreData.Version(rawValue: musicElem.value[5] as! Int) ?? .festo
                 
                 customMusicDatas[Int(musicElem.key)!] = MusicScoreData.CustomData(
                     artistName: musicArtistName,
