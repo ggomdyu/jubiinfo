@@ -139,6 +139,7 @@
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="lcu-Do-Hi4" firstAttribute="top" secondItem="rDd-97-GFd" secondAttribute="top" id="KIa-qf-x7Z"/>
+                <constraint firstItem="rDd-97-GFd" firstAttribute="bottom" secondItem="1We-JB-r8q" secondAttribute="bottom" id="QE8-cQ-zkU"/>
                 <constraint firstItem="1We-JB-r8q" firstAttribute="top" secondItem="rDd-97-GFd" secondAttribute="top" id="dhS-tw-gV2"/>
                 <constraint firstItem="rDd-97-GFd" firstAttribute="trailing" secondItem="lcu-Do-Hi4" secondAttribute="trailing" id="jOT-fo-5ol"/>
                 <constraint firstItem="rDd-97-GFd" firstAttribute="trailing" secondItem="1We-JB-r8q" secondAttribute="trailing" id="pec-HP-1Nz"/>

@@ -177,7 +177,7 @@
                             <color key="textColor" red="0.60783725980000003" green="0.60783916709999997" blue="0.60784339899999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y5a-SL-eGJ">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5a-SL-eGJ">
                             <rect key="frame" x="175" y="15" width="170" height="196"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="170" id="SOs-WF-ZTU"/>
@@ -185,6 +185,7 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="Y5a-SL-eGJ" firstAttribute="leading" secondItem="PNe-gf-PaQ" secondAttribute="trailing" constant="15" id="0rQ-aq-Bye"/>
                         <constraint firstItem="VWb-7T-ygE" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="3Ll-5S-wch"/>
                         <constraint firstItem="YFy-0H-sdK" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="3x7-DX-Zm5"/>
                         <constraint firstItem="PNe-gf-PaQ" firstAttribute="leading" secondItem="3hh-ew-H4R" secondAttribute="trailing" constant="8" symbolic="YES" id="5Xn-QD-FL6"/>
@@ -216,6 +217,7 @@
                         <constraint firstItem="f6p-We-n2m" firstAttribute="top" secondItem="3hh-ew-H4R" secondAttribute="bottom" constant="5" id="rfK-sn-TMY"/>
                         <constraint firstItem="PNe-gf-PaQ" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="60" id="s71-sa-JQE"/>
                         <constraint firstItem="Tlb-qd-W3v" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="sHi-dd-e17"/>
+                        <constraint firstAttribute="bottom" secondItem="Y5a-SL-eGJ" secondAttribute="bottom" constant="15" id="slU-So-fDN"/>
                         <constraint firstItem="UnV-PT-cTj" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="60" id="uBw-YH-l8C"/>
                         <constraint firstItem="YFy-0H-sdK" firstAttribute="top" secondItem="lnk-dw-sBw" secondAttribute="bottom" constant="5" id="uDU-c5-7fW"/>
                         <constraint firstItem="Llk-Jb-2mN" firstAttribute="centerY" secondItem="YFy-0H-sdK" secondAttribute="centerY" id="vO2-SE-OgW"/>
@@ -232,6 +234,7 @@
                 <constraint firstItem="nvo-O0-deI" firstAttribute="leading" secondItem="rG2-wh-WjV" secondAttribute="leading" id="eJ5-nC-0ho"/>
                 <constraint firstItem="kIb-MX-Z6d" firstAttribute="trailing" secondItem="rG2-wh-WjV" secondAttribute="trailing" id="qSd-o1-oBc"/>
                 <constraint firstItem="kIb-MX-Z6d" firstAttribute="leading" secondItem="rG2-wh-WjV" secondAttribute="leading" id="t9h-jj-vfg"/>
+                <constraint firstItem="rG2-wh-WjV" firstAttribute="bottom" secondItem="nvo-O0-deI" secondAttribute="bottom" id="whh-vt-2gS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="rG2-wh-WjV"/>
