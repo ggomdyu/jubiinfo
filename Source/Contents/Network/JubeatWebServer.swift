@@ -666,7 +666,7 @@ public class JubeatWebServer {
             for i in 0..<(newMusicScoreDatas.value.count / 3) {
                 let musicScoreDataIndex = i * 3
                 if let oldMusicScoreDatas = oldMusicScoreDatas.value[newMusicScoreDatas.value[musicScoreDataIndex].id] {
-                    mmsdJson += "\"\(oldMusicScoreDatas[0].id)\":[\"\(oldMusicScoreDatas[0].name)\","
+                    mmsdJson += "\"\(oldMusicScoreDatas[0].id)\":[\"\(oldMusicScoreDatas[0].name)\",\"\(removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: oldMusicScoreDatas[0].name).uppercased()))\","
                     
                     for j in 0...2 {
                         let oldMusicScoreData = oldMusicScoreDatas[j]
@@ -701,7 +701,7 @@ public class JubeatWebServer {
                 else {
                     let currUnixTime = Timestamp(Date().timeIntervalSince1970)
                     
-                    mmsdJson += "\"\(newMusicScoreDatas.value[musicScoreDataIndex].id)\":[\"\(newMusicScoreDatas.value[musicScoreDataIndex].name)\","
+                    mmsdJson += "\"\(newMusicScoreDatas.value[musicScoreDataIndex].id)\":[\"\(newMusicScoreDatas.value[musicScoreDataIndex].name)\",\"\(removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: newMusicScoreDatas.value[musicScoreDataIndex].name).uppercased()))\","
                     
                     for j in 0...2 {
                         let newMusicScoreData = newMusicScoreDatas.value[musicScoreDataIndex + j]
@@ -1453,31 +1453,31 @@ extension JubeatWebServer {
             let musicName = jsonElem.value[0] as! String
             
             let customMusicData = DataStorage.instance.queryCustomMusicData(musicId: musicId)
-            let uppercasedRomajiMusicName = removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: musicName).uppercased())
+            let uppercasedRomajiMusicName = jsonElem.value[1] as! String
             
-            for i in 1...3 {
+            for i in 2...4 {
                 var optMusicScoreHistories: [(Timestamp, MusicScore)]? = nil
                 let musicScoreHistoryItems = jsonElem.value[i] as! [Any]
                 if musicScoreHistoryItems.count >= 3 {
                     var musicScoreHistories = [(Timestamp, MusicScore)] ()
                     for musicScoreHistory in musicScoreHistoryItems[2] as! [[Any]] {
-                        let timestamp = musicScoreHistory[0] as? Timestamp ?? 0
-                        let musicScore = musicScoreHistory[1] as? MusicScore ?? 0
+                        let timestamp = musicScoreHistory[0] as! Timestamp
+                        let musicScore = musicScoreHistory[1] as! MusicScore
                         musicScoreHistories.append((timestamp, musicScore))
                     }
                     
                     optMusicScoreHistories = musicScoreHistories
                 }
                 
-                let musicScore = musicScoreHistoryItems[0] as? Int ?? 0
-                let isFullCombo = musicScoreHistoryItems[1] as? Bool ?? false
+                let musicScore = musicScoreHistoryItems[0] as! Int
+                let isFullCombo = musicScoreHistoryItems[1] as! Bool
                 parseResultHandler(MusicScoreData(
                     simpleData: MusicScoreData.SimpleData(
                         name: musicName,
                         uppercasedRomajiName: uppercasedRomajiMusicName,
                         id: musicId,
                         score: musicScore,
-                        difficulty: MusicScoreData.Difficulty(rawValue: i - 1)!,
+                        difficulty: MusicScoreData.Difficulty(rawValue: i - 2)!,
                         isFullCombo: isFullCombo,
                         scoreHistory: optMusicScoreHistories
                     ),
