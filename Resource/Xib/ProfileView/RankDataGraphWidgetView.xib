@@ -177,7 +177,7 @@
                             <color key="textColor" red="0.60783725980000003" green="0.60783916709999997" blue="0.60784339899999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5a-SL-eGJ">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y5a-SL-eGJ">
                             <rect key="frame" x="175" y="15" width="170" height="196"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="170" id="SOs-WF-ZTU"/>
@@ -208,7 +208,6 @@
                         <constraint firstItem="DZH-XL-Agi" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="60" id="dpw-wJ-v9N"/>
                         <constraint firstAttribute="trailing" secondItem="Y5a-SL-eGJ" secondAttribute="trailing" constant="10" id="fV5-4G-4W0"/>
                         <constraint firstItem="Ab2-s8-a6l" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="iTN-1q-Ivs"/>
-                        <constraint firstAttribute="bottom" secondItem="Y5a-SL-eGJ" secondAttribute="bottom" constant="15" id="k2v-fS-LKu"/>
                         <constraint firstItem="OEd-hz-Dhj" firstAttribute="centerY" secondItem="KLa-Aw-ZZY" secondAttribute="centerY" id="kl8-xl-G5X"/>
                         <constraint firstItem="lnk-dw-sBw" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="lxX-lP-P1k"/>
                         <constraint firstItem="KLa-Aw-ZZY" firstAttribute="leading" secondItem="nvo-O0-deI" secondAttribute="leading" constant="15" id="oPO-92-4Jo"/>
@@ -226,9 +225,7 @@
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="nvo-O0-deI" firstAttribute="height" secondItem="UXX-r4-Jik" secondAttribute="height" id="45s-Z3-r0k"/>
                 <constraint firstItem="kIb-MX-Z6d" firstAttribute="bottom" secondItem="rG2-wh-WjV" secondAttribute="bottom" id="4cU-3p-lrv"/>
-                <constraint firstItem="nvo-O0-deI" firstAttribute="width" secondItem="UXX-r4-Jik" secondAttribute="width" id="JdG-I6-192"/>
                 <constraint firstItem="nvo-O0-deI" firstAttribute="top" secondItem="rG2-wh-WjV" secondAttribute="top" id="Quo-L5-EcW"/>
                 <constraint firstItem="kIb-MX-Z6d" firstAttribute="top" secondItem="rG2-wh-WjV" secondAttribute="top" id="W9N-7s-8Le"/>
                 <constraint firstItem="nvo-O0-deI" firstAttribute="trailing" secondItem="rG2-wh-WjV" secondAttribute="trailing" id="b2o-kO-vIv"/>

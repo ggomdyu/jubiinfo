@@ -10,6 +10,7 @@
 		62ED01B421C2185900056141 /* SettingDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62ED01B321C2185900056141 /* SettingDataStorage.swift */; };
 		FD093FF02222DA9E00593069 /* ProfileViewEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */; };
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
+		FD0FF50D225704A300D4E63B /* EndEditTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */; };
 		FD11B8E021B3C21D003E3403 /* ProfileWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* ProfileWidgetView.swift */; };
 		FD21A639220605E7008F25FA /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD21A638220605E7008F25FA /* Box.swift */; };
 		FD25202C223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */; };
@@ -350,6 +351,7 @@
 		62ED01B321C2185900056141 /* SettingDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDataStorage.swift; sourceTree = "<group>"; };
 		FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewEditController.swift; sourceTree = "<group>"; };
 		FD0EA840219B14660084A837 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndEditTableView.swift; sourceTree = "<group>"; };
 		FD11B8DF21B3C21D003E3403 /* ProfileWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileWidgetView.swift; sourceTree = "<group>"; };
 		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-1.4.3/Motion.xcodeproj"; sourceTree = "<group>"; };
 		FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.7.3/Alamofire.xcodeproj"; sourceTree = "<group>"; };
@@ -798,6 +800,7 @@
 				FDDAFEEF21B997150044F5C0 /* UIUtility.swift */,
 				FDA98CA221C6CB8F0060CBED /* WidgetView.swift */,
 				FD342C80224807A1001096DA /* EndEditScrollView.swift */,
+				FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */,
 				FDC5BBD221EA3452000951BD /* CustomStackView.swift */,
 				FD7F618F222D7260006FE95B /* ThemeColorTable.swift */,
 				FD68AABA2228FDD7004644CD /* EasyUITableViewController.swift */,
@@ -1279,6 +1282,7 @@
 				FDA98C7121C4A7CC0060CBED /* EventDispatcher.swift in Sources */,
 				FDA58B38222BC75400415703 /* EditThemeViewController.swift in Sources */,
 				FDD2250121AC50BC008C7DB1 /* SpinLock.swift in Sources */,
+				FD0FF50D225704A300D4E63B /* EndEditTableView.swift in Sources */,
 				FD68AABB2228FDD7004644CD /* EasyUITableViewController.swift in Sources */,
 				FD21A639220605E7008F25FA /* Box.swift in Sources */,
 				FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */,
@@ -1561,6 +1565,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WU734J36XA;
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = jubiinfo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (

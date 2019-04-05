@@ -267,7 +267,8 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     public func onApplyMusicFilter(musicFilters: [MusicFilter]) {
         m_scrollView.setContentOffset(CGPoint.zero, animated: false)
         
-        m_optCurrActiveMusicDataView?.applyMusicFilter(musicFilters: musicFilters)
+        m_musicDataView.applyMusicFilter(musicFilters: musicFilters)
+        m_musicDataSearchResultView.applyMusicFilter(musicFilters: musicFilters)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

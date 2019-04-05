@@ -21,16 +21,19 @@ public class SBCardPopupViewController: UIViewController {
     public var disableSwipeToDismiss = false
     public var disableTapToDismiss = false
     public var cornerRadius = CGFloat(7)
+    public var viewWillAnimateOut: (() -> Void)?
 
-    public init(contentViewController viewController: UIViewController) {
-        contentViewController = viewController
-        contentView = viewController.view
+    public init(contentViewController viewController: UIViewController, viewWillAnimateOut: (() -> Void)? = nil) {
+        self.contentViewController = viewController
+        self.contentView = viewController.view
+        self.viewWillAnimateOut = viewWillAnimateOut
+        
         super.init(nibName: nil, bundle: nil)
     }
     
     public init(contentView view: UIView) {
-        contentViewController = nil
-        contentView = view
+        self.contentViewController = nil
+        self.contentView = view
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -334,6 +337,7 @@ public class SBCardPopupViewController: UIViewController {
     }
     
     private func animateOut() {
+        viewWillAnimateOut?()
         
         view.isUserInteractionEnabled = false
         state = .animatingOut

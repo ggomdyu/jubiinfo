@@ -86,10 +86,6 @@ public class BaseFilterUITableViewCell : LeftMarginRemovedUITableViewCell {
         return MusicFilter()
     }
     
-//    public func toJson() -> String {
-//        return "{\"type\":\(self.musicFilterType)},"
-//    }
-    
     public func getFilterData() -> Any? {
         return nil
     }
@@ -169,13 +165,6 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
         return (minScore, maxScore)
     }
     
-//    public override func toJson() -> String {
-//        let minScore = m_minScoreTextField.text == nil ? 0 : Int(m_minScoreTextField.text!) ?? 0
-//        let maxScore = m_maxScoreTextField.text == nil ? 1000000 : Int(m_maxScoreTextField.text!) ?? 1000000
-//
-//        return "{\"type\":\(self.musicFilterType),\"value\":[\(minScore), \(maxScore)]},"
-//    }
-    
 /**@section Event handler */
     /**@brief Use to handle the remove event */
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -184,6 +173,12 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
             // If textfield will be empty after changed
             if m_minScoreTextField.text!.count + m_maxScoreTextField.text!.count == 1 {
                 m_tildeLabel.textColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
+            }
+        }
+        else {
+            let isCanConvertToInt = Int(string) != nil
+            if isCanConvertToInt == false {
+                return false
             }
         }
         
@@ -246,10 +241,6 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
         m_versionBtn.setTitle(self.m_versionStrDataSource[m_currSelectedRow], for: .normal) 
     }
 
-//    public override func toJson() -> String {
-//        return "{\"type\":\(self.musicFilterType),\"value\":\(m_currSelectedRow)},"
-//    }
-    
     public override func getFilterData() -> Any? {
         return m_currSelectedRow
     }
@@ -298,10 +289,6 @@ public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
         return DifficultyOnlyFilter(difficulty: MusicScoreData.Difficulty(rawValue: m_difficultySegmentedControl.selectedSegmentIndex)!)
     }
     
-//    public override func toJson() -> String {
-//        return "{\"type\":\(self.musicFilterType),\"value\":\(m_difficultySegmentedControl.selectedSegmentIndex)},"
-//    }
-    
     public override func getFilterData() -> Any? {
         return m_difficultySegmentedControl.selectedSegmentIndex
     }
@@ -339,7 +326,7 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     private static let allLevel10IndicatorValue = 999
     private static let allLevel9IndicatorValue = 998
     private var m_currSelectedRow = 0
-    @IBOutlet weak var m_levelLabel: UILabel!
+    @IBOutlet weak var m_levelBtn: UIButton!
     private let m_levelStrDataSource = ["10레벨 전체", "10.9", "10.8", "10.7", "10.6", "10.5", "10.4", "10.3", "10.2", "10.1", "10.0", "9레벨 전체", "9.9", "9.8", "9.7", "9.6", "9.5", "9.4", "9.3", "9.2", "9.1", "9.0", "8", "7", "6", "5", "4", "3", "2", "1"]
     private let m_levelDataSource = [allLevel10IndicatorValue, 109, 108, 107, 106, 105, 104, 103, 102, 101, 100, allLevel9IndicatorValue, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 80, 70, 60, 50, 40, 30, 20, 10]
     private var m_tapGestureRecognizer: UITapGestureRecognizer!
@@ -352,36 +339,24 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        m_levelLabel.isUserInteractionEnabled = true
-        m_levelLabel.text = self.m_levelStrDataSource[m_currSelectedRow]
-        
-        if m_tapGestureRecognizer == nil {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTouchLabel))
-            m_levelLabel.addGestureRecognizer(tapGestureRecognizer)
-            
-            m_tapGestureRecognizer = tapGestureRecognizer
-        }
+        m_levelBtn.setTitle(self.m_levelStrDataSource[m_currSelectedRow], for: .normal)
     }
-    
-//    public override func toJson() -> String {
-//        return "{\"type\":\(self.musicFilterType),\"value\":\(m_currSelectedRow)},"
-//    }
     
     public override func getFilterData() -> Any? {
         return m_currSelectedRow
     }
     
 /**@section Event handler */
-    @objc private func onTouchLabel() {
+    @IBAction func onTouchLevelBtn(_ sender: Any) {
         let pickerView = ActionSheetStringPicker(title: nil, rows: m_levelStrDataSource, initialSelection: m_currSelectedRow, doneBlock: {
             picker, selectedIndex, selectedValue in
-            self.m_levelLabel.text = self.m_levelStrDataSource[selectedIndex]
+            self.m_levelBtn.setTitle(self.m_levelStrDataSource[selectedIndex], for: .normal)
             self.m_currSelectedRow = selectedIndex
-        }, cancel: nil, origin: m_levelLabel)!
+        }, cancel: nil, origin: sender)!
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-
+        
         pickerView.pickerTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 23.0), NSAttributedString.Key.paragraphStyle: paragraphStyle]
         pickerView.show()
     }
@@ -440,13 +415,13 @@ public enum MusicFilterType : Int {
     public func toString() -> String {
         switch self {
         case .score:
-            return "스코어 범위"
+            return "스코어"
         case .versionOnly:
-            return "특정 시리즈만 표시"
+            return "시리즈"
         case .difficultyOnly:
-            return "특정 난이도만 표시"
+            return "난이도"
         case .levelOnly:
-            return "특정 레벨만 표시"
+            return "레벨"
         case .fullComboOnly:
             return "풀 콤보한 곡만 표시"
         case .fullCombo:
@@ -492,7 +467,9 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
             m_cachedMusicFilterViewController = storyboard.instantiateViewController(withIdentifier: "MusicFilterViewController") as! MusicFilterViewController
         }
         
-        let rootViewController = SBCardPopupViewController(contentViewController: m_cachedMusicFilterViewController)
+        let rootViewController = SBCardPopupViewController(contentViewController: m_cachedMusicFilterViewController) {
+            self.m_cachedMusicFilterViewController.view.endEditing(true)
+        }
         rootViewController.show(onViewController: currentViewController)
         
         m_cachedMusicFilterViewController.initialize(optOnTouchOkButton: optOnTouchOkButton)
@@ -704,25 +681,4 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
         
         popupViewController?.close()
     }
-    
-//    private func saveRecentMusicFilters() {
-//        var musicFilterCacheJson = "{["
-//
-//        let filterCellCount = m_filterTableView.numberOfRows(inSection: 0) - 1
-//        for i in 0..<filterCellCount {
-//            guard var filterCell = m_filterTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? BaseFilterUITableViewCell else {
-//                continue
-//            }
-//            musicFilterCacheJson += filterCell.toJson()
-//        }
-//        musicFilterCacheJson.removeLast()
-//        musicFilterCacheJson += "]}"
-//
-//        var musicFilterCacheJsonPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-//        musicFilterCacheJsonPath.appendPathComponent("musicFilterCache.json")
-//        do {
-//            try musicFilterCacheJson.write(to: musicFilterCacheJsonPath, atomically: false, encoding: .utf8)
-//        }
-//        catch {}
-//    }
 }

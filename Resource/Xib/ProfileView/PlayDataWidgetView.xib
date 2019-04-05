@@ -125,7 +125,6 @@
                         <constraint firstItem="5cO-Ok-tu9" firstAttribute="leading" secondItem="82C-IF-wKO" secondAttribute="leading" constant="15" id="adK-9f-eTW"/>
                         <constraint firstItem="1fl-9B-OOH" firstAttribute="top" secondItem="g0B-cJ-Uvw" secondAttribute="bottom" constant="10" id="bRv-n6-eXG"/>
                         <constraint firstItem="0HU-IC-iDb" firstAttribute="centerY" secondItem="g0B-cJ-Uvw" secondAttribute="centerY" id="jgr-fq-hil"/>
-                        <constraint firstAttribute="bottom" secondItem="vWK-if-6jI" secondAttribute="bottom" constant="15" id="nL5-5w-6y0"/>
                         <constraint firstAttribute="height" constant="160" id="qlg-p4-AbT"/>
                         <constraint firstItem="IXz-HF-nFJ" firstAttribute="centerY" secondItem="vWK-if-6jI" secondAttribute="centerY" id="tFf-eE-84r"/>
                         <constraint firstItem="Y2F-rE-lIy" firstAttribute="centerY" secondItem="K7s-nH-IZx" secondAttribute="centerY" id="tSN-P8-kU0"/>
@@ -143,7 +142,6 @@
                 <constraint firstItem="FHh-8R-SUK" firstAttribute="top" secondItem="SiH-XH-EAx" secondAttribute="top" id="HCG-0q-0va"/>
                 <constraint firstItem="82C-IF-wKO" firstAttribute="leading" secondItem="SiH-XH-EAx" secondAttribute="leading" id="VIL-5T-3Pw"/>
                 <constraint firstItem="FHh-8R-SUK" firstAttribute="bottom" secondItem="SiH-XH-EAx" secondAttribute="bottom" id="cfO-DU-tzM"/>
-                <constraint firstItem="82C-IF-wKO" firstAttribute="bottom" secondItem="SiH-XH-EAx" secondAttribute="bottom" id="egk-F5-2bL"/>
                 <constraint firstItem="82C-IF-wKO" firstAttribute="trailing" secondItem="SiH-XH-EAx" secondAttribute="trailing" id="hrS-4I-IbV"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

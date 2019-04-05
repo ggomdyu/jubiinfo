@@ -567,7 +567,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1wP-WH-OGy">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1wP-WH-OGy" customClass="EndEditTableView" customModule="jubiinfo" customModuleProvider="target">
                                 <rect key="frame" x="20" y="40" width="335" height="114"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -606,15 +606,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9fL-Oe-hoU">
-                                                    <rect key="frame" x="10" y="0.0" width="69" height="43.5"/>
+                                                    <rect key="frame" x="10" y="0.0" width="40" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="69" id="KIp-uH-vDm"/>
+                                                        <constraint firstAttribute="width" constant="40" id="KIp-uH-vDm"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="cYt-cR-lXI"/>
                                                     </constraints>
-                                                    <state key="normal" title="스코어 범위"/>
+                                                    <state key="normal" title="스코어"/>
                                                 </button>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xfd-vA-FV6" customClass="PasteDisabledUITextField" customModule="jubiinfo" customModuleProvider="target">
-                                                    <rect key="frame" x="114" y="-0.5" width="13" height="44.5"/>
+                                                    <rect key="frame" x="85" y="-0.5" width="13" height="44.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="7f6-L8-WwI"/>
                                                     </constraints>
@@ -623,7 +623,7 @@
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="1,000,000" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IEo-of-UgP" customClass="PasteDisabledUITextField" customModule="jubiinfo" customModuleProvider="target">
-                                                    <rect key="frame" x="144" y="-0.5" width="85" height="44.5"/>
+                                                    <rect key="frame" x="115" y="-0.5" width="85" height="44.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="85" id="Ern-gh-fU4"/>
                                                         <constraint firstAttribute="height" constant="44" id="sHU-Wt-WGm"/>
@@ -633,7 +633,7 @@
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYk-LQ-1Ws">
-                                                    <rect key="frame" x="131" y="12.5" width="9" height="17"/>
+                                                    <rect key="frame" x="102" y="12.5" width="9" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="9" id="nSy-yg-L24"/>
                                                         <constraint firstAttribute="height" constant="17" id="zJ2-jt-X9j"/>
@@ -670,15 +670,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMN-ko-gyC">
-                                                    <rect key="frame" x="10" y="0.0" width="112" height="43.5"/>
+                                                    <rect key="frame" x="10" y="0.0" width="40" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="112" id="gJt-f2-qHa"/>
+                                                        <constraint firstAttribute="width" constant="40" id="gJt-f2-qHa"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="ohQ-eA-ZVW"/>
                                                     </constraints>
-                                                    <state key="normal" title="특정 시리즈만 표시"/>
+                                                    <state key="normal" title="시리즈"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4D-e7-P01">
-                                                    <rect key="frame" x="162" y="0.0" width="163" height="43.5"/>
+                                                    <rect key="frame" x="90" y="0.0" width="235" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="WEg-OR-vHy"/>
                                                     </constraints>
@@ -745,36 +745,37 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muI-gL-jZ3">
-                                                    <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
+                                                    <rect key="frame" x="10" y="0.0" width="28" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="99" id="Mmp-iD-LeT"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="99" id="P57-zz-UFO"/>
+                                                        <constraint firstAttribute="width" constant="28" id="Mmp-iD-LeT"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="vPK-mi-nlv"/>
                                                     </constraints>
-                                                    <state key="normal" title="특정 레벨만 표시"/>
+                                                    <state key="normal" title="레벨"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vs6-mP-pBA">
-                                                    <rect key="frame" x="149" y="0.0" width="186" height="43.5"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtf-F2-bPe">
+                                                    <rect key="frame" x="78" y="0.0" width="247" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="43.5" id="Rb8-nD-Wtt"/>
+                                                        <constraint firstAttribute="height" constant="43.5" id="7B6-eH-jTW"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <state key="normal" title="10.9 전체"/>
+                                                    <connections>
+                                                        <action selector="onTouchLevelBtn:" destination="caf-tj-UNa" eventType="touchUpInside" id="VDo-8O-6rr"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Vs6-mP-pBA" firstAttribute="leading" secondItem="muI-gL-jZ3" secondAttribute="trailing" constant="40" id="5FS-w6-EgJ"/>
-                                                <constraint firstAttribute="trailing" secondItem="Vs6-mP-pBA" secondAttribute="trailing" id="MTr-Wm-v0S"/>
+                                                <constraint firstItem="vtf-F2-bPe" firstAttribute="leading" secondItem="muI-gL-jZ3" secondAttribute="trailing" constant="40" id="0jh-Tl-HgU"/>
+                                                <constraint firstAttribute="trailing" secondItem="vtf-F2-bPe" secondAttribute="trailing" constant="10" id="97A-68-IaY"/>
+                                                <constraint firstItem="vtf-F2-bPe" firstAttribute="top" secondItem="Lhi-Dp-GxG" secondAttribute="top" id="TJI-KX-Tvd"/>
                                                 <constraint firstItem="muI-gL-jZ3" firstAttribute="leading" secondItem="Lhi-Dp-GxG" secondAttribute="leading" constant="10" id="dPM-AY-iYO"/>
                                                 <constraint firstItem="muI-gL-jZ3" firstAttribute="top" secondItem="Lhi-Dp-GxG" secondAttribute="top" id="faI-Ud-NW8"/>
-                                                <constraint firstItem="Vs6-mP-pBA" firstAttribute="centerY" secondItem="Lhi-Dp-GxG" secondAttribute="centerY" id="nL4-VZ-07i"/>
+                                                <constraint firstAttribute="bottom" secondItem="vtf-F2-bPe" secondAttribute="bottom" id="vQU-FE-xdg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="m_button" destination="muI-gL-jZ3" id="VTj-mX-KLy"/>
-                                            <outlet property="m_levelLabel" destination="Vs6-mP-pBA" id="4xr-A2-YO4"/>
+                                            <outlet property="m_levelBtn" destination="vtf-F2-bPe" id="qDN-cv-sIN"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="difficultyOnlyFilterCellIdenfier" id="lJY-PC-vrv" customClass="DifficultyOnlyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
@@ -785,15 +786,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VzT-BP-yHo">
-                                                    <rect key="frame" x="10" y="0.0" width="112" height="43.5"/>
+                                                    <rect key="frame" x="10" y="0.0" width="40" height="43.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43.5" id="86W-L8-qKX"/>
-                                                        <constraint firstAttribute="width" constant="112" id="pIE-sn-gHc"/>
+                                                        <constraint firstAttribute="width" constant="40" id="pIE-sn-gHc"/>
                                                     </constraints>
-                                                    <state key="normal" title="특정 난이도만 표시"/>
+                                                    <state key="normal" title="난이도"/>
                                                 </button>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="wW6-Ju-3IF">
-                                                    <rect key="frame" x="155" y="8" width="185" height="29"/>
+                                                    <rect key="frame" x="90" y="8" width="235" height="29"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="kjt-tA-NCk"/>
                                                     </constraints>
@@ -806,10 +807,10 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="VzT-BP-yHo" firstAttribute="leading" secondItem="v6E-YD-9ao" secondAttribute="leading" constant="10" id="0Ph-Kt-dIv"/>
-                                                <constraint firstAttribute="trailing" secondItem="wW6-Ju-3IF" secondAttribute="trailing" constant="-5" id="Yn2-iI-UyW"/>
+                                                <constraint firstItem="wW6-Ju-3IF" firstAttribute="leading" secondItem="VzT-BP-yHo" secondAttribute="trailing" constant="40" id="Lq9-e6-Mfb"/>
+                                                <constraint firstAttribute="trailing" secondItem="wW6-Ju-3IF" secondAttribute="trailing" constant="10" id="Yn2-iI-UyW"/>
                                                 <constraint firstItem="VzT-BP-yHo" firstAttribute="top" secondItem="v6E-YD-9ao" secondAttribute="top" id="ceW-68-BSa"/>
                                                 <constraint firstItem="wW6-Ju-3IF" firstAttribute="centerY" secondItem="v6E-YD-9ao" secondAttribute="centerY" id="kOT-4v-2m7"/>
-                                                <constraint firstItem="wW6-Ju-3IF" firstAttribute="leading" secondItem="v6E-YD-9ao" secondAttribute="leading" constant="155" id="kl9-1d-F81"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
