@@ -158,7 +158,7 @@ public class MusicCellView : UIView {
         else if (score >= 500000) {
             return ("D", UIColor(red: 161 / 255, green: 161 / 255, blue: 161 / 255, alpha: 1))
         }
-        else if (score >= 1) {
+        else if (score >= 0) {
             return ("E", UIColor(red: 161 / 255, green: 161 / 255, blue: 161 / 255, alpha: 1))
         }
         else {

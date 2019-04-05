@@ -204,9 +204,9 @@ public class ScoreFilterUITableViewCell : BaseFilterUITableViewCell, UITextField
     }
 }
 
-public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+public class VersionFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Class */
-    public class MusicVersionOnlyFilter : MusicFilter {
+    public class MusicVersionFilter : MusicFilter {
     /**@section Variable */
         private var m_version: MusicScoreData.Version
         
@@ -221,10 +221,10 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
     
 /**@section Property */
-    public override var musicFilterType : MusicFilterType { return MusicFilterType.versionOnly }
+    public override var musicFilterType : MusicFilterType { return MusicFilterType.version }
     
 /**@section Variable */
-    public static let cellIdenfierName = "versionOnlyFilterCellIdenfier"
+    public static let cellIdenfierName = "versionFilterCellIdenfier"
     private var m_currSelectedRow = 0
     private let m_versionStrDataSource = ["페스토", "클랜", "큐벨", "프롭", "소서 풀필", "소서", "코피어스", "니트", "리플즈", "오리지널"]
     private let m_versionDataSource: [MusicScoreData.Version] = [.festo, .clan, .qubell, .prop, .saucerFulfill, .saucer, .copious, .knit, .ripples, .original]
@@ -232,7 +232,7 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return MusicVersionOnlyFilter(version: m_versionDataSource[m_currSelectedRow])
+        return MusicVersionFilter(version: m_versionDataSource[m_currSelectedRow])
     }
     
     override public func layoutSubviews() {
@@ -261,9 +261,9 @@ public class VersionOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
 }
 
-public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+public class DifficultyFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Class */
-    public class DifficultyOnlyFilter : MusicFilter {
+    public class DifficultyFilter : MusicFilter {
     /**@section Variable */
         private var m_difficulty: MusicScoreData.Difficulty
         
@@ -278,15 +278,15 @@ public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
     
 /**@section Property */
-    public override var musicFilterType : MusicFilterType { return MusicFilterType.difficultyOnly }
+    public override var musicFilterType : MusicFilterType { return MusicFilterType.difficulty }
     
 /**@section Variable */
-    public static let cellIdenfierName = "difficultyOnlyFilterCellIdenfier"
+    public static let cellIdenfierName = "difficultyFilterCellIdenfier"
     @IBOutlet weak var m_difficultySegmentedControl: UISegmentedControl!
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return DifficultyOnlyFilter(difficulty: MusicScoreData.Difficulty(rawValue: m_difficultySegmentedControl.selectedSegmentIndex)!)
+        return DifficultyFilter(difficulty: MusicScoreData.Difficulty(rawValue: m_difficultySegmentedControl.selectedSegmentIndex)!)
     }
     
     public override func getFilterData() -> Any? {
@@ -294,9 +294,9 @@ public class DifficultyOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
 }
 
-public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+public class LevelFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Class */
-    public class LevelOnlyFilter : MusicFilter {
+    public class LevelFilter : MusicFilter {
     /**@section Variable */
         private var m_level: Int
         
@@ -319,10 +319,10 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
     
 /**@section Property */
-    public override var musicFilterType : MusicFilterType { return MusicFilterType.levelOnly }
+    public override var musicFilterType : MusicFilterType { return MusicFilterType.level }
     
 /**@section Variable */
-    public static let cellIdenfierName = "levelOnlyFilterCellIdenfier"
+    public static let cellIdenfierName = "levelFilterCellIdenfier"
     private static let allLevel10IndicatorValue = 999
     private static let allLevel9IndicatorValue = 998
     private var m_currSelectedRow = 0
@@ -333,7 +333,7 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return LevelOnlyFilter(level: m_levelDataSource[m_currSelectedRow])
+        return LevelFilter(level: m_levelDataSource[m_currSelectedRow])
     }
     
     override public func layoutSubviews() {
@@ -362,70 +362,55 @@ public class LevelOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
     }
 }
 
-public class FullComboOnlyFilterUITableViewCell : BaseFilterUITableViewCell {
+public class FullComboFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Class */
-    public class FullComboOnlyFilter : MusicFilter {
+    public class FullComboFilter : MusicFilter {
+    /**@section Variable */
+        private var isFilterOutFullCombo: Bool
+        
+    /**@section Constructor */
+        public init(isFilterOutFullCombo: Bool) {
+            self.isFilterOutFullCombo = isFilterOutFullCombo
+        }
+        
+    /**@section Method */
         public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
             return !musicScoreData.isFullCombo
         }
     }
 
 /**@section Property */
-    public override var isNeedToCreateDisclosureView : Bool { return false }
-    public override var musicFilterType : MusicFilterType { return MusicFilterType.fullComboOnly }
-    
-/**@section Variable */
-    public static let cellIdenfierName = "fullComboOnlyFilterCellIdenfier"
-    
-/**@section Method */
-    public override func createMusicFilter() -> MusicFilter {
-        return FullComboOnlyFilter()
-    }
-}
-
-public class FullComboFilterUITableViewCell : BaseFilterUITableViewCell {
-/**@section Class */
-    public class FullComboFilter : MusicFilter {
-        public override func filterOut(musicScoreData: MusicScoreData) -> Bool {
-            return musicScoreData.isFullCombo
-        }
-    }
-    
-/**@section Property */
-    public override var isNeedToCreateDisclosureView : Bool { return false }
     public override var musicFilterType : MusicFilterType { return MusicFilterType.fullCombo }
     
 /**@section Variable */
     public static let cellIdenfierName = "fullComboFilterCellIdenfier"
+    @IBOutlet weak var m_fullComboSegmentedControl: UISegmentedControl!
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return FullComboFilter()
+        return FullComboFilter(isFilterOutFullCombo: m_fullComboSegmentedControl.selectedSegmentIndex != 0)
     }
 }
 
 public enum MusicFilterType : Int {
     case score
-    case versionOnly
-    case difficultyOnly
-    case levelOnly
-    case fullComboOnly
+    case version
+    case difficulty
+    case level
     case fullCombo
     
     public func toString() -> String {
         switch self {
         case .score:
             return "스코어"
-        case .versionOnly:
+        case .version:
             return "시리즈"
-        case .difficultyOnly:
+        case .difficulty:
             return "난이도"
-        case .levelOnly:
+        case .level:
             return "레벨"
-        case .fullComboOnly:
-            return "풀 콤보한 곡만 표시"
         case .fullCombo:
-            return "풀 콤보한 곡 제외"
+            return "풀 콤보"
         }
     }
 }
@@ -495,17 +480,14 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
             case .score:
                 return tableView.dequeueReusableCell(withIdentifier: ScoreFilterUITableViewCell.cellIdenfierName)!
                 
-            case .versionOnly:
-                return tableView.dequeueReusableCell(withIdentifier: VersionOnlyFilterUITableViewCell.cellIdenfierName)!
+            case .version:
+                return tableView.dequeueReusableCell(withIdentifier: VersionFilterUITableViewCell.cellIdenfierName)!
                 
-            case .difficultyOnly:
-                return tableView.dequeueReusableCell(withIdentifier: DifficultyOnlyFilterUITableViewCell.cellIdenfierName)!
+            case .difficulty:
+                return tableView.dequeueReusableCell(withIdentifier: DifficultyFilterUITableViewCell.cellIdenfierName)!
                 
-            case .levelOnly:
-                return tableView.dequeueReusableCell(withIdentifier: LevelOnlyFilterUITableViewCell.cellIdenfierName)!
-                
-            case .fullComboOnly:
-                return tableView.dequeueReusableCell(withIdentifier: FullComboOnlyFilterUITableViewCell.cellIdenfierName)!
+            case .level:
+                return tableView.dequeueReusableCell(withIdentifier: LevelFilterUITableViewCell.cellIdenfierName)!
                 
             case .fullCombo:
                 return tableView.dequeueReusableCell(withIdentifier: FullComboFilterUITableViewCell.cellIdenfierName)!

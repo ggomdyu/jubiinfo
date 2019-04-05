@@ -675,10 +675,10 @@ public class JubeatWebServer {
                         mmsdJson += "[\(newMusicScoreData.score),\(newMusicScoreData.isFullCombo)"
                         
                         if newMusicScoreData.score != -1 {
-                            let currUnixTime = Timestamp(Date().timeIntervalSince1970)
-                            var scoreHistories = oldMusicScoreData.scoreHistories ?? [(Timestamp(currUnixTime), oldMusicScoreData.score)]
-                            
                             mmsdJson += ",["
+                            
+                            let currUnixTime = Timestamp(Date().timeIntervalSince1970)
+                            var scoreHistories = oldMusicScoreData.scoreHistories ?? []
                             for item in scoreHistories {
                                 mmsdJson += "[\(item.0),\(item.1)],"
                             }

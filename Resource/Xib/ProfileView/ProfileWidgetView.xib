@@ -26,8 +26,8 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1We-JB-r8q" userLabel="Contents View">
-                    <rect key="frame" x="0.0" y="0.0" width="336" height="341"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1We-JB-r8q" userLabel="Contents View">
+                    <rect key="frame" x="0.0" y="0.0" width="336" height="336"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMX-Iv-IBF">
                             <rect key="frame" x="50" y="27" width="236" height="256"/>
@@ -46,13 +46,13 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="칭호" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mei-CW-MhT">
-                            <rect key="frame" x="30" y="300" width="276" height="36"/>
+                            <rect key="frame" x="30" y="300" width="276" height="19"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="0.56999999999999995" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="닉네임" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U59-FP-QJk">
-                            <rect key="frame" x="30" y="274" width="276" height="39"/>
+                            <rect key="frame" x="30" y="274" width="276" height="24"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <color key="textColor" red="0.40391749139999999" green="0.40391880270000002" blue="0.4039216638" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
@@ -61,14 +61,14 @@
                     <constraints>
                         <constraint firstItem="U59-FP-QJk" firstAttribute="top" secondItem="1We-JB-r8q" secondAttribute="top" constant="274" id="1Sp-Od-i1K"/>
                         <constraint firstItem="FMX-Iv-IBF" firstAttribute="centerX" secondItem="1We-JB-r8q" secondAttribute="centerX" id="2cd-eO-F50"/>
-                        <constraint firstAttribute="bottom" secondItem="Mei-CW-MhT" secondAttribute="bottom" constant="5" id="5Ud-qX-Hbr"/>
+                        <constraint firstAttribute="bottom" secondItem="Mei-CW-MhT" secondAttribute="bottom" constant="22" id="5Ud-qX-Hbr"/>
                         <constraint firstAttribute="trailing" secondItem="U59-FP-QJk" secondAttribute="trailing" constant="30" id="5ZV-9F-F7U"/>
                         <constraint firstItem="U59-FP-QJk" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="30" id="BPs-wI-gI2"/>
                         <constraint firstAttribute="height" constant="336" id="Cmh-tl-d3d"/>
                         <constraint firstItem="Mei-CW-MhT" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="30" id="JM0-A2-boP"/>
                         <constraint firstAttribute="trailing" secondItem="Mei-CW-MhT" secondAttribute="trailing" constant="30" id="NrY-hk-DB1"/>
                         <constraint firstItem="33Z-pd-36S" firstAttribute="top" secondItem="1We-JB-r8q" secondAttribute="top" constant="15" id="XNh-yo-mFA"/>
-                        <constraint firstAttribute="bottom" secondItem="U59-FP-QJk" secondAttribute="bottom" constant="28" id="m4U-fS-wwG"/>
+                        <constraint firstAttribute="bottom" secondItem="U59-FP-QJk" secondAttribute="bottom" constant="43" id="m4U-fS-wwG"/>
                         <constraint firstItem="Mei-CW-MhT" firstAttribute="top" secondItem="1We-JB-r8q" secondAttribute="top" constant="300" id="m5h-4F-LWI"/>
                         <constraint firstItem="FMX-Iv-IBF" firstAttribute="top" secondItem="1We-JB-r8q" secondAttribute="top" constant="27" id="wGE-7q-Ueh"/>
                         <constraint firstItem="33Z-pd-36S" firstAttribute="leading" secondItem="1We-JB-r8q" secondAttribute="leading" constant="11" id="ybj-nq-MZn"/>

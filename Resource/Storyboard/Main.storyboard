@@ -662,7 +662,7 @@
                                             <outlet property="m_tildeLabel" destination="aYk-LQ-1Ws" id="2xH-df-MbQ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="versionOnlyFilterCellIdenfier" rowHeight="44" id="PQg-Tf-tFT" customClass="VersionOnlyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="versionFilterCellIdenfier" rowHeight="44" id="PQg-Tf-tFT" customClass="VersionFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PQg-Tf-tFT" id="yeB-P5-27u">
@@ -702,43 +702,8 @@
                                             <outlet property="m_versionBtn" destination="g4D-e7-P01" id="SzW-f3-1wt"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="versionFilterCellIdenfier" id="5C3-c9-iBE" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelFilterCellIdenfier" id="caf-tj-UNa" customClass="LevelFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="160" width="335" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5C3-c9-iBE" id="pVl-lt-D5s">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaQ-zH-lgi">
-                                                    <rect key="frame" x="10" y="0.0" width="99" height="43.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="43.5" id="jW7-KY-yGv"/>
-                                                        <constraint firstAttribute="width" constant="99" id="uhu-kC-xs2"/>
-                                                    </constraints>
-                                                    <state key="normal" title="특정 시리즈 제외"/>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yal-FT-vNL">
-                                                    <rect key="frame" x="149" y="0.0" width="39" height="43.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="43.5" id="tQO-kl-R4G"/>
-                                                    </constraints>
-                                                    <state key="normal" title="페스토"/>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="yal-FT-vNL" firstAttribute="centerY" secondItem="pVl-lt-D5s" secondAttribute="centerY" id="FGh-eg-nFn"/>
-                                                <constraint firstItem="GaQ-zH-lgi" firstAttribute="top" secondItem="pVl-lt-D5s" secondAttribute="top" id="TbI-YA-j76"/>
-                                                <constraint firstItem="yal-FT-vNL" firstAttribute="leading" secondItem="GaQ-zH-lgi" secondAttribute="trailing" constant="40" id="qog-if-MFI"/>
-                                                <constraint firstItem="GaQ-zH-lgi" firstAttribute="leading" secondItem="pVl-lt-D5s" secondAttribute="leading" constant="10" id="yyM-hz-Bze"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <outlet property="m_button" destination="GaQ-zH-lgi" id="xtf-VY-ELI"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelOnlyFilterCellIdenfier" id="caf-tj-UNa" customClass="LevelOnlyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="204" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="caf-tj-UNa" id="Lhi-Dp-GxG">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
@@ -778,8 +743,8 @@
                                             <outlet property="m_levelBtn" destination="vtf-F2-bPe" id="qDN-cv-sIN"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="difficultyOnlyFilterCellIdenfier" id="lJY-PC-vrv" customClass="DifficultyOnlyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="248" width="335" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="difficultyFilterCellIdenfier" id="lJY-PC-vrv" customClass="DifficultyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="204" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lJY-PC-vrv" id="v6E-YD-9ao">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
@@ -819,79 +784,28 @@
                                             <outlet property="m_difficultySegmentedControl" destination="wW6-Ju-3IF" id="wua-5i-eJb"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboOnlyFilterCellIdenfier" id="R4g-dC-Wyw" customClass="FullComboOnlyFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="292" width="335" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R4g-dC-Wyw" id="YRv-mP-Gm2">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obz-Gw-giV">
-                                                    <rect key="frame" x="10" y="0.0" width="116" height="43.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="43.5" id="qe6-EB-TGF"/>
-                                                    </constraints>
-                                                    <state key="normal" title="풀 콤보한 곡만 표시"/>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="obz-Gw-giV" firstAttribute="leading" secondItem="YRv-mP-Gm2" secondAttribute="leading" constant="10" id="b5X-5u-jzf"/>
-                                                <constraint firstItem="obz-Gw-giV" firstAttribute="top" secondItem="YRv-mP-Gm2" secondAttribute="top" id="jRl-vl-Gmg"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <outlet property="m_button" destination="obz-Gw-giV" id="PoC-Zz-RWa"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboFilterCellIdenfier" id="BVL-0I-QwJ" customClass="FullComboFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="336" width="335" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BVL-0I-QwJ" id="0Cv-vk-h3F">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IvE-i5-Icv">
-                                                    <rect key="frame" x="10" y="0.0" width="103" height="43.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="43.5" id="5As-7k-Sj2"/>
-                                                    </constraints>
-                                                    <state key="normal" title="풀 콤보한 곡 제외"/>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="IvE-i5-Icv" firstAttribute="leading" secondItem="0Cv-vk-h3F" secondAttribute="leading" constant="10" id="38E-x8-Qba"/>
-                                                <constraint firstItem="IvE-i5-Icv" firstAttribute="top" secondItem="0Cv-vk-h3F" secondAttribute="top" id="lbL-Az-of6"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <outlet property="m_button" destination="IvE-i5-Icv" id="8AY-fO-6Kg"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="notPlayedOnlyFilterCellIdenfier" id="Ehq-9m-5t4" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="380" width="335" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fullComboFilterCellIdenfier" id="Ehq-9m-5t4" customClass="FullComboFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="248" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ehq-9m-5t4" id="30j-EG-IQt">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" tag="449" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BLN-2z-qNH">
-                                                    <rect key="frame" x="10" y="0.0" width="90" height="43.5"/>
+                                                    <rect key="frame" x="10" y="0.0" width="50" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="90" id="n4y-uN-GBq"/>
+                                                        <constraint firstAttribute="width" constant="50" id="n4y-uN-GBq"/>
                                                         <constraint firstAttribute="height" constant="43.5" id="vrg-lf-hxO"/>
                                                     </constraints>
-                                                    <state key="normal" title="풀 콤보 달성 곡"/>
+                                                    <state key="normal" title="풀 콤보"/>
                                                 </button>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Uvz-Tk-qwG">
-                                                    <rect key="frame" x="129" y="8" width="121" height="29"/>
+                                                    <rect key="frame" x="95" y="8" width="230" height="29"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="15a-Ir-gKY"/>
-                                                        <constraint firstAttribute="width" constant="121" id="XCO-g6-lvV"/>
                                                     </constraints>
                                                     <segments>
-                                                        <segment title="포함"/>
+                                                        <segment title="표시"/>
                                                         <segment title="제외"/>
                                                     </segments>
                                                 </segmentedControl>
@@ -899,17 +813,19 @@
                                             <constraints>
                                                 <constraint firstItem="Uvz-Tk-qwG" firstAttribute="centerY" secondItem="30j-EG-IQt" secondAttribute="centerY" id="GNY-sa-q6p"/>
                                                 <constraint firstItem="BLN-2z-qNH" firstAttribute="top" secondItem="30j-EG-IQt" secondAttribute="top" id="Igs-8M-0mf"/>
-                                                <constraint firstItem="Uvz-Tk-qwG" firstAttribute="leading" secondItem="BLN-2z-qNH" secondAttribute="trailing" constant="29" id="TMy-Tq-ylq"/>
+                                                <constraint firstAttribute="trailing" secondItem="Uvz-Tk-qwG" secondAttribute="trailing" constant="10" id="Q3v-N3-PJY"/>
+                                                <constraint firstItem="Uvz-Tk-qwG" firstAttribute="leading" secondItem="BLN-2z-qNH" secondAttribute="trailing" constant="35" id="TMy-Tq-ylq"/>
                                                 <constraint firstItem="BLN-2z-qNH" firstAttribute="leading" secondItem="30j-EG-IQt" secondAttribute="leading" constant="10" id="k9E-S1-Ejk"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="m_button" destination="BLN-2z-qNH" id="q8i-yh-j04"/>
+                                            <outlet property="m_fullComboSegmentedControl" destination="Uvz-Tk-qwG" id="IOv-Z6-vXv"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="notPlayedFilterCellIdenfier" id="E6I-Yi-4G8" customClass="BaseFilterUITableViewCell" customModule="jubiinfo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="424" width="335" height="44"/>
+                                        <rect key="frame" x="0.0" y="292" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E6I-Yi-4G8" id="sel-Zp-F10">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
