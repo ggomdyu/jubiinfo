@@ -104,23 +104,25 @@ public class UserData {
         public let designation: String
         public let rivalId: String
         public let emblemImageUrl: String
-        public let lastPlayedTime: String
-        public let lastPlayedLocation: String
+        public let lastPlayDate: String
+        public var lastPlayedLocation: String
+        public let lastPlayedCountry: String
         public let ranking: Int
         public let totalScore: Int64
-        public let playTuneCount: Int
+        public var playTuneCount: Int
         public let fullComboCount: Int
         public let excellentCount: Int
         
     /**@section Constructor */
-        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ lastPlayedCountry: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
         {
             self.nickname = nickname
             self.designation = designation
             self.rivalId = rivalId
             self.emblemImageUrl = emblemImageUrl
-            self.lastPlayedTime = lastPlayedTime
+            self.lastPlayDate = lastPlayedTime
             self.lastPlayedLocation = lastPlayedLocation
+            self.lastPlayedCountry = lastPlayedCountry
             self.ranking = ranking
             self.totalScore = totalScore
             self.playTuneCount = playTuneCount
@@ -188,11 +190,11 @@ public class UserData {
         public let jubility: Float
         
     /**@section Constructor */
-        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
+        public init(_ nickname: String, _ designation: String, _ rivalId: String, _ emblemImageUrl: String, _ jubility: Float, _ lastPlayedTime: String, _ lastPlayedLocation: String, _ lastPlayedCountry: String, _ ranking: Int, _  totalScore: Int64, _ playTuneCount: Int, _ fullComboCount: Int, _ excellentCount: Int)
         {
             self.jubility = jubility
             
-            super.init(nickname, designation, rivalId, emblemImageUrl, lastPlayedTime, lastPlayedLocation, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
+            super.init(nickname, designation, rivalId, emblemImageUrl, lastPlayedTime, lastPlayedLocation, lastPlayedCountry, ranking, totalScore, playTuneCount, fullComboCount, excellentCount)
         }
         
         required init(from decoder: Decoder) throws {

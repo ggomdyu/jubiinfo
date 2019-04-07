@@ -581,11 +581,11 @@ public class JubeatWebServer {
     }
     
     public static func requestCMDChecksum(onRequestComplete: @escaping (Bool, String?) -> ()) {
-#if DEBUG
+//#if DEBUG
         let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_dev.txt"
-#else
-        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_live.txt"
-#endif
+//#else
+//        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_live.txt"
+//#endif
         
         httpRequestAsync(
             queue: DispatchQueue.global(),
@@ -666,7 +666,7 @@ public class JubeatWebServer {
             for i in 0..<(newMusicScoreDatas.value.count / 3) {
                 let musicScoreDataIndex = i * 3
                 if let oldMusicScoreDatas = oldMusicScoreDatas.value[newMusicScoreDatas.value[musicScoreDataIndex].id] {
-                    mmsdJson += "\"\(oldMusicScoreDatas[0].id)\":[\"\(oldMusicScoreDatas[0].name)\",\"\(removeAccentCharacters(sourceStr: transformJapaneseToLatin(sourceStr: oldMusicScoreDatas[0].name).uppercased()))\","
+                    mmsdJson += "\"\(oldMusicScoreDatas[0].id)\":[\"\(oldMusicScoreDatas[0].name)\",\"\(oldMusicScoreDatas[0].uppercasedRomajiName))\","
                     
                     for j in 0...2 {
                         let oldMusicScoreData = oldMusicScoreDatas[j]
@@ -942,11 +942,11 @@ extension JubeatWebServer {
     private static func requestCustomMusicDatasJson(onRequestComplete: @escaping (Bool, Data?) -> Void) {
         let queue = DispatchQueue.init(label: "com.cmd.queue")
         
-#if DEBUG
+//#if DEBUG
         let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_dev.json"
-#else
-        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_live.json"
-#endif
+//#else
+//        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_live.json"
+//#endif
         
         httpRequestAsync(
             queue: queue,
@@ -1237,11 +1237,14 @@ extension JubeatWebServer {
             // Parse last played time
             let lastPlayedTimeElem = try document.select("#history > div.time").first()!
             let lastPlayedTimeSubStrs = try lastPlayedTimeElem.text().split(whereSeparator: { $0 == ":" || $0 == " " })
-            let lastPlayedTimeStr = "\(lastPlayedTimeSubStrs[1]) \(lastPlayedTimeSubStrs[2]):\(lastPlayedTimeSubStrs[3])"
+            let lastPlayedTimeStr = String(lastPlayedTimeSubStrs[1])
+            //            let lastPlayedTimeStr = "\(lastPlayedTimeSubStrs[1]) \(lastPlayedTimeSubStrs[2]):\(lastPlayedTimeSubStrs[3])" -> 2019/4/7 16:20
             
             // Parse last played location
             let lastPlayedLocationElem = try document.select("#history > div.store").first()!
-            let lastPlayedLocationStr = String(try lastPlayedLocationElem.text().split(separator: " ", maxSplits: 1, omittingEmptySubsequences: false)[1])
+            let lastPlayedLocationStrArray = try lastPlayedLocationElem.text().split(separator: " ", maxSplits: 1, omittingEmptySubsequences: false)
+            let lastPlayedCountry = String(lastPlayedLocationStrArray[0])
+            let lastPlayedLocation = String(lastPlayedLocationStrArray[1])
             
             // Parse total play tune
             let playTuneCountElem = try document.select("#number > table > tbody > tr:nth-child(1) > td:nth-child(2)").first()!
@@ -1271,7 +1274,7 @@ extension JubeatWebServer {
             rankStr.removeLast()
             let ranking = Int("\(rankStr)")!
             
-            return UserData.MyPlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, jubility, lastPlayedTimeStr, lastPlayedLocationStr, ranking, Int64(totalScore), playTuneCount, fullComboCount, excellentCount)
+            return UserData.MyPlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, jubility, lastPlayedTimeStr, lastPlayedLocation, lastPlayedCountry, ranking, Int64(totalScore), playTuneCount, fullComboCount, excellentCount)
         }
         catch {}
         
@@ -1302,11 +1305,14 @@ extension JubeatWebServer {
             // Parse last played time
             let lastPlayedTimeElem = try document.select("#history > div.time").first()!
             let lastPlayedTimeSubStrs = try lastPlayedTimeElem.text().split(whereSeparator: { $0 == ":" || $0 == " " })
-            let lastPlayedTimeStr = "\(lastPlayedTimeSubStrs[1]) \(lastPlayedTimeSubStrs[2]):\(lastPlayedTimeSubStrs[3])"
+            let lastPlayedTimeStr = String(lastPlayedTimeSubStrs[1])
+            //            let lastPlayedTimeStr = "\(lastPlayedTimeSubStrs[1]) \(lastPlayedTimeSubStrs[2]):\(lastPlayedTimeSubStrs[3])" -> 2019/4/7 16:20
             
             // Parse last played location
             let lastPlayedLocationElem = try document.select("#history > div.store").first()!
-            let lastPlayedLocationStr = String(try lastPlayedLocationElem.text().split(separator: " ", maxSplits: 1, omittingEmptySubsequences: false)[1])
+            let lastPlayedLocationStrArray = try lastPlayedLocationElem.text().split(separator: " ", maxSplits: 1, omittingEmptySubsequences: false)
+            let lastPlayedLocation = String(lastPlayedLocationStrArray[0])
+            let lastPlayedCountry = String(lastPlayedLocationStrArray[1])
             
             // Parse ranking
             let rankingElem = try document.select("#score > div:nth-child(1)").first()!
@@ -1316,7 +1322,7 @@ extension JubeatWebServer {
             let totalBestScoreElem = try document.select("#score > div:nth-child(2)").first()!
             let totalScore = Int64(try totalBestScoreElem.text().split(separator: " ", omittingEmptySubsequences: false)[4])!
             
-            return UserData.PlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, lastPlayedTimeStr, lastPlayedLocationStr, ranking, totalScore, 0, 0, 0)
+            return UserData.PlayDataPageCache(nicknameStr, designationStr, rivalIdStr, emblemImageUrlStr, lastPlayedTimeStr, lastPlayedLocation, lastPlayedCountry, ranking, totalScore, 0, 0, 0)
         }
         catch {}
         

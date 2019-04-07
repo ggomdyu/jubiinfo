@@ -14,6 +14,14 @@ public class ProfileViewEditController : EasyUITableViewController {
 /**@section Variable */
     private var m_onEditComplete: ((Bool) -> Void)?
     private var m_optThemeChangeEventObserver: EventObserver?
+    private let m_widgetCellDescs: [WidgetType: String] = [
+        WidgetType.profile: "프로필",
+        WidgetType.playData: "플레이 데이터",
+        WidgetType.omikuji: "오미쿠지",
+        WidgetType.dailyRecommended: "오늘의 추천곡",
+        WidgetType.rankDataGraphA: "랭크 데이터 그래프",
+        WidgetType.gameCenterVisitHistory: "방문 기록"
+    ]
     
 /**@section Destructor */
     deinit {
@@ -59,17 +67,9 @@ public class ProfileViewEditController : EasyUITableViewController {
     
     private func createActivatedWidgetRowDatas() -> [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)] {
         let currActiveWidgetList = SettingDataStorage.instance.getActiveWidgetList()
-        let widgetCellDescs: [WidgetType: String] = [
-            WidgetType.profile: "프로필",
-            WidgetType.playData: "플레이 데이터",
-            WidgetType.omikuji: "오미쿠지",
-            WidgetType.dailyRecommended: "오늘의 추천곡",
-            WidgetType.rankDataGraphA: "랭크 데이터 그래프"
-        ]
-        
         var ret: [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)] = []
         for currActiveWidget in currActiveWidgetList {
-            guard let widgetCellDesc = widgetCellDescs[currActiveWidget] else {
+            guard let widgetCellDesc = m_widgetCellDescs[currActiveWidget] else {
                 continue
             }
             
@@ -84,13 +84,7 @@ public class ProfileViewEditController : EasyUITableViewController {
 
     private func createDeactivatedWidgetRowDatas() -> [(rowType: RowType, initializer: (Any?) -> Void, param: Any?)] {
         let currActiveWidgetList = SettingDataStorage.instance.getActiveWidgetList()
-        let widgetCellDescs: [WidgetType: String] = [
-            WidgetType.profile: "프로필",
-            WidgetType.playData: "플레이 데이터",
-            WidgetType.omikuji: "오미쿠지",
-            WidgetType.dailyRecommended: "오늘의 추천곡",
-            WidgetType.rankDataGraphA: "랭크 데이터 그래프"
-        ].filter { (key: WidgetType, value: String) -> Bool in
+        let widgetCellDescs = m_widgetCellDescs.filter { (key: WidgetType, value: String) -> Bool in
             return currActiveWidgetList.contains(key) == false
         }
         

@@ -85,7 +85,8 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
             WidgetType.playData: { () in return self.createPlayDataWidgetView() },
             WidgetType.omikuji: { () in return self.createOmikujiWidgetView() },
             WidgetType.dailyRecommended: { () in return self.createDailyCallengeWidgetView() },
-            WidgetType.rankDataGraphA: { () in return self.createRankDataGraphWidgetView() }
+            WidgetType.rankDataGraphA: { () in return self.createRankDataGraphWidgetView() },
+            WidgetType.gameCenterVisitHistory: { () in return self.createGameCenterVisitHistoryWidgetView() }
         ]
 
         // Used to get request function that initialize the widget
@@ -258,6 +259,17 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
             view.initialize()
             
             m_cachedWidgetView[DailyChallengeMusicWidgetView.hash()] = view
+        }
+        return view
+    }
+    
+    private func createGameCenterVisitHistoryWidgetView() -> WidgetView {
+        var view: WidgetView! = m_cachedWidgetView[GameCenterVisitHistoryWidgetView.hash()]
+        if view == nil {
+            view = UINib(nibName: "GameCenterVisitHistoryWidgetView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? WidgetView
+            view.initialize()
+            
+            m_cachedWidgetView[GameCenterVisitHistoryWidgetView.hash()] = view
         }
         return view
     }

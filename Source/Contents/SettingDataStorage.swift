@@ -20,6 +20,7 @@ public enum WidgetType : Int {
     case rankDataGraphB
     case omikuji
     case dailyRecommended
+    case gameCenterVisitHistory
 }
 
 public enum ThemeType : Int, CaseIterable {

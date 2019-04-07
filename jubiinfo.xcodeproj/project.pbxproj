@@ -12,8 +12,9 @@
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
 		FD0FF50D225704A300D4E63B /* EndEditTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */; };
 		FD11B8E021B3C21D003E3403 /* ProfileWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD11B8DF21B3C21D003E3403 /* ProfileWidgetView.swift */; };
+		FD19282E22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD19282D22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift */; };
 		FD21A639220605E7008F25FA /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD21A638220605E7008F25FA /* Box.swift */; };
-		FD25202C223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */; };
+		FD25202C223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD25202B223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib */; };
 		FD262FEB220D5E1200C58BA7 /* OmikujiWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD262FDE220D5E1200C58BA7 /* OmikujiWidgetView.xib */; };
 		FD262FF0220D60D800C58BA7 /* omikuji01.png in Resources */ = {isa = PBXBuildFile; fileRef = FD262FEE220D60D800C58BA7 /* omikuji01.png */; };
 		FD262FF1220D60D800C58BA7 /* omikuji02.png in Resources */ = {isa = PBXBuildFile; fileRef = FD262FEF220D60D800C58BA7 /* omikuji02.png */; };
@@ -96,7 +97,7 @@
 		FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250821AC50FE008C7DB1 /* Point.swift */; };
 		FDD2251021AC51D3008C7DB1 /* JubeatWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2250F21AC51D3008C7DB1 /* JubeatWebServer.swift */; };
 		FDD8F6F6221834120005A90A /* LineDashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD8F6F5221834120005A90A /* LineDashView.swift */; };
-		FDD8F704221920B90005A90A /* VisitedGameCenterWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDD8F703221920B90005A90A /* VisitedGameCenterWidgetView.xib */; };
+		FDD8F704221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDD8F703221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib */; };
 		FDD8F7062219268D0005A90A /* PlayDataWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD8F7052219268D0005A90A /* PlayDataWidgetView.swift */; };
 		FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDAFEEF21B997150044F5C0 /* UIUtility.swift */; };
 		FDE1436521ECE9A000BC9924 /* MusicDetailScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE1436421ECE9A000BC9924 /* MusicDetailScoreView.swift */; };
@@ -355,8 +356,9 @@
 		FD11B8DF21B3C21D003E3403 /* ProfileWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileWidgetView.swift; sourceTree = "<group>"; };
 		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-1.4.3/Motion.xcodeproj"; sourceTree = "<group>"; };
 		FD15B4C021A720440013BB97 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.7.3/Alamofire.xcodeproj"; sourceTree = "<group>"; };
+		FD19282D22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterVisitHistoryWidgetView.swift; sourceTree = "<group>"; };
 		FD21A638220605E7008F25FA /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
-		FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VisitedGameCenterWidgetCellView.xib; sourceTree = "<group>"; };
+		FD25202B223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameCenterVisitHistoryWidgetCellView.xib; sourceTree = "<group>"; };
 		FD262FDE220D5E1200C58BA7 /* OmikujiWidgetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OmikujiWidgetView.xib; sourceTree = "<group>"; };
 		FD262FEE220D60D800C58BA7 /* omikuji01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omikuji01.png; sourceTree = "<group>"; };
 		FD262FEF220D60D800C58BA7 /* omikuji02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omikuji02.png; sourceTree = "<group>"; };
@@ -437,7 +439,7 @@
 		FDD2250821AC50FE008C7DB1 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		FDD2250F21AC51D3008C7DB1 /* JubeatWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JubeatWebServer.swift; sourceTree = "<group>"; };
 		FDD8F6F5221834120005A90A /* LineDashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineDashView.swift; sourceTree = "<group>"; };
-		FDD8F703221920B90005A90A /* VisitedGameCenterWidgetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VisitedGameCenterWidgetView.xib; sourceTree = "<group>"; };
+		FDD8F703221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameCenterVisitHistoryWidgetView.xib; sourceTree = "<group>"; };
 		FDD8F7052219268D0005A90A /* PlayDataWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayDataWidgetView.swift; sourceTree = "<group>"; };
 		FDDAFEEF21B997150044F5C0 /* UIUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtility.swift; sourceTree = "<group>"; };
 		FDE1436421ECE9A000BC9924 /* MusicDetailScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDetailScoreView.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				FD46C0BC2211C3BF00632493 /* DailyChallengeMusicWidgetView.swift */,
 				FD262FF2220D629400C58BA7 /* OmikujiWidgetView.swift */,
 				FDC0141921BE0BBB0070EC37 /* RankDataGraphWidgetView.swift */,
+				FD19282D22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -844,8 +847,8 @@
 				FDC66FA221D14E290094F322 /* ProfileWidgetView.xib */,
 				FD262FDE220D5E1200C58BA7 /* OmikujiWidgetView.xib */,
 				FDC66FA821D175270094F322 /* RankDataGraphWidgetView.xib */,
-				FDD8F703221920B90005A90A /* VisitedGameCenterWidgetView.xib */,
-				FD25202B223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib */,
+				FDD8F703221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib */,
+				FD25202B223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -1234,10 +1237,10 @@
 				FD262FF1220D60D800C58BA7 /* omikuji02.png in Resources */,
 				FD2D860F21EB6B7C00FAE9E2 /* NanumSquareRegular.ttf in Resources */,
 				FD262FEB220D5E1200C58BA7 /* OmikujiWidgetView.xib in Resources */,
-				FD25202C223E986300CB11FE /* VisitedGameCenterWidgetCellView.xib in Resources */,
+				FD25202C223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib in Resources */,
 				FD4C4C7621AECEBB00ABCE53 /* Main.storyboard in Resources */,
 				FD7F6192222D7C56006FE95B /* background_clan.png in Resources */,
-				FDD8F704221920B90005A90A /* VisitedGameCenterWidgetView.xib in Resources */,
+				FDD8F704221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib in Resources */,
 				FDC48F5F220B4D6F0032602B /* silverCrown.png in Resources */,
 				FDC66FA721D170AC0094F322 /* PlayDataWidgetView.xib in Resources */,
 				FD7F64D72199D62200E534E7 /* Assets.xcassets in Resources */,
@@ -1276,6 +1279,7 @@
 				FD11B8E021B3C21D003E3403 /* ProfileWidgetView.swift in Sources */,
 				FDCC76052219D61A00FD5356 /* MusicFilterViewController.swift in Sources */,
 				FD5C1107224531AF00571201 /* Log.swift in Sources */,
+				FD19282E22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift in Sources */,
 				FDD2250621AC50F0008C7DB1 /* Color.swift in Sources */,
 				FDD8F7062219268D0005A90A /* PlayDataWidgetView.swift in Sources */,
 				FDA70D3621B2572500B551F8 /* LoginViewToolBarController.swift in Sources */,
