@@ -18,7 +18,14 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
 /**@section Method */
     public func initialize(countryName: String, gameCenterName: String, visitDate: String, playTuneCount: Int) {
         m_gameCenterName.text = self.convertCountryNameToEmoji(countryName: countryName) + gameCenterName
-        m_detailLabel.text = visitDate + "(\(playTuneCount)튠)"
+        
+        if playTuneCount == 0 {
+            m_detailLabel.text = visitDate + "(0튠 이상)"
+        }
+        else {
+            m_detailLabel.text = visitDate + "(\(playTuneCount)튠)"
+        }
+        
     }
     
     private func convertCountryNameToEmoji(countryName: String) -> String {
@@ -61,9 +68,6 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         guard let playDataPageCache = DataStorage.instance.queryMyUserData().playDataPageCache else {
             return
         }
-        
-        playDataPageCache.playTuneCount += 122
-        playDataPageCache.lastPlayedLocation = "BEATLAB"
         
         self.parseVisitHistories(parseDest: &m_visitHistories)
         
@@ -133,9 +137,9 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
             let cell = self.createGameCenterVisitHistoryWidgetViewCell()
             
             let playTuneCount = visitHistories[i].3
-            let nextPlayTuneCount = (i + 1 >= visitHistories.count) ? DataStorage.instance.queryMyUserData().playDataPageCache!.playTuneCount : visitHistories[i + 1].3
+            let prevPlayTuneCount = (i - 1 < 0) ? visitHistories[i].3 : visitHistories[i - 1].3
             
-            cell.initialize(countryName: visitHistories[i].0, gameCenterName: visitHistories[i].1, visitDate: visitHistories[i].2, playTuneCount: nextPlayTuneCount - playTuneCount)
+            cell.initialize(countryName: visitHistories[i].0, gameCenterName: visitHistories[i].1, visitDate: visitHistories[i].2, playTuneCount: playTuneCount - prevPlayTuneCount)
             
             self.layout(cell).centerHorizontally().top(45.0 + (cell.frame.height * CGFloat(i))).left(0.0).right(0.0)
         }
