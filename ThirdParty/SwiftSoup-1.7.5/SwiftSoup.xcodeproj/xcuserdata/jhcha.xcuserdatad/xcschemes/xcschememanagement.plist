@@ -7,22 +7,25 @@
 		<key>SwiftSoup-iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
-		<key>SwiftSoup-macOS.xcscheme_^#shared#^_</key>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>BD3B5B681FBED933001FDB3B</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
+			<key>primary</key>
+			<true/>
 		</dict>
-		<key>SwiftSoup-tvOS.xcscheme_^#shared#^_</key>
+		<key>BD3B5BAB1FC063BD001FDB3B</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>9</integer>
+			<key>primary</key>
+			<true/>
 		</dict>
-		<key>SwiftSoup-watchOS.xcscheme_^#shared#^_</key>
+		<key>BD3B5BEE1FC06423001FDB3B</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>10</integer>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
