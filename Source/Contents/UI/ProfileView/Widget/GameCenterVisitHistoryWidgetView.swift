@@ -48,7 +48,9 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
 
 public class GameCenterVisitHistoryWidgetView : WidgetView {
     @IBOutlet weak var m_contentsView: UIView!
+    @IBOutlet weak var m_contentsViewHeightConstraint: NSLayoutConstraint!
     private var m_visitHistories: [(String, String, String, Int)] = []
+    private var m_tickTimer = TickTimer()
     
 /**@section Variable */
     public override var lazyInitializeEventName: String {
@@ -60,6 +62,8 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         super.initialize()
         
         m_contentsView.alpha = 0.0
+        m_contentsViewHeightConstraint.constant = 60
+        self.layoutIfNeeded()
     }
     
     public override func lazyInitialize(_ param: Any?) {
@@ -83,7 +87,7 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
                     m_visitHistories.append((playDataPageCache.lastPlayedCountry, playDataPageCache.lastPlayedLocation, playDataPageCache.lastPlayDate, playDataPageCache.playTuneCount))
                 }
                 else {
-                    needToWriteJson = false
+                    m_visitHistories[m_visitHistories.count - 1].3 = playDataPageCache.playTuneCount
                 }
             }
             else {
@@ -99,6 +103,16 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         }
         
         self.prepareVisitHistoryCell(visitHistories: &m_visitHistories)
+        
+        let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
+        m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(strongSelf.m_visitHistories.count) * 24.0) * interpolated
+        })
         
         m_contentsView.animate(.fadeIn)
     }
@@ -141,7 +155,7 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
             
             cell.initialize(countryName: visitHistories[i].0, gameCenterName: visitHistories[i].1, visitDate: visitHistories[i].2, playTuneCount: playTuneCount - prevPlayTuneCount)
             
-            self.layout(cell).centerHorizontally().top(45.0 + (cell.frame.height * CGFloat(i))).left(0.0).right(0.0)
+            self.layout(cell).top(45.0 + (cell.frame.height * CGFloat(i))).left(0.0).right(0.0)
         }
     }
     
