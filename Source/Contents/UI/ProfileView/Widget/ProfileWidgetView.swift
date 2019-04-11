@@ -21,7 +21,7 @@ class ProfileWidgetView : WidgetView {
 
 /**@section Property */
     override var canBecomeFirstResponder: Bool { return true }
-
+    override public var lazyInitializeParam: Any? { return DataStorage.instance.queryMyUserData().playDataPageCache }
     
 /**@section Variable */
     public override var lazyInitializeEventName: String {
@@ -38,17 +38,16 @@ class ProfileWidgetView : WidgetView {
     
 /**@section Method */
     public override func initialize() {
-        super.initialize()
-
         m_contentsView.alpha = 0.0
         m_emblemImageView.alpha = 0.0
+        
+        super.initialize()
     }
     
     public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
-        let myUserData = DataStorage.instance.queryMyUserData()
-        guard let myPlayDataPageCache = myUserData.playDataPageCache as? UserData.MyPlayDataPageCache else {
+        guard let myPlayDataPageCache = param as? UserData.MyPlayDataPageCache else {
             return
         }
         

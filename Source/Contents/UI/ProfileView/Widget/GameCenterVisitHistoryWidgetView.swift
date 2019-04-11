@@ -20,7 +20,7 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
         m_gameCenterName.text = self.convertCountryNameToEmoji(countryName: countryName) + gameCenterName
         
         if playTuneCount == 0 {
-            m_detailLabel.text = visitDate + "(0튠 이상)"
+            m_detailLabel.text = visitDate + "(0튠~)"
         }
         else {
             m_detailLabel.text = visitDate + "(\(playTuneCount)튠)"
@@ -56,6 +56,7 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
     public override var lazyInitializeEventName: String {
         return "requestMyPlayDataPageCacheComplete"
     }
+    override public var lazyInitializeParam: Any? { return DataStorage.instance.queryMyUserData().playDataPageCache }
 
 /**@section Method */
     public override func initialize() {
@@ -105,6 +106,9 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         self.prepareVisitHistoryCell(visitHistories: &m_visitHistories)
         
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
+        
+        (self.superview as! CustomStackView).setHeight(height: CGFloat(m_visitHistories.count) * 24.0)
+        
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
             guard let strongSelf = self else {
                 return

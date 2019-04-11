@@ -106,7 +106,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
             let widget = widgetCreator()
             
             // If the widget was not initialized, add a request into the batch.
-            if widget.isLazyInitialized == false {
+            if widget.isNeedToLazyInitialize {
                 widgetInitEventNameBatch.insert(widget.lazyInitializeEventName)
             }
             

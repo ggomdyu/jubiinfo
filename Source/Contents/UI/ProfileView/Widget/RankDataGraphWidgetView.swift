@@ -27,12 +27,13 @@ public class RankDataGraphWidgetView : WidgetView {
     public override var lazyInitializeEventName: String {
         return "requestMyRankDataPageCacheComplete"
     }
+    override public var lazyInitializeParam: Any? { return DataStorage.instance.queryMyUserData().rankDataPageCache }
     
 /**@section Method */
     public override func initialize() {
-        super.initialize()
-        
         m_contentsView.alpha = 0.0
+        
+        super.initialize()
     }
     
     public override func lazyInitialize(_ param: Any?) {

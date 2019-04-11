@@ -27,12 +27,13 @@ class DailyChallengeMusicWidgetView : WidgetView {
     public override var lazyInitializeEventName: String {
         return "requestTopPageCacheComplete"
     }
+    override public var lazyInitializeParam: Any? { return DataStorage.instance.queryMyUserData().topPageCache }
     
 /**@section Method */
     public override func initialize() {
-        super.initialize()
-        
         m_contentsView.alpha = 0.0
+        
+        super.initialize()
     }
     
     public override func lazyInitialize(_ param: Any?) {

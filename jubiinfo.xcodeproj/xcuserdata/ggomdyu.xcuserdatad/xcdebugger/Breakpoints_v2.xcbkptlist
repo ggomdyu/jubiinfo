@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Contents/UI/MusicDataView/Cell/MusicCellView.swift"
-            timestampString = "576338014.74561"
+            timestampString = "576690482.294125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
@@ -64,22 +64,6 @@
             startingLineNumber = "66"
             endingLineNumber = "66"
             landmarkName = "parseVisitHistory(parseDest:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Contents/UI/ProfileView/ProfileViewController.swift"
-            timestampString = "576356630.224354"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
-            landmarkName = "createGameCenterVisitHistoryWidgetView()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

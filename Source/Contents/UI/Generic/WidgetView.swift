@@ -16,17 +16,10 @@ public class WidgetView : UIView {
     public var lazyInitializeEventName: String {
         return ""
     }
-    public var isLazyInitialized: Bool {
-        get {
-            return m_isLazyInitialized
-        }
-        set {
-            m_isLazyInitialized = newValue
-        }
-    }
-
+    public var isNeedToLazyInitialize: Bool { return lazyInitializeParam == nil }
+    public var lazyInitializeParam: Any? { return nil }
+    
 /**@section Variable */
-    private var m_isLazyInitialized: Bool = false
     private var m_optEventObserver: EventObserver?
     
 /**@section Destructor */
@@ -39,18 +32,20 @@ public class WidgetView : UIView {
     
 /**@section Method */
     public func initialize() {
-        if m_isLazyInitialized == false {
+        if self.isNeedToLazyInitialize {
             self.subscribeLazyInitEventObserver()
+        }
+        else {
+            self.lazyInitialize(self.lazyInitializeParam)
         }
     }
     
     public func lazyInitialize(_ param: Any?) {
-        m_isLazyInitialized = true
     }
     
     private func subscribeLazyInitEventObserver() {
         if m_optEventObserver == nil {
-            let eventObserver = EventObserver(releaseAfterDispatch: false) { [weak self] (param: Any?) -> Void in
+            let eventObserver = EventObserver(releaseAfterDispatch: true) { [weak self] (param: Any?) -> Void in
                 guard let strongSelf = self else {
                     return
                 }
