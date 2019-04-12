@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jubiinfoText.png" translatesAutoresizingMaskIntoConstraints="NO" id="zcG-VM-Wli">
-                                <rect key="frame" x="50" y="122" width="275" height="60"/>
+                                <rect key="frame" x="119" y="122" width="137.5" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="zlh-cT-J53"/>
                                 </constraints>
@@ -920,8 +920,99 @@
             </objects>
             <point key="canvasLocation" x="1678" y="663"/>
         </scene>
+        <!--Omikuji Widget Setting View Controller-->
+        <scene sceneID="dI4-wR-0FX">
+            <objects>
+                <viewController storyboardIdentifier="OmikujiWidgetSettingViewController" id="m04-oS-NJw" customClass="OmikujiWidgetSettingViewController" customModule="jubiinfo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ozs-1R-wt5"/>
+                        <viewControllerLayoutGuide type="bottom" id="pwn-r1-pZe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="T4V-SL-eUT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iTN-Wh-oal">
+                                <rect key="frame" x="20" y="10" width="335" height="220"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="레벨 범위" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyA-Qd-5TK">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="30"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="RlJ-wl-TTg"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HzS-cG-7r0">
+                                        <rect key="frame" x="0.0" y="30" width="335" height="5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="5" id="ttA-bv-DSu"/>
+                                        </constraints>
+                                    </view>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="giA-rQ-j5I">
+                                        <rect key="frame" x="0.0" y="35" width="335" height="145"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="140" id="zjd-Cs-6vw"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </pickerView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jcl-GK-RI6">
+                                        <rect key="frame" x="0.0" y="180" width="335" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="XHc-sQ-ygx"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                        <state key="normal" title="확인"/>
+                                        <connections>
+                                            <action selector="onTouchOkBtn:" destination="m04-oS-NJw" eventType="touchUpInside" id="BlK-oP-bNM"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Jcl-GK-RI6" firstAttribute="leading" secondItem="iTN-Wh-oal" secondAttribute="leading" id="CR2-YW-gfJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="HzS-cG-7r0" secondAttribute="trailing" id="ZPR-Hx-xFw"/>
+                                    <constraint firstAttribute="trailing" secondItem="PyA-Qd-5TK" secondAttribute="trailing" id="bN0-Qz-OVO"/>
+                                    <constraint firstAttribute="trailing" secondItem="giA-rQ-j5I" secondAttribute="trailing" id="cqW-TF-FzB"/>
+                                    <constraint firstItem="HzS-cG-7r0" firstAttribute="leading" secondItem="iTN-Wh-oal" secondAttribute="leading" id="cra-kh-gMY"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jcl-GK-RI6" secondAttribute="trailing" id="l3j-rT-uL4"/>
+                                    <constraint firstItem="PyA-Qd-5TK" firstAttribute="leading" secondItem="iTN-Wh-oal" secondAttribute="leading" id="rwK-Av-yBo"/>
+                                    <constraint firstItem="giA-rQ-j5I" firstAttribute="leading" secondItem="iTN-Wh-oal" secondAttribute="leading" id="zKc-YU-TZu"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="iTN-Wh-oal" secondAttribute="trailing" constant="20" id="9Md-bb-aHB"/>
+                            <constraint firstItem="iTN-Wh-oal" firstAttribute="top" secondItem="T4V-SL-eUT" secondAttribute="top" constant="10" id="hJi-fe-S1n"/>
+                            <constraint firstItem="pwn-r1-pZe" firstAttribute="top" secondItem="iTN-Wh-oal" secondAttribute="bottom" constant="10" id="iaz-hm-ad7"/>
+                            <constraint firstItem="iTN-Wh-oal" firstAttribute="leading" secondItem="T4V-SL-eUT" secondAttribute="leading" constant="20" id="zS7-an-f3i"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="0Dg-9n-lSM"/>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="240"/>
+                    <connections>
+                        <outlet property="m_levelPickerView" destination="giA-rQ-j5I" id="NTu-bY-m9n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0A8-rw-bVc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1708" y="193"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="jubiinfoText.png" width="275" height="102"/>
+        <image name="jubiinfoText.png" width="137.5" height="51"/>
     </resources>
 </document>

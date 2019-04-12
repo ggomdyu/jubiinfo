@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Material
 
 public class OmikujiWidgetView : WidgetView {
 /**@section Variable */
@@ -39,10 +40,11 @@ public class OmikujiWidgetView : WidgetView {
         
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTouchView)))
         
-        m_randomPickedMusicCoverImageView.isUserInteractionEnabled = true
-        m_randomPickedMusicCoverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTouchMusicCoverView)))
-        
         self.playOmikujiBoxDropAnim()
+        
+        let settingBtn = IconButton(image: Icon.cm.settings, tintColor: .lightGray)
+        settingBtn.addTarget(self, action: #selector(onTouchSettingBtn), for: .touchUpInside)
+        self.layout(settingBtn).right(12.0).top(12.0).width(18).height(18)
     }
     
     private func prepareRandomMusicPickResultView(randomPickedMusicData: MusicScoreData) {
@@ -154,5 +156,18 @@ public class OmikujiWidgetView : WidgetView {
         m_retryBtn.isUserInteractionEnabled = false
         
         self.playOmikujiBoxDropAnim()
+    }
+    
+    @objc private func onTouchSettingBtn() {
+        self.endEditing(true)
+        
+        OmikujiWidgetSettingViewController.show(currentViewController: self.parentViewController!)
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        m_randomPickedMusicCoverImageView.isUserInteractionEnabled = true
+        m_randomPickedMusicCoverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTouchMusicCoverView)))
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6213438D22604321007487A8 /* OmikujiWidgetSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */; };
 		62712A4D225E0AF800181A76 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 62712A38225E07AA00181A76 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		62ED01B421C2185900056141 /* SettingDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62ED01B321C2185900056141 /* SettingDataStorage.swift */; };
 		FD093FF02222DA9E00593069 /* ProfileViewEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */; };
@@ -339,6 +340,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmikujiWidgetSettingViewController.swift; sourceTree = "<group>"; };
 		62712A2C225E07AA00181A76 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.8.0/Alamofire.xcodeproj"; sourceTree = "<group>"; };
 		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-2.16.4/Material.xcodeproj"; sourceTree = "<group>"; };
 		62ED01B321C2185900056141 /* SettingDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDataStorage.swift; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 				FD262FF2220D629400C58BA7 /* OmikujiWidgetView.swift */,
 				FDC0141921BE0BBB0070EC37 /* RankDataGraphWidgetView.swift */,
 				FD19282D22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift */,
+				6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -1318,6 +1321,7 @@
 				FD7F64D02199D62100E534E7 /* LoginViewController.swift in Sources */,
 				FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */,
 				FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */,
+				6213438D22604321007487A8 /* OmikujiWidgetSettingViewController.swift in Sources */,
 				FD342C81224807A1001096DA /* EndEditScrollView.swift in Sources */,
 				FD32E4FD21BEC4F5001DF4CB /* Task.swift in Sources */,
 				FD9366B52200CB9D00919C67 /* MusicCellDetailView.swift in Sources */,
