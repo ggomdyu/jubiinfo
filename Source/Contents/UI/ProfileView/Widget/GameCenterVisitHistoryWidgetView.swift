@@ -14,6 +14,7 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
 /**@section Variable */
     @IBOutlet weak var m_gameCenterName: UILabel!
     @IBOutlet weak var m_detailLabel: UILabel!
+    @IBOutlet weak var m_lineView: LineDashView!
     
 /**@section Method */
     public func initialize(countryName: String, gameCenterName: String, visitDate: String, playTuneCount: Int) {
@@ -25,7 +26,6 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
         else {
             m_detailLabel.text = visitDate + "(\(playTuneCount)튠)"
         }
-        
     }
     
     private func convertCountryNameToEmoji(countryName: String) -> String {
@@ -44,15 +44,21 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
             return "🇯🇵"
         }
     }
+    
+    public func deactivateBottomLine() {
+        m_lineView.isHidden = true
+    }
 }
 
 public class GameCenterVisitHistoryWidgetView : WidgetView {
+/**@section Variable */
     @IBOutlet weak var m_contentsView: UIView!
     @IBOutlet weak var m_contentsViewHeightConstraint: NSLayoutConstraint!
     private var m_visitHistories: [(String, String, String, Int)] = []
     private var m_tickTimer = TickTimer()
+    private let m_visitHistoryWidgetCellHeight: CGFloat = 24.0
     
-/**@section Variable */
+/**@section Property */
     public override var lazyInitializeEventName: String {
         return "requestMyPlayDataPageCacheComplete"
     }
@@ -60,11 +66,10 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
 
 /**@section Method */
     public override func initialize() {
-        super.initialize()
-        
         m_contentsView.alpha = 0.0
-        m_contentsViewHeightConstraint.constant = 60
-        self.layoutIfNeeded()
+        m_contentsViewHeightConstraint.constant = 55
+        
+        super.initialize()
     }
     
     public override func lazyInitialize(_ param: Any?) {
@@ -105,17 +110,17 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         
         self.prepareVisitHistoryCell(visitHistories: &m_visitHistories)
         
+
+        (self.superview as? CustomStackView)?.setHeight(height: CGFloat(m_visitHistories.count) * m_visitHistoryWidgetCellHeight)
+        
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
-        
-        (self.superview as! CustomStackView).setHeight(height: CGFloat(m_visitHistories.count) * 24.0)
-        
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
             guard let strongSelf = self else {
                 return
             }
             
             let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
-            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(strongSelf.m_visitHistories.count) * 24.0) * interpolated
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(strongSelf.m_visitHistories.count) * strongSelf.m_visitHistoryWidgetCellHeight) * interpolated
         })
         
         m_contentsView.animate(.fadeIn)
@@ -159,7 +164,11 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
             
             cell.initialize(countryName: visitHistories[i].0, gameCenterName: visitHistories[i].1, visitDate: visitHistories[i].2, playTuneCount: playTuneCount - prevPlayTuneCount)
             
-            self.layout(cell).top(45.0 + (cell.frame.height * CGFloat(i))).left(0.0).right(0.0)
+            if i == visitHistories.count - 1 {
+                cell.deactivateBottomLine()
+            }
+            
+            self.layout(cell).top(42.0 + (m_visitHistoryWidgetCellHeight * CGFloat(i))).left(0.0).right(0.0)
         }
     }
     
