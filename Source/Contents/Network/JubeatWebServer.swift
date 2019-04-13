@@ -581,12 +581,12 @@ public class JubeatWebServer {
     }
     
     public static func requestCMDChecksum(onRequestComplete: @escaping (Bool, String?) -> ()) {
-//#if DEBUG
+#if DEBUG
         let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_dev.txt"
-//#else
-//        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_live.txt"
-//#endif
-        
+#else
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_live.txt"
+#endif
+
         httpRequestAsync(
             queue: DispatchQueue.global(),
             url: url,
@@ -942,11 +942,11 @@ extension JubeatWebServer {
     private static func requestCustomMusicDatasJson(onRequestComplete: @escaping (Bool, Data?) -> Void) {
         let queue = DispatchQueue.init(label: "com.cmd.queue")
         
-//#if DEBUG
+#if DEBUG
         let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_dev.json"
-//#else
-//        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_live.json"
-//#endif
+#else
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_live.json"
+#endif
         
         httpRequestAsync(
             queue: queue,

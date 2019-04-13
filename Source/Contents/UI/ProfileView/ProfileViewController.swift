@@ -191,24 +191,22 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
             }
         }
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + 5.0) {
-            JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
-                if isRequestSucceed {
-                    DataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
+        JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
+            if isRequestSucceed {
+                DataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
+                
+                runTaskInMainThread {
+                    EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)
                     
-                    runTaskInMainThread {
-                        EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)
-                        
-                        if isOldChecksum {
-                            self.showSnackbar(text: "음악 스코어 갱신 완료!", showTime: 2.0)
-                        }
+                    if isOldChecksum {
+                        self.showSnackbar(text: "음악 스코어 갱신 완료!", showTime: 2.0)
                     }
                 }
-                else {
-                    if isOldChecksum {
-                        runTaskInMainThread {
-                            self.showSnackbar(text: "음악 스코어 갱신 실패", showTime: 2.0)
-                        }
+            }
+            else {
+                if isOldChecksum {
+                    runTaskInMainThread {
+                        self.showSnackbar(text: "음악 스코어 갱신 실패", showTime: 2.0)
                     }
                 }
             }
