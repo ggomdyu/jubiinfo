@@ -21,11 +21,14 @@ class EditNicknameViewController : EasyUITableViewController, UITextFieldDelegat
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let viewController = storyboard.instantiateViewController(withIdentifier: "EditNicknameViewController") as! EditNicknameViewController
-        let toolBarController = EditNicknameViewToolbarController(rootViewController: viewController, onTouchPrevBtn: viewController.onTouchPrevBtn, onTouchEditCompleteBtn: viewController.onTouchEditCompleteBtn)
-        toolBarController.isMotionEnabled = true
-        toolBarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         
-        currentViewController.present(toolBarController, animated: true)
+        let toolbarController = EditNicknameViewToolbarController(rootViewController: viewController, onTouchPrevBtn: viewController.onTouchPrevBtn, onTouchEditCompleteBtn: viewController.onTouchEditCompleteBtn)
+        
+        let snackbarController = SnackbarController(rootViewController: toolbarController)
+        snackbarController.isMotionEnabled = true
+        snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        
+        currentViewController.present(snackbarController, animated: true)
     }
     
     override func viewDidLoad() {

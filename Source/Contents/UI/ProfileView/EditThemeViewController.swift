@@ -29,11 +29,14 @@ class EditThemeViewController : EasyUITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let viewController = storyboard.instantiateViewController(withIdentifier: "EditThemeViewController") as! EditThemeViewController
-        let toolBarController = EditThemeViewToolBarController(rootViewController: viewController, onTouchEditCompleteBtn: viewController.onTouchEditCompleteBtn)
-        toolBarController.isMotionEnabled = true
-        toolBarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         
-        currentViewController.present(toolBarController, animated: true)
+        let toolBarController = EditThemeViewToolBarController(rootViewController: viewController, onTouchEditCompleteBtn: viewController.onTouchEditCompleteBtn)
+        
+        let snackbarController = SnackbarController(rootViewController: toolBarController)
+        snackbarController.isMotionEnabled = true
+        snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        
+        currentViewController.present(snackbarController, animated: true)
     }
     
     override func viewDidLoad() {

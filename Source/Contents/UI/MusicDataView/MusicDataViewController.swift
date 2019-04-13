@@ -31,22 +31,22 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     
 /**@section Method */
     public static func show(currentViewController: UIViewController) {
-        let navigationDrawerController = self.create()
-        currentViewController.present(navigationDrawerController, animated: true)
+        let controller = self.create()
+        currentViewController.present(controller, animated: true)
         
-        let viewController = (navigationDrawerController.rootViewController as! ToolbarController).rootViewController as! MusicDataViewController
+        let viewController = ((controller.rootViewController as! NavigationDrawerController).rootViewController as! ToolbarController).rootViewController as! MusicDataViewController
         viewController.initialize()
     }
     
     public static func show(currentViewController: UIViewController, musicId: MusicId) {
-        let navigationDrawerController = self.create()
-        currentViewController.present(navigationDrawerController, animated: true)
+        let controller = self.create()
+        currentViewController.present(controller, animated: true)
         
-        let viewController = (navigationDrawerController.rootViewController as! ToolbarController).rootViewController as! MusicDataViewController
+        let viewController = ((controller.rootViewController as! NavigationDrawerController).rootViewController as! ToolbarController).rootViewController as! MusicDataViewController
         viewController.initialize(musicId: musicId)
     }
     
-    private static func create() -> NavigationDrawerController  {
+    private static func create() -> TransitionController  {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let musicDataViewController = storyboard.instantiateViewController(withIdentifier: "MusicDataViewController") as! MusicDataViewController
@@ -54,11 +54,13 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let toolBarController = MusicDataViewToolBarController(rootViewController: musicDataViewController)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController)
-        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
-        navigationDrawerController.isMotionEnabled = true
         navigationDrawerController.isHiddenStatusBarEnabled = false
         
-        return navigationDrawerController
+        let snackbarController = SnackbarController(rootViewController: navigationDrawerController)
+        snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        snackbarController.isMotionEnabled = true
+        
+        return snackbarController
     }
     
     public func initialize() {

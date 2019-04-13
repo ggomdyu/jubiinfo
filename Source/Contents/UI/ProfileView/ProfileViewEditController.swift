@@ -32,15 +32,17 @@ public class ProfileViewEditController : EasyUITableViewController {
     }
     
 /**@section Method */
-    public static func create(onEditComplete: ((Bool) -> Void)?) -> ProfileViewEditToolbarController {
+    public static func show(currentViewController: UIViewController, onEditComplete: ((Bool) -> Void)?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let profileViewEditController = storyboard.instantiateViewController(withIdentifier: "ProfileViewEditController") as! ProfileViewEditController
         
-        let toolBarController = ProfileViewEditToolbarController(rootViewController: profileViewEditController, onTouchEditCompleteBtn: profileViewEditController.onEditComplete)
+        let toolbarController = ProfileViewEditToolbarController(rootViewController: profileViewEditController, onTouchEditCompleteBtn: profileViewEditController.onEditComplete)
         profileViewEditController.initialize(onEditComplete: onEditComplete)
         
-        return toolBarController
+        let snackbarController = SnackbarController(rootViewController: toolbarController)
+        
+        currentViewController.present(snackbarController, animated: true)
     }
     
     public func initialize(onEditComplete: ((Bool) -> Void)?) {

@@ -38,6 +38,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        
         let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController, onEditComplete: profileViewController.onEditComplete)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
@@ -45,10 +46,12 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
         navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         navigationDrawerController.isHiddenStatusBarEnabled = false
         
-        return navigationDrawerController
+        let snackBarController = SnackbarController(rootViewController: navigationDrawerController)
+        
+        return snackBarController
     }
     
-    open override func prepare() {
+    override func prepare() {
         super.prepare()
         
         self.requestMyPlayDataPageCache()
@@ -181,12 +184,32 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
     }
     
     private func requestMyMusicScoreData(serverMMSDChecksum: Int) {
-        JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
-            if isRequestSucceed {
-                DataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
-                
-                runTaskInMainThread {
-                    EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)
+        let isOldChecksum = JubeatWebServer.isMMSDChecksumOld(serverMMSDChecksum: serverMMSDChecksum)
+        if isOldChecksum {
+            runTaskInMainThread {
+                self.showSnackbar(text: "음악 스코어 갱신 시작", showTime: 2.0)
+            }
+        }
+        
+        DispatchQueue.global().asyncAfter(deadline: .now() + 5.0) {
+            JubeatWebServer.requestMyMusicScoreData(serverMMSDChecksum: serverMMSDChecksum) { (isRequestSucceed: Bool, musicScoreDatas: Box<[MusicScoreData]>) in
+                if isRequestSucceed {
+                    DataStorage.instance.queryMyUserData().musicScoreDataCaches = musicScoreDatas
+                    
+                    runTaskInMainThread {
+                        EventDispatcher.instance.dispatchEvent(eventType: "requestMyMusicScoreDataComplete", eventParam: musicScoreDatas)
+                        
+                        if isOldChecksum {
+                            self.showSnackbar(text: "음악 스코어 갱신 완료!", showTime: 2.0)
+                        }
+                    }
+                }
+                else {
+                    if isOldChecksum {
+                        runTaskInMainThread {
+                            self.showSnackbar(text: "음악 스코어 갱신 실패", showTime: 2.0)
+                        }
+                    }
                 }
             }
         }
@@ -272,6 +295,36 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
             m_cachedWidgetView[GameCenterVisitHistoryWidgetView.hash()] = view
         }
         return view
+    }
+    
+    private func showSnackbar(text: String, showTime: TimeInterval) {
+        guard let snackbarController = getVisibleSnackbarController() else {
+            return
+        }
+        
+        snackbarController.snackbar.text = text
+
+        snackbarController.animate(snackbar: .visible, delay: 0.0)
+        snackbarController.animate(snackbar: .hidden, delay: showTime)
+        
+        snackbarController.view.endEditing(true)
+    }
+    
+    private func getVisibleSnackbarController() -> SnackbarController? {
+        guard var currPresentedViewController = self.presentedViewController else {
+            return self.snackbarController
+        }
+        
+        // Find the top-most presented view controller
+        while true {
+            guard let nextPresentedViewController = currPresentedViewController.presentedViewController else {
+                break
+            }
+            
+            currPresentedViewController = nextPresentedViewController
+        }
+        
+        return currPresentedViewController.snackbarController
     }
     
 /**@section Event handler */
@@ -378,7 +431,6 @@ public class ProfileViewToolBarController: ToolbarController {
     }
     
     @objc private func onTouchEditButton() {
-        let profileViewEditController = ProfileViewEditController.create(onEditComplete: m_onEditComplete)
-        navigationDrawerController?.present(profileViewEditController, animated: true)
+        ProfileViewEditController.show(currentViewController: navigationDrawerController!, onEditComplete: m_onEditComplete)
     }
 }

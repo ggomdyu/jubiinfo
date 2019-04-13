@@ -84,6 +84,7 @@
             <connections>
                 <outlet property="m_detailLabel" destination="Y2F-rE-lIy" id="dFC-qb-3ZX"/>
                 <outlet property="m_gameCenterName" destination="K7s-nH-IZx" id="kDB-gb-k5H"/>
+                <outlet property="m_lineView" destination="lzk-0X-ITh" id="jjf-86-fhC"/>
             </connections>
             <point key="canvasLocation" x="138.40000000000001" y="116.49175412293854"/>
         </view>
