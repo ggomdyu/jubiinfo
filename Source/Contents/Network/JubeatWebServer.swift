@@ -259,6 +259,8 @@ public class MusicScoreData : Comparable {
 
 public typealias MusicScoreDataCaches = Box<[MusicScoreData]>
 
+public typealias MusicNewRecordHistories = [Timestamp: [MusicId: [(MusicScoreData.Difficulty, Int)]]]
+
 /**@brief   This parser does not execute DOM parsing for performance. */
 class MusicScoreDataPageParser {
 /**@section Variable */
@@ -654,6 +656,10 @@ public class JubeatWebServer {
             
             let oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]> = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
             
+            let todayInMillisecond = Timestamp(Date().noon.timeIntervalSince1970)
+            var isExistNewRecord = false
+            var newRecordHistories = self.parseNewRecordHistories()
+            
             Debug.log("Waiting for load all of the music score data page... (musicScoreDataPageEndIndex:\(musicScoreDataPageEndIndex))")
             
             // Wait until all music data request have completed.
@@ -686,7 +692,16 @@ public class JubeatWebServer {
                             let isScoreNewRecord = newMusicScoreData.score > oldMusicScoreData.score
                             if isScoreNewRecord {
                                 mmsdJson += "[\(currUnixTime),\(newMusicScoreData.score)]]"
+                                
                                 scoreHistories.append((currUnixTime, newMusicScoreData.score))
+                                
+                                if let newRecordHistory = newRecordHistories[todayInMillisecond] {
+                                    
+                                }
+                                else {
+                                    
+                                }
+                                isExistNewRecord = true
                             }
                             else {
                                 mmsdJson.removeLast()
@@ -729,12 +744,16 @@ public class JubeatWebServer {
             do {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
                 
+                if isExistNewRecord {
+                    self.writeNewRecordHistoriesToJson(newRecordHistories: &newRecordHistories)
+                }
+                
                 let settingDataStorage = SettingDataStorage.instance
                 if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                     settingDataStorage.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_appVersion", value: appVersion)
                 }
                 
-                SettingDataStorage.instance.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
+                settingDataStorage.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
                 
                 onRequestComplete(true, newMusicScoreDatas)
                 return
@@ -1491,6 +1510,91 @@ extension JubeatWebServer {
                 ))
             }
         }
+    }
+    
+    public static func writeNewRecordHistoriesToJson(newRecordHistories: inout MusicNewRecordHistories) {
+        var newRecordHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        newRecordHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_newRecordHistoryPath.json")
+        
+        var newRecordHistoriesJson = "{"
+        
+        for newRecordHistory in newRecordHistories {
+            // Timestamp
+            newRecordHistoriesJson += "\"\(newRecordHistory.key)\":["
+            
+            // Score
+            for (key, value) in newRecordHistory.value {
+                newRecordHistoriesJson += "[\(key),"
+                for i in 0..<value.count {
+                    newRecordHistoriesJson += "[\(value[i].0.rawValue),\(value[i].1)],"
+                }
+                newRecordHistoriesJson.removeLast()
+                newRecordHistoriesJson += "],"
+            }
+            newRecordHistoriesJson.removeLast()
+            newRecordHistoriesJson += "],"
+        }
+        
+        newRecordHistoriesJson.removeLast()
+        newRecordHistoriesJson += "}"
+        
+        try? newRecordHistoriesJson.write(to: newRecordHistoryPath, atomically: false, encoding: .utf8)
+    }
+    
+    public static func parseNewRecordHistories() -> MusicNewRecordHistories {
+        var newRecordHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        newRecordHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_newRecordHistoryPath.json")
+        
+        var optJsonDict: [String: [String: Any]]?
+        do {
+            let jsonData = try Data(contentsOf: newRecordHistoryPath)
+            optJsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [String: Any]]
+        }
+        catch {}
+        
+        guard let jsonDict = optJsonDict else {
+            return [:]
+        }
+        
+        for jsonElem in jsonDict {
+//            let musicId = Int(jsonElem.key)!
+//            let musicName = jsonElem.value[0] as! String
+//
+//            let customMusicData = DataStorage.instance.queryCustomMusicData(musicId: musicId)
+//            let uppercasedRomajiMusicName = jsonElem.value[1] as! String
+//
+//            for i in 2...4 {
+//                var optMusicScoreHistories: [(Timestamp, MusicScore)]? = nil
+//                let musicScoreHistoryItems = jsonElem.value[i] as! [Any]
+//                if musicScoreHistoryItems.count >= 3 {
+//                    var musicScoreHistories = [(Timestamp, MusicScore)] ()
+//                    for musicScoreHistory in musicScoreHistoryItems[2] as! [[Any]] {
+//                        let timestamp = musicScoreHistory[0] as! Timestamp
+//                        let musicScore = musicScoreHistory[1] as! MusicScore
+//                        musicScoreHistories.append((timestamp, musicScore))
+//                    }
+//
+//                    optMusicScoreHistories = musicScoreHistories
+//                }
+//
+//                let musicScore = musicScoreHistoryItems[0] as! Int
+//                let isFullCombo = musicScoreHistoryItems[1] as! Bool
+//                parseResultHandler(MusicScoreData(
+//                    simpleData: MusicScoreData.SimpleData(
+//                        name: musicName,
+//                        uppercasedRomajiName: uppercasedRomajiMusicName,
+//                        id: musicId,
+//                        score: musicScore,
+//                        difficulty: MusicScoreData.Difficulty(rawValue: i - 2)!,
+//                        isFullCombo: isFullCombo,
+//                        scoreHistory: optMusicScoreHistories
+//                    ),
+//                    customData: customMusicData
+//                ))
+//            }
+        }
+        
+        return [:]
     }
     
     private static func parseRankDataPageHtml(response: String) -> UserData.RankDataPageCache? {

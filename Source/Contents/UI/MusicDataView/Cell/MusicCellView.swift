@@ -19,6 +19,7 @@ public class MusicCellView : UIView {
     @IBOutlet weak var m_excRankLabel: UIView!
     @IBOutlet weak var m_rankLabel: UILabel!
     @IBOutlet weak var m_scoreLabel: UILabel!
+    @IBOutlet weak var m_newScoreLabel: UILabel!
     @IBOutlet weak var m_fullComboLabel: UILabel!
     private var m_musicScoreData: MusicScoreData!
     private var m_onTouchCell: (() -> Void)?

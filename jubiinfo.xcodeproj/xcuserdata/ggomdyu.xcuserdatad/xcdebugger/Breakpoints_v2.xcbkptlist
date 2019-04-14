@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Contents/UI/MusicDataView/Cell/MusicCellView.swift"
-            timestampString = "576776320.16399"
+            timestampString = "576958615.048193"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "initialize(musicScoreData:onTouchCell:)"
             landmarkType = "7">
          </BreakpointContent>

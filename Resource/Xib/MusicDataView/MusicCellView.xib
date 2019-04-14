@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -141,6 +141,12 @@
                             <color key="textColor" red="0.9176368117" green="0.1886506677" blue="0.35292774440000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+258000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g9O-1d-Fy5">
+                            <rect key="frame" x="312" y="53" width="45" height="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                            <color key="textColor" red="0.96029883620000001" green="0.74336105590000001" blue="0.2547183931" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <constraints>
                         <constraint firstItem="T5b-kI-YP4" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="15" id="5an-yE-AJA"/>
@@ -152,11 +158,13 @@
                         <constraint firstAttribute="trailing" secondItem="T5b-kI-YP4" secondAttribute="trailing" constant="7" id="Qb2-hx-ZH7"/>
                         <constraint firstItem="K9R-vC-sHS" firstAttribute="leading" secondItem="ydV-yS-ies" secondAttribute="trailing" constant="13" id="WaU-zi-CLm"/>
                         <constraint firstItem="ZKh-tH-H3z" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="36" id="ZER-1b-sUk"/>
+                        <constraint firstItem="g9O-1d-Fy5" firstAttribute="top" secondItem="ZKh-tH-H3z" secondAttribute="bottom" constant="-4" id="abb-8U-Fbv"/>
                         <constraint firstItem="byf-2Q-f4n" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="15" id="gNd-po-8Vd"/>
                         <constraint firstItem="K9R-vC-sHS" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="39" id="hLs-tQ-p2g"/>
                         <constraint firstItem="ydV-yS-ies" firstAttribute="leading" secondItem="FYX-rP-FS3" secondAttribute="leading" constant="6" id="iDj-9j-2r1"/>
                         <constraint firstItem="OyN-3v-PFP" firstAttribute="centerY" secondItem="ZKh-tH-H3z" secondAttribute="centerY" id="j6Y-jP-hIR"/>
                         <constraint firstItem="ZKh-tH-H3z" firstAttribute="leading" secondItem="OyN-3v-PFP" secondAttribute="trailing" constant="4.5" id="jjL-DO-J8f"/>
+                        <constraint firstAttribute="trailing" secondItem="g9O-1d-Fy5" secondAttribute="trailing" constant="8" id="sGR-1O-VuQ"/>
                         <constraint firstAttribute="trailing" secondItem="ZKh-tH-H3z" secondAttribute="trailing" constant="8" id="ytv-kO-haQ"/>
                         <constraint firstItem="2LA-1r-L7p" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="16" id="zP5-4R-jsk"/>
                     </constraints>
@@ -194,6 +202,7 @@
                 <outlet property="m_jacketImageView" destination="N3j-KI-mX6" id="5lR-7Y-4tl"/>
                 <outlet property="m_musicArtistNameLabel" destination="K9R-vC-sHS" id="RMc-Nx-7fe"/>
                 <outlet property="m_musicNameLabel" destination="2LA-1r-L7p" id="lsE-55-byK"/>
+                <outlet property="m_newScoreLabel" destination="g9O-1d-Fy5" id="P1u-Gi-qIC"/>
                 <outlet property="m_rankLabel" destination="T5b-kI-YP4" id="kya-Jt-SFS"/>
                 <outlet property="m_scoreLabel" destination="ZKh-tH-H3z" id="0Iq-qF-h7C"/>
             </connections>
