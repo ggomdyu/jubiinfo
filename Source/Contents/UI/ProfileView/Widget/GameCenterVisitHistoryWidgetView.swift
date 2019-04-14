@@ -3,7 +3,7 @@
 //  jubiinfo
 //
 //  Created by ggomdyu on 07/04/2019.
-//  Copyright © 2019 차준호. All rights reserved.
+//  Copyright © 2019 ggomdyu. All rights reserved.
 //
 
 import Foundation
@@ -57,6 +57,8 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
     private var m_visitHistories: [(String, String, String, Int)] = []
     private var m_tickTimer = TickTimer()
     private let m_visitHistoryWidgetCellHeight: CGFloat = 24.0
+    private let m_maxVisibleCellCount = 5
+    private let m_visitHistoryMaxSaveCount = 15
     
 /**@section Property */
     public override var lazyInitializeEventName: String {
@@ -110,8 +112,7 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         
         self.prepareVisitHistoryCell(visitHistories: &m_visitHistories)
         
-
-        (self.superview as? CustomStackView)?.setHeight(height: CGFloat(m_visitHistories.count) * m_visitHistoryWidgetCellHeight)
+        (self.superview as? CustomStackView)?.setHeight(height: CGFloat(min(m_maxVisibleCellCount, m_visitHistories.count)) * m_visitHistoryWidgetCellHeight)
         
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
@@ -120,7 +121,7 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
             }
             
             let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
-            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(strongSelf.m_visitHistories.count) * strongSelf.m_visitHistoryWidgetCellHeight) * interpolated
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(min(strongSelf.m_maxVisibleCellCount, strongSelf.m_visitHistories.count)) * strongSelf.m_visitHistoryWidgetCellHeight) * interpolated
         })
         
         m_contentsView.animate(.fadeIn)
@@ -146,7 +147,8 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         gameCenterVisitHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_gameCenterVisitHistory.json")
         
         var jsonStr = "["
-        for visitHistory in visitHistories {
+        for i in max(0, visitHistories.count - m_visitHistoryMaxSaveCount)..<visitHistories.count {
+            var visitHistory = visitHistories[i]
             jsonStr += "[\"\(visitHistory.0)\", \"\(visitHistory.1)\", \"\(visitHistory.2)\", \(visitHistory.3)],"
         }
         jsonStr.removeLast()
@@ -156,7 +158,8 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
     }
     
     private func prepareVisitHistoryCell(visitHistories: inout [(String, String, String, Int)]) {
-        for i in 0..<visitHistories.count {
+        var iterIndex = 0
+        for i in max(0, visitHistories.count - m_maxVisibleCellCount)..<visitHistories.count {
             let cell = self.createGameCenterVisitHistoryWidgetViewCell()
             
             let playTuneCount = visitHistories[i].3
@@ -168,7 +171,9 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
                 cell.deactivateBottomLine()
             }
             
-            self.layout(cell).top(42.0 + (m_visitHistoryWidgetCellHeight * CGFloat(i))).left(0.0).right(0.0)
+            self.layout(cell).top(42.0 + (m_visitHistoryWidgetCellHeight * CGFloat(iterIndex))).left(0.0).right(0.0)
+            
+            iterIndex += 1
         }
     }
     
