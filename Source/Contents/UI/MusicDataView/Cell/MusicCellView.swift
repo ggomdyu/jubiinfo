@@ -47,6 +47,7 @@ public class MusicCellView : UIView {
         self.prepareJacketEdgeColor(musicScoreData: musicScoreData)
         self.prepareRankLabel(musicScoreData: musicScoreData)
         self.prepareScoreLabel(musicScoreData: musicScoreData)
+        self.prepareNewScoreLabel(musicScoreData: musicScoreData)
         self.prepareBackgroundColor(musicScoreData: musicScoreData)
     }
     
@@ -105,6 +106,18 @@ public class MusicCellView : UIView {
         }
         
         m_scoreLabel.text = "\(musicScoreData.score)"
+    }
+    
+    private func prepareNewScoreLabel(musicScoreData: MusicScoreData) {
+        guard musicScoreData.isNotPlayedYet,
+              let newRecordHistory = DataStorage.instance.queryNewRecordHistory().value[Timestamp(Date().noon.timeIntervalSince1970)],
+              let musicNewRecordSet = newRecordHistory[musicScoreData.id],
+              let musicNewRecord = musicNewRecordSet.first(where: { (item: (MusicScoreData.Difficulty, Int)) -> Bool in return item.0 == musicScoreData.difficulty }) else {
+            m_newScoreLabel.isHidden = true
+            return
+        }
+        
+        m_newScoreLabel.text = "\(musicNewRecord.1)"
     }
     
     private func prepareMusicArtistNameLabel(musicScoreData: MusicScoreData) {

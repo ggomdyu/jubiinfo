@@ -119,7 +119,7 @@ public class MusicScoreData : Comparable {
         public let name: String
         public let uppercasedRomajiName: String
         public let id: Int
-        public let score: Int
+        public var score: Int
         public let difficulty: Difficulty
         public let isFullCombo: Bool
         public var scoreHistories: [(Timestamp, MusicScore)]?
@@ -258,8 +258,6 @@ public class MusicScoreData : Comparable {
 }
 
 public typealias MusicScoreDataCaches = Box<[MusicScoreData]>
-
-public typealias MusicNewRecordHistories = [Timestamp: [MusicId: [(MusicScoreData.Difficulty, Int)]]]
 
 /**@brief   This parser does not execute DOM parsing for performance. */
 class MusicScoreDataPageParser {
@@ -623,7 +621,7 @@ public class JubeatWebServer {
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
-        if isOldChecksum {
+        if true {
             let newMusicScoreDatas = MusicScoreDataCaches ([])
             
             // Start to request music score data.
@@ -656,7 +654,7 @@ public class JubeatWebServer {
             
             let oldMusicScoreDatas: Box<[MusicId: [MusicScoreData]]> = self.parseMMSDCacheDictionary(mmsdCachePath: mmsdCachePath)
             
-            let todayInMillisecond = Timestamp(Date().noon.timeIntervalSince1970)
+            let todayUnixTimeInMillisecond = Timestamp(Date().noon.timeIntervalSince1970)
             var isExistNewRecord = false
             var newRecordHistories = self.parseNewRecordHistories()
             
@@ -664,6 +662,11 @@ public class JubeatWebServer {
             
             // Wait until all music data request have completed.
             SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
+            
+            var a = newMusicScoreDatas.value.filter { (item: MusicScoreData) -> Bool in
+                return item.uppercasedRomajiName.contains("TANPOPO")
+            }
+            a[0].simpleData!.score = 1000000
             
             // Create a json that used to cache the music data received from the server.
             var mmsdJson = "{"
@@ -695,11 +698,16 @@ public class JubeatWebServer {
                                 
                                 scoreHistories.append((currUnixTime, newMusicScoreData.score))
                                 
-                                if let newRecordHistory = newRecordHistories[todayInMillisecond] {
-                                    
+                                if var newRecordHistory = newRecordHistories.value[todayUnixTimeInMillisecond] {
+                                    if var newRecordInfo = newRecordHistory[newMusicScoreData.id] {
+                                        newRecordInfo.append((newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score))
+                                    }
+                                    else {
+                                        newRecordHistory[newMusicScoreData.id] = [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]
+                                    }
                                 }
                                 else {
-                                    
+                                    newRecordHistories.value[todayUnixTimeInMillisecond] = [newMusicScoreData.id: [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]]
                                 }
                                 isExistNewRecord = true
                             }
@@ -744,16 +752,18 @@ public class JubeatWebServer {
             do {
                 try mmsdJson.write(to: mmsdCachePath, atomically: false, encoding: .utf8)
                 
-                if isExistNewRecord {
-                    self.writeNewRecordHistoriesToJson(newRecordHistories: &newRecordHistories)
-                }
-                
                 let settingDataStorage = SettingDataStorage.instance
                 if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                     settingDataStorage.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_appVersion", value: appVersion)
                 }
                 
                 settingDataStorage.setConfig(key: "\(settingDataStorage.getActiveUserId().hash)_mmsdChecksum", value: serverMMSDChecksum)
+                
+                if isExistNewRecord {
+                    self.writeNewRecordHistoriesToJson(newRecordHistories: &newRecordHistories)
+                }
+                
+                DataStorage.instance.initNewRecordHistories(newRecordHistories: newRecordHistories)
                 
                 onRequestComplete(true, newMusicScoreDatas)
                 return
@@ -762,7 +772,9 @@ public class JubeatWebServer {
         }
         
         let musicScoreDatas = self.parseMMSDCacheArray(mmsdCachePath: mmsdCachePath)
-    
+        
+        DataStorage.instance.initNewRecordHistories(newRecordHistories: self.parseNewRecordHistories())
+        
         onRequestComplete(musicScoreDatas.value.count > 0, musicScoreDatas)
     }
     
@@ -1445,7 +1457,7 @@ extension JubeatWebServer {
     }
     
     private static func parseMMSDCacheDictionary(mmsdCachePath: URL) -> Box<[MusicId: [MusicScoreData]]> {
-        let ret = Box<[MusicId: [MusicScoreData]]> ([MusicId: [MusicScoreData]] ())
+        let ret = Box<[MusicId: [MusicScoreData]]> ([:])
         
         var musicScoreDatas = [MusicScoreData] ()
         musicScoreDatas.reserveCapacity(3)
@@ -1518,7 +1530,7 @@ extension JubeatWebServer {
         
         var newRecordHistoriesJson = "{"
         
-        for newRecordHistory in newRecordHistories {
+        for newRecordHistory in newRecordHistories.value {
             // Timestamp
             newRecordHistoriesJson += "\"\(newRecordHistory.key)\":["
             
@@ -1553,7 +1565,7 @@ extension JubeatWebServer {
         catch {}
         
         guard let jsonDict = optJsonDict else {
-            return [:]
+            return MusicNewRecordHistories([:])
         }
         
         for jsonElem in jsonDict {
@@ -1594,7 +1606,7 @@ extension JubeatWebServer {
 //            }
         }
         
-        return [:]
+        return MusicNewRecordHistories([:])
     }
     
     private static func parseRankDataPageHtml(response: String) -> UserData.RankDataPageCache? {
