@@ -109,15 +109,15 @@ public class MusicCellView : UIView {
     }
     
     private func prepareNewScoreLabel(musicScoreData: MusicScoreData) {
-        guard musicScoreData.isNotPlayedYet,
+        guard musicScoreData.isNotPlayedYet == false,
               let newRecordHistory = DataStorage.instance.queryNewRecordHistory().value[Timestamp(Date().noon.timeIntervalSince1970)],
-              let musicNewRecordSet = newRecordHistory[musicScoreData.id],
-              let musicNewRecord = musicNewRecordSet.first(where: { (item: (MusicScoreData.Difficulty, Int)) -> Bool in return item.0 == musicScoreData.difficulty }) else {
+              let newRecordInfo = newRecordHistory[musicScoreData.id]?.first(where: { (item: (MusicScoreData.Difficulty, Int)) -> Bool in return item.0 == musicScoreData.difficulty })
+        else {
             m_newScoreLabel.isHidden = true
             return
         }
         
-        m_newScoreLabel.text = "\(musicNewRecord.1)"
+        m_newScoreLabel.text = "+\(newRecordInfo.1)"
     }
     
     private func prepareMusicArtistNameLabel(musicScoreData: MusicScoreData) {

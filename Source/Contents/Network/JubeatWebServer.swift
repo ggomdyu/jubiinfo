@@ -621,7 +621,7 @@ public class JubeatWebServer {
         
         // If the checksum is old, then we will refresh the score data via parsing the web data.
         // Also checksum will be refreshed too.
-        if true {
+        if isOldChecksum {
             let newMusicScoreDatas = MusicScoreDataCaches ([])
             
             // Start to request music score data.
@@ -662,11 +662,6 @@ public class JubeatWebServer {
             
             // Wait until all music data request have completed.
             SpinLock { return musicScoreDataRequestCompleteCount >= musicScoreDataPageEndIndex }
-            
-            var a = newMusicScoreDatas.value.filter { (item: MusicScoreData) -> Bool in
-                return item.uppercasedRomajiName.contains("TANPOPO")
-            }
-            a[0].simpleData!.score = 1000000
             
             // Create a json that used to cache the music data received from the server.
             var mmsdJson = "{"
@@ -1557,56 +1552,40 @@ extension JubeatWebServer {
         var newRecordHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         newRecordHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_newRecordHistoryPath.json")
         
-        var optJsonDict: [String: [String: Any]]?
+        var optJsonDict: [String: [Any]]?
         do {
             let jsonData = try Data(contentsOf: newRecordHistoryPath)
-            optJsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [String: Any]]
+            optJsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [Any]]
         }
         catch {}
         
+        let ret = MusicNewRecordHistories([:])
+        
         guard let jsonDict = optJsonDict else {
-            return MusicNewRecordHistories([:])
+            return ret
         }
         
         for jsonElem in jsonDict {
-//            let musicId = Int(jsonElem.key)!
-//            let musicName = jsonElem.value[0] as! String
-//
-//            let customMusicData = DataStorage.instance.queryCustomMusicData(musicId: musicId)
-//            let uppercasedRomajiMusicName = jsonElem.value[1] as! String
-//
-//            for i in 2...4 {
-//                var optMusicScoreHistories: [(Timestamp, MusicScore)]? = nil
-//                let musicScoreHistoryItems = jsonElem.value[i] as! [Any]
-//                if musicScoreHistoryItems.count >= 3 {
-//                    var musicScoreHistories = [(Timestamp, MusicScore)] ()
-//                    for musicScoreHistory in musicScoreHistoryItems[2] as! [[Any]] {
-//                        let timestamp = musicScoreHistory[0] as! Timestamp
-//                        let musicScore = musicScoreHistory[1] as! MusicScore
-//                        musicScoreHistories.append((timestamp, musicScore))
-//                    }
-//
-//                    optMusicScoreHistories = musicScoreHistories
-//                }
-//
-//                let musicScore = musicScoreHistoryItems[0] as! Int
-//                let isFullCombo = musicScoreHistoryItems[1] as! Bool
-//                parseResultHandler(MusicScoreData(
-//                    simpleData: MusicScoreData.SimpleData(
-//                        name: musicName,
-//                        uppercasedRomajiName: uppercasedRomajiMusicName,
-//                        id: musicId,
-//                        score: musicScore,
-//                        difficulty: MusicScoreData.Difficulty(rawValue: i - 2)!,
-//                        isFullCombo: isFullCombo,
-//                        scoreHistory: optMusicScoreHistories
-//                    ),
-//                    customData: customMusicData
-//                ))
-//            }
+            let timestamp = Timestamp(jsonElem.key) ?? 0
+
+            var parsedNewRecordMusicDict: [MusicId: [(MusicScoreData.Difficulty, Int)]] = [:]
+            for i in 0..<jsonElem.value.count {
+                var parsedNewRecordMusicArray: [(MusicScoreData.Difficulty, Int)] = []
+                
+                let newRecordMusicInfoArray = jsonElem.value[i] as! [Any]
+                for i in 1..<newRecordMusicInfoArray.count {
+                    var newRecordInfo = newRecordMusicInfoArray[i] as! [Int]
+                    parsedNewRecordMusicArray.append((MusicScoreData.Difficulty(rawValue: Int(newRecordInfo[0]))!, Int(newRecordInfo[1])))
+                }
+                
+                let musicId = newRecordMusicInfoArray[0] as! Int
+                parsedNewRecordMusicDict[musicId] = parsedNewRecordMusicArray
+            }
+            
+            ret.value[timestamp] = parsedNewRecordMusicDict
         }
         
-        return MusicNewRecordHistories([:])
+        return ret
     }
     
     private static func parseRankDataPageHtml(response: String) -> UserData.RankDataPageCache? {
