@@ -41,10 +41,6 @@ public class OmikujiWidgetView : WidgetView {
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTouchView)))
         
         self.playOmikujiBoxDropAnim()
-        
-        let settingBtn = IconButton(image: Icon.cm.settings, tintColor: .lightGray)
-        settingBtn.addTarget(self, action: #selector(onTouchSettingBtn), for: .touchUpInside)
-        self.layout(settingBtn).right(12.0).top(12.0).width(18).height(18)
     }
     
     private func prepareRandomMusicPickResultView(randomPickedMusicData: MusicScoreData) {

@@ -41,6 +41,8 @@ public class ProfileViewEditController : EasyUITableViewController {
         profileViewEditController.initialize(onEditComplete: onEditComplete)
         
         let snackbarController = SnackbarController(rootViewController: toolbarController)
+        snackbarController.isMotionEnabled = true
+        snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .up))
         
         currentViewController.present(snackbarController, animated: true)
     }
@@ -239,9 +241,6 @@ public class ProfileViewEditToolbarController: ToolbarController {
 /**@section Method */
     open override func prepare() {
         super.prepare()
-        
-        self.isMotionEnabled = true
-        self.motionTransitionType = .autoReverse(presenting: .push(direction: .up))
         
         self.prepareUI()
         self.prepareEventObserver()

@@ -42,11 +42,11 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
         let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController, onEditComplete: profileViewController.onEditComplete)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
-        navigationDrawerController.isMotionEnabled = true
-        navigationDrawerController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         navigationDrawerController.isHiddenStatusBarEnabled = false
         
         let snackBarController = SnackbarController(rootViewController: navigationDrawerController)
+        snackBarController.isMotionEnabled = true
+        snackBarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         
         return snackBarController
     }
