@@ -54,11 +54,9 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
 /**@section Variable */
     @IBOutlet weak var m_contentsView: UIView!
     @IBOutlet weak var m_contentsViewHeightConstraint: NSLayoutConstraint!
-    private var m_visitHistories: [(String, String, String, Int)] = []
     private var m_tickTimer = TickTimer()
     private let m_visitHistoryWidgetCellHeight: CGFloat = 24.0
     private let m_maxVisibleCellCount = 5
-    private let m_visitHistoryMaxSaveCount = 15
     
 /**@section Property */
     public override var lazyInitializeEventName: String {
@@ -77,42 +75,10 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
     public override func lazyInitialize(_ param: Any?) {
         super.lazyInitialize(param)
         
-        guard let playDataPageCache = DataStorage.instance.queryMyUserData().playDataPageCache else {
-            return
-        }
+        let gameCenterVisitHistories = DataStorage.instance.queryGameCenterVisitHistories()
+        self.prepareVisitHistoryCell(gameCenterVisitHistories: gameCenterVisitHistories)
         
-        self.parseVisitHistories(parseDest: &m_visitHistories)
-        
-        var needToWriteJson = true
-        if let recentVisitHistory = m_visitHistories.last {
-            // If play tune count has changed
-            let isDifferentPlayTuneCount = recentVisitHistory.3 != playDataPageCache.playTuneCount
-            if isDifferentPlayTuneCount {
-                // And location has not changed
-                let isDifferentLocation = (recentVisitHistory.0 != playDataPageCache.lastPlayedCountry || recentVisitHistory.1 != playDataPageCache.lastPlayedLocation)
-                let isDifferentPlayDate = recentVisitHistory.2 != playDataPageCache.lastPlayDate
-                if isDifferentLocation || isDifferentPlayDate {
-                    m_visitHistories.append((playDataPageCache.lastPlayedCountry, playDataPageCache.lastPlayedLocation, playDataPageCache.lastPlayDate, playDataPageCache.playTuneCount))
-                }
-                else {
-                    m_visitHistories[m_visitHistories.count - 1].3 = playDataPageCache.playTuneCount
-                }
-            }
-            else {
-                needToWriteJson = false
-            }
-        }
-        else {
-            m_visitHistories.append((playDataPageCache.lastPlayedCountry, playDataPageCache.lastPlayedLocation, playDataPageCache.lastPlayDate, playDataPageCache.playTuneCount))
-        }
-        
-        if needToWriteJson {
-            self.writeVisitHistoryJson(visitHistories: &m_visitHistories)
-        }
-        
-        self.prepareVisitHistoryCell(visitHistories: &m_visitHistories)
-        
-        (self.superview as? CustomStackView)?.setHeight(height: CGFloat(min(m_maxVisibleCellCount, m_visitHistories.count)) * m_visitHistoryWidgetCellHeight)
+        (self.superview as? CustomStackView)?.setHeight(height: CGFloat(min(m_maxVisibleCellCount, gameCenterVisitHistories.value.count)) * m_visitHistoryWidgetCellHeight)
         
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
@@ -121,53 +87,23 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
             }
             
             let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
-            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(min(strongSelf.m_maxVisibleCellCount, strongSelf.m_visitHistories.count)) * strongSelf.m_visitHistoryWidgetCellHeight) * interpolated
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + (CGFloat(min(strongSelf.m_maxVisibleCellCount, gameCenterVisitHistories.value.count)) * strongSelf.m_visitHistoryWidgetCellHeight) * interpolated
         })
         
         m_contentsView.animate(.fadeIn)
     }
     
-    private func parseVisitHistories(parseDest: inout [(String, String, String, Int)]) {
-        var gameCenterVisitHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        gameCenterVisitHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_gameCenterVisitHistory.json")
-        
-        guard let jsonData = try? Data(contentsOf: gameCenterVisitHistoryPath),
-              let jsonDict = try? JSONSerialization.jsonObject(with: jsonData, options: []),
-              let visitHistories = jsonDict as? [[Any]] else {
-            return
-        }
-        
-        for visitHistory in visitHistories {
-            parseDest.append((visitHistory[0] as! String, visitHistory[1] as! String, visitHistory[2] as! String, visitHistory[3] as! Int))
-        }
-    }
-    
-    private func writeVisitHistoryJson(visitHistories: inout [(String, String, String, Int)]) {
-        var gameCenterVisitHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        gameCenterVisitHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_gameCenterVisitHistory.json")
-        
-        var jsonStr = "["
-        for i in max(0, visitHistories.count - m_visitHistoryMaxSaveCount)..<visitHistories.count {
-            var visitHistory = visitHistories[i]
-            jsonStr += "[\"\(visitHistory.0)\", \"\(visitHistory.1)\", \"\(visitHistory.2)\", \(visitHistory.3)],"
-        }
-        jsonStr.removeLast()
-        jsonStr += "]"
-        
-        try? jsonStr.write(to: gameCenterVisitHistoryPath, atomically: false, encoding: .utf8)
-    }
-    
-    private func prepareVisitHistoryCell(visitHistories: inout [(String, String, String, Int)]) {
+    private func prepareVisitHistoryCell(gameCenterVisitHistories: GameCenterVisitHistories) {
         var iterIndex = 0
-        for i in max(0, visitHistories.count - m_maxVisibleCellCount)..<visitHistories.count {
+        for i in max(0, gameCenterVisitHistories.value.count - m_maxVisibleCellCount)..<gameCenterVisitHistories.value.count {
             let cell = self.createGameCenterVisitHistoryWidgetViewCell()
             
-            let playTuneCount = visitHistories[i].3
-            let prevPlayTuneCount = (i - 1 < 0) ? visitHistories[i].3 : visitHistories[i - 1].3
+            let playTuneCount = gameCenterVisitHistories.value[i].3
+            let prevPlayTuneCount = (i - 1 < 0) ? gameCenterVisitHistories.value[i].3 : gameCenterVisitHistories.value[i - 1].3
             
-            cell.initialize(countryName: visitHistories[i].0, gameCenterName: visitHistories[i].1, visitDate: visitHistories[i].2, playTuneCount: playTuneCount - prevPlayTuneCount)
+            cell.initialize(countryName: gameCenterVisitHistories.value[i].0, gameCenterName: gameCenterVisitHistories.value[i].1, visitDate: gameCenterVisitHistories.value[i].2, playTuneCount: playTuneCount - prevPlayTuneCount)
             
-            if i == visitHistories.count - 1 {
+            if i == gameCenterVisitHistories.value.count - 1 {
                 cell.deactivateBottomLine()
             }
             

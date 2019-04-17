@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 public typealias MusicNewRecordHistories = Box<[Timestamp: [MusicId: [(MusicScoreData.Difficulty, Int)]]]>
+public typealias GameCenterVisitHistories = Box<[(String, String, String, Int)]>
 
 public class DataStorage {
 /**@section Variable */
@@ -32,6 +33,10 @@ public class DataStorage {
         m_newRecordHistories = newRecordHistories
     }
     
+    public func initGameCenterVisitHistories(gameCenterVisitHistories: GameCenterVisitHistories) {
+        m_gameCenterVisitHistories = gameCenterVisitHistories
+    }
+    
     public func queryCustomMusicData(musicId: MusicId) -> MusicScoreData.CustomData {
         let optMusicCustomData = m_customMusicDatas[musicId]
         guard let musicCustomData = optMusicCustomData else {
@@ -43,8 +48,12 @@ public class DataStorage {
         return musicCustomData
     }
     
-    public func queryNewRecordHistory() -> MusicNewRecordHistories {
+    public func queryNewRecordHistories() -> MusicNewRecordHistories {
         return m_newRecordHistories!
+    }
+    
+    public func queryGameCenterVisitHistories() -> GameCenterVisitHistories {
+        return m_gameCenterVisitHistories
     }
     
     public func queryCustomMusicDatas() -> [MusicId: MusicScoreData.CustomData] {
@@ -77,6 +86,7 @@ public class DataStorage {
     private var m_otherUserDatas = [String: UserData] ()
     private var m_customMusicDatas = [MusicId: MusicScoreData.CustomData] ()
     private var m_newRecordHistories: MusicNewRecordHistories!
+    private var m_gameCenterVisitHistories: GameCenterVisitHistories!
 }
 
 public class UserData {
