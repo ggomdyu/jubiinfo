@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6213438D22604321007487A8 /* OmikujiWidgetSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */; };
 		62712A4D225E0AF800181A76 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 62712A38225E07AA00181A76 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6296AA952266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */; };
 		62ED01B421C2185900056141 /* SettingDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62ED01B321C2185900056141 /* SettingDataStorage.swift */; };
 		FD093FF02222DA9E00593069 /* ProfileViewEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */; };
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
@@ -343,6 +344,7 @@
 		6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmikujiWidgetSettingViewController.swift; sourceTree = "<group>"; };
 		62712A2C225E07AA00181A76 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.8.0/Alamofire.xcodeproj"; sourceTree = "<group>"; };
 		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-2.16.4/Material.xcodeproj"; sourceTree = "<group>"; };
+		6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRecordMusicWidgetCellView.xib; sourceTree = "<group>"; };
 		62ED01B321C2185900056141 /* SettingDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDataStorage.swift; sourceTree = "<group>"; };
 		FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewEditController.swift; sourceTree = "<group>"; };
 		FD0EA840219B14660084A837 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -841,6 +843,7 @@
 				FDC66FA821D175270094F322 /* RankDataGraphWidgetView.xib */,
 				FDD8F703221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib */,
 				FD25202B223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib */,
+				6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -1226,6 +1229,7 @@
 				FDC66FA921D175270094F322 /* RankDataGraphWidgetView.xib in Resources */,
 				FDC48F5D220B4D6F0032602B /* goldCrown.png in Resources */,
 				FD262FF1220D60D800C58BA7 /* omikuji02.png in Resources */,
+				6296AA952266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib in Resources */,
 				FD2D860F21EB6B7C00FAE9E2 /* NanumSquareRegular.ttf in Resources */,
 				FD262FEB220D5E1200C58BA7 /* OmikujiWidgetView.xib in Resources */,
 				FD25202C223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib in Resources */,
