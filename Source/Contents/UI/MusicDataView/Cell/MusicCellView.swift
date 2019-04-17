@@ -110,7 +110,7 @@ public class MusicCellView : UIView {
     
     private func prepareNewScoreLabel(musicScoreData: MusicScoreData) {
         guard musicScoreData.isNotPlayedYet == false,
-              let newRecordHistory = DataStorage.instance.queryNewRecordHistory().value[Timestamp(Date().noon.timeIntervalSince1970)],
+              let newRecordHistory = DataStorage.instance.queryNewRecordHistories().value[Timestamp(Date().noon.timeIntervalSince1970)],
               let newRecordInfo = newRecordHistory[musicScoreData.id]?.first(where: { (item: (MusicScoreData.Difficulty, Int)) -> Bool in return item.0 == musicScoreData.difficulty })
         else {
             m_newScoreLabel.isHidden = true

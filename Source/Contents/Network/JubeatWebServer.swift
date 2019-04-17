@@ -119,7 +119,7 @@ public class MusicScoreData : Comparable {
         public let name: String
         public let uppercasedRomajiName: String
         public let id: Int
-        public var score: Int
+        public let score: Int
         public let difficulty: Difficulty
         public let isFullCombo: Bool
         public var scoreHistories: [(Timestamp, MusicScore)]?
@@ -477,7 +477,9 @@ public class JubeatWebServer {
                 let encoder = JSONEncoder()
                 let optJsonData = try? encoder.encode(myPlayDataPageCache)
                 try? optJsonData?.write(to: myPlayDataPageCachePath)
-
+                
+                self.initGameCenterVisitHistories(playDataPageCache: myPlayDataPageCache)
+                
                 onRequestComplete(isRequestSucceed, myPlayDataPageCache)
             }
             // If the request failed, then use json file stored in the flash storage.
@@ -488,6 +490,8 @@ public class JubeatWebServer {
                     
                     let myPlayDataPageCache = try decoder.decode(UserData.MyPlayDataPageCache.self, from: jsonData)
                     
+                    self.initGameCenterVisitHistories(playDataPageCache: myPlayDataPageCache)
+                    
                     onRequestComplete(true, myPlayDataPageCache)
                 }
                 catch {
@@ -495,6 +499,75 @@ public class JubeatWebServer {
                 }
             }
         }
+    }
+    
+    private static func initGameCenterVisitHistories(playDataPageCache: UserData.PlayDataPageCache) {
+        let gameCenterVisitHistories = self.parseGameCenterVisitHistories()
+
+        var needToWriteJson = true
+        if let recentVisitHistory = gameCenterVisitHistories.value.last {
+            // If play tune count has changed
+            let isDifferentPlayTuneCount = recentVisitHistory.3 != playDataPageCache.playTuneCount
+            if isDifferentPlayTuneCount {
+                // And location has not changed
+                let isDifferentLocation = (recentVisitHistory.0 != playDataPageCache.lastPlayedCountry || recentVisitHistory.1 != playDataPageCache.lastPlayedLocation)
+                let isDifferentPlayDate = recentVisitHistory.2 != playDataPageCache.lastPlayDate
+                if isDifferentLocation || isDifferentPlayDate {
+                    gameCenterVisitHistories.value.append((playDataPageCache.lastPlayedCountry, playDataPageCache.lastPlayedLocation, playDataPageCache.lastPlayDate, playDataPageCache.playTuneCount))
+                }
+                else {
+                    gameCenterVisitHistories.value[gameCenterVisitHistories.value.count - 1].3 = playDataPageCache.playTuneCount
+                }
+            }
+            else {
+                needToWriteJson = false
+            }
+        }
+        else {
+            gameCenterVisitHistories.value.append((playDataPageCache.lastPlayedCountry, playDataPageCache.lastPlayedLocation, playDataPageCache.lastPlayDate, playDataPageCache.playTuneCount))
+        }
+        
+        DataStorage.instance.initGameCenterVisitHistories(gameCenterVisitHistories: gameCenterVisitHistories)
+        
+        if needToWriteJson {
+            self.writeGameCenterVisitHistoryJson(gameCenterVisitHistories: gameCenterVisitHistories)
+        }
+    }
+    
+    private static func parseGameCenterVisitHistories() -> GameCenterVisitHistories {
+        var gameCenterVisitHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        gameCenterVisitHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_gameCenterVisitHistory.json")
+        
+        let ret = GameCenterVisitHistories([])
+        
+        guard let jsonData = try? Data(contentsOf: gameCenterVisitHistoryPath),
+            let jsonDict = try? JSONSerialization.jsonObject(with: jsonData, options: []),
+            let visitHistories = jsonDict as? [[Any]] else {
+                return ret
+        }
+        
+        for visitHistory in visitHistories {
+            ret.value.append((visitHistory[0] as! String, visitHistory[1] as! String, visitHistory[2] as! String, visitHistory[3] as! Int))
+        }
+        
+        return ret
+    }
+    
+    private static func writeGameCenterVisitHistoryJson(gameCenterVisitHistories: GameCenterVisitHistories) {
+        var gameCenterVisitHistoryPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        gameCenterVisitHistoryPath.appendPathComponent("\(SettingDataStorage.instance.getActiveUserId().hash)_gameCenterVisitHistory.json")
+        
+        let visitHistoryMaxSaveCount = 15
+        
+        var jsonStr = "["
+        for i in max(0, gameCenterVisitHistories.value.count - visitHistoryMaxSaveCount)..<gameCenterVisitHistories.value.count {
+            var visitHistory = gameCenterVisitHistories.value[i]
+            jsonStr += "[\"\(visitHistory.0)\", \"\(visitHistory.1)\", \"\(visitHistory.2)\", \(visitHistory.3)],"
+        }
+        jsonStr.removeLast()
+        jsonStr += "]"
+        
+        try? jsonStr.write(to: gameCenterVisitHistoryPath, atomically: false, encoding: .utf8)
     }
     
     /**@brief Do GET Request to https://p.eagate.573.jp/game/jubeat/festo/playdata/index.html?rival_id= */
