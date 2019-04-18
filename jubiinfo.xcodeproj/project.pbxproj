@@ -44,6 +44,8 @@
 		FD7F64CE2199D62100E534E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7F64CD2199D62100E534E7 /* AppDelegate.swift */; };
 		FD7F64D02199D62100E534E7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7F64CF2199D62100E534E7 /* LoginViewController.swift */; };
 		FD7F64D72199D62200E534E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD7F64D62199D62200E534E7 /* Assets.xcassets */; };
+		FD883AEA22678B3100EB4472 /* NewRecordMusicWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD883AE922678B3100EB4472 /* NewRecordMusicWidgetView.xib */; };
+		FD883AEC226872C900EB4472 /* NewRecordMusicWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD883AEB226872C900EB4472 /* NewRecordMusicWidgetView.swift */; };
 		FD9366A52200C5DF00919C67 /* MusicScoreGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9366A42200C5DF00919C67 /* MusicScoreGraphView.swift */; };
 		FD9366B52200CB9D00919C67 /* MusicCellDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9366B42200CB9D00919C67 /* MusicCellDetailView.swift */; };
 		FD98F0C7223DDE7A00027F81 /* StringUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD98F0C6223DDE7A00027F81 /* StringUtility.swift */; };
@@ -388,6 +390,8 @@
 		FD7F64DB2199D62200E534E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD7F64E02199D62300E534E7 /* jubiinfoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jubiinfoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD7F64EB2199D62300E534E7 /* jubiinfoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jubiinfoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD883AE922678B3100EB4472 /* NewRecordMusicWidgetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRecordMusicWidgetView.xib; sourceTree = "<group>"; };
+		FD883AEB226872C900EB4472 /* NewRecordMusicWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewRecordMusicWidgetView.swift; sourceTree = "<group>"; };
 		FD9366A42200C5DF00919C67 /* MusicScoreGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicScoreGraphView.swift; sourceTree = "<group>"; };
 		FD9366B42200CB9D00919C67 /* MusicCellDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCellDetailView.swift; sourceTree = "<group>"; };
 		FD98F0C6223DDE7A00027F81 /* StringUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtility.swift; sourceTree = "<group>"; };
@@ -542,6 +546,7 @@
 				FDC0141921BE0BBB0070EC37 /* RankDataGraphWidgetView.swift */,
 				FD19282D22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift */,
 				6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */,
+				FD883AEB226872C900EB4472 /* NewRecordMusicWidgetView.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -844,6 +849,7 @@
 				FDD8F703221920B90005A90A /* GameCenterVisitHistoryWidgetView.xib */,
 				FD25202B223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib */,
 				6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */,
+				FD883AE922678B3100EB4472 /* NewRecordMusicWidgetView.xib */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -1246,6 +1252,7 @@
 				FDC48F90220C2BE30032602B /* RivalRankCellView.xib in Resources */,
 				FD7F618E222D36EE006FE95B /* background_qubell.jpg in Resources */,
 				FDF1347621B39C3A00D0F2FD /* LaunchScreen.storyboard in Resources */,
+				FD883AEA22678B3100EB4472 /* NewRecordMusicWidgetView.xib in Resources */,
 				FD4C4C7021AEC44F00ABCE53 /* jubiinfoIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1312,6 +1319,7 @@
 				FDCF4FAE21D761B000E3CC5A /* StringTransform.swift in Sources */,
 				FDA98CA321C6CB8F0060CBED /* WidgetView.swift in Sources */,
 				FD98F0C7223DDE7A00027F81 /* StringUtility.swift in Sources */,
+				FD883AEC226872C900EB4472 /* NewRecordMusicWidgetView.swift in Sources */,
 				FDCF4F7E21D6458100E3CC5A /* EAmusementCaptchaSolver.swift in Sources */,
 				FDA58B2A222A2FBD00415703 /* EditNicknameViewController.swift in Sources */,
 				62ED01B421C2185900056141 /* SettingDataStorage.swift in Sources */,

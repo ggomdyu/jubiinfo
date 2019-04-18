@@ -20,7 +20,8 @@ public class ProfileViewEditController : EasyUITableViewController {
         WidgetType.omikuji: "오미쿠지",
         WidgetType.dailyRecommended: "오늘의 추천곡",
         WidgetType.rankDataGraphA: "랭크 데이터 그래프",
-        WidgetType.gameCenterVisitHistory: "방문 기록"
+        WidgetType.gameCenterVisitHistory: "방문 기록",
+        WidgetType.newRecord: "뉴 레코드"
     ]
     
 /**@section Destructor */

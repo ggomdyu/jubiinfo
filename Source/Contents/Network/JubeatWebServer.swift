@@ -561,7 +561,7 @@ public class JubeatWebServer {
         
         var jsonStr = "["
         for i in max(0, gameCenterVisitHistories.value.count - visitHistoryMaxSaveCount)..<gameCenterVisitHistories.value.count {
-            var visitHistory = gameCenterVisitHistories.value[i]
+            let visitHistory = gameCenterVisitHistories.value[i]
             jsonStr += "[\"\(visitHistory.0)\", \"\(visitHistory.1)\", \"\(visitHistory.2)\", \(visitHistory.3)],"
         }
         jsonStr.removeLast()
@@ -766,20 +766,20 @@ public class JubeatWebServer {
                                 
                                 scoreHistories.append((currUnixTime, newMusicScoreData.score))
                                 
-                                if var newRecordHistory = newRecordHistories.value[todayUnixTimeInMillisecond] {
-                                    if var newRecordInfo = newRecordHistory[newMusicScoreData.id] {
+                                if var newRecordHistory = newRecordHistories.value.last, newRecordHistory.0 == todayUnixTimeInMillisecond {
+                                    if var newRecordInfo = newRecordHistory.1[newMusicScoreData.id] {
                                         newRecordInfo.append((newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score))
                                         
-                                        newRecordHistory[newMusicScoreData.id] = newRecordInfo
+                                        newRecordHistory.1[newMusicScoreData.id] = newRecordInfo
                                     }
                                     else {
-                                        newRecordHistory[newMusicScoreData.id] = [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]
+                                        newRecordHistory.1[newMusicScoreData.id] = [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]
                                     }
                                     
-                                    newRecordHistories.value[todayUnixTimeInMillisecond] = newRecordHistory
+                                    newRecordHistories.value[newRecordHistories.value.count - 1] = newRecordHistory
                                 }
                                 else {
-                                    newRecordHistories.value[todayUnixTimeInMillisecond] = [newMusicScoreData.id: [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]]
+                                    newRecordHistories.value.append((todayUnixTimeInMillisecond, [newMusicScoreData.id: [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]]))
                                 }
                                 isExistNewRecord = true
                             }
@@ -1604,10 +1604,10 @@ extension JubeatWebServer {
         
         for newRecordHistory in newRecordHistories.value {
             // Timestamp
-            newRecordHistoriesJson += "\"\(newRecordHistory.key)\":["
+            newRecordHistoriesJson += "\"\(newRecordHistory.0)\":["
             
             // Score
-            for (key, value) in newRecordHistory.value {
+            for (key, value) in newRecordHistory.1 {
                 newRecordHistoriesJson += "[\(key),"
                 for i in 0..<value.count {
                     newRecordHistoriesJson += "[\(value[i].0.rawValue),\(value[i].1)],"
@@ -1636,7 +1636,7 @@ extension JubeatWebServer {
         }
         catch {}
         
-        let ret = MusicNewRecordHistories([:])
+        let ret = MusicNewRecordHistories([])
         
         guard let jsonDict = optJsonDict else {
             return ret
@@ -1659,7 +1659,11 @@ extension JubeatWebServer {
                 parsedNewRecordMusicDict[musicId] = parsedNewRecordMusicArray
             }
             
-            ret.value[timestamp] = parsedNewRecordMusicDict
+            ret.value.append((timestamp, parsedNewRecordMusicDict))
+        }
+        
+        ret.value.sort { (lhs: (Timestamp, [MusicId : [(MusicScoreData.Difficulty, Int)]]), rhs: (Timestamp, [MusicId : [(MusicScoreData.Difficulty, Int)]])) -> Bool in
+            return lhs.0 > rhs.0
         }
         
         return ret

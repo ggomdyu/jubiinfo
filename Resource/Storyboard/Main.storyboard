@@ -43,7 +43,7 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="7vv-T6-meH" customClass="ProfileViewController" customModule="jubiinfo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCz-n5-ez0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEw-DB-qbD">
@@ -134,7 +134,7 @@
             <objects>
                 <viewController storyboardIdentifier="MusicDataViewController" id="eZf-80-dPe" customClass="MusicDataViewController" customModule="jubiinfo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qZV-Ho-CjO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-LA-Y25" userLabel="Scroll View" customClass="EndEditScrollView" customModule="jubiinfo" customModuleProvider="target">
@@ -286,7 +286,7 @@
                         <viewControllerLayoutGuide type="bottom" id="iPG-DQ-5Q9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Uod-tT-Rrr">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lCa-sK-rW1">
@@ -554,7 +554,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4bc-tR-6yF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fLG-AO-AGt">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="204"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="필터" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD6-FO-hRW">
@@ -929,7 +929,7 @@
                         <viewControllerLayoutGuide type="bottom" id="pwn-r1-pZe"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="T4V-SL-eUT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iTN-Wh-oal">
