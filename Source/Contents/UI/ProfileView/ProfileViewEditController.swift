@@ -21,7 +21,7 @@ public class ProfileViewEditController : EasyUITableViewController {
         WidgetType.dailyRecommended: "오늘의 추천곡",
         WidgetType.rankDataGraphA: "랭크 데이터 그래프",
         WidgetType.gameCenterVisitHistory: "방문 기록",
-        WidgetType.newRecord: "뉴 레코드"
+        WidgetType.newRecord: "신 기록"
     ]
     
 /**@section Destructor */
