@@ -21,9 +21,12 @@ public class NewRecordMusicWidgetCellView : UIView {
     @IBOutlet weak var m_musicScoreLabel: UILabel!
     @IBOutlet weak var m_musicFullComboLabel: UILabel!
     @IBOutlet weak var m_lineView: LineDashView!
+    private var m_musicScoreData: MusicScoreData!
     
 /**@section Method */
     public func initialize(musicScoreData: MusicScoreData, musicNewRecordData: (MusicScoreData.Difficulty, Int)) {
+        
+        m_musicScoreData = musicScoreData
         
         // Initialize music name
         m_musicNameLabel.text = musicScoreData.name
@@ -115,6 +118,13 @@ public class NewRecordMusicWidgetCellView : UIView {
     
     public func deactivateBottomLine() {
         m_lineView.isHidden = true
+    }
+    
+/**@section Event handler */
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        MusicDataViewController.show(currentViewController: self.parentViewController!, musicId: m_musicScoreData.id)
     }
 }
 
