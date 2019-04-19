@@ -121,8 +121,8 @@ public class NewRecordMusicWidgetCellView : UIView {
     }
     
 /**@section Event handler */
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
+    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
         
         MusicDataViewController.show(currentViewController: self.parentViewController!, musicId: m_musicScoreData.id)
     }
