@@ -768,18 +768,18 @@ public class JubeatWebServer {
                                 
                                 if var newRecordHistory = newRecordHistories.value.last, newRecordHistory.0 == todayUnixTimeInMillisecond {
                                     if var newRecordInfo = newRecordHistory.1[newMusicScoreData.id] {
-                                        newRecordInfo.append((newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score))
+                                        newRecordInfo.append((newMusicScoreData.difficulty, newMusicScoreData.score - max(0, oldMusicScoreData.score)))
                                         
                                         newRecordHistory.1[newMusicScoreData.id] = newRecordInfo
                                     }
                                     else {
-                                        newRecordHistory.1[newMusicScoreData.id] = [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]
+                                        newRecordHistory.1[newMusicScoreData.id] = [(newMusicScoreData.difficulty, newMusicScoreData.score - max(0, oldMusicScoreData.score))]
                                     }
                                     
                                     newRecordHistories.value[newRecordHistories.value.count - 1] = newRecordHistory
                                 }
                                 else {
-                                    newRecordHistories.value.append((todayUnixTimeInMillisecond, [newMusicScoreData.id: [(newMusicScoreData.difficulty, newMusicScoreData.score - oldMusicScoreData.score)]]))
+                                    newRecordHistories.value.append((todayUnixTimeInMillisecond, [newMusicScoreData.id: [(newMusicScoreData.difficulty, newMusicScoreData.score - max(0, oldMusicScoreData.score))]]))
                                 }
                                 isExistNewRecord = true
                             }
