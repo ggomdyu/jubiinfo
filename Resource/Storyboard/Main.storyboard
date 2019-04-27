@@ -43,7 +43,7 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="7vv-T6-meH" customClass="ProfileViewController" customModule="jubiinfo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCz-n5-ez0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEw-DB-qbD">
@@ -129,12 +129,60 @@
             </objects>
             <point key="canvasLocation" x="336.80000000000001" y="-144.82758620689657"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="EBe-jT-xNZ">
+            <objects>
+                <viewController storyboardIdentifier="ProfileViewController" id="alf-zZ-JcO" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gZG-4T-Irw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fjg-8R-rKJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4Z-jY-E5s" customClass="CustomStackView" customModule="jubiinfo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                                        <color key="backgroundColor" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1000" id="tnw-dc-EPz"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                <color key="value" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="m4Z-jY-E5s" firstAttribute="top" secondItem="fjg-8R-rKJ" secondAttribute="top" id="Cb2-WB-1Ac"/>
+                                    <constraint firstAttribute="trailing" secondItem="m4Z-jY-E5s" secondAttribute="trailing" id="U2g-IL-sQa"/>
+                                    <constraint firstItem="m4Z-jY-E5s" firstAttribute="leading" secondItem="fjg-8R-rKJ" secondAttribute="leading" id="iqV-xo-YIB"/>
+                                    <constraint firstAttribute="bottom" secondItem="m4Z-jY-E5s" secondAttribute="bottom" id="zvt-UE-6ua"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="fjg-8R-rKJ" firstAttribute="trailing" secondItem="0ed-D6-SWQ" secondAttribute="trailing" id="3Uz-cg-0KG"/>
+                            <constraint firstItem="fjg-8R-rKJ" firstAttribute="top" secondItem="gZG-4T-Irw" secondAttribute="top" id="Gdr-Od-ENZ"/>
+                            <constraint firstItem="fjg-8R-rKJ" firstAttribute="leading" secondItem="0ed-D6-SWQ" secondAttribute="leading" id="ZP9-yY-yXm"/>
+                            <constraint firstItem="m4Z-jY-E5s" firstAttribute="width" secondItem="gZG-4T-Irw" secondAttribute="width" id="cvO-e0-bmI"/>
+                            <constraint firstItem="fjg-8R-rKJ" firstAttribute="height" secondItem="gZG-4T-Irw" secondAttribute="height" id="sxV-Vm-H3r"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="0ed-D6-SWQ"/>
+                    </view>
+                    <size key="freeformSize" width="375" height="1000"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zdx-va-1Ih" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2329" y="812"/>
+        </scene>
         <!--Music Data View Controller-->
         <scene sceneID="aUE-NW-eFc">
             <objects>
                 <viewController storyboardIdentifier="MusicDataViewController" id="eZf-80-dPe" customClass="MusicDataViewController" customModule="jubiinfo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qZV-Ho-CjO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-LA-Y25" userLabel="Scroll View" customClass="EndEditScrollView" customModule="jubiinfo" customModuleProvider="target">
@@ -286,7 +334,7 @@
                         <viewControllerLayoutGuide type="bottom" id="iPG-DQ-5Q9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Uod-tT-Rrr">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lCa-sK-rW1">
@@ -554,7 +602,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4bc-tR-6yF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fLG-AO-AGt">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="204"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="필터" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD6-FO-hRW">
@@ -929,7 +977,7 @@
                         <viewControllerLayoutGuide type="bottom" id="pwn-r1-pZe"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="T4V-SL-eUT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iTN-Wh-oal">

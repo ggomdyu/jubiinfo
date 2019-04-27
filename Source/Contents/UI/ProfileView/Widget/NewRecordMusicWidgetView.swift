@@ -148,7 +148,6 @@ public class NewRecordMusicWidgetView : WidgetView {
 
 /**@section Method */
     public override func initialize() {
-        m_contentsView.alpha = 0.0
         m_contentsViewHeightConstraint.constant = 45
         m_newRecordDoesNotExistLabel.isHidden = true
         
@@ -180,9 +179,12 @@ public class NewRecordMusicWidgetView : WidgetView {
             
             let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
             strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + contentsViewHeightOffset * interpolated
-        })
-        
-        m_contentsView.animate(.fadeIn)
+        }) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + contentsViewHeightOffset
+        }
     }
     
     private func prepareNewRecordMusicCell(recentNewRecordHistories: inout [MusicId: [(MusicScoreData.Difficulty, Int)]]) {

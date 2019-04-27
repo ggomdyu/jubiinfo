@@ -68,7 +68,6 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
 
 /**@section Method */
     public override func initialize() {
-        m_contentsView.alpha = 0.0
         m_contentsViewHeightConstraint.constant = 45
         
         super.initialize()
@@ -80,7 +79,9 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         let gameCenterVisitHistories = DataStorage.instance.queryGameCenterVisitHistories()
         self.prepareVisitHistoryCell(gameCenterVisitHistories: gameCenterVisitHistories)
         
-        (self.superview as? CustomStackView)?.addHeight(height: CGFloat(min(GameCenterVisitHistoryWidgetView.MaxVisibleCellCount, gameCenterVisitHistories.value.count)) * GameCenterVisitHistoryWidgetView.VisitHistoryWidgetCellHeight + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset)
+        let totalVisitHistoryCellHeight = CGFloat(min(GameCenterVisitHistoryWidgetView.MaxVisibleCellCount, gameCenterVisitHistories.value.count)) * GameCenterVisitHistoryWidgetView.VisitHistoryWidgetCellHeight
+        
+        (self.superview as? CustomStackView)?.addHeight(height: totalVisitHistoryCellHeight + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset)
         
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
@@ -89,10 +90,14 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
             }
             
             let interpolated = CGFloat(easeOutQuad(t: strongSelf.m_tickTimer.totalElapsedTime / strongSelf.m_tickTimer.duration))
-            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset + (CGFloat(min(GameCenterVisitHistoryWidgetView.MaxVisibleCellCount, gameCenterVisitHistories.value.count)) * GameCenterVisitHistoryWidgetView.VisitHistoryWidgetCellHeight) * interpolated
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset + totalVisitHistoryCellHeight * interpolated
+        }, { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.m_contentsViewHeightConstraint.constant = prevWidgetHeightConstant + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset + totalVisitHistoryCellHeight
         })
-        
-        m_contentsView.animate(.fadeIn)
     }
     
     private func prepareVisitHistoryCell(gameCenterVisitHistories: GameCenterVisitHistories) {
