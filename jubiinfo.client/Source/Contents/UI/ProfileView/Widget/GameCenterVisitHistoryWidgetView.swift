@@ -14,7 +14,7 @@ public class GameCenterVisitHistoryWidgetCellView : UIView {
 /**@section Variable */
     @IBOutlet weak var m_gameCenterName: UILabel!
     @IBOutlet weak var m_detailLabel: UILabel!
-    @IBOutlet weak var m_lineView: LineDashView!
+    @IBOutlet weak var m_lineView: RoundLineDashView!
     
 /**@section Method */
     public func initialize(countryName: String, gameCenterName: String, visitDate: String, playTuneCount: Int) {
@@ -81,7 +81,11 @@ public class GameCenterVisitHistoryWidgetView : WidgetView {
         
         let totalVisitHistoryCellHeight = CGFloat(min(GameCenterVisitHistoryWidgetView.MaxVisibleCellCount, gameCenterVisitHistories.value.count)) * GameCenterVisitHistoryWidgetView.VisitHistoryWidgetCellHeight
         
-        (self.superview as? CustomStackView)?.addHeight(height: totalVisitHistoryCellHeight + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset)
+        DispatchQueue.main.async {
+            runTaskInMainThread {
+                (self.superview as? CustomStackView)?.addHeight(height: totalVisitHistoryCellHeight + GameCenterVisitHistoryWidgetView.ContentsViewHeightOffset)
+            }
+        }
         
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in

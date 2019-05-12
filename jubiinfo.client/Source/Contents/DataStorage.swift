@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public typealias MusicNewRecordHistories = Box<[(Timestamp, [MusicId: [(MusicScoreData.Difficulty, Int)]])]>
+public typealias MusicNewRecordHistories = Box<[(Timestamp, [MusicId: [(MusicDifficulty, Int)]])]>
 public typealias GameCenterVisitHistories = Box<[(String, String, String, Int)]>
 
 public class DataStorage {

@@ -63,6 +63,7 @@
 		FDAC300D224BFB7100625B0E /* CoreActionSheetPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD342CC6224BFA25001096DA /* CoreActionSheetPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FDB0E1CD226F670D00984CFF /* FeaturedCompetitionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDB0E1CC226F670D00984CFF /* FeaturedCompetitionCellView.xib */; };
 		FDB0E1CF226F6E8B00984CFF /* 00502643_20170623.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FDB0E1CE226F6E8B00984CFF /* 00502643_20170623.jpg */; };
+		FDB3502F2274A4BB0022BDDF /* CompetitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB3502E2274A4BB0022BDDF /* CompetitionViewController.swift */; };
 		FDB4946C2213C5E8005B7C31 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4946B2213C5E8005B7C31 /* UIView.swift */; };
 		FDB5F4FB21B6D0DC00CC1F1C /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB5F4FA21B6D0DC00CC1F1C /* DataStorage.swift */; };
 		FDBFCF7821DB1CBC00D673B4 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBFCF7721DB1CBC00D673B4 /* Language.swift */; };
@@ -411,6 +412,7 @@
 		FDAC301B224BFBCE00625B0E /* CoreActionSheetPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreActionSheetPicker.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/jubiinfo-cqbngkkejkqxtgbtuejzukhhtsqj/Build/Products/Debug-iphonesimulator/CoreActionSheetPicker.framework"; sourceTree = "<group>"; };
 		FDB0E1CC226F670D00984CFF /* FeaturedCompetitionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeaturedCompetitionCellView.xib; path = Resource/Xib/ProfileView/FeaturedCompetitionCellView.xib; sourceTree = SOURCE_ROOT; };
 		FDB0E1CE226F6E8B00984CFF /* 00502643_20170623.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 00502643_20170623.jpg; sourceTree = "<group>"; };
+		FDB3502E2274A4BB0022BDDF /* CompetitionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionViewController.swift; sourceTree = "<group>"; };
 		FDB4946B2213C5E8005B7C31 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		FDB5F4FA21B6D0DC00CC1F1C /* DataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
 		FDBFCF7721DB1CBC00D673B4 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
@@ -812,6 +814,7 @@
 				FD7F618F222D7260006FE95B /* ThemeColorTable.swift */,
 				FD68AABA2228FDD7004644CD /* EasyUITableViewController.swift */,
 				FDA58B39222BD93100415703 /* PasteDisabledUITextField.swift */,
+				FDD8F6F5221834120005A90A /* LineDashView.swift */,
 			);
 			path = Generic;
 			sourceTree = "<group>";
@@ -820,6 +823,14 @@
 			isa = PBXGroup;
 			children = (
 				FDB0E1CC226F670D00984CFF /* FeaturedCompetitionCellView.xib */,
+			);
+			path = CompetitionView;
+			sourceTree = "<group>";
+		};
+		FDB3502D2274A48D0022BDDF /* CompetitionView */ = {
+			isa = PBXGroup;
+			children = (
+				FDB3502E2274A4BB0022BDDF /* CompetitionViewController.swift */,
 			);
 			path = CompetitionView;
 			sourceTree = "<group>";
@@ -947,10 +958,10 @@
 			isa = PBXGroup;
 			children = (
 				FDA98CA121C6CB7C0060CBED /* Generic */,
+				FDB3502D2274A48D0022BDDF /* CompetitionView */,
 				FDA98C7921C4FC9C0060CBED /* LoginView */,
 				FDA98C7821C4FC8F0060CBED /* ProfileView */,
 				FDA98C7A21C4FD0B0060CBED /* MusicDataView */,
-				FDD8F6F5221834120005A90A /* LineDashView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1334,6 +1345,7 @@
 				FDB5F4FB21B6D0DC00CC1F1C /* DataStorage.swift in Sources */,
 				FDCF4FAE21D761B000E3CC5A /* StringTransform.swift in Sources */,
 				FDA98CA321C6CB8F0060CBED /* WidgetView.swift in Sources */,
+				FDB3502F2274A4BB0022BDDF /* CompetitionViewController.swift in Sources */,
 				FD98F0C7223DDE7A00027F81 /* StringUtility.swift in Sources */,
 				FD883AEC226872C900EB4472 /* NewRecordMusicWidgetView.swift in Sources */,
 				FDCF4F7E21D6458100E3CC5A /* EAmusementCaptchaSolver.swift in Sources */,

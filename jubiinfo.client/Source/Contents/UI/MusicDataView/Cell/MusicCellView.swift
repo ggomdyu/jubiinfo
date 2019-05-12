@@ -111,7 +111,7 @@ public class MusicCellView : UIView {
     private func prepareNewScoreLabel(musicScoreData: MusicScoreData) {
         guard musicScoreData.isNotPlayedYet == false,
               let newRecordHistory = DataStorage.instance.queryNewRecordHistories().value.last,
-              let newRecordInfo = newRecordHistory.1[musicScoreData.id]?.first(where: { (item: (MusicScoreData.Difficulty, Int)) -> Bool in return item.0 == musicScoreData.difficulty })
+              let newRecordInfo = newRecordHistory.1[musicScoreData.id]?.first(where: { (item: (MusicDifficulty, Int)) -> Bool in return item.0 == musicScoreData.difficulty })
         else {
             m_newScoreLabel.isHidden = true
             return
@@ -135,7 +135,7 @@ public class MusicCellView : UIView {
         }
     }
     
-    private func getMusicDifficultyColor(musicDifficulty: MusicScoreData.Difficulty) -> UIColor {
+    private func getMusicDifficultyColor(musicDifficulty: MusicDifficulty) -> UIColor {
         if musicDifficulty == .extreme {
             return UIColor(red: 255.0 / 255.0, green: 110.0 / 255.0, blue: 110.0 / 255.0, alpha: 1.0)
         }

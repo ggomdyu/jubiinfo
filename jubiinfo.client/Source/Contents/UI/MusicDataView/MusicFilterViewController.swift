@@ -208,10 +208,10 @@ public class VersionFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Class */
     public class MusicVersionFilter : MusicFilter {
     /**@section Variable */
-        private var m_version: MusicScoreData.Version
+        private var m_version: MusicVersion
         
     /**@section Method */
-        public init(version: MusicScoreData.Version) {
+        public init(version: MusicVersion) {
             m_version = version
         }
         
@@ -227,7 +227,7 @@ public class VersionFilterUITableViewCell : BaseFilterUITableViewCell {
     public static let cellIdenfierName = "versionFilterCellIdenfier"
     private var m_currSelectedRow = 0
     private let m_versionStrDataSource = ["페스토", "클랜", "큐벨", "프롭", "소서 풀필", "소서", "코피어스", "니트", "리플즈", "오리지널"]
-    private let m_versionDataSource: [MusicScoreData.Version] = [.festo, .clan, .qubell, .prop, .saucerFulfill, .saucer, .copious, .knit, .ripples, .original]
+    private let m_versionDataSource: [MusicVersion] = [.festo, .clan, .qubell, .prop, .saucerFulfill, .saucer, .copious, .knit, .ripples, .original]
     @IBOutlet weak var m_versionBtn: UIButton!
     
 /**@section Method */
@@ -265,10 +265,10 @@ public class DifficultyFilterUITableViewCell : BaseFilterUITableViewCell {
 /**@section Class */
     public class DifficultyFilter : MusicFilter {
     /**@section Variable */
-        private var m_difficulty: MusicScoreData.Difficulty
+        private var m_difficulty: MusicDifficulty
         
     /**@section Method */
-        public init(difficulty: MusicScoreData.Difficulty) {
+        public init(difficulty: MusicDifficulty) {
             m_difficulty = difficulty
         }
         
@@ -286,7 +286,7 @@ public class DifficultyFilterUITableViewCell : BaseFilterUITableViewCell {
     
 /**@section Method */
     public override func createMusicFilter() -> MusicFilter {
-        return DifficultyFilter(difficulty: MusicScoreData.Difficulty(rawValue: m_difficultySegmentedControl.selectedSegmentIndex)!)
+        return DifficultyFilter(difficulty: MusicDifficulty(rawValue: m_difficultySegmentedControl.selectedSegmentIndex)!)
     }
     
     public override func getFilterData() -> Any? {
@@ -491,9 +491,6 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
                 
             case .fullCombo:
                 return tableView.dequeueReusableCell(withIdentifier: FullComboFilterUITableViewCell.cellIdenfierName)!
-                
-//            case .none:
-//                return tableView.dequeueReusableCell(withIdentifier: "")!
             }
         }
     }

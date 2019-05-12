@@ -103,7 +103,7 @@ public class MusicDataView : CustomStackView {
             
         case .score:
             let newDivisionLineValue = musicScoreData.musicScoreRank
-            if newDivisionLineValue == (m_oldDivisionLineValue as? MusicScoreData.ScoreRank) {
+            if newDivisionLineValue == (m_oldDivisionLineValue as? MusicScoreRank) {
                 return (false, nil)
             }
             
@@ -125,7 +125,7 @@ public class MusicDataView : CustomStackView {
             
         case .version:
             let newDivisionLineValue = musicScoreData.version
-            if newDivisionLineValue == (m_oldDivisionLineValue as? MusicScoreData.Version) {
+            if newDivisionLineValue == (m_oldDivisionLineValue as? MusicVersion) {
                 return (false, nil)
             }
             

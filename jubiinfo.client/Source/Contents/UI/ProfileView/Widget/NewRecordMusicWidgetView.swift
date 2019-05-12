@@ -20,11 +20,11 @@ public class NewRecordMusicWidgetCellView : UIView {
     @IBOutlet weak var m_musicNewRecordScoreLabel: UILabel!
     @IBOutlet weak var m_musicScoreLabel: UILabel!
     @IBOutlet weak var m_musicFullComboLabel: UILabel!
-    @IBOutlet weak var m_lineView: LineDashView!
+    @IBOutlet weak var m_lineView: RoundLineDashView!
     private var m_musicScoreData: MusicScoreData!
     
 /**@section Method */
-    public func initialize(musicScoreData: MusicScoreData, musicNewRecordData: (MusicScoreData.Difficulty, Int)) {
+    public func initialize(musicScoreData: MusicScoreData, musicNewRecordData: (MusicDifficulty, Int)) {
         
         m_musicScoreData = musicScoreData
         
@@ -74,7 +74,7 @@ public class NewRecordMusicWidgetCellView : UIView {
         })
     }
     
-    private func getMusicDifficultyColor(musicDifficulty: MusicScoreData.Difficulty) -> UIColor {
+    private func getMusicDifficultyColor(musicDifficulty: MusicDifficulty) -> UIColor {
         if musicDifficulty == .extreme {
             return UIColor(red: 255.0 / 255.0, green: 110.0 / 255.0, blue: 110.0 / 255.0, alpha: 1.0)
         }
@@ -169,7 +169,11 @@ public class NewRecordMusicWidgetView : WidgetView {
             m_newRecordDoesNotExistLabel.isHidden = false
         }
         
-        (self.superview as? CustomStackView)?.addHeight(height: contentsViewHeightOffset)
+        DispatchQueue.main.async {
+            runTaskInMainThread {
+                (self.superview as? CustomStackView)?.addHeight(height: contentsViewHeightOffset)
+            }
+        }
         
         let prevWidgetHeightConstant = self.m_contentsViewHeightConstraint.constant
         m_tickTimer.initialize(0.15, { [weak self] (tickTime: Double) in
@@ -187,7 +191,7 @@ public class NewRecordMusicWidgetView : WidgetView {
         }
     }
     
-    private func prepareNewRecordMusicCell(recentNewRecordHistories: inout [MusicId: [(MusicScoreData.Difficulty, Int)]]) {
+    private func prepareNewRecordMusicCell(recentNewRecordHistories: inout [MusicId: [(MusicDifficulty, Int)]]) {
         var iterIndex = 0
         let musicScoreDatas = DataStorage.instance.queryMyUserData().musicScoreDataCaches
         var lastAddedCell: NewRecordMusicWidgetCellView!
@@ -210,7 +214,7 @@ public class NewRecordMusicWidgetView : WidgetView {
         lastAddedCell.deactivateBottomLine()
     }
     
-    private func createMusicNewRecordWidgetViewCell(musicScoreData: MusicScoreData, musicNewRecordData: (MusicScoreData.Difficulty, Int)) -> NewRecordMusicWidgetCellView {
+    private func createMusicNewRecordWidgetViewCell(musicScoreData: MusicScoreData, musicNewRecordData: (MusicDifficulty, Int)) -> NewRecordMusicWidgetCellView {
          let ret = UINib(nibName: "NewRecordMusicWidgetCellView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! NewRecordMusicWidgetCellView
         ret.initialize(musicScoreData: musicScoreData, musicNewRecordData: musicNewRecordData)
         

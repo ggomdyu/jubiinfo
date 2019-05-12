@@ -56,21 +56,22 @@
                     <color key="textColor" red="0.9176368117" green="0.1886506677" blue="0.35292774440000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nF-Q4-nEj" userLabel="Line View" customClass="LineDashView" customModule="jubiinfo" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nF-Q4-nEj" userLabel="Line View" customClass="RoundLineDashView" customModule="jubiinfo" customModuleProvider="target">
                     <rect key="frame" x="15" y="23" width="306" height="1"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="5F3-cJ-yt7"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="dashWidth">
+                        <userDefinedRuntimeAttribute type="number" keyPath="dashSize">
                             <real key="value" value="0.5"/>
                         </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="dashSpace">
+                        <userDefinedRuntimeAttribute type="number" keyPath="dashIntervalSpace">
                             <real key="value" value="4"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="dashColor">
                             <color key="value" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isVertical" value="NO"/>
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XHx-lC-u06">

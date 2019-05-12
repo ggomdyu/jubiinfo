@@ -357,8 +357,6 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
 
 public class MusicDataViewToolBarController: ToolbarController {
 /**@section Variable */
-    private let m_toolBarColor = UIColor(red: 36 / 255, green: 75 / 255, blue: 67 / 255, alpha: 1)
-    private let m_toolBarLabelColor = UIColor(red: 255 / 255, green: 253 / 255, blue: 228 / 255, alpha: 1)
     private var m_leftTabPrevButton: IconButton!
     private var m_rightTabSortButton: IconButton!
     private var m_rightTabFilterButton: IconButton!

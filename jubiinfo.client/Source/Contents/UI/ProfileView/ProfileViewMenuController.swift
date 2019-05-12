@@ -39,7 +39,7 @@ class ProfileViewMenuController : ViewController, MFMailComposeViewControllerDel
         
         self.addButtonToStackView(title: "프로필", action: #selector(self.onTouchProfileViewButton))
         self.addButtonToStackView(title: "음악 데이터", action: #selector(self.onTouchMusicDataButton))
-//        self.addButtonToStackView(title: "엠블럼", action: #selector(self.onTouchEmblemButton))
+        self.addButtonToStackView(title: "대회", action: #selector(self.onTouchCompetitionButton))
 //        self.addButtonToStackView(title: "랭킹", action: #selector(onTouchRankingButton))
         self.addButtonToStackView(title: "문의", action: #selector(self.onTouchSupport))
         self.addButtonToStackView(title: "로그아웃", action: #selector(self.onTouchLogOutButton))
@@ -84,8 +84,8 @@ class ProfileViewMenuController : ViewController, MFMailComposeViewControllerDel
         MusicDataViewController.show(currentViewController: self)
     }
     
-    @objc private func onTouchRivalButton() {
-        showOkPopup(self, "에러", "구현 예정")
+    @objc private func onTouchCompetitionButton() {
+        CompetitionViewController.show(currentViewController: self)
     }
     
     @objc private func onTouchEmblemButton() {

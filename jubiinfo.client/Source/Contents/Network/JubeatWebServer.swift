@@ -16,97 +16,96 @@ public typealias Timestamp = Int64
 public typealias MusicId = Int
 public typealias MusicScore = Int
 
+public enum MusicDifficulty : Int {
+    case basic
+    case advanced
+    case extreme
+}
+
+public enum MusicVersion : Int {
+    case unknown
+    case original
+    case ripples
+    case knit
+    case copious
+    case saucer
+    case saucerFulfill
+    case prop
+    case qubell
+    case clan
+    case festo
+    
+    public func toString() -> String {
+        switch self {
+        case .original:
+            return "Original"
+        case .ripples:
+            return "Ripples"
+        case .knit:
+            return "Knit"
+        case .copious:
+            return "Copious"
+        case .saucer:
+            return "Saucer"
+        case .saucerFulfill:
+            return "Saucer fulfill"
+        case .prop:
+            return "Prop"
+        case .qubell:
+            return "Qubell"
+        case .clan:
+            return "Clan"
+        case .festo:
+            return "Festo"
+        case .unknown:
+            return "Festo"
+        }
+    }
+}
+
+public enum MusicScoreRank : Int {
+    case exc
+    case sss
+    case ss
+    case s
+    case a
+    case b
+    case c
+    case d
+    case e
+    case notPlayedYet
+    
+    public func toString() -> String {
+        switch self {
+        case .exc:
+            return "EXC"
+        case .sss:
+            return "SSS"
+        case .ss:
+            return "SS"
+        case .s:
+            return "S"
+        case .a:
+            return "A"
+        case .b:
+            return "B"
+        case .c:
+            return "C"
+        case .d:
+            return "D"
+        case .e:
+            return "E"
+        default:
+            return "Not played yet"
+        }
+    }
+}
+
 public class MusicScoreData : Comparable {
-/**@section Enum */
-    public enum Difficulty : Int {
-        case basic
-        case advanced
-        case extreme
-    }
-    
-    public enum Version : Int {
-        case unknown
-        case original
-        case ripples
-        case knit
-        case copious
-        case saucer
-        case saucerFulfill
-        case prop
-        case qubell
-        case clan
-        case festo
-        
-        public func toString() -> String {
-            switch self {
-            case .original:
-                return "Original"
-            case .ripples:
-                return "Ripples"
-            case .knit:
-                return "Knit"
-            case .copious:
-                return "Copious"
-            case .saucer:
-                return "Saucer"
-            case .saucerFulfill:
-                return "Saucer fulfill"
-            case .prop:
-                return "Prop"
-            case .qubell:
-                return "Qubell"
-            case .clan:
-                return "Clan"
-            case .festo:
-                return "Festo"
-            case .unknown:
-                return "Festo"
-            }
-        }
-    }
-    
-    public enum ScoreRank : Int {
-        case exc
-        case sss
-        case ss
-        case s
-        case a
-        case b
-        case c
-        case d
-        case e
-        case notPlayedYet
-        
-        public func toString() -> String {
-            switch self {
-            case .exc:
-                return "EXC"
-            case .sss:
-                return "SSS"
-            case .ss:
-                return "SS"
-            case .s:
-                return "S"
-            case .a:
-                return "A"
-            case .b:
-                return "B"
-            case .c:
-                return "C"
-            case .d:
-                return "D"
-            case .e:
-                return "E"
-            default:
-                return "Not played yet"
-            }
-        }
-    }
-    
 /**@section Class */
     /**@brief   The below data are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html?rival_id=(RIVAL_ID) */
     public struct SimpleData {
-        public init(name: String, uppercasedRomajiName: String, id: Int, score: Int, difficulty: Difficulty, isFullCombo: Bool, scoreHistory: [(Timestamp, MusicScore)]? = nil) {
+        public init(name: String, uppercasedRomajiName: String, id: Int, score: Int, difficulty: MusicDifficulty, isFullCombo: Bool, scoreHistory: [(Timestamp, MusicScore)]? = nil) {
             self.name = name
             self.uppercasedRomajiName = uppercasedRomajiName
             self.id = id
@@ -120,14 +119,14 @@ public class MusicScoreData : Comparable {
         public let uppercasedRomajiName: String
         public let id: Int
         public let score: Int
-        public let difficulty: Difficulty
+        public let difficulty: MusicDifficulty
         public let isFullCombo: Bool
         public var scoreHistories: [(Timestamp, MusicScore)]?
     }
     
     /**@brief   The below data are parseable from here https://p.eagate.573.jp/game/jubeat/festo/playdata/music_detail.html?rival_id=(RIVAL_ID)&mid=(MUSIC_ID) */
     public class DetailData {
-        public init(id: Int, difficulty: Difficulty, playTune: Int, clearCount: Int, fullComboCount: Int, excellentCount: Int, score: Int, musicRate: Float, ranking: Int) {
+        public init(id: Int, difficulty: MusicDifficulty, playTune: Int, clearCount: Int, fullComboCount: Int, excellentCount: Int, score: Int, musicRate: Float, ranking: Int) {
             self.id = id
             self.difficulty = difficulty
             self.playTune = playTune
@@ -140,7 +139,7 @@ public class MusicScoreData : Comparable {
         }
         
         public var id: Int
-        public var difficulty: Difficulty
+        public var difficulty: MusicDifficulty
         public var playTune: Int
         public var clearCount: Int
         public var fullComboCount: Int
@@ -154,12 +153,12 @@ public class MusicScoreData : Comparable {
     public class CustomData {
         public let artistName: String
         public let uppercasedRomajiArtistName: String
-        public let version: Version
+        public let version: MusicVersion
         public let levels: [Int]
         public var isNewMusic: Bool { return levels[0] == CustomData.newMusicIndicateValue }
         private static let newMusicIndicateValue = 999
         
-        public init(artistName: String, uppercasedRomajiArtistName: String, version: Version, levels: [Int]) {
+        public init(artistName: String, uppercasedRomajiArtistName: String, version: MusicVersion, levels: [Int]) {
             self.artistName = artistName
             self.version = version
             self.uppercasedRomajiArtistName = uppercasedRomajiArtistName
@@ -167,7 +166,7 @@ public class MusicScoreData : Comparable {
         }
         
         public convenience init() {
-            self.init(artistName: "", uppercasedRomajiArtistName: "", version: Version.festo, levels: [CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue])
+            self.init(artistName: "", uppercasedRomajiArtistName: "", version: MusicVersion.festo, levels: [CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue, CustomData.newMusicIndicateValue])
         }
     }
     
@@ -186,11 +185,11 @@ public class MusicScoreData : Comparable {
     public var uppercasedRomajiName: String { return simpleData?.uppercasedRomajiName ?? "" }
     public var id: Int { return simpleData?.id ?? detailData?.id ?? 0 }
     public var score: Int { return simpleData?.score ?? detailData?.score ?? 0 }
-    public var difficulty: Difficulty { return simpleData?.difficulty ?? detailData?.difficulty ?? Difficulty.basic }
+    public var difficulty: MusicDifficulty { return simpleData?.difficulty ?? detailData?.difficulty ?? MusicDifficulty.basic }
     public var isFullCombo: Bool { return simpleData?.isFullCombo ?? false }
     public var isExcellent: Bool { return self.score >= 1000000 }
     public var isNotPlayedYet: Bool { return self.score == -1 }
-    public var musicScoreRank: ScoreRank {
+    public var musicScoreRank: MusicScoreRank {
         switch self.score {
         case 1000000:
             return .exc
@@ -236,7 +235,7 @@ public class MusicScoreData : Comparable {
     public var extremeLevel: Int { return customData?.levels[2] ?? 0 }
     public var level: Int { return customData?.levels[simpleData?.difficulty.rawValue ?? 0] ?? 0 }
     public var isNewMusic: Bool { return customData?.isNewMusic ?? false }
-    public var version: Version { return customData?.version ?? .festo }
+    public var version: MusicVersion { return customData?.version ?? .festo }
     
 /**@section Method */
     public func isDetailDataInitialized() -> Bool {
@@ -258,6 +257,13 @@ public class MusicScoreData : Comparable {
 }
 
 public typealias MusicScoreDataCaches = Box<[MusicScoreData]>
+
+public struct CompetitionDesc {
+    public var title: String
+    public var subTitle: String
+    public var endDate: Int
+    public var musics: [(MusicId, MusicDifficulty)]
+}
 
 /**@brief   This parser does not execute DOM parsing for performance. */
 class MusicScoreDataPageParser {
@@ -655,9 +661,9 @@ public class JubeatWebServer {
     
     public static func requestCMDChecksum(onRequestComplete: @escaping (Bool, String?) -> ()) {
 #if DEBUG
-        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_dev.txt"
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatasChecksum_dev.txt"
 #else
-        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatasChecksum_live.txt"
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatasChecksum_live.txt"
 #endif
 
         httpRequestAsync(
@@ -944,6 +950,17 @@ public class JubeatWebServer {
             }
         }
     }
+    
+    public static func requestFeaturedCompetition(onRequestComplete: @escaping (Bool, [CompetitionDesc]?) -> Void) {
+        self.requestFeaturedCompetition { (isRequestSucceed: Bool, response: Data?) in
+            var competitions: [CompetitionDesc] = []
+            if isRequestSucceed {
+                competitions = self.parseFeaturedCompetition(response: response!)
+            }
+            
+            onRequestComplete(isRequestSucceed, competitions)
+        }
+    }
 }
 
 /**@brief   Set of server request method */
@@ -1046,9 +1063,9 @@ extension JubeatWebServer {
         let queue = DispatchQueue.init(label: "com.cmd.queue")
         
 #if DEBUG
-        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_dev.json"
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatas_dev.json"
 #else
-        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/Resource/DataTable/customMusicDatas_live.json"
+        let url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatas_live.json"
 #endif
         
         httpRequestAsync(
@@ -1149,6 +1166,18 @@ extension JubeatWebServer {
             "token": token,
             "new_name": newNickname
         ])
+    }
+    
+    private static func requestFeaturedCompetition(onRequestComplete: @escaping (Bool, Data?) -> Void) {
+        httpRequestAsync(
+            queue: DispatchQueue.global(),
+            url: "http://127.0.0.1:8888/competition",
+            method: HTTPMethod.get,
+            host: "127.0.0.1:8888",
+            referer: "http://127.0.0.1:8888",
+            onRequestComplete: { (isRequestSucceed: Bool, response: Data?) in
+                onRequestComplete(isRequestSucceed, response)
+        })
     }
 }
 
@@ -1486,7 +1515,7 @@ extension JubeatWebServer {
                 let musicBasicLevel = musicElem.value[2] as! Int
                 let musicAdvancedLevel = musicElem.value[3] as! Int
                 let musicExtremeLevel = musicElem.value[4] as! Int
-                let musicVersion = MusicScoreData.Version(rawValue: musicElem.value[5] as! Int) ?? .festo
+                let musicVersion = MusicVersion(rawValue: musicElem.value[5] as! Int) ?? .festo
                 
                 customMusicDatas[Int(musicElem.key)!] = MusicScoreData.CustomData(
                     artistName: musicArtistName,
@@ -1586,7 +1615,7 @@ extension JubeatWebServer {
                         uppercasedRomajiName: uppercasedRomajiMusicName,
                         id: musicId,
                         score: musicScore,
-                        difficulty: MusicScoreData.Difficulty(rawValue: i - 2)!,
+                        difficulty: MusicDifficulty(rawValue: i - 2)!,
                         isFullCombo: isFullCombo,
                         scoreHistory: optMusicScoreHistories
                     ),
@@ -1645,14 +1674,14 @@ extension JubeatWebServer {
         for jsonElem in jsonDict {
             let timestamp = Timestamp(jsonElem.key) ?? 0
 
-            var parsedNewRecordMusicDict: [MusicId: [(MusicScoreData.Difficulty, Int)]] = [:]
+            var parsedNewRecordMusicDict: [MusicId: [(MusicDifficulty, Int)]] = [:]
             for i in 0..<jsonElem.value.count {
-                var parsedNewRecordMusicArray: [(MusicScoreData.Difficulty, Int)] = []
+                var parsedNewRecordMusicArray: [(MusicDifficulty, Int)] = []
                 
                 let newRecordMusicInfoArray = jsonElem.value[i] as! [Any]
                 for i in 1..<newRecordMusicInfoArray.count {
                     var newRecordInfo = newRecordMusicInfoArray[i] as! [Int]
-                    parsedNewRecordMusicArray.append((MusicScoreData.Difficulty(rawValue: Int(newRecordInfo[0]))!, Int(newRecordInfo[1])))
+                    parsedNewRecordMusicArray.append((MusicDifficulty(rawValue: Int(newRecordInfo[0]))!, Int(newRecordInfo[1])))
                 }
                 
                 let musicId = newRecordMusicInfoArray[0] as! Int
@@ -1662,8 +1691,8 @@ extension JubeatWebServer {
             ret.value.append((timestamp, parsedNewRecordMusicDict))
         }
         
-        ret.value.sort { (lhs: (Timestamp, [MusicId : [(MusicScoreData.Difficulty, Int)]]), rhs: (Timestamp, [MusicId : [(MusicScoreData.Difficulty, Int)]])) -> Bool in
-            return lhs.0 > rhs.0
+        ret.value.sort { (lhs: (Timestamp, [MusicId : [(MusicDifficulty, Int)]]), rhs: (Timestamp, [MusicId : [(MusicDifficulty, Int)]])) -> Bool in
+            return lhs.0 < rhs.0
         }
         
         return ret
@@ -1707,7 +1736,7 @@ extension JubeatWebServer {
             for i in 0..<3 {
                 musicScoreDatas[i].detailData = MusicScoreData.DetailData(
                     id: musicId,
-                    difficulty: MusicScoreData.Difficulty(rawValue: i)!,
+                    difficulty: MusicDifficulty(rawValue: i)!,
                     playTune: 0,
                     clearCount: 0,
                     fullComboCount: 0,
@@ -1786,7 +1815,7 @@ extension JubeatWebServer {
             
             musicScoreDatas[i].detailData = MusicScoreData.DetailData(
                 id: musicId,
-                difficulty: MusicScoreData.Difficulty(rawValue: i)!,
+                difficulty: MusicDifficulty(rawValue: i)!,
                 playTune: scoreItemDatas[0] as! Int,
                 clearCount: scoreItemDatas[1] as! Int,
                 fullComboCount: scoreItemDatas[2] as! Int,
@@ -1833,5 +1862,37 @@ extension JubeatWebServer {
         let c = String(response[cElemStartPosFinder.upperBound..<cElemEndPosFinder.lowerBound])
         let token = String(response[tokenElemStartPosFinder.upperBound..<tokenElemEndPosFinder.lowerBound])
         return (c: c, token: token)
+    }
+    
+    private static func parseFeaturedCompetition(response: Data) -> [CompetitionDesc] {
+        var optJsonDict: [String: Any]?
+        do {
+            optJsonDict = try JSONSerialization.jsonObject(with: response, options: []) as? [String: Any]
+        }
+        catch {}
+        
+        var ret: [CompetitionDesc] = []
+        guard let jsonDict = optJsonDict else {
+            return ret
+        }
+        
+        for competition in jsonDict["list"] as! [[String: Any]] {
+            let title = competition["title"] as! String
+            let subTitle = competition["subTitle"] as! String
+            let endDate = competition["endDate"] as! Int
+            let musicCount = competition["musicCount"] as! Int
+            
+            var musics: [(MusicId, MusicDifficulty)] = []
+            for i in 1...musicCount {
+                let musicId = competition["music\(i)Id"] as! Int
+                let musicDifficulty = MusicDifficulty(rawValue: competition["music\(i)Difficulty"] as! Int)!
+                
+                musics.append((musicId, musicDifficulty))
+            }
+            
+            ret.append(CompetitionDesc(title: title, subTitle: subTitle, endDate: endDate, musics: musics))
+        }
+        
+        return ret
     }
 }
