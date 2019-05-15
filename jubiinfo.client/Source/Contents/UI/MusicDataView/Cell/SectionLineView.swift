@@ -1,5 +1,5 @@
 //
-//  MusicCellSectionLineView.swift
+//  SectionLineView.swift
 //  jubiinfo
 //
 //  Created by ggomdyu on 15/12/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class MusicCellSectionLineView : UIView {
+public class SectionLineView : UIView {
 /**@section Constructor */
     @IBOutlet weak var m_sectionText: UILabel!
     

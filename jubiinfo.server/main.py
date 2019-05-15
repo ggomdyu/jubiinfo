@@ -85,6 +85,8 @@ if __name__ == "__main__":
     flask_app = Flask(__name__)
     flask_api = Api(flask_app)
 
+    # flask_api.add_resource(CreateUserData, '/user')
+    # flask_api.add_resource(UpdateUserData, '/user')
     flask_api.add_resource(GetCompetitions, '/competition')
     flask_api.add_resource(CreateCompetition, '/competition')
     flask_api.add_resource(DeleteCompetition, '/competition')

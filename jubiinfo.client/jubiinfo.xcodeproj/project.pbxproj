@@ -11,6 +11,8 @@
 		62712A4D225E0AF800181A76 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 62712A38225E07AA00181A76 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6296AA952266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */; };
 		62ED01B421C2185900056141 /* SettingDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62ED01B321C2185900056141 /* SettingDataStorage.swift */; };
+		62F0B4D4228BBEC800CEF5ED /* NetworkCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F0B4D3228BBEC800CEF5ED /* NetworkCoordinate.swift */; };
+		62F0B4E5228BC14100CEF5ED /* JubiinfoWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F0B4E4228BC14100CEF5ED /* JubiinfoWebServer.swift */; };
 		FD093FF02222DA9E00593069 /* ProfileViewEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */; };
 		FD0EA841219B14660084A837 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0EA840219B14660084A837 /* ProfileViewController.swift */; };
 		FD0FF50D225704A300D4E63B /* EndEditTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */; };
@@ -57,7 +59,7 @@
 		FDA98C7121C4A7CC0060CBED /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7021C4A7CC0060CBED /* EventDispatcher.swift */; };
 		FDA98C7721C4FC5F0060CBED /* MusicCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7621C4FC5F0060CBED /* MusicCellView.swift */; };
 		FDA98C7C21C4FD7A0060CBED /* MusicDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7B21C4FD7A0060CBED /* MusicDataView.swift */; };
-		FDA98C7E21C4FD9F0060CBED /* MusicCellSectionLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7D21C4FD9F0060CBED /* MusicCellSectionLineView.swift */; };
+		FDA98C7E21C4FD9F0060CBED /* SectionLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C7D21C4FD9F0060CBED /* SectionLineView.swift */; };
 		FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C9F21C6A93C0060CBED /* Algorithm.swift */; };
 		FDA98CA321C6CB8F0060CBED /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98CA221C6CB8F0060CBED /* WidgetView.swift */; };
 		FDAC300D224BFB7100625B0E /* CoreActionSheetPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD342CC6224BFA25001096DA /* CoreActionSheetPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -89,7 +91,7 @@
 		FDC5BBD521EA34BE000951BD /* MusicDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC5BBD421EA34BE000951BD /* MusicDataViewController.swift */; };
 		FDC66F9F21D1474B0094F322 /* MusicCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDC66F9E21D1474A0094F322 /* MusicCellView.xib */; };
 		FDC66FA321D14E290094F322 /* ProfileWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDC66FA221D14E290094F322 /* ProfileWidgetView.xib */; };
-		FDC66FA521D152DF0094F322 /* MusicCellSectionLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDC66FA421D152DF0094F322 /* MusicCellSectionLineView.xib */; };
+		FDC66FA521D152DF0094F322 /* SectionLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDC66FA421D152DF0094F322 /* SectionLineView.xib */; };
 		FDC66FA721D170AC0094F322 /* PlayDataWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDC66FA621D170AC0094F322 /* PlayDataWidgetView.xib */; };
 		FDC66FA921D175270094F322 /* RankDataGraphWidgetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDC66FA821D175270094F322 /* RankDataGraphWidgetView.xib */; };
 		FDC66FB521D289820094F322 /* background_festo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FDC66FB321D289820094F322 /* background_festo.jpg */; };
@@ -351,6 +353,8 @@
 		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-2.16.4/Material.xcodeproj"; sourceTree = "<group>"; };
 		6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRecordMusicWidgetCellView.xib; sourceTree = "<group>"; };
 		62ED01B321C2185900056141 /* SettingDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDataStorage.swift; sourceTree = "<group>"; };
+		62F0B4D3228BBEC800CEF5ED /* NetworkCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCoordinate.swift; sourceTree = "<group>"; };
+		62F0B4E4228BC14100CEF5ED /* JubiinfoWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JubiinfoWebServer.swift; sourceTree = "<group>"; };
 		FD093FEF2222DA9E00593069 /* ProfileViewEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewEditController.swift; sourceTree = "<group>"; };
 		FD0EA840219B14660084A837 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndEditTableView.swift; sourceTree = "<group>"; };
@@ -406,7 +410,7 @@
 		FDA98C7021C4A7CC0060CBED /* EventDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
 		FDA98C7621C4FC5F0060CBED /* MusicCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCellView.swift; sourceTree = "<group>"; };
 		FDA98C7B21C4FD7A0060CBED /* MusicDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataView.swift; sourceTree = "<group>"; };
-		FDA98C7D21C4FD9F0060CBED /* MusicCellSectionLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCellSectionLineView.swift; sourceTree = "<group>"; };
+		FDA98C7D21C4FD9F0060CBED /* SectionLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLineView.swift; sourceTree = "<group>"; };
 		FDA98C9F21C6A93C0060CBED /* Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
 		FDA98CA221C6CB8F0060CBED /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		FDAC301B224BFBCE00625B0E /* CoreActionSheetPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreActionSheetPicker.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/jubiinfo-cqbngkkejkqxtgbtuejzukhhtsqj/Build/Products/Debug-iphonesimulator/CoreActionSheetPicker.framework"; sourceTree = "<group>"; };
@@ -431,7 +435,7 @@
 		FDC5BBD421EA34BE000951BD /* MusicDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataViewController.swift; sourceTree = "<group>"; };
 		FDC66F9E21D1474A0094F322 /* MusicCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicCellView.xib; sourceTree = "<group>"; };
 		FDC66FA221D14E290094F322 /* ProfileWidgetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileWidgetView.xib; sourceTree = "<group>"; };
-		FDC66FA421D152DF0094F322 /* MusicCellSectionLineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicCellSectionLineView.xib; sourceTree = "<group>"; };
+		FDC66FA421D152DF0094F322 /* SectionLineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionLineView.xib; sourceTree = "<group>"; };
 		FDC66FA621D170AC0094F322 /* PlayDataWidgetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayDataWidgetView.xib; sourceTree = "<group>"; };
 		FDC66FA821D175270094F322 /* RankDataGraphWidgetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankDataGraphWidgetView.xib; sourceTree = "<group>"; };
 		FDC66FB321D289820094F322 /* background_festo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_festo.jpg; sourceTree = "<group>"; };
@@ -537,7 +541,9 @@
 			isa = PBXGroup;
 			children = (
 				FDD2250F21AC51D3008C7DB1 /* JubeatWebServer.swift */,
+				62F0B4E4228BC14100CEF5ED /* JubiinfoWebServer.swift */,
 				FDCF4F7D21D6458100E3CC5A /* EAmusementCaptchaSolver.swift */,
+				62F0B4D3228BBEC800CEF5ED /* NetworkCoordinate.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -731,7 +737,7 @@
 			children = (
 				FDA98C7621C4FC5F0060CBED /* MusicCellView.swift */,
 				FD9366B42200CB9D00919C67 /* MusicCellDetailView.swift */,
-				FDA98C7D21C4FD9F0060CBED /* MusicCellSectionLineView.swift */,
+				FDA98C7D21C4FD9F0060CBED /* SectionLineView.swift */,
 				FDE1436421ECE9A000BC9924 /* MusicDetailScoreView.swift */,
 				FD9366A42200C5DF00919C67 /* MusicScoreGraphView.swift */,
 				FDC0D3052209DA23006BBC52 /* RivalRankView.swift */,
@@ -884,7 +890,7 @@
 			children = (
 				FDC66F9E21D1474A0094F322 /* MusicCellView.xib */,
 				FD2D85FB21EB644B00FAE9E2 /* MusicCellDetailView.xib */,
-				FDC66FA421D152DF0094F322 /* MusicCellSectionLineView.xib */,
+				FDC66FA421D152DF0094F322 /* SectionLineView.xib */,
 				FDC48F83220C2BE30032602B /* RivalRankCellView.xib */,
 			);
 			path = MusicDataView;
@@ -1255,7 +1261,7 @@
 				FDC48F5E220B4D6F0032602B /* bronzeCrown.png in Resources */,
 				FDC66FA321D14E290094F322 /* ProfileWidgetView.xib in Resources */,
 				FD46C0BB2211A44000632493 /* DailyChallengeMusicWidgetView.xib in Resources */,
-				FDC66FA521D152DF0094F322 /* MusicCellSectionLineView.xib in Resources */,
+				FDC66FA521D152DF0094F322 /* SectionLineView.xib in Resources */,
 				FD262FF0220D60D800C58BA7 /* omikuji01.png in Resources */,
 				FDC66FA921D175270094F322 /* RankDataGraphWidgetView.xib in Resources */,
 				FDB0E1CD226F670D00984CFF /* FeaturedCompetitionCellView.xib in Resources */,
@@ -1306,6 +1312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD11B8E021B3C21D003E3403 /* ProfileWidgetView.swift in Sources */,
+				62F0B4E5228BC14100CEF5ED /* JubiinfoWebServer.swift in Sources */,
 				FDCC76052219D61A00FD5356 /* MusicFilterViewController.swift in Sources */,
 				FD5C1107224531AF00571201 /* Log.swift in Sources */,
 				FD19282E22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift in Sources */,
@@ -1318,6 +1325,7 @@
 				FD0FF50D225704A300D4E63B /* EndEditTableView.swift in Sources */,
 				FD68AABB2228FDD7004644CD /* EasyUITableViewController.swift in Sources */,
 				FD21A639220605E7008F25FA /* Box.swift in Sources */,
+				62F0B4D4228BBEC800CEF5ED /* NetworkCoordinate.swift in Sources */,
 				FDD2250921AC50FE008C7DB1 /* Point.swift in Sources */,
 				FD093FF02222DA9E00593069 /* ProfileViewEditController.swift in Sources */,
 				FDE87D0721F3354B00E74CDF /* MusicSortModeViewController.swift in Sources */,
@@ -1357,7 +1365,7 @@
 				FDC5BBD321EA3452000951BD /* CustomStackView.swift in Sources */,
 				FD32E50D21C1942B001DF4CB /* ProfileViewMenuController.swift in Sources */,
 				FDDAFEF021B997150044F5C0 /* UIUtility.swift in Sources */,
-				FDA98C7E21C4FD9F0060CBED /* MusicCellSectionLineView.swift in Sources */,
+				FDA98C7E21C4FD9F0060CBED /* SectionLineView.swift in Sources */,
 				FD7F64D02199D62100E534E7 /* LoginViewController.swift in Sources */,
 				FDCECA0621B03C6000F253B2 /* HttpUtility.swift in Sources */,
 				FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */,
