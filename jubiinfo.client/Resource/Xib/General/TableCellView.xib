@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="MusicCellView" id="g1S-UB-NiG" customClass="MusicCellView" customModule="jubiinfo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="365" height="70"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYX-rP-FS3" customClass="ResponsiveView" customModule="jubiinfo" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="365" height="70"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="대회 참가" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2LA-1r-L7p" userLabel="Music Name Label">
+                            <rect key="frame" x="15" y="16" width="63.5" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.59607843140000005" green="0.59764617679999998" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3~5곡을 지정하여 승부를 겨룹니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9R-vC-sHS" userLabel="Artist Name Label">
+                            <rect key="frame" x="15" y="39" width="171.5" height="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.64039893739999998" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="DvR-Im-B9y"/>
+                        <constraint firstItem="K9R-vC-sHS" firstAttribute="leading" secondItem="FYX-rP-FS3" secondAttribute="leading" constant="15" id="Qpv-wc-JDS"/>
+                        <constraint firstItem="2LA-1r-L7p" firstAttribute="leading" secondItem="FYX-rP-FS3" secondAttribute="leading" constant="15" id="Vcb-dE-08d"/>
+                        <constraint firstItem="K9R-vC-sHS" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="39" id="hLs-tQ-p2g"/>
+                        <constraint firstItem="2LA-1r-L7p" firstAttribute="top" secondItem="FYX-rP-FS3" secondAttribute="top" constant="16" id="zP5-4R-jsk"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="FYX-rP-FS3" firstAttribute="top" secondItem="Tub-fp-N8b" secondAttribute="top" id="6aU-8t-i9V"/>
+                <constraint firstItem="Tub-fp-N8b" firstAttribute="trailing" secondItem="FYX-rP-FS3" secondAttribute="trailing" id="JR3-5v-PCC"/>
+                <constraint firstAttribute="height" secondItem="FYX-rP-FS3" secondAttribute="height" id="cD3-yc-W0f"/>
+                <constraint firstAttribute="width" secondItem="FYX-rP-FS3" secondAttribute="width" id="g7G-8m-enk"/>
+                <constraint firstItem="FYX-rP-FS3" firstAttribute="leading" secondItem="Tub-fp-N8b" secondAttribute="leading" id="lSn-AG-LEQ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="Tub-fp-N8b"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                    <real key="value" value="0.10000000000000001"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                    <real key="value" value="0.5"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowUIColor">
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                    <size key="value" width="0.0" height="0.0"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="m_contentsView" destination="FYX-rP-FS3" id="Qwh-9a-ijr"/>
+                <outlet property="m_musicArtistNameLabel" destination="K9R-vC-sHS" id="RMc-Nx-7fe"/>
+                <outlet property="m_musicNameLabel" destination="2LA-1r-L7p" id="lsE-55-byK"/>
+            </connections>
+            <point key="canvasLocation" x="-10.4" y="75.562218890554732"/>
+        </view>
+    </objects>
+</document>

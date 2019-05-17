@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		620D293A228E603A0091E8FD /* TableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 620D2928228E603A0091E8FD /* TableCellView.xib */; };
+		620D293B228E603A0091E8FD /* FeaturedCompetitionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 620D2939228E603A0091E8FD /* FeaturedCompetitionCellView.xib */; };
 		6213438D22604321007487A8 /* OmikujiWidgetSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */; };
 		62712A4D225E0AF800181A76 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 62712A38225E07AA00181A76 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6296AA952266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */; };
@@ -63,7 +65,6 @@
 		FDA98CA021C6A93C0060CBED /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98C9F21C6A93C0060CBED /* Algorithm.swift */; };
 		FDA98CA321C6CB8F0060CBED /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA98CA221C6CB8F0060CBED /* WidgetView.swift */; };
 		FDAC300D224BFB7100625B0E /* CoreActionSheetPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD342CC6224BFA25001096DA /* CoreActionSheetPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FDB0E1CD226F670D00984CFF /* FeaturedCompetitionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDB0E1CC226F670D00984CFF /* FeaturedCompetitionCellView.xib */; };
 		FDB0E1CF226F6E8B00984CFF /* 00502643_20170623.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FDB0E1CE226F6E8B00984CFF /* 00502643_20170623.jpg */; };
 		FDB3502F2274A4BB0022BDDF /* CompetitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB3502E2274A4BB0022BDDF /* CompetitionViewController.swift */; };
 		FDB4946C2213C5E8005B7C31 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4946B2213C5E8005B7C31 /* UIView.swift */; };
@@ -348,6 +349,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		620D2928228E603A0091E8FD /* TableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableCellView.xib; sourceTree = "<group>"; };
+		620D2939228E603A0091E8FD /* FeaturedCompetitionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeaturedCompetitionCellView.xib; sourceTree = "<group>"; };
 		6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmikujiWidgetSettingViewController.swift; sourceTree = "<group>"; };
 		62712A2C225E07AA00181A76 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.8.0/Alamofire.xcodeproj"; sourceTree = "<group>"; };
 		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-2.16.4/Material.xcodeproj"; sourceTree = "<group>"; };
@@ -414,7 +417,6 @@
 		FDA98C9F21C6A93C0060CBED /* Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
 		FDA98CA221C6CB8F0060CBED /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		FDAC301B224BFBCE00625B0E /* CoreActionSheetPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreActionSheetPicker.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/jubiinfo-cqbngkkejkqxtgbtuejzukhhtsqj/Build/Products/Debug-iphonesimulator/CoreActionSheetPicker.framework"; sourceTree = "<group>"; };
-		FDB0E1CC226F670D00984CFF /* FeaturedCompetitionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeaturedCompetitionCellView.xib; path = Resource/Xib/ProfileView/FeaturedCompetitionCellView.xib; sourceTree = SOURCE_ROOT; };
 		FDB0E1CE226F6E8B00984CFF /* 00502643_20170623.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 00502643_20170623.jpg; sourceTree = "<group>"; };
 		FDB3502E2274A4BB0022BDDF /* CompetitionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionViewController.swift; sourceTree = "<group>"; };
 		FDB4946B2213C5E8005B7C31 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
@@ -487,6 +489,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		620D2927228E603A0091E8FD /* General */ = {
+			isa = PBXGroup;
+			children = (
+				620D2928228E603A0091E8FD /* TableCellView.xib */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		620D2938228E603A0091E8FD /* CompetitionView */ = {
+			isa = PBXGroup;
+			children = (
+				620D2939228E603A0091E8FD /* FeaturedCompetitionCellView.xib */,
+			);
+			path = CompetitionView;
+			sourceTree = "<group>";
+		};
 		62712A2D225E07AA00181A76 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -825,14 +843,6 @@
 			path = Generic;
 			sourceTree = "<group>";
 		};
-		FDB0E1BC226F670300984CFF /* CompetitionView */ = {
-			isa = PBXGroup;
-			children = (
-				FDB0E1CC226F670D00984CFF /* FeaturedCompetitionCellView.xib */,
-			);
-			path = CompetitionView;
-			sourceTree = "<group>";
-		};
 		FDB3502D2274A48D0022BDDF /* CompetitionView */ = {
 			isa = PBXGroup;
 			children = (
@@ -853,7 +863,8 @@
 		FDC66FA021D14DD40094F322 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
-				FDB0E1BC226F670300984CFF /* CompetitionView */,
+				620D2927228E603A0091E8FD /* General */,
+				620D2938228E603A0091E8FD /* CompetitionView */,
 				FDC66FAB21D175560094F322 /* MusicDataView */,
 				FDC66FAA21D175340094F322 /* ProfileView */,
 			);
@@ -1261,10 +1272,10 @@
 				FDC48F5E220B4D6F0032602B /* bronzeCrown.png in Resources */,
 				FDC66FA321D14E290094F322 /* ProfileWidgetView.xib in Resources */,
 				FD46C0BB2211A44000632493 /* DailyChallengeMusicWidgetView.xib in Resources */,
+				620D293A228E603A0091E8FD /* TableCellView.xib in Resources */,
 				FDC66FA521D152DF0094F322 /* SectionLineView.xib in Resources */,
 				FD262FF0220D60D800C58BA7 /* omikuji01.png in Resources */,
 				FDC66FA921D175270094F322 /* RankDataGraphWidgetView.xib in Resources */,
-				FDB0E1CD226F670D00984CFF /* FeaturedCompetitionCellView.xib in Resources */,
 				FDC48F5D220B4D6F0032602B /* goldCrown.png in Resources */,
 				FD262FF1220D60D800C58BA7 /* omikuji02.png in Resources */,
 				6296AA952266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib in Resources */,
@@ -1281,6 +1292,7 @@
 				FDC66FB521D289820094F322 /* background_festo.jpg in Resources */,
 				FDC48F74220BEDCA0032602B /* lock.png in Resources */,
 				FD2D85FC21EB644B00FAE9E2 /* MusicCellDetailView.xib in Resources */,
+				620D293B228E603A0091E8FD /* FeaturedCompetitionCellView.xib in Resources */,
 				FDC48F90220C2BE30032602B /* RivalRankCellView.xib in Resources */,
 				FD7F618E222D36EE006FE95B /* background_qubell.jpg in Resources */,
 				FDB0E1CF226F6E8B00984CFF /* 00502643_20170623.jpg in Resources */,

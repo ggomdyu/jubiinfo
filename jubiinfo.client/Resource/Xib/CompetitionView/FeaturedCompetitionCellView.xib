@@ -29,9 +29,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="대회 제목 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYy-Kc-GKT">
-                            <rect key="frame" x="10" y="133" width="180" height="30"/>
+                            <rect key="frame" x="10" y="103" width="180" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="30" id="VzY-K8-GO3"/>
+                                <constraint firstAttribute="height" constant="60" id="VzY-K8-GO3"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -63,7 +63,7 @@
                         <constraint firstAttribute="bottom" secondItem="uKb-QD-u6w" secondAttribute="bottom" id="Dfv-z1-FTn"/>
                         <constraint firstItem="aM8-ob-cd3" firstAttribute="leading" secondItem="82C-IF-wKO" secondAttribute="leading" constant="10" id="PYg-13-oPd"/>
                         <constraint firstAttribute="trailing" secondItem="uKb-QD-u6w" secondAttribute="trailing" id="S2j-rF-Oqy"/>
-                        <constraint firstItem="uYy-Kc-GKT" firstAttribute="top" secondItem="82C-IF-wKO" secondAttribute="top" constant="133" id="SnE-Fp-vBS"/>
+                        <constraint firstItem="uYy-Kc-GKT" firstAttribute="top" secondItem="82C-IF-wKO" secondAttribute="top" constant="103" id="SnE-Fp-vBS"/>
                         <constraint firstItem="uKb-QD-u6w" firstAttribute="leading" secondItem="82C-IF-wKO" secondAttribute="leading" id="WhM-nO-ojm"/>
                         <constraint firstAttribute="trailing" secondItem="uYy-Kc-GKT" secondAttribute="trailing" constant="10" id="ehz-me-BeP"/>
                         <constraint firstItem="ax9-kC-r7d" firstAttribute="leading" secondItem="82C-IF-wKO" secondAttribute="leading" constant="10" id="fVg-pR-F9B"/>
