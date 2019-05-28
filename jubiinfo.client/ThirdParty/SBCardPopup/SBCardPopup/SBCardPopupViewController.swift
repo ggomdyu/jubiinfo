@@ -20,7 +20,7 @@ public class SBCardPopupViewController: UIViewController {
     
     public var disableSwipeToDismiss = false
     public var disableTapToDismiss = false
-    public var cornerRadius = CGFloat(7)
+    public var cornerRadius = CGFloat(13)
     public var viewWillAnimateOut: (() -> Void)?
 
     public init(contentViewController viewController: UIViewController, viewWillAnimateOut: (() -> Void)? = nil) {
