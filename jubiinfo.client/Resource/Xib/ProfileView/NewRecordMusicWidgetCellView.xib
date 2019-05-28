@@ -25,8 +25,8 @@
                     <color key="textColor" red="0.96078431369999995" green="0.74509803919999995" blue="0.058823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stand Alone Beat Masta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4G-4I-Y1o">
-                    <rect key="frame" x="40" y="3" width="154.5" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Stand Alone Beat Masta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4G-4I-Y1o">
+                    <rect key="frame" x="40" y="3" width="107" height="18"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="18" id="rf7-JB-dUu"/>
                     </constraints>
@@ -34,19 +34,19 @@
                     <color key="textColor" white="0.54000000000000004" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(+2580)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="np7-p8-D9D">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="(+2580)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="np7-p8-D9D">
                     <rect key="frame" x="232" y="3.5" width="54" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.96029883620000001" green="0.74336105590000001" blue="0.2547183931" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000000" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Fa-7d-Dfm" userLabel="Score Label">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="1000000" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Fa-7d-Dfm" userLabel="Score Label">
                     <rect key="frame" x="170.5" y="3.5" width="58.5" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.59607843140000005" green="0.59607843140000005" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="neO-CB-AWL" userLabel="Full Combo Label">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="FC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="neO-CB-AWL" userLabel="Full Combo Label">
                     <rect key="frame" x="147.5" y="6" width="18" height="12"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="12" id="axJ-8H-soC"/>
@@ -143,6 +143,7 @@
                 <constraint firstItem="rDd-97-GFd" firstAttribute="bottom" secondItem="2nF-Q4-nEj" secondAttribute="bottom" id="aMY-v1-P3C"/>
                 <constraint firstItem="6Fa-7d-Dfm" firstAttribute="leading" secondItem="neO-CB-AWL" secondAttribute="trailing" constant="5" id="d3r-Gl-blu"/>
                 <constraint firstItem="6Fa-7d-Dfm" firstAttribute="centerY" secondItem="rDd-97-GFd" secondAttribute="centerY" id="gM0-do-pdB"/>
+                <constraint firstItem="neO-CB-AWL" firstAttribute="leading" secondItem="P4G-4I-Y1o" secondAttribute="trailing" constant="5" id="k88-g5-sce"/>
                 <constraint firstItem="cNf-Gs-hqy" firstAttribute="centerY" secondItem="rDd-97-GFd" secondAttribute="centerY" id="pOX-S7-Krb"/>
                 <constraint firstItem="XHx-lC-u06" firstAttribute="leading" secondItem="rDd-97-GFd" secondAttribute="leading" constant="15" id="sc5-XA-Umw"/>
                 <constraint firstItem="2nF-Q4-nEj" firstAttribute="leading" secondItem="rDd-97-GFd" secondAttribute="leading" constant="15" id="z0Z-91-3Ws"/>
