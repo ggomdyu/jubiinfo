@@ -57,6 +57,7 @@ class MusicScoreGraphView : UIView, ChartViewDelegate {
         m_lineChartView.setScaleEnabled(false)
         m_lineChartView.pinchZoomEnabled = false
         m_lineChartView.legend.enabled = false
+        m_lineChartView.drawLineAboveFillRange = true
         
         let scoreHistories = m_musicScoreData.scoreHistories ?? [(Timestamp(Date().timeIntervalSince1970), m_musicScoreData.score)]
         self.prepareLineChartViewDataSet(scoreHistories: scoreHistories)
@@ -111,7 +112,6 @@ class MusicScoreGraphView : UIView, ChartViewDelegate {
         scoreDataSet.formLineWidth = 1
         scoreDataSet.formSize = 15
         scoreDataSet.highlightEnabled = false
-        
         scoreDataSet.fillAlpha = 1.0
         scoreDataSet.fill = Fill(color: getCurrentThemeColorTable().musicCellViewGraphFillColor)
         scoreDataSet.drawFilledEnabled = true

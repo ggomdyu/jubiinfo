@@ -19,6 +19,8 @@ import CoreGraphics
 /// Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
 open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartDataProvider, NSUIGestureRecognizerDelegate
 {
+    @objc open var drawLineAboveFillRange: Bool = false
+    
     /// the maximum number of entries to which values will be drawn
     /// (entry numbers greater than this value will cause value-labels to disappear)
     internal var _maxVisibleCount = 100
@@ -199,14 +201,16 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             xAxisRenderer.computeAxis(min: _xAxis._axisMinimum, max: _xAxis._axisMaximum, inverted: false)
         }
         
-        xAxisRenderer.renderAxisLine(context: context)
-        leftYAxisRenderer.renderAxisLine(context: context)
-        rightYAxisRenderer.renderAxisLine(context: context)
-
-        // The renderers are responsible for clipping, to account for line-width center etc.
-        xAxisRenderer.renderGridLines(context: context)
-        leftYAxisRenderer.renderGridLines(context: context)
-        rightYAxisRenderer.renderGridLines(context: context)
+        if drawLineAboveFillRange == false {
+            xAxisRenderer.renderAxisLine(context: context)
+            leftYAxisRenderer.renderAxisLine(context: context)
+            rightYAxisRenderer.renderAxisLine(context: context)
+            
+            // The renderers are responsible for clipping, to account for line-width center etc.
+            xAxisRenderer.renderGridLines(context: context)
+            leftYAxisRenderer.renderGridLines(context: context)
+            rightYAxisRenderer.renderGridLines(context: context)
+        }
         
         if _xAxis.isEnabled && _xAxis.isDrawLimitLinesBehindDataEnabled
         {
@@ -237,6 +241,17 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         }
         
         context.restoreGState()
+        
+        if drawLineAboveFillRange {
+            xAxisRenderer.renderAxisLine(context: context)
+            leftYAxisRenderer.renderAxisLine(context: context)
+            rightYAxisRenderer.renderAxisLine(context: context)
+
+            // The renderers are responsible for clipping, to account for line-width center etc.
+            xAxisRenderer.renderGridLines(context: context)
+            leftYAxisRenderer.renderGridLines(context: context)
+            rightYAxisRenderer.renderGridLines(context: context)
+        }
         
         renderer.drawExtras(context: context)
         
