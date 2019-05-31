@@ -149,7 +149,7 @@ public class MusicDataView : CustomStackView {
     private func addMusicSection(sectionText: String) {
         self.addMargin(margin: 15.0)
         
-        let view = UINib(nibName: "MusicCellSectionLineView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! MusicCellSectionLineView
+        let view = UINib(nibName: "SectionLineView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SectionLineView
         view.initialize(sectionText: sectionText)
         
         self.addView(view: view)

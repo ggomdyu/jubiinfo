@@ -80,7 +80,7 @@ class CompetitionViewController : ViewController, UITableViewDelegate, UITableVi
     }
     
     private func prepareFeaturedCompetitionTickets() {
-        JubeatWebServer.requestFeaturedCompetition { (isRequestSucceed: Bool, competitions: [CompetitionDesc]?) in
+        JubiinfoWebServer.requestFeaturedCompetition { (isRequestSucceed: Bool, competitions: [CompetitionDesc]?) in
             if isRequestSucceed {
                 runTaskInMainThread {
                     for competition in competitions! {
