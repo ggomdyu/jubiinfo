@@ -937,6 +937,31 @@ public class JubeatWebServer {
             }
         }
     }
+    
+    public static func isLoginSessionExpired() -> Bool {
+        let queue = DispatchQueue.init(label: "com.musicScoreData.queue")
+        
+        var isRequestSucceed = false
+        var isLoginSessionExpired = false
+    
+        httpRequestAsync(
+            queue: queue,
+            url: "https://p.eagate.573.jp/game/jubeat/festo/playdata/music.html",
+            method: HTTPMethod.get,
+            host: "p.eagate.573.jp",
+            referer: "",
+            onRequestComplete: { (isRequestSucceed2: Bool, optResponse: String?) in
+                if let response = optResponse {
+                    isLoginSessionExpired = response.contains("ログインしてください")
+                }
+                
+                isRequestSucceed = isRequestSucceed2
+        })
+        
+        SpinLock { return isRequestSucceed }
+        
+        return isLoginSessionExpired
+    }
 }
 
 /**@brief   Set of server request method */

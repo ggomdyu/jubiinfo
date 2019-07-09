@@ -50,36 +50,24 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZlD-gN-bzY" userLabel="Top Edge View">
-                                        <rect key="frame" x="0.0" y="-25" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="-25" width="375" height="25"/>
                                         <color key="backgroundColor" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="BBA-p9-Igw"/>
+                                            <constraint firstAttribute="height" constant="25" id="BBA-p9-Igw"/>
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="gqe-w4-348"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="11"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sgo-F9-E6Q" userLabel="Bottom Edge View">
-                                        <rect key="frame" x="0.0" y="975" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="1000" width="375" height="25"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o8N-2Q-5Nu">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="25"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="o8N-2Q-5Nu" firstAttribute="top" secondItem="Sgo-F9-E6Q" secondAttribute="top" id="Ct6-Mw-INu"/>
-                                            <constraint firstAttribute="height" constant="50" id="Erm-hN-k4w"/>
+                                            <constraint firstAttribute="height" constant="25" id="Erm-hN-k4w"/>
                                             <constraint firstItem="o8N-2Q-5Nu" firstAttribute="leading" secondItem="BsS-K5-0KG" secondAttribute="leading" id="KHC-XA-wWR"/>
                                             <constraint firstAttribute="bottom" secondItem="o8N-2Q-5Nu" secondAttribute="bottom" id="bX1-lZ-ugU"/>
                                             <constraint firstItem="BsS-K5-0KG" firstAttribute="trailing" secondItem="o8N-2Q-5Nu" secondAttribute="trailing" id="i79-VW-PIW"/>
@@ -216,31 +204,33 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-Mb-YMY" userLabel="Top Edge View">
-                                        <rect key="frame" x="0.0" y="-25" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="-25" width="375" height="25"/>
                                         <color key="backgroundColor" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="YcZ-da-K3s"/>
+                                            <constraint firstAttribute="height" constant="25" id="YcZ-da-K3s"/>
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="00p-zk-Hmd"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="11"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0L-CK-MZM" userLabel="Bottom Edge View">
-                                        <rect key="frame" x="0.0" y="1029" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="1054" width="375" height="25"/>
                                         <color key="backgroundColor" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="yWP-Je-hZm"/>
+                                            <constraint firstAttribute="height" constant="25" id="yWP-Je-hZm"/>
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="zKq-We-DzU"/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="11"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                                                <real key="value" value="0.10000000000000001"/>
                                             </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowUIColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                                                <size key="value" width="0.0" height="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yV8-9q-Ued" userLabel="Bottom Background Hider View">

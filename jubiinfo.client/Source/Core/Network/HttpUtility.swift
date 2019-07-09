@@ -37,18 +37,6 @@ public func removeCookies(url: URL) {
     }
 }
 
-public func isSessionExpired(url: String) -> Bool {
-    guard let oldCookies = HTTPCookieStorage.shared.cookies(for: URL(string: url)!) else {
-        return true
-    }
-    
-    guard let expireDate = oldCookies.last?.expiresDate else {
-        return true
-    }
-    
-    return expireDate.timeIntervalSince1970 <= Date().timeIntervalSince1970
-}
-
 public func downloadImageAsync(imageUrl: String, isWriteCache: Bool, isReadCache: Bool, onDownloadComplete: @escaping (Bool, UIImage?) -> Void) {
     
     let isUseImageCaching = isWriteCache || isReadCache
@@ -213,17 +201,6 @@ public func httpRequestAsync(queue: DispatchQueue, url: String, method: HTTPMeth
 #endif
         }
 }
-
-//private typealias RequestFailedData = (
-//    url: String,
-//    method: HTTPMethod,
-//    host: String,
-//    referer: String,
-//    parameters: [String: String],
-//    onRequestComplete: (Bool, Data?) -> Void
-//)
-//
-//private var g_requestFailedDatas: [RequestFailedData] = []
 
 private func httpRequestHandler<T>(url: String, onRequestComplete: @escaping (Bool, T?) -> Void, dataResponse: DataResponse<T>) {
     saveCookies(dataResponse: dataResponse)

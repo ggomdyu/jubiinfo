@@ -28,8 +28,8 @@
                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="대회 제목 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYy-Kc-GKT">
-                            <rect key="frame" x="10" y="103" width="180" height="60"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="대회 제목 테스트 테스트 테스트 테스트ㅌㅌㅌ" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYy-Kc-GKT">
+                            <rect key="frame" x="9" y="103" width="180" height="60"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="60" id="VzY-K8-GO3"/>
                             </constraints>

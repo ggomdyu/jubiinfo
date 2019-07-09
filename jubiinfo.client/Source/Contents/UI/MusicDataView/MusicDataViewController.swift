@@ -136,6 +136,9 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
     }
     
     private func prepareUI() {
+        m_topEdgeView.roundCorners(corners: [.topLeft, .topRight], radius: 11)
+        m_bottomEdgeView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 11)
+        
         self.prepareScrollView()
         self.prepareSearchBar()
         self.prepareTheme()

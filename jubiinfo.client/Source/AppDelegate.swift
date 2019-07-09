@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func createSuitableViewController() -> UIViewController? {
         if let autoLoginUserId = SettingDataStorage.instance.getConfig(key: "autoLoginUserId") as? String,
            let autoLoginUserPassword = SettingDataStorage.instance.getSecurityConfig(key: "autoLoginUserPassword") {
-            if isSessionExpired(url: "https://p.eagate.573.jp/") {
+            if JubeatWebServer.isLoginSessionExpired() {
                 removeCookies(url: URL(string: "https://p.eagate.573.jp/")!)
                 
                 let loginStatus = self.requestLoginSync(loginUserId: autoLoginUserId, loginUserPassword: autoLoginUserPassword)

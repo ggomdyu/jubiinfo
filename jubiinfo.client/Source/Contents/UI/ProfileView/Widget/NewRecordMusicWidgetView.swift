@@ -211,7 +211,7 @@ public class NewRecordMusicWidgetView : WidgetView {
             }
         }
         
-        lastAddedCell.deactivateBottomLine()
+        lastAddedCell?.deactivateBottomLine()
     }
     
     private func createMusicNewRecordWidgetViewCell(musicScoreData: MusicScoreData, musicNewRecordData: (MusicDifficulty, Int)) -> NewRecordMusicWidgetCellView {
