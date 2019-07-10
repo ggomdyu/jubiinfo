@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jubiinfoText.png" translatesAutoresizingMaskIntoConstraints="NO" id="zcG-VM-Wli">
-                                <rect key="frame" x="119" y="122" width="137.5" height="60"/>
+                                <rect key="frame" x="179.5" y="122" width="16" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="zlh-cT-J53"/>
                                 </constraints>
@@ -211,13 +211,22 @@
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="00p-zk-Hmd"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0L-CK-MZM" userLabel="Bottom Edge View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iFW-eA-SQe" userLabel="Bottom Edge View">
                                         <rect key="frame" x="0.0" y="1054" width="375" height="25"/>
-                                        <color key="backgroundColor" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNS-Zo-b3p">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="25"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="25" id="yWP-Je-hZm"/>
+                                            <constraint firstAttribute="height" constant="25" id="0JB-Jf-PRP"/>
+                                            <constraint firstItem="tNS-Zo-b3p" firstAttribute="leading" secondItem="vkZ-g6-qut" secondAttribute="leading" id="Nol-P1-Pfk"/>
+                                            <constraint firstItem="tNS-Zo-b3p" firstAttribute="top" secondItem="iFW-eA-SQe" secondAttribute="top" id="W4x-aY-jet"/>
+                                            <constraint firstAttribute="bottom" secondItem="tNS-Zo-b3p" secondAttribute="bottom" id="ZMo-Uk-rsI"/>
+                                            <constraint firstItem="vkZ-g6-qut" firstAttribute="trailing" secondItem="tNS-Zo-b3p" secondAttribute="trailing" id="tCC-3C-fNE"/>
                                         </constraints>
-                                        <viewLayoutGuide key="safeArea" id="zKq-We-DzU"/>
+                                        <viewLayoutGuide key="safeArea" id="vkZ-g6-qut"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
                                                 <real key="value" value="0.10000000000000001"/>
@@ -292,25 +301,25 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="yV8-9q-Ued" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="2by-vx-DmQ"/>
-                                    <constraint firstAttribute="bottom" secondItem="g0L-CK-MZM" secondAttribute="bottom" constant="-25" id="4Do-8W-F6C"/>
+                                    <constraint firstAttribute="bottom" secondItem="iFW-eA-SQe" secondAttribute="bottom" constant="-25" id="451-aR-ild"/>
                                     <constraint firstItem="sDa-ql-Uhi" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="4iB-eb-dG6"/>
+                                    <constraint firstItem="iFW-eA-SQe" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="85j-PZ-fMg"/>
                                     <constraint firstItem="zTo-Yv-8nf" firstAttribute="top" secondItem="UZ5-ft-75d" secondAttribute="bottom" constant="-15" id="DiC-ad-4cN"/>
                                     <constraint firstAttribute="bottom" secondItem="sDa-ql-Uhi" secondAttribute="bottom" id="L9f-Kq-uGG"/>
                                     <constraint firstAttribute="trailing" secondItem="UZ5-ft-75d" secondAttribute="trailing" id="NUo-zw-8Pf"/>
                                     <constraint firstItem="dYt-Mb-YMY" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="QPd-om-X5M"/>
+                                    <constraint firstAttribute="trailing" secondItem="iFW-eA-SQe" secondAttribute="trailing" id="RgB-pM-cf1"/>
                                     <constraint firstItem="dYt-Mb-YMY" firstAttribute="top" secondItem="MIO-LA-Y25" secondAttribute="top" constant="-25" id="VCX-N2-ZEo"/>
                                     <constraint firstItem="sDa-ql-Uhi" firstAttribute="top" secondItem="UZ5-ft-75d" secondAttribute="bottom" constant="-15" id="WwS-hb-M5M"/>
                                     <constraint firstAttribute="bottom" secondItem="zTo-Yv-8nf" secondAttribute="bottom" id="XWI-tP-UG3"/>
                                     <constraint firstAttribute="trailing" secondItem="zTo-Yv-8nf" secondAttribute="trailing" id="Ydm-xh-oug"/>
                                     <constraint firstItem="UZ5-ft-75d" firstAttribute="top" secondItem="MIO-LA-Y25" secondAttribute="top" id="bx9-2s-RJ8"/>
                                     <constraint firstAttribute="bottom" secondItem="yV8-9q-Ued" secondAttribute="bottom" constant="-600" id="dAc-DQ-tdQ"/>
-                                    <constraint firstItem="g0L-CK-MZM" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="gpD-Yv-L94"/>
                                     <constraint firstAttribute="trailing" secondItem="dYt-Mb-YMY" secondAttribute="trailing" id="n3o-O1-1Rk"/>
                                     <constraint firstAttribute="trailing" secondItem="yV8-9q-Ued" secondAttribute="trailing" id="pWC-Uu-CaH"/>
                                     <constraint firstItem="zTo-Yv-8nf" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="qkt-Sp-vf2"/>
                                     <constraint firstItem="UZ5-ft-75d" firstAttribute="leading" secondItem="MIO-LA-Y25" secondAttribute="leading" id="tnE-1X-Z57"/>
                                     <constraint firstAttribute="trailing" secondItem="sDa-ql-Uhi" secondAttribute="trailing" id="vXK-Xa-iin"/>
-                                    <constraint firstAttribute="trailing" secondItem="g0L-CK-MZM" secondAttribute="trailing" id="xhC-a3-OHw"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -327,7 +336,7 @@
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
                         <outlet property="m_bottomBackgroundHiderView" destination="yV8-9q-Ued" id="81R-rJ-JsZ"/>
-                        <outlet property="m_bottomEdgeView" destination="g0L-CK-MZM" id="lM7-Dt-wYI"/>
+                        <outlet property="m_bottomEdgeView" destination="tNS-Zo-b3p" id="8fB-be-h2w"/>
                         <outlet property="m_musicDataSearchResultView" destination="zTo-Yv-8nf" id="MWF-jj-OtR"/>
                         <outlet property="m_musicDataSearchResultViewBottomConstraint" destination="XWI-tP-UG3" id="gr2-TQ-ZKb"/>
                         <outlet property="m_musicDataView" destination="sDa-ql-Uhi" id="5il-GJ-w3W"/>
@@ -335,7 +344,7 @@
                         <outlet property="m_scrollView" destination="MIO-LA-Y25" id="VNO-RS-8ok"/>
                         <outlet property="m_searchBar" destination="4Iy-Q8-I94" id="wY0-lc-Elm"/>
                         <outlet property="m_searchBarView" destination="UZ5-ft-75d" id="jsg-dl-oad"/>
-                        <outlet property="m_topEdgeView" destination="dYt-Mb-YMY" id="mns-dC-9WF"/>
+                        <outlet property="m_topEdgeView" destination="dYt-Mb-YMY" id="d4X-r5-TBt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28b-8k-1Rv" userLabel="First Responder" sceneMemberID="firstResponder"/>
