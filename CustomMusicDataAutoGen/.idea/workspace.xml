@@ -14,18 +14,41 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/CustomMusicDataAutoGen$CustomMusicDataAutoGen.coverage" NAME="CustomMusicDataAutoGen Coverage Results" MODIFIED="1563523435839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CustomMusicDataAutoGen$CustomMusicDataAutoGen.coverage" NAME="CustomMusicDataAutoGen Coverage Results" MODIFIED="1564711169132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CustomMusicDataAutoGen.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="69" column="76" selection-start-line="69" selection-start-column="76" selection-end-line="69" selection-end-column="76" />
+            <state relative-caret-position="224">
+              <caret line="86" column="73" selection-start-line="86" selection-start-column="73" selection-end-line="86" selection-end-column="73" />
               <folding>
-                <element signature="e#15#36#0" expanded="true" />
+                <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/codecs.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5852">
+              <caret line="309" selection-start-line="309" selection-end-line="309" />
             </state>
           </provider>
         </entry>
@@ -43,7 +66,7 @@
         <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+              <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -71,6 +94,30 @@
       <find>Claidheamh</find>
       <find>python</find>
       <find>autho</find>
+      <find>_</find>
+      <find>cmdJson</find>
+      <find>musicdatapoo</find>
+      <find>romajim</find>
+      <find>parsedHt</find>
+      <find>romaji_artist_name</find>
+      <find>artistName</find>
+      <find>extremeLevel</find>
+      <find>advancedLevel</find>
+      <find>musicName</find>
+      <find>musicVersion</find>
+      <find>processMusicListCell</find>
+      <find>processLicenseMusic</find>
+      <find>processMusicVersion</find>
+      <find>processOriginalMusic</find>
+      <find>key,</find>
+      <find>key, value</find>
+      <find>music_version</find>
+      <find>music_data_pool</find>
+      <find>, val</find>
+      <find>for</find>
+      <find>cmd_json</find>
+      <find>kakasi</find>
+      <find>japanesec</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -91,10 +138,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1785" />
-    <option name="y" value="829" />
-    <option name="width" value="1318" />
-    <option name="height" value="1224" />
+    <option name="x" value="1921" />
+    <option name="y" value="516" />
+    <option name="width" value="1210" />
+    <option name="height" value="1062" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -102,7 +149,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -114,6 +160,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -179,12 +226,21 @@
       <workItem from="1562818260110" duration="2059000" />
       <workItem from="1563247143555" duration="2607000" />
       <workItem from="1563419720669" duration="1737000" />
-      <workItem from="1563506158992" duration="8706000" />
+      <workItem from="1563506158992" duration="10622000" />
+      <workItem from="1563769258384" duration="1924000" />
+      <workItem from="1563771604273" duration="1444000" />
+      <workItem from="1563855959980" duration="1709000" />
+      <workItem from="1563942202718" duration="1017000" />
+      <workItem from="1564058080093" duration="5251000" />
+      <workItem from="1564117077715" duration="1813000" />
+      <workItem from="1564541954749" duration="2416000" />
+      <workItem from="1564633501704" duration="4433000" />
+      <workItem from="1564710589940" duration="533000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18971000" />
+    <option name="totallyTimeSpent" value="41427000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -196,89 +252,103 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="2300" y="701" width="1318" height="1224" extended-state="0" />
+    <frame x="1919" y="1080" width="1210" height="1062" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17329094" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22434783" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3266055" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3798165" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.35612902" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30818966" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29738933" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32838428" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32572615" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32920963" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298969" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32925764" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32676348" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32883817" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32676348" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.32881355" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32947463" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="len(musicListElems)" language="Python" />
-        <watch expression="name[1].text" language="Python" />
-        <watch expression="musicName" language="Python" />
+        <watch expression="value.music_id" language="Python" />
+        <watch expression="value.music_name" language="Python" />
+        <watch expression="value.artist_name" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
+        <expression-string>value.artist_name</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>value.music_name</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>value.music_id</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>che</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>musicDataPool.has_key(&quot;a&quot;)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>musicDataPool</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>musicName</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>str</expression-string>
+        <expression-string>musicDataPool in musicId == False</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>name[1].text</expression-string>
+        <expression-string>musicDataPool in musicId</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>name[1].val</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>name[1].value</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>name[1]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>td[1]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>len(musicListElems)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>n2.find(&quot;td&quot;, 2)</expression-string>
+        <expression-string>musicDataPool[musicId]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -289,13 +359,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="108" selection-start-line="108" selection-end-line="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="309" selection-start-line="309" selection-end-line="309" />
         </state>
       </provider>
     </entry>
@@ -310,11 +373,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CustomMusicDataAutoGen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="69" column="76" selection-start-line="69" selection-start-column="76" selection-end-line="69" selection-end-column="76" />
+        <state relative-caret-position="224">
+          <caret line="86" column="73" selection-start-line="86" selection-start-column="73" selection-end-line="86" selection-end-column="73" />
           <folding>
-            <element signature="e#15#36#0" expanded="true" />
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5852">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
         </state>
       </provider>
     </entry>
@@ -328,7 +398,7 @@
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
         </state>
       </provider>
     </entry>
