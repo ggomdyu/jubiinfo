@@ -28,7 +28,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/pymysql/_auth.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2070">
+            <state relative-caret-position="2622">
               <caret line="141" selection-start-line="141" selection-end-line="141" />
             </state>
           </provider>
@@ -37,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/pymysql/err.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
+            <state relative-caret-position="1938">
               <caret line="104" column="52" selection-start-line="104" selection-start-column="52" selection-end-line="104" selection-end-column="52" />
             </state>
           </provider>
@@ -61,7 +61,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="222" />
+    <option name="x" value="239" />
     <option name="y" value="137" />
     <option name="width" value="1377" />
     <option name="height" value="793" />
@@ -154,17 +154,18 @@
       <updated>1556374828348</updated>
       <workItem from="1557890542725" duration="762000" />
       <workItem from="1562729712644" duration="4000" />
+      <workItem from="1566371914342" duration="3000" />
+      <workItem from="1566486092772" duration="9000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="766000" />
+    <option name="totallyTimeSpent" value="778000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="222" y="137" width="1377" height="793" extended-state="0" />
-    <editor active="true" />
+    <frame x="239" y="137" width="1377" height="793" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21348314" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21943812" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -203,14 +204,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/pymysql/_auth.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2070">
+        <state relative-caret-position="2622">
           <caret line="141" selection-start-line="141" selection-end-line="141" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/pymysql/err.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
+        <state relative-caret-position="1938">
           <caret line="104" column="52" selection-start-line="104" selection-start-column="52" selection-end-line="104" selection-end-column="52" />
         </state>
       </provider>

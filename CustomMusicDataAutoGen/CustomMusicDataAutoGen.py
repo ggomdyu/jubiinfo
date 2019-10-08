@@ -149,12 +149,10 @@ if __name__ == "__main__":
     cmd_json = cmd_json[:-1]
     cmd_json += "}}"
 
-    print(cmd_json)
+    desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+    cmd_json_path = desktop_path + "/customMusicDatas_dev.json"
 
-desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-cmd_json_path = desktop_path + "/customMusicDatas_dev.json"
+    file = open(cmd_json_path, mode='w', encoding='utf8');
+    file.write(cmd_json)
 
-file = open(cmd_json_path, 'w');
-file.write(cmd_json)
-
-print("CMD json write complete!")
+    print("CMD json write complete!")
