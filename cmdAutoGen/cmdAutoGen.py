@@ -9,9 +9,14 @@ from datetime import datetime
 from time import sleep
 from bs4 import BeautifulSoup
 
-ENABLE_LIVE_MODE = False
+# dev 전용 리소스를 갱신하려면 False, live 전용 리소스를 갱신하려면 True를 지정하면 됨.
+ENABLE_LIVE_MODE = True
 MODE_NAME = ENABLE_LIVE_MODE and "live" or "dev"
-FESTO_MUSIC_VERSION = 10
+
+# 신규 추가된 음악들이 어떤 게임 버전(2019년 기준으로 페스토)에서 등장한 것인지 기록하기 위함.
+# 만약 게임이 업데이트 되면 이 값도 반드시 증가시켜줘야 함!!
+# 마지막 갱신 일자 (2019/10/10)
+LATEST_GAME_VERSION = 10
 
 class MusicData:
     music_id: int
@@ -49,8 +54,7 @@ cmd_json: str = "{\"music\":{"
 
 # Parse all of the music version from cmd json.
 def process_music_version():
-    cmd_url = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/" \
-              "DataTable/customMusicDatas_dev.json"
+    cmd_url = f"https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/cmd_{MODE_NAME}.json"
 
     request = urllib.request.Request(cmd_url)
     response = urllib.request.urlopen(request)
@@ -83,7 +87,7 @@ def process_music_list_cell(parsed_html):
         extreme_level = int(float(lis[5].text) * 10.0)
 
         if music_id not in music_data_pool:
-            music_data_pool[music_id] = MusicData(music_id, FESTO_MUSIC_VERSION)
+            music_data_pool[music_id] = MusicData(music_id, LATEST_GAME_VERSION)
 
         music_data = music_data_pool[music_id]
         music_data.music_name = music_name
@@ -154,8 +158,8 @@ def pushCmdJsonToGithubRepo(cmd_json):
         cmd_json
     ]
     file_path_list = [
-        ENABLE_LIVE_MODE and f"jubiinfo.client/Resource/DataTable/customMusicDatasChecksum_live.json" or f"jubiinfo.client/Resource/DataTable/customMusicDatasChecksum_dev.json",
-        ENABLE_LIVE_MODE and f"jubiinfo.client/Resource/DataTable/customMusicDatas_live.json" or f"jubiinfo.client/Resource/DataTable/customMusicDatas_dev.json"
+        f"jubiinfo.client/Resource/DataTable/cmdChecksum_{MODE_NAME}",
+        f"jubiinfo.client/Resource/DataTable/cmd_{MODE_NAME}.json"
     ]
     commit_message = "Update cmd"
     master_ref = repo.get_git_ref("heads/master")
@@ -180,7 +184,8 @@ if __name__ == "__main__":
     process_original_music()
 
     for music_data in music_data_pool.values():
-        print(music_data.basic_level)
+        if music_data.music_name == "":
+            continue
         cmd_json += f"\"{music_data.music_id}\":[\"{music_data.artist_name}\",\"{music_data.romaji_artist_name}\",{music_data.basic_level}," \
                     f"{music_data.advanced_level},{music_data.basic_level},{music_data.music_version}],"
     cmd_json = cmd_json[:-1]
