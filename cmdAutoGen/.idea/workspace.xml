@@ -37,8 +37,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cmdAutoGen.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="160" column="70" selection-start-line="160" selection-start-column="70" selection-end-line="160" selection-end-column="70" />
+            <state relative-caret-position="-19">
+              <caret line="11" selection-start-line="11" selection-end-line="19" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -242,12 +242,12 @@
       <workItem from="1570681266368" duration="4000" />
       <workItem from="1570681287214" duration="2439000" />
       <workItem from="1570683852244" duration="402000" />
-      <workItem from="1570695827154" duration="2150000" />
+      <workItem from="1570695827154" duration="2587000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49820000" />
+    <option name="totallyTimeSpent" value="50257000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -269,7 +269,7 @@
       <window_info anchor="bottom" id="Find" order="1" weight="0.35612902" />
       <window_info anchor="bottom" id="Cvs" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Run" order="4" weight="0.30782458" />
+      <window_info active="true" anchor="bottom" id="Run" order="4" visible="true" weight="0.30684328" />
       <window_info anchor="bottom" id="TODO" order="5" weight="0.32519865" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
@@ -278,7 +278,7 @@
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32860386" />
       <window_info anchor="bottom" id="Python Console" order="11" weight="0.3263337" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32881355" />
-      <window_info active="true" anchor="bottom" id="Debug" order="13" visible="true" weight="0.30573952" />
+      <window_info anchor="bottom" id="Debug" order="13" weight="0.30573952" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -291,18 +291,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/cmdAutoGen.py</url>
-          <line>164</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/cmdAutoGen.py</url>
-          <line>163</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -401,8 +389,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cmdAutoGen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="160" column="70" selection-start-line="160" selection-start-column="70" selection-end-line="160" selection-end-column="70" />
+        <state relative-caret-position="-19">
+          <caret line="11" selection-start-line="11" selection-end-line="19" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
