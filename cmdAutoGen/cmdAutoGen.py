@@ -149,7 +149,7 @@ def process_original_music():
         process_music_list_cell(parsed_html2)
 
 def pushCmdJsonToGithubRepo(cmd_json):
-    github_token = input("Enter the GitHub Acess Token: ")
+    github_token = input("Enter the GitHub Personal access token: ")
 
     g = Github(github_token)
     repo = g.get_user().get_repo("jubiinfo")
