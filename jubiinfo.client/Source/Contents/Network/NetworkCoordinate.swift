@@ -10,12 +10,13 @@ import Foundation
 
 class NetworkCoordinate {
 #if DEBUG
-    public static let cmdUrl = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatas_dev.json"
-    public static let cmdChecksumUrl = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatasChecksum_dev.txt"
+    private static let appModeName = "dev"
     public static let jubiinfoServerUrl = "http://127.0.0.1:8888"
 #else
-    public static let cmdUrl = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatas_live.json"
-    public static let cmdChecksumUrl = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/customMusicDatasChecksum_live.txt"
+    private static let appModeName = "live"
     public static let jubiinfoServerUrl = "http://127.0.0.1:8888"
 #endif
+    
+    public static let cmdUrl = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/cmd_" + appModeName + ".json"
+    public static let cmdChecksumUrl = "https://raw.githubusercontent.com/ggomdyu/jubiinfo/master/jubiinfo.client/Resource/DataTable/cmdChecksum_" + appModeName
 }
