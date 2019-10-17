@@ -75,7 +75,7 @@ public class CustomStackView : View {
     
     public func addView(view: UIView) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            self.layout(view).centerHorizontally().width(420)
+            self.layout(view).centerX().width(420)
         }
         else {
             self.layout(view).left(15).right(15)

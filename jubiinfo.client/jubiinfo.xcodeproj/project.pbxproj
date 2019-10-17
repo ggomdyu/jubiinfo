@@ -353,7 +353,7 @@
 		620D2939228E603A0091E8FD /* FeaturedCompetitionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeaturedCompetitionCellView.xib; sourceTree = "<group>"; };
 		6213438C22604321007487A8 /* OmikujiWidgetSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmikujiWidgetSettingViewController.swift; sourceTree = "<group>"; };
 		62712A2C225E07AA00181A76 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.8.0/Alamofire.xcodeproj"; sourceTree = "<group>"; };
-		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-2.16.4/Material.xcodeproj"; sourceTree = "<group>"; };
+		6293173D21BA1E9F0038E016 /* Material.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Material.xcodeproj; path = "Material-3.1.8/Material.xcodeproj"; sourceTree = "<group>"; };
 		6296AA852266D2BD008D9F0F /* NewRecordMusicWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRecordMusicWidgetCellView.xib; sourceTree = "<group>"; };
 		62ED01B321C2185900056141 /* SettingDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDataStorage.swift; sourceTree = "<group>"; };
 		62F0B4D3228BBEC800CEF5ED /* NetworkCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCoordinate.swift; sourceTree = "<group>"; };
@@ -362,7 +362,7 @@
 		FD0EA840219B14660084A837 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FD0FF4FD225704A300D4E63B /* EndEditTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndEditTableView.swift; sourceTree = "<group>"; };
 		FD11B8DF21B3C21D003E3403 /* ProfileWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileWidgetView.swift; sourceTree = "<group>"; };
-		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-1.4.3/Motion.xcodeproj"; sourceTree = "<group>"; };
+		FD11B8F921B563AD003E3403 /* Motion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Motion.xcodeproj; path = "Motion-3.1.3/Motion.xcodeproj"; sourceTree = "<group>"; };
 		FD19282D22591865008E0440 /* GameCenterVisitHistoryWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterVisitHistoryWidgetView.swift; sourceTree = "<group>"; };
 		FD21A638220605E7008F25FA /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		FD25202B223E986300CB11FE /* GameCenterVisitHistoryWidgetCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameCenterVisitHistoryWidgetCellView.xib; sourceTree = "<group>"; };

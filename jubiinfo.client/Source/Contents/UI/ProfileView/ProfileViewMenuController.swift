@@ -69,7 +69,7 @@ class ProfileViewMenuController : ViewController, MFMailComposeViewControllerDel
         let button = FlatButton(title: title)
         button.addTarget(self, action: action, for: .touchUpInside)
         
-        view.layout(button).horizontally().top(m_nextButtonAddYPos)
+        view.layout(button).centerX().top(m_nextButtonAddYPos)
 
         m_nextButtonAddYPos += button.frame.height + 3.0
         m_menuButtonList.append(button)
