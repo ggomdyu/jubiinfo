@@ -60,6 +60,7 @@ class CompetitionViewController : ViewController, UITableViewDelegate, UITableVi
         let snackbarController = SnackbarController(rootViewController: navigationDrawerController)
         snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         snackbarController.isMotionEnabled = true
+        snackbarController.modalPresentationStyle = .fullScreen
         
         return snackbarController
     }

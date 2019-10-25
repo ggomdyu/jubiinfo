@@ -27,6 +27,7 @@ class EditNicknameViewController : EasyUITableViewController, UITextFieldDelegat
         let snackbarController = SnackbarController(rootViewController: toolbarController)
         snackbarController.isMotionEnabled = true
         snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        snackbarController.modalPresentationStyle = .fullScreen
         
         currentViewController.present(snackbarController, animated: true)
     }

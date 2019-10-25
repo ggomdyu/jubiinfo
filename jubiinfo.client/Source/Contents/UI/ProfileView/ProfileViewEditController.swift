@@ -44,6 +44,7 @@ public class ProfileViewEditController : EasyUITableViewController {
         let snackbarController = SnackbarController(rootViewController: toolbarController)
         snackbarController.isMotionEnabled = true
         snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .up))
+        snackbarController.modalPresentationStyle = .fullScreen
         
         currentViewController.present(snackbarController, animated: true)
     }

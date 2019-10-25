@@ -59,6 +59,7 @@ public class MusicDataViewController : ViewController, UIScrollViewDelegate, UIS
         let snackbarController = SnackbarController(rootViewController: navigationDrawerController)
         snackbarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
         snackbarController.isMotionEnabled = true
+        snackbarController.modalPresentationStyle = .fullScreen
         
         return snackbarController
     }

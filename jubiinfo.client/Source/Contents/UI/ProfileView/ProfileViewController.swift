@@ -38,7 +38,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-        
+
         let toolBarController = ProfileViewToolBarController(rootViewController: profileViewController, onEditComplete: profileViewController.onEditComplete)
         
         let navigationDrawerController = NavigationDrawerController(rootViewController: toolBarController, leftViewController: ProfileViewMenuController())
@@ -47,6 +47,7 @@ class ProfileViewController : ViewController, UIScrollViewDelegate {
         let snackBarController = SnackbarController(rootViewController: navigationDrawerController)
         snackBarController.isMotionEnabled = true
         snackBarController.motionTransitionType = .autoReverse(presenting: .push(direction: .left))
+        snackBarController.modalPresentationStyle = .fullScreen
         
         return snackBarController
     }

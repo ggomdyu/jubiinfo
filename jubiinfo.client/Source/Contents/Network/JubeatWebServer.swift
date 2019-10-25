@@ -1493,6 +1493,7 @@ extension JubeatWebServer {
             customMusicDatas.reserveCapacity(musicArrayElem.count)
             
             for musicElem in musicArrayElem {
+                //"34933648":["kors k","korsk",30,60,30,8]
                 let musicArtistName = musicElem.value[0] as! String
                 let musicUppercasedRomajiArtistName = musicElem.value[1] as! String
                 let musicBasicLevel = musicElem.value[2] as! Int

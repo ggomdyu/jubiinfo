@@ -8,9 +8,10 @@ from github import InputGitTreeElement
 from datetime import datetime
 from time import sleep
 from bs4 import BeautifulSoup
+import ssl
 
 # dev 전용 리소스를 갱신하려면 False, live 전용 리소스를 갱신하려면 True를 지정하면 됨.
-ENABLE_LIVE_MODE = True
+ENABLE_LIVE_MODE = False
 MODE_NAME = ENABLE_LIVE_MODE and "live" or "dev"
 
 # 신규 추가된 음악들이 어떤 게임 버전(2019년 기준으로 페스토)에서 등장한 것인지 기록하기 위함.
@@ -18,12 +19,14 @@ MODE_NAME = ENABLE_LIVE_MODE and "live" or "dev"
 # 마지막 갱신 일자 (2019/10/10)
 LATEST_GAME_VERSION = 10
 
+ssl._create_default_https_context = ssl._create_unverified_context
+
 class MusicData:
     music_id: int
     music_name: str
-    romaji_music_name: str
+    uppercased_romaji_music_name: str
     artist_name: str
-    romaji_artist_name: str
+    uppercased_romaji_artist_name: str
     basic_level: int
     advanced_level: int
     extreme_level: int
@@ -32,9 +35,9 @@ class MusicData:
     def __init__(self, music_id: int, music_version: int):
         self.music_id = music_id
         self.music_name = ""
-        self.romaji_music_name = ""
+        self.uppercased_romaji_music_name = ""
         self.artist_name = ""
-        self.romaji_artist_name = ""
+        self.uppercased_romaji_artist_name = ""
         self.basic_level = 0
         self.advanced_level = 0
         self.extreme_level = 0
@@ -91,9 +94,9 @@ def process_music_list_cell(parsed_html):
 
         music_data = music_data_pool[music_id]
         music_data.music_name = music_name
-        music_data.romaji_music_name = japaneseConverter.do(music_name).replace(" ", "")
+        music_data.uppercased_romaji_music_name = japaneseConverter.do(music_name).replace(" ", "").upper()
         music_data.artist_name = artist_name.replace('"','\\"')
-        music_data.romaji_artist_name = japaneseConverter.do(artist_name).replace(" ", "").replace('"','\\"')
+        music_data.uppercased_romaji_artist_name = japaneseConverter.do(artist_name).replace(" ", "").replace('"','\\"').upper()
         music_data.basic_level = basic_level
         music_data.advanced_level = advanced_level
         music_data.extreme_level = extreme_level
@@ -186,8 +189,8 @@ if __name__ == "__main__":
     for music_data in music_data_pool.values():
         if music_data.music_name == "":
             continue
-        cmd_json += f"\"{music_data.music_id}\":[\"{music_data.artist_name}\",\"{music_data.romaji_artist_name}\",{music_data.basic_level}," \
-                    f"{music_data.advanced_level},{music_data.basic_level},{music_data.music_version}],"
+        cmd_json += f"\"{music_data.music_id}\":[\"{music_data.artist_name}\",\"{music_data.uppercased_romaji_artist_name}\",{music_data.basic_level}," \
+                    f"{music_data.advanced_level},{music_data.extreme_level},{music_data.music_version}],"
     cmd_json = cmd_json[:-1]
     cmd_json += "}}"
 
