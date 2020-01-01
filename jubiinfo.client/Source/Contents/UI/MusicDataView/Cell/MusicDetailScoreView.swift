@@ -54,7 +54,7 @@ class MusicDetailScoreView : UIView {
                 return
             }
             
-            JubeatWebServer.requestDetailMusicScoreData(rivalId: myUserData.rivalId, musicId: musicScoreData.id, destBasicMusicScoreData: basicMusicScoreData, destAdvancedMusicScoreData: advancedMusicScoreData, extremeAdvancedMusicScoreData: extremeMusicScoreData) { (isRequestSucceed: Bool, isParseSucceed: Bool) in
+            JubeatWebServer.requestDetailMusicScoreData(rivalId: myUserData.rivalId, musicId: musicScoreData.id, destBasicMusicScoreData: basicMusicScoreData, destAdvancedMusicScoreData: advancedMusicScoreData, extremeMusicScoreData: extremeMusicScoreData) { (isRequestSucceed: Bool, isParseSucceed: Bool) in
                 runTaskInMainThread {
                     onPrepareComplate()
                 }

@@ -885,15 +885,15 @@ public class JubeatWebServer {
         }
     }
     
-    public static func requestDetailMusicScoreData(rivalId: String, musicId: Int, destBasicMusicScoreData: MusicScoreData, destAdvancedMusicScoreData: MusicScoreData, extremeAdvancedMusicScoreData: MusicScoreData, onRequestComplete: @escaping (Bool, Bool) -> Void) {
+    public static func requestDetailMusicScoreData(rivalId: String, musicId: Int, destBasicMusicScoreData: MusicScoreData, destAdvancedMusicScoreData: MusicScoreData, extremeMusicScoreData: MusicScoreData, onRequestComplete: @escaping (Bool, Bool) -> Void) {
         self.requestDetailMusicScoreDataPageHtml(rivalId: rivalId, musicId: musicId) { (isRequestSucceed: Bool, optResponse: String?) in
             guard let response = optResponse else {
                 onRequestComplete(false, false)
                 return
             }
-            
-            let isProfilePrivated = !self.parseDetailMusicScorePageHtml(response: response, musicId: musicId, destBasicMusicScoreData: destBasicMusicScoreData, destAdvancedMusicScoreData: destAdvancedMusicScoreData, extremeAdvancedMusicScoreData: extremeAdvancedMusicScoreData);
 
+            let isProfilePrivated = !self.parseDetailMusicScorePageHtml(response: response, musicId: musicId, destBasicMusicScoreData: destBasicMusicScoreData, destAdvancedMusicScoreData: destAdvancedMusicScoreData, extremeMusicScoreData: extremeMusicScoreData);
+            print("rivalId: \(rivalId): \(extremeMusicScoreData.score)" )
             onRequestComplete(isRequestSucceed, isProfilePrivated)
         }
     }
@@ -1710,9 +1710,9 @@ extension JubeatWebServer {
         return nil;
     }
     
-    private static func parseDetailMusicScorePageHtml(response: String, musicId: Int, destBasicMusicScoreData: MusicScoreData, destAdvancedMusicScoreData: MusicScoreData, extremeAdvancedMusicScoreData: MusicScoreData) -> Bool {
+    private static func parseDetailMusicScorePageHtml(response: String, musicId: Int, destBasicMusicScoreData: MusicScoreData, destAdvancedMusicScoreData: MusicScoreData, extremeMusicScoreData: MusicScoreData) -> Bool {
         
-        var musicScoreDatas = [destBasicMusicScoreData, destAdvancedMusicScoreData, extremeAdvancedMusicScoreData];
+        var musicScoreDatas = [destBasicMusicScoreData, destAdvancedMusicScoreData, extremeMusicScoreData];
         
         // If player didn't unlocked the music
         let musicNotUnlocked = response.range(of: "プレーしていません") != nil

@@ -55,7 +55,7 @@ public class RivalRankView : UIView {
                 else {
                     let musicScoreDatas = [MusicScoreData(), MusicScoreData(), MusicScoreData()]
                     
-                    JubeatWebServer.requestDetailMusicScoreData(rivalId: simpleRivalData.rivalId, musicId: musicScoreData.id, destBasicMusicScoreData: musicScoreDatas[0], destAdvancedMusicScoreData: musicScoreDatas[1], extremeAdvancedMusicScoreData: musicScoreDatas[2]) { (isRequestSucceed: Bool, isProfilePrivated: Bool) in
+                    JubeatWebServer.requestDetailMusicScoreData(rivalId: simpleRivalData.rivalId, musicId: musicScoreData.id, destBasicMusicScoreData: musicScoreDatas[0], destAdvancedMusicScoreData: musicScoreDatas[1], extremeMusicScoreData: musicScoreDatas[2]) { (isRequestSucceed: Bool, isProfilePrivated: Bool) in
                         
                         runTaskInMainThread {
                             // Cache the user's music score data into the storage
@@ -67,6 +67,7 @@ public class RivalRankView : UIView {
                                 rivalRankCellDatas.append((musicScoreDatas[musicScoreData.difficulty.rawValue].score, isProfilePrivated, simpleRivalData.nickname))
                                 rivalUserData.musicScoreDataCaches.value.append(contentsOf: musicScoreDatas)
                             }
+                            print("rivalId: \(simpleRivalData.nickname): \(musicScoreDatas[musicScoreData.difficulty.rawValue].score)" )
                             
                             requestCompleteCount += 1
                             if requestCompleteCount == myUserData.rivalListPageCache!.simpleRivalDataList.count {

@@ -332,12 +332,26 @@ public class MusicCellView : UIView {
         
         self.becomeFirstResponder()
         
-        UIMenuController.shared.menuItems = [
-            UIMenuItem(title: "음악 이름 복사", action: #selector(onTapCopyMusicNameMenuItem)),
-            UIMenuItem(title: "아티스트 이름 복사", action: #selector(onTapCopyMusicArtistNameMenuItem))
-        ]
-        UIMenuController.shared.setTargetRect(self.frame, in: superView)
-        UIMenuController.shared.setMenuVisible(true, animated: true)
+        // 아래 코드는 잠시 테스트용!!!
+        m_onTouchCell?();
+        
+        if m_isViewExpanded {
+            self.Shrink()
+        }
+        else {
+            self.Expand()
+        }
+        
+        m_isViewExpanded = !m_isViewExpanded
+        
+        UIMenuController.shared.setMenuVisible(false, animated: true)
+        
+//        UIMenuController.shared.menuItems = [
+//            UIMenuItem(title: "음악 이름 복사", action: #selector(onTapCopyMusicNameMenuItem)),
+//            UIMenuItem(title: "아티스트 이름 복사", action: #selector(onTapCopyMusicArtistNameMenuItem))
+//        ]
+//        UIMenuController.shared.setTargetRect(self.frame, in: superView)
+//        UIMenuController.shared.setMenuVisible(true, animated: true)
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
