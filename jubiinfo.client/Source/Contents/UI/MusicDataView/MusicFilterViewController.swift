@@ -453,7 +453,7 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
         
         m_filterTableView.delegate = self
         m_filterTableView.dataSource = self
-        
+        m_filterTableView.contentInset = .zero
         m_filterTableView.setEditing(true, animated: false)
     }
     
