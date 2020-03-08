@@ -9,6 +9,7 @@ from datetime import datetime
 from time import sleep
 from bs4 import BeautifulSoup
 import ssl
+import sys
 
 # Determines whether the build result is for live or develop
 ENABLE_LIVE_MODE = False
@@ -162,9 +163,7 @@ def process_original_music():
 
 
 def pushCmdJsonToGithubRepo(cmd_json):
-    github_token = input("Enter the GitHub Personal access token: ")
-     
-    g = Github(github_token)
+    g = Github(sys.argv[1])
     repo = g.get_user().get_repo("jubiinfo")
     file_data = [
         datetime.now().strftime("%Y%m%d%H%M%S"),
