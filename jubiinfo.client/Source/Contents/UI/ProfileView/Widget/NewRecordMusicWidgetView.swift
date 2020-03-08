@@ -30,6 +30,7 @@ public class NewRecordMusicWidgetCellView : UIView {
         
         // Initialize music name
         m_musicNameLabel.text = musicScoreData.name
+        self.addConstraint(NSLayoutConstraint(item: m_musicNameLabel, attribute: .right, relatedBy: .equal, toItem: musicScoreData.isFullCombo ? m_musicFullComboLabel : m_musicScoreLabel, attribute: .left, multiplier: 1, constant: 3.0))
         
         // Initialize score label
         m_musicScoreLabel.text = "\(musicScoreData.score)"

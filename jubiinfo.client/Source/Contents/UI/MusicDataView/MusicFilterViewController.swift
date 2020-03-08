@@ -19,17 +19,28 @@ public class MusicFilter {
 }
 
 public class LeftMarginRemovedUITableViewCell : UITableViewCell {
+/**@section Variable */
+    public var m_layoutInitialized = false
+
+/**@section Method */
     override public func layoutSubviews() {
         super.layoutSubviews()
-        
+         
+        if m_layoutInitialized == false {
+            self.initializeLayout()
+            m_layoutInitialized = true
+        }
+    }
+    
+    private func initializeLayout() {
         for subview in self.subviews {
             if String(describing: type(of: subview)).hasSuffix("SeparatorView") {
                 subview.frame.size.width += 10.0
             }
-            
+
             subview.frame.origin.x -= 10.0
         }
-        
+         
         self.separatorInset = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 0.0)
     }
 }
@@ -238,7 +249,7 @@ public class VersionFilterUITableViewCell : BaseFilterUITableViewCell {
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        m_versionBtn.setTitle(self.m_versionStrDataSource[m_currSelectedRow], for: .normal) 
+        m_versionBtn.setTitle(self.m_versionStrDataSource[m_currSelectedRow], for: .normal)
     }
 
     public override func getFilterData() -> Any? {
@@ -442,7 +453,7 @@ class MusicFilterViewController : UIViewController, SBCardPopupContent, UITableV
         
         m_filterTableView.delegate = self
         m_filterTableView.dataSource = self
-        
+        m_filterTableView.contentInset = .zero
         m_filterTableView.setEditing(true, animated: false)
     }
     
