@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,7 +47,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEw-DB-qbD">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZlD-gN-bzY" userLabel="Top Edge View">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZlD-gN-bzY" userLabel="Top Edge View">
                                         <rect key="frame" x="0.0" y="-25" width="375" height="25"/>
                                         <color key="backgroundColor" red="0.97880953550000005" green="0.95939284560000004" blue="0.89265360240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
@@ -55,16 +55,15 @@
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="gqe-w4-348"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sgo-F9-E6Q" userLabel="Bottom Edge View">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgo-F9-E6Q" userLabel="Bottom Edge View">
                                         <rect key="frame" x="0.0" y="1000" width="375" height="25"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o8N-2Q-5Nu">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o8N-2Q-5Nu">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="25"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="o8N-2Q-5Nu" firstAttribute="top" secondItem="Sgo-F9-E6Q" secondAttribute="top" id="Ct6-Mw-INu"/>
                                             <constraint firstAttribute="height" constant="25" id="Erm-hN-k4w"/>
                                             <constraint firstItem="o8N-2Q-5Nu" firstAttribute="leading" secondItem="BsS-K5-0KG" secondAttribute="leading" id="KHC-XA-wWR"/>
                                             <constraint firstAttribute="bottom" secondItem="o8N-2Q-5Nu" secondAttribute="bottom" id="bX1-lZ-ugU"/>
@@ -103,12 +102,10 @@
                                 <constraints>
                                     <constraint firstItem="Fgx-Ia-s5F" firstAttribute="leading" secondItem="yEw-DB-qbD" secondAttribute="leading" id="0yd-nG-uOW"/>
                                     <constraint firstAttribute="bottom" secondItem="Sgo-F9-E6Q" secondAttribute="bottom" constant="-25" id="2Zk-nw-X4Q"/>
-                                    <constraint firstAttribute="trailing" secondItem="Sgo-F9-E6Q" secondAttribute="trailing" id="5bV-88-vJt"/>
-                                    <constraint firstItem="ZlD-gN-bzY" firstAttribute="leading" secondItem="yEw-DB-qbD" secondAttribute="leading" id="HON-Mn-R9I"/>
+                                    <constraint firstItem="Sgo-F9-E6Q" firstAttribute="centerX" secondItem="yEw-DB-qbD" secondAttribute="centerX" id="7da-9S-MVs"/>
                                     <constraint firstItem="ZlD-gN-bzY" firstAttribute="top" secondItem="yEw-DB-qbD" secondAttribute="top" constant="-25" id="Ia8-QD-cs6"/>
+                                    <constraint firstItem="ZlD-gN-bzY" firstAttribute="centerX" secondItem="yEw-DB-qbD" secondAttribute="centerX" id="NPk-UW-fXH"/>
                                     <constraint firstAttribute="bottom" secondItem="Fgx-Ia-s5F" secondAttribute="bottom" id="Rd1-NO-Bae"/>
-                                    <constraint firstItem="Sgo-F9-E6Q" firstAttribute="leading" secondItem="yEw-DB-qbD" secondAttribute="leading" id="S2b-e3-MA5"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZlD-gN-bzY" secondAttribute="trailing" id="eNb-o0-eYI"/>
                                     <constraint firstItem="Fgx-Ia-s5F" firstAttribute="top" secondItem="yEw-DB-qbD" secondAttribute="top" id="g8T-0J-vz1"/>
                                     <constraint firstAttribute="trailing" secondItem="Fgx-Ia-s5F" secondAttribute="trailing" id="peu-rc-2a8"/>
                                 </constraints>
